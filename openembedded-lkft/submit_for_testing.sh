@@ -63,10 +63,8 @@ if [ -z "${DRY_RUN}" ]; then
     fi
 
     CONFIGS_REPO_URL=${CONFIGS_REPO_URL_OVERRIDE:-http://git.linaro.org/ci/job/configs.git}
-    git clone ${CONFIGS_REPO_CLONE_ARGS} ${CONFIGS_REPO_URL} configs
-    if [ ! -z ${CONFIGS_REPO_REV_OVERRIDE} ]; then
-        (cd configs && git checkout ${CONFIGS_REPO_REV_OVERRIDE})
-    fi
+    git clone -o origin https://github.com/mrchapp/ci-job-configs configs
+    (cd configs && git checkout origin/d/anders-33221)
 fi
 
 [ -n "${FULL_TEST_TEMPLATES}" ] && unset FULL_TEST_TEMPLATES
