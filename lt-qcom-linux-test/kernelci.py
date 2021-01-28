@@ -45,8 +45,14 @@ def main(token, job, arch, defconfig, output='output.log'):
         with open(output, 'w') as f:
             f.write("KERNEL_IMAGE_URL=" + res_url + build['kernel_image'] + '\n')
             f.write("KERNEL_MODULES_URL=" + res_url + build['modules'] + '\n')
-            f.write("KERNEL_VERSION=" + build['git_describe'] + '\n')
             f.write("KERNEL_DT_URL=" + res_url + build['dtb_dir'] + '\n')
+            f.write("KERNEL_CONFIG=" + build['defconfig_full'] + '\n')
+            f.write("KERNEL_VERSION=" + build['git_describe'] + '\n')
+            f.write("KERNEL_REPO=" + build['git_url'] + '\n')
+            f.write("KERNEL_COMMIT=" + build['git_commit'] + '\n')
+            f.write("KERNEL_BRANCH=" + build['git_branch'] + '\n')
+            f.write("KERNEL_DESCRIBE=" + build['git_describe'] + '\n')
+            f.write("KERNEL_TOOLCHAIN=" + build['compiler_version_full'] + '\n')
 
         # let's quit, process one new job at max
         sys.exit(0)

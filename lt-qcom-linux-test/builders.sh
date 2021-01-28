@@ -170,12 +170,10 @@ if [ -z "${GZ}" ]; then
 fi
 
 # Generic/default variables
-KERNEL_CI_PLATFORM=${MACHINE}
 BOOTIMG_PAGESIZE=2048
 BOOTIMG_BASE=0x80000000
 RAMDISK_BASE=0x84000000
 SERIAL_CONSOLE=ttyMSM0
-KERNEL_CI_MACH=qcom
 KERNEL_DT_URL="${KERNEL_DT_URL}/qcom/${MACHINE}.dtb"
 KERNEL_CMDLINE_APPEND=
 
@@ -458,11 +456,9 @@ echo BOOT_ROOTFS_FILE=$boot_rootfs_file >> builders_out_parameters
 echo ROOTFS_FILE="$(basename $rootfs_file)" >> builders_out_parameters
 echo ROOTFS_DESKTOP_FILE="$(basename $rootfs_desktop_file)" >> builders_out_parameters
 
-# Kernel CI parameters in LAVA jobs
+# Parameters for LAVA jobs
 echo KERNEL_IMAGE="$(basename $KERNEL_IMAGE_URL)" >> builders_out_parameters
 echo KERNEL_DT="$(basename $KERNEL_DT_URL)" >> builders_out_parameters
-echo KERNEL_CI_PLATFORM="${KERNEL_CI_PLATFORM}" >> builders_out_parameters
-echo KERNEL_CI_MACH="${KERNEL_CI_MACH}" >> builders_out_parameters
 echo RAMDISK_URL="${RAMDISK_URL}" >> builders_out_parameters
 echo KERNEL_DT_URL="${KERNEL_DT_URL}" >> builders_out_parameters
 

@@ -51,9 +51,5 @@
             fail-on-error: false
         - trigger-parameterized-builds:
             - project: lt-qcom-linux-mainline
-              predefined-parameters: |
-                KERNEL_IMAGE_URL=${KERNEL_IMAGE_URL}
-                KERNEL_MODULES_URL=${KERNEL_MODULES_URL}
-                KERNEL_VERSION=${KERNEL_VERSION}
-                KERNEL_DT_URL=${KERNEL_DT_URL}
               condition: SUCCESS
+              property-file: lt_qcom_parameters
