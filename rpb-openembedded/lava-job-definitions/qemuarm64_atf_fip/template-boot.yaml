@@ -57,8 +57,7 @@ actions:
       login_commands:
       - sudo -s
     prompts:
-    - 'ledge-(.*)~: '
-    - 'ledge-.*:~\$'
+    - 'ledge-.*:~\$$'
     - 'ledge-qemuarm64:/(.*)#'
 
 - test:
