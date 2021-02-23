@@ -5,9 +5,6 @@ case "${MACHINE}" in
   am57xx-evm)
     DEVICE_TYPE=x15
     ;;
-  dragonboard-410c)
-    DEVICE_TYPE=dragonboard-410c
-    ;;
   hikey)
     DEVICE_TYPE=hi6220-hikey-r2
     ;;
