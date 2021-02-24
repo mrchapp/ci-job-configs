@@ -43,7 +43,7 @@ function get_value_from_config_file(){
     local f_config=$1 && shift
 
     local key_line=$(grep "^${key}=" "${LKFT_WORK_DIR}/android-build-configs/lkft/${f_config}"|tail -n1|tr -d '"')
-    if [ -z "key_line" ]; then
+    if [ -z "${key_line}" ]; then
         return
     fi
     local value=$(echo "${key_line}"|cut -d= -f2-)
@@ -108,9 +108,7 @@ function submit_jobs_for_config(){
     local build_config=$1 && shift
 
     local f_qareport_urls="qareport_url.txt"
-    if [ -z "${DEFAULT_TEST_LAVA_JOB_PRIORITY}" ]; then
-        DEFAULT_TEST_LAVA_JOB_PRIORITY="medium"
-    if
+    [ -z "${DEFAULT_TEST_LAVA_JOB_PRIORITY}" ] && DEFAULT_TEST_LAVA_JOB_PRIORITY="medium"
 
     # clean environments
     unset TEST_DEVICE_TYPE TEST_LAVA_SERVER TEST_QA_SERVER TEST_QA_SERVER_TEAM TEST_QA_SERVER_PROJECT TEST_QA_SERVER_ENVIRONMENT
@@ -314,7 +312,7 @@ function submit_jobs(){
     KERNEL_COMMIT=${SRCREV_kernel}
     if [ -n "${MAKE_KERNELVERSION}" ] && echo "X${USE_KERNELVERSION_FOR_QA_BUILD_VERSION}" | grep -i "Xtrue"; then
         QA_BUILD_VERSION=${MAKE_KERNELVERSION}-${KERNEL_COMMIT:0:12}
-    elif [ ! -z "${KERNEL_DESCRIBE}" ]; then
+    elif [ -n "${KERNEL_DESCRIBE}" ]; then
         QA_BUILD_VERSION=${KERNEL_DESCRIBE}
     else
         QA_BUILD_VERSION=${KERNEL_COMMIT:0:12}
