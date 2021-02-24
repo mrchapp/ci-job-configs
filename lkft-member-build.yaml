@@ -26,7 +26,7 @@
             name: SNAPAHOT_SITE_ROOT
             default: "android/lkft/protected"
         - string:
-            name: TEST_LAVA_JOB_PRIORITY
+            name: DEFAULT_TEST_LAVA_JOB_PRIORITY
             default: 60
         - string:
             name: BUILD_DIR

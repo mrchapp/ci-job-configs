@@ -108,7 +108,9 @@ function submit_jobs_for_config(){
     local build_config=$1 && shift
 
     local f_qareport_urls="qareport_url.txt"
-    DEFAULT_TEST_LAVA_JOB_PRIORITY="medium"
+    if [ -z "${DEFAULT_TEST_LAVA_JOB_PRIORITY}" ]; then
+        DEFAULT_TEST_LAVA_JOB_PRIORITY="medium"
+    if
 
     # clean environments
     unset TEST_DEVICE_TYPE TEST_LAVA_SERVER TEST_QA_SERVER TEST_QA_SERVER_TEAM TEST_QA_SERVER_PROJECT TEST_QA_SERVER_ENVIRONMENT
