@@ -68,31 +68,6 @@ def validate_url(url):
     urllib.request.urlopen(url)
 
 
-def validate_if_already_built(url, artifacts_urls):
-    f = urllib.request.urlopen(url)
-    page = f.read().decode("utf-8")
-
-    max_search = 8
-    search_count = 0
-    soup = BeautifulSoup(page, "html.parser")
-    for tr in soup.select('table > tr'):
-        if 'Parent Directory' in tr.text or 'latest' in tr.text:
-            continue
-
-        build_url = url + tr.contents[3].text.strip().rstrip()
-        f = urllib.request.urlopen(build_url)
-        build_page = f.read().decode("utf-8")
-
-        if all(u in build_page for u in artifacts_urls):
-            print("INFO: Build exists %s in URL: %s" %
-                  (str(artifacts_urls), build_url))
-            sys.exit(1)
-
-        search_count = search_count + 1
-        if search_count > max_search:
-            break
-
-
 def main():
     linaro_ci_base_url = os.environ.get('LINARO_CI_BASE_URL',
                                         'https://snapshots.linaro.org/member-builds/qcomlt/kernel/')
@@ -123,13 +98,6 @@ def main():
                 else:
                     raise Exception("DTB not found: %s" % dt_file_url)
             else:
-                raise
-
-        try:
-            validate_if_already_built((builds_url % m), (image_url, dt_file_url, modules_url))
-        except urllib.error.HTTPError as e:
-            # 404 can happen when no previous build exists
-            if e.code != 404:
                 raise
 
     if machine_avail and not machines:
