@@ -23,7 +23,8 @@ actions:
           url: '$IMAGE_URL'
 
 - boot:
-    method: cmsis-dap
+    method: pyocd
+    failure_retry: 3
     timeout:
       minutes: 3
 
