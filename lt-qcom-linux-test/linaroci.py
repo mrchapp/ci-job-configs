@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os
-import urllib2
-import urlparse
+import urllib.request
+import urllib.error
 import re
 import dateutil.parser
 
@@ -15,8 +15,8 @@ kernel_info_vars = [ "KERNEL_REPO", "KERNEL_COMMIT", "KERNEL_BRANCH",
 def _find_last_build_in_linaro_ci(url):
     last_build = -1
     rex = re.compile('(?P<last_build>\d+)')
-    f = urllib2.urlopen(url)
-    page = f.read()
+    f = urllib.request.urlopen(url)
+    page = f.read().decode("utf-8")
     soup = BeautifulSoup(page, "html.parser")
     div = soup.find(id="content")
     latest_found = False
@@ -39,13 +39,12 @@ def get_linaro_ci_build(url):
         sys.exit(1)
 
     url = '%s/%d/' % (url, last_build)
-    f = urllib2.urlopen(url)
-    page = f.read()
+    f = urllib.request.urlopen(url)
+    page = f.read().decode("utf-8")
 
     image_url = url + 'Image'
     dt_url = url + "dtbs"
     modules_url = url + 'kernel-modules.tar.xz'
-
 
     kernel_info = {}
     rex = re.compile("^(?P<name>.*): (?P<var>.*)$")
@@ -66,12 +65,12 @@ def get_linaro_ci_build(url):
 # defconfig build we are looking for is done so this check is needed to try in loop mode
 # until defconfig is available and not register the build as done.
 def validate_url(url):
-    urllib2.urlopen(url)
+    urllib.request.urlopen(url)
 
 
 def validate_if_already_built(url, artifacts_urls):
-    f = urllib2.urlopen(url)
-    page = f.read()
+    f = urllib.request.urlopen(url)
+    page = f.read().decode("utf-8")
 
     max_search = 8
     search_count = 0
@@ -81,8 +80,8 @@ def validate_if_already_built(url, artifacts_urls):
             continue
 
         build_url = url + tr.contents[3].text.strip().rstrip()
-        f = urllib2.urlopen(build_url)
-        build_page = f.read()
+        f = urllib.request.urlopen(build_url)
+        build_page = f.read().decode("utf-8")
 
         if all(u in build_page for u in artifacts_urls):
             print("INFO: Build exists %s in URL: %s" %
@@ -117,7 +116,7 @@ def main():
         dt_file_url = dt_url + "/qcom/%s.dtb" % m
         try:
             validate_url(dt_file_url)
-        except urllib2.HTTPError as err:
+        except urllib.error.HTTPError as err:
             if err.code == 404:
                 if machine_avail:
                     machines.remove(m)
@@ -128,7 +127,7 @@ def main():
 
         try:
             validate_if_already_built((builds_url % m), (image_url, dt_file_url, modules_url))
-        except urllib2.HTTPError as e:
+        except urllib.error.HTTPError as e:
             # 404 can happen when no previous build exists
             if e.code != 404:
                 raise
