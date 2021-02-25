@@ -52,7 +52,7 @@
             git fetch --all
 
             set +e
-            python configs/trigger-lt-qcom-linux-build/get_branch_to_build.py \
+            ./configs/trigger-lt-qcom-linux-build/get_branch_to_build.py \
               > branch_to_build
             ret=$?
             if [ $ret -ne 0 ]; then

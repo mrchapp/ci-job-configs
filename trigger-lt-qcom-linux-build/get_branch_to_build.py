@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import errno
@@ -15,7 +15,7 @@ except OSError as err:
         raise
 
 search_branches = os.environ['KERNEL_BRANCHES'].split()
-remote_branches = subprocess.check_output("git branch -r", shell=True).split()
+remote_branches = subprocess.check_output("git branch -r", shell=True).decode("utf-8").split()
 
 build = False
 remote_name = os.getenv('GIT_REMOTE_NAME', 'origin')
@@ -30,7 +30,7 @@ for sb in search_branches:
     for rb in remote_branches:
         s = rex.search(rb)
         if s:
-            last_revision = subprocess.check_output('git rev-parse %s' % rb, shell=True).strip()
+            last_revision = subprocess.check_output('git rev-parse %s' % rb, shell=True).decode("utf-8").strip()
 
             branch_name = s.group('branch_name')
             file_name = os.path.join(TMPDIR, re.sub("[^A-Za-z0-9._-]", "_", branch_name))
