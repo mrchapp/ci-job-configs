@@ -9,6 +9,9 @@ import dateutil.parser
 
 from bs4 import BeautifulSoup, SoupStrainer
 
+kernel_info_vars = [ "KERNEL_REPO", "KERNEL_COMMIT", "KERNEL_BRANCH",
+        "KERNEL_CONFIG", "KERNEL_VERSION", "KERNEL_DESCRIBE", "KERNEL_TOOLCHAIN" ]
+
 def _find_last_build_in_linaro_ci(url):
     last_build = -1
     rex = re.compile('(?P<last_build>\d+)')
@@ -43,23 +46,20 @@ def get_linaro_ci_build(url):
     dt_url = url + "dtbs"
     modules_url = url + 'kernel-modules.tar.xz'
 
-    repo = ''
-    branch = ''
-    version = ''
+
+    kernel_info = {}
     rex = re.compile("^(?P<name>.*): (?P<var>.*)$")
     soup = BeautifulSoup(page, "html.parser")
     div = soup.find(id="content")
+    kernel_info = {}
     for li in div.select('p > ul > li'):
         m = rex.search(li.text)
         if m:
-            if 'KERNEL_REPO_URL' == m.group('name'):
-                repo = m.group('var')
-            if 'KERNEL_BRANCH' == m.group('name'):
-                branch = m.group('var')
-            if 'KERNEL_DESCRIBE' == m.group('name'):
-                version = m.group('var')
+            for v in kernel_info_vars:
+                if v == m.group('name'):
+                    kernel_info[v] = m.group('var')
 
-    return (image_url, dt_url, modules_url, version)
+    return (image_url, dt_url, modules_url, kernel_info)
 
 
 # XXX: When the Jenkins trigger detects a new build (URL change) dosen't mean that the kernel
@@ -106,11 +106,10 @@ def main():
 
     image_url = None
     modules_url = None
-    version = None
+    dt_url = None
+    kernel_info = None
 
-    (image_url, dt_url, modules_url, version) = get_linaro_ci_build(linaro_ci_base_url)
-
-    print("KERNEL_DT_URL=%s" % dt_url)
+    (image_url, dt_url, modules_url, kernel_info) = get_linaro_ci_build(linaro_ci_base_url)
 
     # Check that all DTBS exist, if machine_avail is set only remove from final
     # machine list.
@@ -141,7 +140,10 @@ def main():
     validate_url(image_url)
     print("KERNEL_MODULES_URL=%s" % modules_url)
     validate_url(modules_url)
-    print("KERNEL_VERSION=%s" % version)
+    print("KERNEL_DT_URL=%s" % dt_url)
+    for v in kernel_info.keys():
+        print("%s=%s" % (v, kernel_info[v]))
+
     print("MACHINES=%s" % ' '.join(machines))
 
 
