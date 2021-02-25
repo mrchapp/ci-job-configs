@@ -67,28 +67,14 @@
     builders:
         - shell:
             !include-raw: lt-qcom-linux/builders-deps.sh
-        - shell: |
-            #!/bin/bash
-
-            # get kernel version, bring in stable and mainline tags
-            pushd $(pwd)
-            cd ${WORKSPACE}/linux
-            git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git
-            git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable.git
-            KERNEL_VERSION=$(make kernelversion)
-            KERNEL_DESCRIBE=$(git describe --always)
-            popd
-
-            echo KERNEL_VERSION="$KERNEL_VERSION" > kernel_parameters
-            echo KERNEL_DESCRIBE="$KERNEL_VERSION-$KERNEL_DESCRIBE" >> kernel_parameters
-        - inject:
-            properties-file: kernel_parameters
         - shell:
             !include-raw: lt-qcom/install-gcc-toolchain.sh
         - inject:
             properties-file: gcc_toolchain_env
         - shell:
             !include-raw: lt-qcom-linux/builders.sh
+        - inject:
+            properties-file: kernel_parameters
         - shell:
             !include-raw: lt-qcom-linux/builders_linaro_ci.sh
         - inject:

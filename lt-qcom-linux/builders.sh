@@ -10,6 +10,12 @@ fi
 
 cd ${WORKSPACE}/linux
 
+git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git
+git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable.git
+
+KERNEL_REPO="$GIT_URL"
+KERNEL_COMMIT="$GIT_COMMIT"
+KERNEL_BRANCH="$GIT_BRANCH"
 if [ -z "${ARCH}" ]; then
     export ARCH=arm64
     export KERNEL_CONFIGS_arm64="defconfig distro.config"
@@ -26,17 +32,21 @@ fi
 if [ -z "${KERNEL_BUILD_TARGET}" ]; then
     KERNEL_BUILD_TARGET="all"
 fi
-
-echo "Starting ${JOB_NAME} with the following parameters:"
-echo "KERNEL_DESCRIBE: ${KERNEL_DESCRIBE}"
-echo "KERNEL_VERSION: ${KERNEL_VERSION}"
-echo "KERNEL_BRANCH: ${KERNEL_BRANCH}"
-echo "GIT_COMMIT: ${GIT_COMMIT}"
-echo "GIT_BRANCH: ${GIT_BRANCH}"
+KERNEL_CONFIGS=KERNEL_CONFIGS_$ARCH
 
 # tcbindir from install-gcc-toolchain.sh
 export CROSS_COMPILE="ccache $(basename $(ls -1 ${tcbindir}/*-gcc) gcc)"
 export PATH=${tcbindir}:$PATH
+KERNEL_TOOLCHAIN="$(ccache aarch64-none-linux-gnu-gcc --version | head -1)"
+
+echo "Starting ${JOB_NAME} with the following parameters:"
+echo "KERNEL_REPO=${KERNEL_REPO}" | tee kernel_parameters
+echo "KERNEL_COMMIT= ${KERNEL_COMMIT}" | tee kernel_parameters
+echo "KERNEL_BRANCH=${KERNEL_BRANCH}" | tee kernel_parameters
+echo "KERNEL_CONFIG=${KERNEL_CONFIGS}" | tee kernel_parameters
+echo "KERNEL_VERSION=${KERNEL_VERSION}" | tee kernel_parameters
+echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" | tee kernel_parameters
+echo "KERNEL_TOOLCHAIN=${KERNEL_TOOLCHAIN}" | tee kernel_parameters
 
 # SRCVERSION is the main kernel version, e.g. <version>.<patchlevel>.0.
 # PKGVERSION is similar to make kernelrelease, but reimplemented, since it requires setting up the build (and all tags).
@@ -45,7 +55,6 @@ export PATH=${tcbindir}:$PATH
 SRCVERSION=$(echo ${KERNEL_VERSION} | sed 's/\(.*\)\..*/\1.0/')
 PKGVERSION=$(echo ${KERNEL_VERSION} | sed -e 's/\.0-rc/\.0~rc/')$(echo ${KERNEL_DESCRIBE} | awk -F- '{printf("-%05d-%s", $(NF-1),$(NF))}')
 
-KERNEL_CONFIGS=KERNEL_CONFIGS_$ARCH
 make distclean
 make ${!KERNEL_CONFIGS}
 if [ "${UPDATE_DEFCONFIG}" ]; then
