@@ -230,7 +230,7 @@ if [ -z "${KERNEL_IMAGE_URL}" ]; then
 fi
 
 # find rootfs and ramdisk to use
-python configs/lt-qcom-linux-test/get_latest_testimage.py
+./configs/lt-qcom-linux-test/get_latest_testimage.py
 RAMDISK_URL=$(cat output.log  | grep RAMDISK_URL | cut -d= -f2)
 ROOTFS_URL=$(cat output.log  | grep ROOTFS_URL | cut -d= -f2)
 ROOTFS_DESKTOP_URL=$(cat output.log  | grep ROOTFS_DESKTOP_URL | cut -d= -f2)
