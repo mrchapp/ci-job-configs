@@ -1,10 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os
 import errno
-import urllib2
-import md5
+import urllib.request
+import urllib.error
+import hashlib
 
 TRACK_URLS_DIR = '.url_change'
 
@@ -34,15 +35,17 @@ for release_name in release_names:
             raise
 
     try:
-        f = urllib2.urlopen(release_url)
-    except urllib2.HTTPError, e:
+        f = urllib.request.urlopen(release_url)
+    except urllib.error.HTTPError as e:
         if e.code == 404:
             continue
         else:
             raise
     page = f.read()
 
-    cksum = md5.new(page).hexdigest()
+    md5 = hashlib.md5()
+    md5.update(page)
+    cksum = md5.hexdigest()
     if cksum not in checksums:
         with open(cksum_file, 'a+') as f:
             f.write("%s\n" % cksum)
