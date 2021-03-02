@@ -23,13 +23,20 @@
               - auto
               - gnu
               - llvm
+#if HW_stm32
+#else
         - string:
             name: sysroot
             default: 'tarball'
             description: 'Rsync-friendly path to the sysroot to run against; use libs from toolchain_url tarball/rsync if "tarball"; use system libs if empty'
+#endif
         - string:
            name: bench_list
+#if HW_stm32
+           default: 'coremark'
+#else
            default: 'bzip2'
+#endif
            description: 'List of benchmarks to run (from spec2k6). Use "all" to run all of them.'
         - string:
             name: cflags

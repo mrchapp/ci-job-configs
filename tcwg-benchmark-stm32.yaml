@@ -25,12 +25,8 @@
               - gnu
               - llvm
         - string:
-            name: sysroot
-            default: 'tarball'
-            description: 'Rsync-friendly path to the sysroot to run against; use libs from toolchain_url tarball/rsync if "tarball"; use system libs if empty'
-        - string:
            name: bench_list
-           default: 'bzip2'
+           default: 'coremark'
            description: 'List of benchmarks to run (from spec2k6). Use "all" to run all of them.'
         - string:
             name: cflags
@@ -165,4 +161,4 @@
               # Run the benchmark
               exec ./tcwg-benchmark-bare.sh
             unstable-return: 125
-# checksum: c80e27c00064bf6d37db9455c504c1d5
+# checksum: c4acbea329fb4d37d9734d2b66d29355
