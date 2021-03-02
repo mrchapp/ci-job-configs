@@ -40,13 +40,13 @@ export PATH=${tcbindir}:$PATH
 KERNEL_TOOLCHAIN="$(ccache aarch64-none-linux-gnu-gcc --version | head -1)"
 
 echo "Starting ${JOB_NAME} with the following parameters:"
-echo "KERNEL_REPO=${KERNEL_REPO}" | tee kernel_parameters
-echo "KERNEL_COMMIT= ${KERNEL_COMMIT}" | tee kernel_parameters
-echo "KERNEL_BRANCH=${KERNEL_BRANCH}" | tee kernel_parameters
-echo "KERNEL_CONFIG=${KERNEL_CONFIGS}" | tee kernel_parameters
-echo "KERNEL_VERSION=${KERNEL_VERSION}" | tee kernel_parameters
-echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" | tee kernel_parameters
-echo "KERNEL_TOOLCHAIN=${KERNEL_TOOLCHAIN}" | tee kernel_parameters
+echo "KERNEL_REPO=${KERNEL_REPO}" | tee ${WORKSPACE}/kernel_parameters
+echo "KERNEL_COMMIT= ${KERNEL_COMMIT}" | tee ${WORKSPACE}/kernel_parameters
+echo "KERNEL_BRANCH=${KERNEL_BRANCH}" | tee ${WORKSPACE}/kernel_parameters
+echo "KERNEL_CONFIG=${KERNEL_CONFIGS}" | tee ${WORKSPACE}/kernel_parameters
+echo "KERNEL_VERSION=${KERNEL_VERSION}" | tee ${WORKSPACE}/kernel_parameters
+echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" | tee ${WORKSPACE}/kernel_parameters
+echo "KERNEL_TOOLCHAIN=${KERNEL_TOOLCHAIN}" | tee ${WORKSPACE}/kernel_parameters
 
 # SRCVERSION is the main kernel version, e.g. <version>.<patchlevel>.0.
 # PKGVERSION is similar to make kernelrelease, but reimplemented, since it requires setting up the build (and all tags).
