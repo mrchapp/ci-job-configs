@@ -4,7 +4,7 @@ if (manager.build.result == hudson.model.Result.SUCCESS) {
   if (desc == null) {
     desc = ""
   }
-  pattern = ~"(${qa_server}/testjob/(\\d+))(.*)"
+  pattern = ~".*(${qa_server}/testjob/(\\d+))(.*)"
   manager.build.logFile.eachLine { line ->
     matcher = pattern.matcher(line)
     if(matcher.matches()) {
