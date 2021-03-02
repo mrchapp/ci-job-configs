@@ -78,7 +78,7 @@ function update_device_template(){
     if [ "X${f_img_name}X" = "Xgpt_both0.binX" ]; then
         ## special case for db845c gpt_both0.bin
         ## as for the aosp master, we need to use the proper gpt_both0.bin for the correct partitions
-        local default_db845c_aosp_gpu_url="https://images.validation.linaro.org/snapshots.linaro.org/96boards/dragonboard845c/linaro/rescue/28/dragonboard-845c-bootloader-ufs-aosp-28/gpt_both0.bin"
+        local default_db845c_aosp_gpu_url="https://images.validation.linaro.org/snapshots.linaro.org/96boards/dragonboard845c/linaro/rescue/69/dragonboard-845c-bootloader-ufs-aosp-69/gpt_both0.bin"
         sed -i "s|${default_db845c_aosp_gpu_url}|{{DOWNLOAD_URL}}/${f_img_name}|" "${f_device_template}"
     fi
 
