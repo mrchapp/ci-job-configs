@@ -62,29 +62,9 @@
             echo KERNEL_BRANCH=${KERNEL_BRANCH} >> $params
             cat $params
 
-            # generate files for the api callback build
-            f_api_callbacks="all-kernels.txt"
-            cp -fv  $params ${f_api_callbacks}
-            QA_BUILD_VERSION=${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}
-            echo "QA_BUILD_VERSION=${QA_BUILD_VERSION}" >> ${f_api_callbacks}
-            echo "CALLER_JOB_NAME=${JOB_NAME}" >> ${f_api_callbacks}
-            echo "CALLER_BUILD_NUMBER=${BUILD_NUMBER}" >>${f_api_callbacks}
-
-        - trigger-builds:
-            - project: lkft-api-callbacks
-              property-file: all-kernels.txt
-            - project: lkft-hikey-4.4-rc-p
-              property-file: lkft-linux-4.4.y.txt
-            - project: lkft-hikey-4.9-rc
-              property-file: lkft-linux-4.9.y.txt
-            - project: lkft-hikey-4.14-rc
-              property-file: lkft-linux-4.14.y.txt
-            - project: lkft-hikey-4.19-rc
-              property-file: lkft-linux-4.19.y.txt
+        - trigger-builds: 
             - project: linaro-hikey-stable-rc-4.4-merge-and-tag
               property-file: lkft-linux-4.4.y.txt
-            - project: lkft-db845c-5.4-rc
-              property-file: lkft-linux-5.4.y.txt
             - project: openembedded-lkft-linux-stable-rc-4.4
               property-file: lkft-linux-4.4.y.txt
             - project: openembedded-lkft-linux-stable-rc-4.9
