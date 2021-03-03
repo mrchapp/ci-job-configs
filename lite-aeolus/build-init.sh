@@ -63,10 +63,25 @@ case "${ZEPHYR_TOOLCHAIN_VARIANT}" in
   gccarmemb)
     export GCCARMEMB_TOOLCHAIN_PATH="${HOME}/srv/toolchain/gcc-arm-none-eabi-9-2019-q4-major"
   ;;
-  zephyr)
-    export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.12.3"
-  ;;
 esac
+
+# Note that Zephyr SDK is needed even when building with the gnuarmemb
+# toolchain, ZEPHYR_SDK_INSTALL_DIR is needed to find things like conf
+ZEPHYR_SDK_URL="https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.12.3/zephyr-sdk-0.12.3-x86_64-linux-setup.run"
+export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.12.3"
+
+install_zephyr_sdk()
+{
+    test -d ${ZEPHYR_SDK_INSTALL_DIR} && return 0
+    test -f ${ZEPHYR_SDK_INSTALL_DIR}.lck && exit 1
+    touch ${ZEPHYR_SDK_INSTALL_DIR}.lck
+    wget -q "${ZEPHYR_SDK_URL}"
+    chmod +x $(basename ${ZEPHYR_SDK_URL})
+    ./$(basename ${ZEPHYR_SDK_URL}) --quiet --nox11 -- <<< ${ZEPHYR_SDK_INSTALL_DIR}
+    rm -f ${ZEPHYR_SDK_INSTALL_DIR}.lck
+}
+
+install_zephyr_sdk
 
 # Set build environment variables
 LANG=C
