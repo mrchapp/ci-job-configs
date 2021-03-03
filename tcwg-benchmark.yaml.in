@@ -80,7 +80,11 @@
             description: 'ID for benchmarking results; results will appear in bkp-01.tcwglab:/home/tcwg-benchmark/results-$results_id/'
         - bool:
             name: forceinstall
+#if HW_stm32
+            default: 'true'
+#else
             default: 'false'
+#endif
             description: 'Force clean re-install of benchmark sources'
         - choice:
             name: run_profile

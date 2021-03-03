@@ -64,7 +64,7 @@
             description: 'ID for benchmarking results; results will appear in bkp-01.tcwglab:/home/tcwg-benchmark/results-$results_id/'
         - bool:
             name: forceinstall
-            default: 'false'
+            default: 'true'
             description: 'Force clean re-install of benchmark sources'
         - choice:
             name: run_profile
@@ -161,4 +161,4 @@
               # Run the benchmark
               exec ./tcwg-benchmark-bare.sh
             unstable-return: 125
-# checksum: c4acbea329fb4d37d9734d2b66d29355
+# checksum: 0330d065602f87ce9d2701a0ffc4412b
