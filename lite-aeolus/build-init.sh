@@ -1,15 +1,18 @@
 #!/bin/bash
 set -ex
 
-# Zephyr 2.2+ requires Python3.6. As it's not available in official distro
-# packages for Ubuntu Xenial (16.04) which we use, install it from PPA.
-sudo add-apt-repository -y ppa:deadsnakes/ppa
-sudo apt-get -q=2 update
-sudo apt-get install -y python3.6
-sudo ln -sf python3.6 /usr/bin/python3
+if python3 --version | grep -q " 3\.[5]"; then
+    # Zephyr 2.2+ requires Python3.6. As it's not available in official distro
+    # packages for Ubuntu Xenial (16.04) which we use, install it from PPA.
+    echo Upgrading Python from deadsnakes PPA
+    sudo add-apt-repository -y ppa:deadsnakes/ppa
+    sudo apt-get -q=2 update
+    sudo apt-get install -y python3.6
+    sudo ln -sf python3.6 /usr/bin/python3
+fi
 
 #sudo apt-get -q=2 -y install git g++ libc6-dev-i386 g++-multilib python3-ply python3-yaml gcc-arm-none-eabi python-requests rsync device-tree-compiler
-sudo apt-get -q=2 -y install python3-pip python-serial python3-serial socat
+sudo apt-get -q=2 -y install python3-pip python3-setuptools python-serial python3-serial socat
 
 # pip as shipped by distro may be not up to date enough to support some
 # quirky PyPI packages, specifically cmake was caught like that.
