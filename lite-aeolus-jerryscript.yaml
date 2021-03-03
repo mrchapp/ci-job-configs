@@ -17,6 +17,10 @@
             days-to-keep: 30
             num-to-keep: 30
             artifact-num-to-keep: 30
+        - throttle:
+            option: project
+            max-per-node: 2
+            matrix-configs: true
     parameters:
         - string:
             name: GIT_URL
@@ -54,7 +58,7 @@
             type: slave
             name: label
             values:
-                - docker-xenial-amd64-13
+                - docker-bionic-amd64
         - axis:
             type: user-defined
             name: ZEPHYR_TOOLCHAIN_VARIANT
