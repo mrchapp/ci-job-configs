@@ -32,7 +32,7 @@
             name: MAKE_KERNELVERSION
         - string:
             name: KERNEL_BRANCH
-    disabled: false
+    disabled: true
     node: docker-bionic-android-lkft
     display-name: 'LKFT - Dragonboard845c builds with kernel android12-5.4 + 5.4 rc changes'
     wrappers:
