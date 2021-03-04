@@ -4,6 +4,7 @@ set -ex
 # Environment diagnostics.
 python3 --version
 ls -l ${HOME}/srv/toolchain/
+mount
 
 if python3 --version | grep -q " 3\.[5]"; then
     # Zephyr 2.2+ requires Python3.6. As it's not available in official distro
