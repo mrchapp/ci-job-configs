@@ -1,5 +1,14 @@
-- job:
-    name: trigger-lt-qcom-linux-mainline
+- project:
+    name: trigger-lt-qcom-linux
+    jobs:
+        - 'trigger-lt-qcom-linux-{flavor}':
+            flavor: 'mainline'
+            kernelci: 'mainline'
+        - 'trigger-lt-qcom-linux-{flavor}':
+            flavor: 'integration'
+            kernelci: 'qcom-lt'
+- job-template:
+    name: 'trigger-lt-qcom-linux-{flavor}'
     project-type: freestyle
     defaults: global
     properties:
@@ -18,7 +27,7 @@
             num-to-keep: 30
     disabled: false
     node: triggers
-    display-name: 'Trigger for LT Qualcomm Linux Mainline build'
+    display-name: 'Trigger for LT Qualcomm Linux build: {flavor}'
     triggers:
         - timed: 'H/5 * * * *'
     wrappers:
@@ -36,7 +45,7 @@
             git clone --depth 1 http://git.linaro.org/ci/job/configs.git
 
             set +ex
-            ./configs/lt-qcom-linux-test/kernelci.py ${QCOMLT_KERNELCI_TOKEN} mainline arm64 defconfig lt_qcom_parameters
+            ./configs/lt-qcom-linux-test/kernelci.py ${{QCOMLT_KERNELCI_TOKEN}} {kernelci} arm64 defconfig lt_qcom_parameters
             ret=$?
             if [ $ret -ne 0 ]; then
                 echo "warning: no new kernel ci build available"
@@ -50,6 +59,6 @@
             unstable-on-warning: true
             fail-on-error: false
         - trigger-parameterized-builds:
-            - project: lt-qcom-linux-mainline
+            - project: lt-qcom-linux-{flavor}
               condition: SUCCESS
               property-file: lt_qcom_parameters
