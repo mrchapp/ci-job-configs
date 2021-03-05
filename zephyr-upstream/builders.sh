@@ -118,7 +118,7 @@ time ${ZEPHYR_BASE}/scripts/twister \
   --inline-logs \
   --build-only \
   --outdir ${OUTDIR} \
-  --enable-slow \
+  ${TWISTER_SLOW_TESTS} \
   -x=USE_CCACHE=${USE_CCACHE} \
   --jobs 2 \
   ${TWISTER_EXTRA}
