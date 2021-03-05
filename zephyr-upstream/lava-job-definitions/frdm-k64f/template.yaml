@@ -28,8 +28,9 @@ actions:
 
 - boot:
     method: pyocd
+    failure_retry: 2
     timeout:
-      minutes: 10
+      minutes: 3
 
 - test:
     timeout:
