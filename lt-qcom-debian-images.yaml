@@ -129,7 +129,7 @@
     wrappers:
         - timestamps
         - build-name:
-            name: '#${{BUILD_NUMBER}}-${{GIT_REVISION,length=8}}'
+            name: '#${{BUILD_NUMBER}}'
         - credentials-binding:
             - text:
                 credential-id: QA_REPORTS_TOKEN

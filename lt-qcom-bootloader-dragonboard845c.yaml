@@ -72,7 +72,7 @@
                 users:
                     - 'LT_QUALCOMM_PRIVATE_KEY_SSH'
         - build-name:
-            name: '#${BUILD_NUMBER}-${GIT_REVISION,length=8}'
+            name: '#${BUILD_NUMBER}'
     builders:
         - shell:
             !include-raw: lt-qcom/install-gcc-toolchain.sh
