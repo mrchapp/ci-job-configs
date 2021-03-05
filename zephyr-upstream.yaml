@@ -153,16 +153,17 @@
                 ;;
             esac
 
-            rm -rf configs
-            git clone --depth 1 http://git.linaro.org/ci/job/configs.git
 
             if [ "${ROOT_BUILD_CAUSE}" = "SCMTRIGGER" ]; then
                 echo "Skipping LAVA testing for SCM Trigger builds (to not overload LAVA)"
                 unset DEVICE_TYPE
             fi
 
-            [ -z "${DEVICE_TYPE}" ] || \
-            python3 configs/zephyr-upstream/submit_for_testing.py \
+            if [ -n "${DEVICE_TYPE}" ]; then
+                rm -rf configs
+                git clone --depth 1 --single-branch http://git.linaro.org/ci/job/configs.git
+
+                python3 configs/zephyr-upstream/submit_for_testing.py \
                 --board-name ${PLATFORM} \
                 --device-type ${DEVICE_TYPE} \
                 --build-number ${BUILD_NUMBER} \
@@ -174,6 +175,7 @@
                 --qa-server-project zephyr-upstream \
                 --gcc-variant ${ZEPHYR_TOOLCHAIN_VARIANT} \
                 --git-commit ${GIT_COMMIT_ID}
+            fi
 
     publishers:
         - email:
