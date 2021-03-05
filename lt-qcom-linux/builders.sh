@@ -41,7 +41,7 @@ KERNEL_TOOLCHAIN="$(ccache aarch64-none-linux-gnu-gcc --version | head -1)"
 
 echo "Starting ${JOB_NAME} with the following parameters:"
 echo "KERNEL_REPO=${KERNEL_REPO}" | tee ${WORKSPACE}/kernel_parameters
-echo "KERNEL_COMMIT= ${KERNEL_COMMIT}" | tee ${WORKSPACE}/kernel_parameters
+echo "KERNEL_COMMIT=${KERNEL_COMMIT}" | tee ${WORKSPACE}/kernel_parameters
 echo "KERNEL_BRANCH=${KERNEL_BRANCH}" | tee ${WORKSPACE}/kernel_parameters
 echo "KERNEL_CONFIG=${KERNEL_CONFIGS}" | tee ${WORKSPACE}/kernel_parameters
 echo "KERNEL_VERSION=${KERNEL_VERSION}" | tee ${WORKSPACE}/kernel_parameters
