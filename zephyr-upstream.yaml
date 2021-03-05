@@ -134,6 +134,7 @@
         - shell: |
             #!/bin/bash -ex
 
+            # Remap Zephyr platform/board name to LAVA device type name.
             case "${PLATFORM}" in
               frdm_k64f)
                 export DEVICE_TYPE=frdm-k64f
@@ -148,14 +149,18 @@
                 export DEVICE_TYPE=qemu
                 ;;
               *)
-                echo "Skip DEVICE_TYPE for ${PLATFORM}"
+                echo "Skipping LAVA testing for ${PLATFORM} (no LAVA device type mapping)"
                 ;;
             esac
 
             rm -rf configs
             git clone --depth 1 http://git.linaro.org/ci/job/configs.git
 
-            [ "${ROOT_BUILD_CAUSE}" = "SCMTRIGGER" ] && unset DEVICE_TYPE
+            if [ "${ROOT_BUILD_CAUSE}" = "SCMTRIGGER" ]; then
+                echo "Skipping LAVA testing for SCM Trigger builds (to not overload LAVA)"
+                unset DEVICE_TYPE
+            fi
+
             [ -z "${DEVICE_TYPE}" ] || \
             python3 configs/zephyr-upstream/submit_for_testing.py \
                 --board-name ${PLATFORM} \
