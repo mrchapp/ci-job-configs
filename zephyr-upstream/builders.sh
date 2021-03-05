@@ -116,6 +116,7 @@ echo "########################################################################"
 time ${ZEPHYR_BASE}/scripts/twister \
   --platform ${PLATFORM} \
   --inline-logs \
+  --verbose \
   --build-only \
   --outdir ${OUTDIR} \
   ${TWISTER_SLOW_TESTS} \
