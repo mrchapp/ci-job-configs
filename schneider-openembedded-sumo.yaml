@@ -22,7 +22,7 @@
                 - job-extended-read
                 - job-build
                 - job-cancel
-            schneider-linaro-git@linaro.org:
+            schneider-linaro-git:
                 - job-read
                 - job-extended-read
                 - job-build
