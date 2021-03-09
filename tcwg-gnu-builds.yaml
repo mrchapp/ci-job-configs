@@ -300,7 +300,7 @@
           set -x
 
           # Release name is Year.Month-Week_of_month
-          buildnumber=$((1+($(date +%d)-1)/7))
+          buildnumber=$((($(date +%e)+6)/7))
           publish=false
           if [ x"$buildnumber" = x"1" ]; then
             publish=true
@@ -321,4 +321,4 @@
             predefined-parameters: |
               version=master
               distro=lts
-# checksum: c37d615e3f680edf51163acf7ce388b1
+# checksum: 863f65010bcb0028cb357bd67db85480
