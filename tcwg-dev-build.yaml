@@ -11,8 +11,8 @@
                 - job-build
                 - job-cancel
         - build-discarder:
-            days-to-keep: 10
-            num-to-keep: 10
+            days-to-keep: 30
+            num-to-keep: 30
     parameters:
         - string:
             name: release_name
