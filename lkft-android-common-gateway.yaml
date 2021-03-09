@@ -45,6 +45,7 @@
                 ssh-keyscan -p 29418 android-review.linaro.org >> ~/.ssh/known_hosts
                 git config --global user.name "Linaro CI"
                 git config --global user.email "ci-bot@linaro.org"
+                rm -fr android-build-kernel-versions
                 git clone -b lkft ssh://ci-bot@android-review.linaro.org:29418/android-build-kernel-versions android-build-kernel-versions
                 ./android-build-kernel-versions/get-update.sh "${KERNEL_BRANCH}" "${MAKE_KERNELVERSION}"
                 check_status=$?
