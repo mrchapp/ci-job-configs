@@ -35,7 +35,7 @@
         - string:
             name: GIT_COM_ID
     disabled: false
-    node: docker-bionic-arm64-armnn
+    node: docker-buster-amd64
     wrappers:
         - timestamps
         - credentials-binding:
