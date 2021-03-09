@@ -48,7 +48,7 @@
                 rm -fr android-build-kernel-versions
                 git clone -b lkft ssh://ci-bot@android-review.linaro.org:29418/android-build-kernel-versions android-build-kernel-versions
                 set +e
-                ./android-build-kernel-versions/get-update.sh "${KERNEL_BRANCH}" "${MAKE_KERNELVERSION}"
+                ./android-build-kernel-versions/get-update.sh "${KERNEL_BRANCH}" "${MAKE_KERNELVERSION}" lkft
                 check_status=$?
                 if [ ${check_status} -eq 1 ]; then
                     skip_build=true
