@@ -47,11 +47,13 @@
                 git config --global user.email "ci-bot@linaro.org"
                 rm -fr android-build-kernel-versions
                 git clone -b lkft ssh://ci-bot@android-review.linaro.org:29418/android-build-kernel-versions android-build-kernel-versions
+                set +e
                 ./android-build-kernel-versions/get-update.sh "${KERNEL_BRANCH}" "${MAKE_KERNELVERSION}"
                 check_status=$?
                 if [ ${check_status} -eq 1 ]; then
                     skip_build=true
                 fi
+                set -e
             fi
 
             if ${skip_build}; then
