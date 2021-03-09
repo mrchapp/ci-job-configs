@@ -65,6 +65,11 @@
             #!/bin/bash 
             set -ex
 
+            # bring in stable and mainline tags
+            git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git
+            git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable.git
+            git checkout ${GIT_BRANCH}
+
             KERNEL_CONFIGS_arm64=defconfig
             if echo "${KERNEL_BRANCH}" | grep -q "release/.*"; then
                 KERNEL_CONFIGS_arm64="${KERNEL_CONFIGS_arm64} distro.config"
@@ -74,6 +79,8 @@
 
             echo KERNEL_REPO_URL=${KERNEL_REPO_URL} > build_parameters
             echo KERNEL_BRANCH=$(echo ${GIT_BRANCH} | sed  's|origin/||') >> build_parameters
+            echo KERNEL_VERSION=$(make kernelversion) >> build_parameters
+            echo KERNEL_DESCRIBE=$(git describe --always) >> build_parameters
             echo KERNEL_CONFIGS_arm64=${KERNEL_CONFIGS_arm64} >> build_parameters
             echo KDEB_CHANGELOG_DIST=unstable >> build_parameters
 

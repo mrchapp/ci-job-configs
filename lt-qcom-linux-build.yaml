@@ -22,6 +22,10 @@
         - string:
             name: KERNEL_BRANCH
         - string:
+            name: KERNEL_VERSION
+        - string:
+            name: KERNEL_DESCRIBE
+        - string:
             name: KERNEL_CONFIGS_arm64
             default: 'defconfig distro.config'
         - string:

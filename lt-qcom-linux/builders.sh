@@ -10,9 +10,6 @@ fi
 
 cd ${WORKSPACE}/linux
 
-git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git
-git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable.git
-
 KERNEL_REPO="$GIT_URL"
 KERNEL_COMMIT="$GIT_COMMIT"
 KERNEL_BRANCH="$GIT_BRANCH"
@@ -24,6 +21,8 @@ if [ -z "${KERNEL_VERSION}" ]; then
     KERNEL_VERSION=$(make kernelversion)
 fi
 if [ -z "${KERNEL_DESCRIBE}" ]; then
+    git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git
+    git fetch --tags https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable.git
     KERNEL_DESCRIBE=$(git describe --always)
 fi
 if [ -z "${KDEB_CHANGELOG_DIST}" ]; then
