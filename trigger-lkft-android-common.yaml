@@ -53,53 +53,16 @@
             echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} > properties.txt
             echo KERNEL_BRANCH=${KERNEL_BRANCH} >> properties.txt
 
-            params=lkft-${KERNEL_BRANCH}.txt
+            params=lkft-parameters.txt
             echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} >> $params
             echo SRCREV_kernel=${GIT_COMMIT} >> $params
             echo MAKE_KERNELVERSION=${MAKE_KERNELVERSION} >> $params
             echo KERNEL_BRANCH=${KERNEL_BRANCH} >> $params
             cat $params
 
-            case "X${KERNEL_BRANCH}" in
-                "Xandroid12-5.4")
-                    cp lkft-${KERNEL_BRANCH}.txt lkft-${KERNEL_BRANCH}-x15.txt
-                    echo "ANDROID_BUILD_CONFIG=lkft-x15-aosp-master-5.4" >> lkft-${KERNEL_BRANCH}-x15.txt
-                    ;;
-                "Xandroid-mainline")
-                    cp lkft-${KERNEL_BRANCH}.txt lkft-${KERNEL_BRANCH}-x15.txt
-                    cp lkft-${KERNEL_BRANCH}.txt lkft-${KERNEL_BRANCH}-hikey.txt
-                    echo "ANDROID_BUILD_CONFIG=lkft-x15-aosp-master-mainline" >> lkft-${KERNEL_BRANCH}-x15.txt
-                    echo "ANDROID_BUILD_CONFIG=lkft-hikey-aosp-master-mainline-gki" >> lkft-${KERNEL_BRANCH}-hikey.txt
-                    ;;
-                "X*")
-                    echo "No particular build for this branch: ${KERNEL_BRANCH}"
-                    ;;
-            esac
-
-            # generate files for the api callback build and gki build
-            f_api_callbacks="all-kernels.txt"
-            cp -fv  $params ${f_api_callbacks}
-            QA_BUILD_VERSION=${KERNEL_DESCRIBE}
-            echo "QA_BUILD_VERSION=${QA_BUILD_VERSION}" >> ${f_api_callbacks}
-            echo "CALLER_JOB_NAME=${JOB_NAME}" >> ${f_api_callbacks}
-            echo "CALLER_BUILD_NUMBER=${BUILD_NUMBER}" >>${f_api_callbacks}
-            echo "ANDROID_BUILD_CONFIG=lkft-gki-${KERNEL_BRANCH}" >>${f_api_callbacks}
-
-        - inject:
-            properties-file: all-kernels.txt
-        - shell:
-            !include-raw:
-                - lkft/common/api-callbacks.sh
-
         - trigger-builds:
-            - project: lkft-gki-kernel
-              property-file: all-kernels.txt
-            - project: lkft-generic-omap-build
-              property-file: lkft-android12-5.4-x15.txt
-            - project: lkft-generic-omap-build
-              property-file: lkft-android-mainline-x15.txt
-            - project: lkft-generic-build
-              property-file: lkft-android-mainline-hikey.txt
+            - project: lkft-android-common-gateway
+              property-file: lkft-parameters.txt
     publishers:
         - email:
             recipients: 'lkft-maintainers@lists.linaro.org'

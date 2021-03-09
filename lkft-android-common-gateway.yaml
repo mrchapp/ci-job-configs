@@ -92,8 +92,6 @@
                 echo "CALLER_JOB_NAME=${JOB_NAME}" >> ${f_gki_kernel}
                 echo "CALLER_BUILD_NUMBER=${BUILD_NUMBER}" >>${f_gki_kernel}
                 echo "ANDROID_BUILD_CONFIG=lkft-gki-${KERNEL_BRANCH}" >>${f_gki_kernel}
-                # TODO needs to be removed when used officially
-                echo "ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED=lkft-not-exist-for-test" >>${f_gki_kernel}
 
                 cp -fv  "${f_gki_kernel}" "api_callbacks_properties.txt"
             fi
@@ -107,7 +105,12 @@
         - trigger-builds:
             - project: lkft-gki-kernel
               property-file: all-kernels.txt
-            # TODO: needs to add other x15/hikey projects
+            - project: lkft-generic-omap-build
+              property-file: lkft-android12-5.4-x15.txt
+            - project: lkft-generic-omap-build
+              property-file: lkft-android-mainline-x15.txt
+            - project: lkft-generic-build
+              property-file: lkft-android-mainline-hikey.txt
     publishers:
         - email:
             recipients: 'yongqin.liu@linaro.org'
