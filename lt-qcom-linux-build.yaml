@@ -58,7 +58,7 @@
                 - refs/heads/${KERNEL_BRANCH}
             basedir: linux
             skip-tag: true
-            shallow-clone: false
+            shallow-clone: true
             wipe-workspace: false
     wrappers:
         - timestamps
