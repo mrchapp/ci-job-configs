@@ -23,7 +23,7 @@
             default: 'rpb-desktop-image-test'
         - string:
             name: MANIFEST_URL
-            default: 'https://github.com/96boards/oe-rpb-manifest.git'
+            default: 'https://github.com/alimon/oe-rpb-manifest.git'
         - string:
             name: MANIFEST_BRANCH_PREFIX
             default: 'qcom/'
