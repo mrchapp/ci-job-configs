@@ -78,9 +78,7 @@
             echo "CORE_IMAGE_EXTRA_INSTALL += \"${QCOM_USERSPACE_TOOLS}\"" >> auto.conf
             echo "PACKAGE_INSTALL_append = \" ${QCOM_USERSPACE_TOOLS}\"" >> auto.conf
 
-            # enable mesa-dev to test freedreno using deqp
-            echo "MESA_DEV = \"1\"" >> auto.conf
-            echo "CORE_IMAGE_EXTRA_INSTALL += \"mesa-ci\"" >> auto.conf
+            # enable mesa to test freedreno
             echo "PACKAGECONFIG_append_pn-mesa = \"freedreno xa\"" >> auto.conf
         - inject:
             properties-file: pub_dest_parameters
