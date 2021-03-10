@@ -204,6 +204,20 @@
             i=$(($i-1))
           done
 
+          if [ x"$(ls out/ | wc -l)" != x"1" ]; then
+            echo "ERROR: not a single directory in builds artifacts:"
+            ls -l out/
+            exit 1
+          fi
+          set +f
+          out_release=out/*-$release_name-$buildnumber
+          set -f
+          if ! [ -d "$out_release" ]; then
+            echo "ERROR: no $out_release directory in builds artifacts:"
+            ls -l out/
+            exit 1
+          fi
+
           cat > HEADER-latest-rel.textile <<EOF
           h4. Linaro Toolchain Upstream Integration Builds - Stable $release_name-$buildnumber
           
@@ -232,9 +246,7 @@
           EOF
 
           cp HEADER-$version.textile HEADER.textile
-          set +f
-          cp HEADER.textile out/*-$release_name-$buildnumber/
-          set -f
+          cp HEADER.textile "$out_release/"
 
           wget https://git.linaro.org/ci/publishing-api.git/plain/linaro-cp.py -O ./linaro-cp.py
           linaro_cp_opts=""
@@ -242,7 +254,7 @@
             linaro_cp_opts="--dry-run"
           fi
           time python3 ./linaro-cp.py --api_version 3 $linaro_cp_opts \
-            out/ gnu-toolchain
+            "$out_release/" gnu-toolchain
 
 - job:
     name: tcwg-gnu-builds-monthly
