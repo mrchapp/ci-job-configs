@@ -33,6 +33,7 @@
         - trigger-builds:
             - project: 'lt-qcom-openembedded-rpb-master'
             - project: 'lt-qcom-linux-testimages'
+            - project: 'lt-qcom-linux-testimages-desktop'
     publishers:
         - email-ext:
             recipients: 'anibal.limon@linaro.org nicolas.dechesne@linaro.org'

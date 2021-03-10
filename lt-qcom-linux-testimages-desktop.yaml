@@ -1,5 +1,5 @@
 - job:
-    name: lt-qcom-linux-testimages
+    name: lt-qcom-linux-testimages-desktop
     project-type: matrix
     defaults: global
     logrotate:
@@ -20,7 +20,7 @@
     parameters:
         - string:
             name: IMAGES
-            default: 'initramfs-test-image rpb-console-image-test'
+            default: 'rpb-desktop-image-test'
         - string:
             name: MANIFEST_URL
             default: 'https://github.com/96boards/oe-rpb-manifest.git'
@@ -64,12 +64,12 @@
     builders:
         - shell: |
             #!/bin/bash
-            echo "PUB_DEST=member-builds/qcomlt/testimages/$(echo ${MACHINE} | sed 's/qemu//')/${BUILD_NUMBER}" > pub_dest_parameters
+            echo "PUB_DEST=member-builds/qcomlt/testimages-desktop/$(echo ${MACHINE} | sed 's/qemu//')/${BUILD_NUMBER}" > pub_dest_parameters
             # ensure that we generate the right image type, by default qemu* only generates .ext4, we need .ext4.gz
             echo "IMAGE_FSTYPES_remove = \"ext4\"" > auto.conf
             echo "IMAGE_FSTYPES_append = \" ext4.gz\"" >> auto.conf
 
-            # configure serial in rpb-console-image-test
+            # configure serial in rpb-desktop-image-test
             echo "SERIAL_CONSOLES = \"115200;ttyMSM0\"" >> auto.conf
             # add ext4 block size to 4096, boards with UFS storage needs it
             echo "EXTRA_IMAGECMD_ext4 += \" -b 4096 \"" >> auto.conf
@@ -78,7 +78,9 @@
             echo "CORE_IMAGE_EXTRA_INSTALL += \"${QCOM_USERSPACE_TOOLS}\"" >> auto.conf
             echo "PACKAGE_INSTALL_append = \" ${QCOM_USERSPACE_TOOLS}\"" >> auto.conf
 
-            # enable mesa to test freedreno
+            # enable mesa-dev to test freedreno using deqp
+            echo "MESA_DEV = \"1\"" >> auto.conf
+            echo "CORE_IMAGE_EXTRA_INSTALL += \"mesa-ci\"" >> auto.conf 
             echo "PACKAGECONFIG_append_pn-mesa = \"freedreno xa\"" >> auto.conf
         - inject:
             properties-file: pub_dest_parameters
