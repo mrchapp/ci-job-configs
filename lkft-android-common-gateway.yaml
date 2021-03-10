@@ -31,7 +31,7 @@
             default: "false"
     disabled: false
     node: triggers
-    display-name: 'Trigger for changes on android common kernel'
+    display-name: 'Gateway for changes on android common kernels'
     wrappers:
         - timestamps
         - build-name:
@@ -43,7 +43,8 @@
         - shell: |
             #!/bin/bash -ex
 
-            rm -f "all-kernels.txt" "api_callbacks_properties.txt" "lkft-${KERNEL_BRANCH}.txt" "lkft-${KERNEL_BRANCH}-x15.txt" "lkft-${KERNEL_BRANCH}-hikey.txt"
+            # clean the property files for the builds that to be triggered
+            rm -f "all-kernels.txt" "api_callbacks_properties.txt" "lkft-android12-5.4-x15.txt" "lkft-android-mainline-x15.txt" "lkft-android-mainline-hikey.txt"
             skip_build=false
             if [ "X${IGNORE_KERNELVERSION_CHECK}X" == "XfalseX" ]; then
                 ssh-keyscan -p 29418 android-review.linaro.org >> ~/.ssh/known_hosts
