@@ -62,7 +62,7 @@
             else
                 params="lkft-${KERNEL_BRANCH}.txt"
                 echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" >> "${params}"
-                echo "SRCREV_kernel=${GIT_COMMIT}" >> "${params}"
+                echo "SRCREV_kernel=${SRCREV_kernel}" >> "${params}"
                 echo "MAKE_KERNELVERSION=${MAKE_KERNELVERSION}" >> "${params}"
                 echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "${params}"
                 cat "${params}"
