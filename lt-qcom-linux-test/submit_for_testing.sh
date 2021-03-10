@@ -91,7 +91,7 @@ if [ $SEND_TESTJOB = true ]; then
   cd lava-test-plans
   ./submit_for_testing.py \
       --device-type ${LAVA_DEVICE_TYPE} \
-      --build-number ${BUILD_NUMBER} \
+      --build-number ${KERNEL_DESCRIBE} \
       --lava-server ${LAVA_SERVER} \
       --qa-server ${QA_SERVER} \
       --qa-server-team qcomlt \
@@ -116,7 +116,7 @@ if [ $SEND_TESTJOB = true ]; then
     cd lava-test-plans
     ./submit_for_testing.py \
         --device-type ${LAVA_DEVICE_TYPE} \
-        --build-number ${BUILD_NUMBER} \
+        --build-number ${KERNEL_DESCRIBE} \
         --lava-server ${LAVA_SERVER} \
         --qa-server ${QA_SERVER} \
         --qa-server-team qcomlt \
@@ -144,7 +144,7 @@ if [ $SEND_TESTJOB = true ]; then
     cd lava-test-plans
     ./submit_for_testing.py \
         --device-type ${LAVA_DEVICE_TYPE} \
-        --build-number ${BUILD_NUMBER} \
+        --build-number ${KERNEL_DESCRIBE} \
         --lava-server ${LAVA_SERVER} \
         --qa-server ${QA_SERVER} \
         --qa-server-team qcomlt \
@@ -160,7 +160,7 @@ if [ $SEND_TESTJOB = true ]; then
     cd lava-test-plans
     ./submit_for_testing.py \
         --device-type ${LAVA_DEVICE_TYPE} \
-        --build-number ${BUILD_NUMBER} \
+        --build-number ${KERNEL_DESCRIBE} \
         --lava-server ${LAVA_SERVER} \
         --qa-server ${QA_SERVER} \
         --qa-server-team qcomlt \
