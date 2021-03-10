@@ -15,6 +15,10 @@
             num-to-keep: 300
     parameters:
         - string:
+            name: CALLER_JOB_NAME
+        - string:
+            name: CALLER_BUILD_NUMBER
+        - string:
             name: KERNEL_DESCRIBE
         - string:
             name: KERNEL_BRANCH
@@ -89,11 +93,14 @@
                 f_gki_kernel="all-kernels.txt"
                 cp -fv  "${params}" "${f_gki_kernel}"
                 echo "QA_BUILD_VERSION=${QA_BUILD_VERSION}" >> ${f_gki_kernel}
-                echo "CALLER_JOB_NAME=${JOB_NAME}" >> ${f_gki_kernel}
-                echo "CALLER_BUILD_NUMBER=${BUILD_NUMBER}" >>${f_gki_kernel}
                 echo "ANDROID_BUILD_CONFIG=lkft-gki-${KERNEL_BRANCH}" >>${f_gki_kernel}
 
-                cp -fv  "${f_gki_kernel}" "api_callbacks_properties.txt"
+                f_api_callbacks_prop="api_callbacks_properties.txt"
+                cp -fv  "${f_gki_kernel}" "${f_api_callbacks_prop}"
+                [ -z "${CALLER_JOB_NAME}" ] && CALLER_JOB_NAME="${JOB_NAME}"
+                [ -z "${CALLER_BUILD_NUMBER}" ] && CALLER_BUILD_NUMBER="${BUILD_NUMBER}"
+                echo "CALLER_JOB_NAME=${CALLER_JOB_NAME}" >> "${f_api_callbacks_prop}"
+                echo "CALLER_BUILD_NUMBER=${CALLER_BUILD_NUMBER}" >>"${f_api_callbacks_prop}"
             fi
 
         - inject:

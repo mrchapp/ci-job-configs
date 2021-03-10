@@ -46,19 +46,21 @@
             git clean -fdx
             env
 
-            MAKE_KERNELVERSION=$(make kernelversion)
-            KERNEL_BRANCH=${GIT_BRANCH#android-common/}
-            KERNEL_DESCRIBE=${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}
+            MAKE_KERNELVERSION="$(make kernelversion)"
+            KERNEL_BRANCH="${GIT_BRANCH#android-common/}"
+            KERNEL_DESCRIBE="${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}"
 
-            echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} > properties.txt
-            echo KERNEL_BRANCH=${KERNEL_BRANCH} >> properties.txt
+            echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" > "properties.txt"
+            echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "properties.txt"
 
-            params=lkft-parameters.txt
-            echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} >> $params
-            echo SRCREV_kernel=${GIT_COMMIT} >> $params
-            echo MAKE_KERNELVERSION=${MAKE_KERNELVERSION} >> $params
-            echo KERNEL_BRANCH=${KERNEL_BRANCH} >> $params
-            cat $params
+            params="lkft-parameters.txt"
+            echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" >> "${params}"
+            echo "SRCREV_kernel=${GIT_COMMIT}" >> "${params}"
+            echo "MAKE_KERNELVERSION=${MAKE_KERNELVERSION}" >> "${params}"
+            echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "${params}"
+            echo "CALLER_JOB_NAME=${JOB_NAME}" >> "${params}"
+            echo "CALLER_BUILD_NUMBER=${BUILD_NUMBER}" >> "${params}"
+            cat "${params}"
 
         - trigger-builds:
             - project: lkft-android-common-gateway
