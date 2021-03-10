@@ -34,6 +34,9 @@
         - string:
             name: BUILD_CONFIG_FILENAME
             default: 'linaro-art-tip'
+        - bool:
+            name: CLEAN_BUILD
+            default: false
     disabled: false
     node: docker-bionic-art
     display-name: 'Tip: Host Test'
@@ -106,6 +109,7 @@
             ./setup_android.sh
 
             cd ${ANDROID_BUILD_DIR}
+            [[ ${CLEAN_BUILD} == "true" ]] && rm -rf out/
             perl scripts/jenkins/test_launcher.pl \
               scripts/tests/test_art_host.sh
     publishers:
