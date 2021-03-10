@@ -41,7 +41,7 @@
             default: 'https://snapshots.linaro.org/'
     disabled: false
     node: master
-    display-name: 'Qualcomm LT User space for kernel testing'
+    display-name: 'Qualcomm LT User space for Desktop kernel testing'
     axes:
         - axis:
             type: user-defined
