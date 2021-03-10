@@ -35,7 +35,7 @@
         - string:
             name: GIT_COM_ID
     disabled: false
-    node: docker-buster-amd64
+    node: docker-buster-arm64
     wrappers:
         - timestamps
         - credentials-binding:
