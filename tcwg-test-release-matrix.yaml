@@ -25,7 +25,7 @@
         - string:
             name: build_container_tag
             default: 'lts_1'
-            description: 'Distro to use for the container: xenial, bionic, focal.'
+            description: 'Distro to use for the container: bionic, focal.'
         - string:
             name: release
             default:

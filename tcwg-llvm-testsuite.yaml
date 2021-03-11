@@ -24,8 +24,8 @@
             description: 'Flags to pass to the LNT nt producer (e.g. --threads=8 --cflag -O0)'
         - string:
             name: build_container_tag
-            default: 'xenial'
-            description: 'Type of image to use in the container: xenial, bionic, focal.'
+            default: 'lts'
+            description: 'Type of image to use in the container: bionic, focal.'
         - string:
             name: target_list
             default: 'tcwg-tk1_32-build tcwg-apm_64-build'

@@ -29,7 +29,7 @@
         - string:
             name: build_container_tag
             default: 'lts_1'
-            description: 'Type of image to use in the container: xenial, bionic, focal.'
+            description: 'Type of image to use in the container: bionic, focal.'
         - string:
             name: compiler
             default: 'clang'

@@ -98,7 +98,7 @@
 
             # Default values, only add them to parameters if really needed
             repository="https://git.linaro.org/toolchain/llvm"
-            build_container_tag="xenial"
+            build_container_tag="lts"
 
             # Find projects from branch
             . "${WORKSPACE}/tcwg-llvm-common.sh"

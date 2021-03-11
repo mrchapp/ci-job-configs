@@ -63,7 +63,7 @@
         - string:
             name: build_container_tag
             default: lts_1
-            description: 'Distro to use on the builder with non-default container type: xenial, bionic, focal.'
+            description: 'Distro to use on the builder with non-default container type: bionic, focal.'
     disabled: false
     node: tcwg-x86_64-build
     concurrent: true

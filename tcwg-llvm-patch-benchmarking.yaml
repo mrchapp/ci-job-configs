@@ -52,7 +52,7 @@
               toolchain=
               build_type=Release
               cmake_flags=
-              build_container_tag=xenial
+              build_container_tag=lts
               twostage=false
               tessuite=false
               compiler=clang

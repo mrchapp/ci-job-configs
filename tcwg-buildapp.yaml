@@ -45,7 +45,7 @@
         - string:
             name: build_container_tag
             default: 'lts_1'
-            description: 'Distro to use on the builder with non-default container type: xenial, bionic, focal.'
+            description: 'Distro to use on the builder with non-default container type: bionic, focal.'
         - string:
             name: LAVA_SERVER
             default: validation.linaro.org

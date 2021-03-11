@@ -32,8 +32,8 @@
             description: 'Additional CMake flags, ex. CMAKE_CXX_FLAGS, etc.'
         - string:
             name: build_container_tag
-            default: 'xenial'
-            description: 'Type of image to use in the container: xenial, bionic, focal.'
+            default: 'lts'
+            description: 'Type of image to use in the container: bionic, focal.'
         - bool:
             name: twostage
             default: false
