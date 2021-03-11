@@ -47,7 +47,7 @@
             type: slave
             name: label
             values:
-                - docker-stretch-amd64
+                - docker-buster-amd64
     execution-strategy:
         sequential: false
     wrapper:
