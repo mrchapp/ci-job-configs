@@ -142,7 +142,7 @@
                   - openembedded-lkft/postbuild.groovy
                   - schneider-openembedded/postbuild.groovy
         - email-ext:
-            recipients: 'fathi.boudra@linaro.org, ralph.siemsen@linaro.org, ryan.harkin@linaro.org'
+            recipients: 'fathi.boudra@linaro.org, ralph.siemsen@linaro.org, milan.stevanovic@se.com'
             always: true
             failure: false
             matrix-trigger: only-parent

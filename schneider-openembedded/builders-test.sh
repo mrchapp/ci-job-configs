@@ -119,7 +119,7 @@ git submodule update
 machine_orig=${MACHINE}
 case "${MACHINE}" in
   *rzn1*)
-    MACHINE=rzn1-snarc
+    MACHINE=rzn1d400-bestla
     ;;
   *soca9*)
     MACHINE=snarc-soca9
