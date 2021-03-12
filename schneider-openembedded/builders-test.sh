@@ -178,21 +178,6 @@ case "${MACHINE}" in
   am57xx-evm|intel-core2-32|intel-corei7-64)
      IMAGES="rpb-console-image"
      ;;
-  *rzn1*)
-    clean_packages="\
-        openssl-native \
-        optee-os \
-    "
-    build_packages="${clean_packages}"
-    ;;
-  *soca9*)
-    clean_packages="\
-        base-files \
-        u-boot-socfpga \
-        linux-socfpga \
-        "
-    build_packages="${clean_packages}"
-    ;;
 esac
 
 postfile=$(mktemp /tmp/postfile.XXXXX.conf)
@@ -224,10 +209,6 @@ if [[ "${hasdipimg}" == *"${dipimg}"* ]]; then
 	case "${MACHINE}" in
 		*rzn1*)
 			cat tmp/work-shared/${MACHINE}/dm-verity/prod-image.squashfs-lzo.verity.env || true
-			time bitbake ${bbopt} fsbl optee-os u-boot-rzn1
-			time bitbake ${bbopt} -c do_install       fsbl        || true
-			time bitbake ${bbopt} -c do_fit_optee_os  optee-os    || true
-			time bitbake ${bbopt} -c do_fit_rzn1d     u-boot-rzn1 || true
 			;;
 	esac
 
