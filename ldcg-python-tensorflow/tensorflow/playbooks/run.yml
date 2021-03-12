@@ -12,13 +12,12 @@
       vars:
         bazel_version: "0.29.1"
 
-    - name: include Python tasks
-      include_tasks: build_python.yml
-
     - name: include Tensorflow tasks
       include_tasks: build_tensorflow.yml
       vars:
         tensorflow_version: "1.15.5"
+        numpy_version: "~=1.18.0"
+        h5py_version: "==2.10"
 
     - name: include Bazel tasks
       include_tasks: build_bazel.yml
@@ -28,7 +27,9 @@
     - name: include Tensorflow tasks
       include_tasks: build_tensorflow.yml
       vars:
-        tensorflow_version: "2.4.0"
+        tensorflow_version: "2.4.1"
+        numpy_version: "~=1.19.2"
+        h5py_version: ">=2.10"
 
     - name: set snapshots.linaro.org url
       set_fact:
