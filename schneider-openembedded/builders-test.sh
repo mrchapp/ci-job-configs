@@ -205,7 +205,7 @@ if [[ "${IMAGES}" == *"${dipimg}"* ]]; then
 	grep -c ^processor /proc/cpuinfo
 	grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}'
 
-	time bitbake ${bbopt} ${dipimg} ${sdk-image}
+	time bitbake ${bbopt} ${dipimg} ${sdkimg}
 
 	case "${MACHINE}" in
 		*rzn1*)
