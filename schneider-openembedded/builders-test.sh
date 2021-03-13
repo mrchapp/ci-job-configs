@@ -195,16 +195,17 @@ fi
 # Build all ${IMAGES}
 dipimg="prod-image"
 devimg="dev-image"
+sdkimg="sdk-image"
 
 DEPLOY_DIR_IMAGE=$(bitbake -e | grep "^DEPLOY_DIR_IMAGE="| cut -d'=' -f2 | tr -d '"')
 
-if [[ "${hasdipimg}" == *"${dipimg}"* ]]; then
+if [[ "${IMAGES}" == *"${dipimg}"* ]]; then
 	replace_dmverity_var "${dipimg}"
 
 	grep -c ^processor /proc/cpuinfo
 	grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}'
 
-	time bitbake ${bbopt} prod-image sdk-image
+	time bitbake ${bbopt} ${dipimg} ${sdk-image}
 
 	case "${MACHINE}" in
 		*rzn1*)
@@ -213,13 +214,16 @@ if [[ "${hasdipimg}" == *"${dipimg}"* ]]; then
 	esac
 
 	# Generate pn-buildlist containing names of recipes, for CVE check below
-	time bitbake ${bbopt} prod-image -g
+	time bitbake ${bbopt} ${dipimg} -g
 
 	DEPLOY_DIR_SDK=$(bitbake -e | grep "^DEPLOY_DIR="| cut -d'=' -f2 | tr -d '"')/sdk
 	cp -aR ${DEPLOY_DIR_SDK} ${DEPLOY_DIR_IMAGE}
 
 	ls -al ${DEPLOY_DIR_IMAGE} || true
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
+	ls -al ${DEPLOY_DIR_IMAGE}/cm3 || true
+	ls -al ${DEPLOY_DIR_IMAGE}/u-boot || true
+	ls -al ${DEPLOY_DIR_IMAGE}/fsbl || true
 fi
 
 if [[ "${IMAGES}" == *"${devimg}"* ]]; then
@@ -233,8 +237,7 @@ if [[ "${IMAGES}" == *"${devimg}"* ]]; then
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
 
 	# Copy license and manifest information into the deploy dir 
-	# To Be Fix
-	# cp -aR ./tmp/deploy/licenses/dip-image-dev-*/*.manifest ${DEPLOY_DIR_IMAGE}
+	cp -aR ./tmp/deploy/licenses/prod-image-*/*.manifest ${DEPLOY_DIR_IMAGE}
 fi
 
 # Prepare files to publish
