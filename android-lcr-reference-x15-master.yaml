@@ -27,7 +27,7 @@
             name: QA_SERVER_PROJECT
             default: 'lcr-reference-x15-master'
     disabled: false
-    node: docker-xenial-aosp
+    node: docker-bionic-aosp
     display-name: 'AOSP master build for X15'
     concurrent: true
     triggers:
