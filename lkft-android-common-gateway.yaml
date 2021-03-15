@@ -72,17 +72,31 @@
                 echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "${params}"
                 cat "${params}"
 
+                KERNEL_BRANCH_REAL="${KERNEL_BRANCH}"
+                ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED=""
+                TEST_OTHER_PLANS_OVERRIDE=""
+
                 case "X${KERNEL_BRANCH}" in
                     "Xandroid12-5.4")
-                        cp -fv "${params}" lkft-${KERNEL_BRANCH}-x15.txt
-                        echo "ANDROID_BUILD_CONFIG=lkft-x15-aosp-master-5.4" >> lkft-${KERNEL_BRANCH}-x15.txt
+                        cp -fv "${params}" "lkft-${KERNEL_BRANCH}-x15.txt"
+                        echo "ANDROID_BUILD_CONFIG=lkft-x15-aosp-master-5.4" >> "lkft-${KERNEL_BRANCH}-x15.txt"
                         ;;
                     "Xandroid-mainline")
-                        cp -fv "${params}"  lkft-${KERNEL_BRANCH}-x15.txt
-                        echo "ANDROID_BUILD_CONFIG=lkft-x15-aosp-master-mainline" >> lkft-${KERNEL_BRANCH}-x15.txt
+                        cp -fv "${params}"  "lkft-${KERNEL_BRANCH}-x15.txt"
+                        echo "ANDROID_BUILD_CONFIG=lkft-x15-aosp-master-mainline" >> "lkft-${KERNEL_BRANCH}-x15.txt"
 
-                        cp -fv "${params}" lkft-${KERNEL_BRANCH}-hikey.txt
-                        echo "ANDROID_BUILD_CONFIG=lkft-hikey-aosp-master-mainline-gki" >> lkft-${KERNEL_BRANCH}-hikey.txt
+                        cp -fv "${params}" "lkft-${KERNEL_BRANCH}-hikey.txt"
+                        echo "ANDROID_BUILD_CONFIG=lkft-hikey-aosp-master-mainline-gki" >> "lkft-${KERNEL_BRANCH}-hikey.txt"
+                        ;;
+                    "Xandroid11-5.4-presubmit")
+                        KERNEL_BRANCH_REAL="android11-5.4"
+                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-android11-android11-5.4-gki"
+                        TEST_OTHER_PLANS_OVERRIDE="CTS_PRESUBMIT"
+                        ;;
+                    "Xandroid12-5.4-presubmit")
+                        KERNEL_BRANCH_REAL="android12-5.4"
+                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-aosp-master-5.4-gki"
+                        TEST_OTHER_PLANS_OVERRIDE="CTS_PRESUBMIT"
                         ;;
                     "X*")
                         echo "No particular build for this branch: ${KERNEL_BRANCH}"
@@ -90,11 +104,17 @@
                 esac
 
                 # generate files for the api callback build and gki build
-                QA_BUILD_VERSION=${KERNEL_DESCRIBE}
+                QA_BUILD_VERSION="${KERNEL_DESCRIBE}"
                 f_gki_kernel="all-kernels.txt"
                 cp -fv  "${params}" "${f_gki_kernel}"
-                echo "QA_BUILD_VERSION=${QA_BUILD_VERSION}" >> ${f_gki_kernel}
-                echo "ANDROID_BUILD_CONFIG=lkft-gki-${KERNEL_BRANCH}" >>${f_gki_kernel}
+                echo "QA_BUILD_VERSION=${QA_BUILD_VERSION}" >> "${f_gki_kernel}"
+                echo "ANDROID_BUILD_CONFIG=lkft-gki-${KERNEL_BRANCH_REAL}" >> "${f_gki_kernel}"
+                if [ -n "${ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED}" ]; then
+                    echo "ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED=${ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED}" >> "${f_gki_kernel}"
+                fi
+                if [ -n "${TEST_OTHER_PLANS_OVERRIDE}" ]; then
+                    echo "TEST_OTHER_PLANS_OVERRIDE=${TEST_OTHER_PLANS_OVERRIDE}" >> "${f_gki_kernel}"
+                fi
 
                 f_api_callbacks_prop="api_callbacks_properties.txt"
                 cp -fv  "${f_gki_kernel}" "${f_api_callbacks_prop}"
