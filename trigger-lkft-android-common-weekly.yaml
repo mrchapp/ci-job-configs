@@ -15,7 +15,7 @@
             num-to-keep: 150
     disabled: false
     node: triggers
-    display-name: 'Trigger for builds on android common kernel weekly'
+    display-name: 'Trigger for builds on android common kernel bi-weekly'
     scm:
         - git:
             remotes:
@@ -43,20 +43,20 @@
             git clean -fdx
             env
 
-            KERNEL_BRANCH_REAL=${GIT_BRANCH#android-common/}
-            MAKE_KERNELVERSION=$(make kernelversion)
-            KERNEL_BRANCH=${KERNEL_BRANCH_REAL}-weekly
-            KERNEL_DESCRIBE=${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}-$(date +%Y%m%d%H%M)
+            KERNEL_BRANCH_REAL="${GIT_BRANCH#android-common/}"
+            MAKE_KERNELVERSION="$(make kernelversion)"
+            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-weekly"
+            KERNEL_DESCRIBE="${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}-$(date +%Y%m%d%H%M)"
 
-            echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} > properties.txt
-            echo KERNEL_BRANCH=${KERNEL_BRANCH} >> properties.txt
+            echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" > "properties.txt"
+            echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "properties.txt"
 
-            params=lkft-${KERNEL_BRANCH}.txt
-            echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} >> $params
-            echo SRCREV_kernel=${GIT_COMMIT} >> $params
-            echo MAKE_KERNELVERSION=${MAKE_KERNELVERSION} >> $params
-            echo KERNEL_BRANCH=${KERNEL_BRANCH} >> $params
-            cat $params
+            params="lkft-${KERNEL_BRANCH}.txt"
+            echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" >> "${params}"
+            echo "SRCREV_kernel=${GIT_COMMIT}" >> "${params}"
+            echo "MAKE_KERNELVERSION=${MAKE_KERNELVERSION}" >> "${params}"
+            echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "${params}"
+            cat "${params}"
 
             # generate files for the api callback build
             f_api_callbacks="all-kernels.txt"
