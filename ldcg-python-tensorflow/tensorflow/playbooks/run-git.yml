@@ -10,7 +10,7 @@
     - name: include Bazel tasks
       include_tasks: build_bazel.yml
       vars:
-        bazel_version: "4.0.0"
+        bazel_version: "3.7.2"
 
     - name: include Tensorflow tasks
       include_tasks: build_tensorflow.yml
