@@ -1,0 +1,462 @@
+device_type: rzn1d
+tags:
+- tpm
+
+job_name: SE ${MACHINE} dev-image (nfs,wic) ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL} ${BUILD_NUMBER}
+
+timeouts:
+  job:
+    minutes: 180
+  action:
+    minutes: 120
+  connection:
+    minutes: 20
+priority: medium
+visibility: public
+
+actions:
+
+####################
+# Deploy QSPI images
+####################
+- deploy:
+    namespace: dfu-firmware
+    to: tmpfs
+    images:
+      sf_fsbl:
+        image_arg: --alt sf_fsbl --download {sf_fsbl}
+        url: ${FSBL_URL}
+      sf_trustedfw:
+        image_arg: --alt sf_trustedfw --download {sf_trustedfw}
+        url: ${OPTEE_ITB_URL}
+      sf_uboot0:
+        image_arg: --alt sf_uboot0 --download {sf_uboot0}
+        url: ${UBOOT_ITB_URL}
+      sf_uboot1:
+        image_arg: --alt sf_uboot1 --download {sf_uboot1}
+        url: ${UBOOT_ITB_URL}
+
+- command:
+    namespace: dfu-firmware
+    name: set_boot_to_nand
+
+- boot:
+    namespace: dfu-firmware
+    method: dfu
+    timeout:
+      minutes: 10
+
+- command:
+    namespace: test
+    name: set_boot_to_qspi
+
+##########################
+# Configure ethernet ports
+##########################
+- command:
+    namespace: test
+    name: j17_off
+- command:
+    namespace: test
+    name: j21_on
+- command:
+    namespace: test
+    name: j22_off
+- command:
+    namespace: test
+    name: j23_off
+- command:
+    namespace: test
+    name: j24_off
+
+###############
+# TFTP/NFS
+###############
+- deploy:
+    namespace: test-nfs
+    timeout:
+      minutes: 15
+    to: tftp
+    os: oe
+    kernel:
+      url: ${KERNEL_ZIMAGE_URL}
+      type: zimage
+    dtb:
+      url: ${DTB_URL}
+    nfsrootfs:
+      url: ${NFSROOTFS_DEV_URL}
+      compression: bz2
+
+- boot:
+    namespace: test-nfs
+    connection-namespace: dfu-firmware
+    timeout:
+      minutes: 20
+    method: u-boot
+    commands:
+      - setenv autoload no
+      - dhcp
+      - dhcp
+      - env print
+      - setenv serverip {SERVER_IP}
+      - tftp {KERNEL_ADDR} {KERNEL}
+      - tftp {DTB_ADDR} {DTB}
+      - "setenv bootargs 'console=ttyS0,115200n8 root=/dev/nfs rw nfsroot={NFS_SERVER_IP}:{NFSROOTFS},tcp,hard,intr,vers=3 rootwait coherent_pool=2M ip=dhcp'"
+      - '{BOOTX}'
+    auto_login:
+      login_prompt: "login:"
+      username: root
+    prompts:
+    - "root@snarc-soca9:"
+    - "root@rzn1-snarc:"
+
+- test:
+    namespace: test-nfs
+    timeout:
+      minutes: 40
+    interactive:
+    - name: basic-cmds-tftp
+      prompts: ["root@snarc-soca9", "root@rzn1-snarc"]
+      script:
+      - command: uname -a
+      - command: cat /proc/device-tree/model ; echo ""
+      - command: ps aux --sort -rss
+      - command: cat /proc/meminfo
+      - command: cat /proc/cpuinfo
+      - command: free -h
+      - command: sysctl -a | grep vm.min_free_kbytes
+      - command: memstat
+      - command: mount
+      - command: systemctl --no-pager status systemd-resolved
+      - command: systemctl --no-pager restart systemd-resolved
+      - command: systemctl --no-pager status systemd-resolved
+      - command: ifconfig -a
+      - command: which docker
+
+- test:
+    namespace: test-nfs
+    timeout:
+      minutes: 40
+    definitions:
+
+    - name: smoke-tests-tftp
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/smoke/smoke.yaml
+      parameters:
+        SKIP_INSTALL: True
+        TESTS: "pwd, uname -a, cat /etc/os-release, ip a, lscpu, vmstat, lsblk, ps aux --sort -rss, free -h, mount"
+
+    - name: ethernet-tftp
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/ethernet/ethernet.yaml
+      parameters:
+        INTERFACE: eth1
+
+    - name: meminfo-tftp
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/meminfo/meminfo.yaml
+
+    - name: badblocks-tftp
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/badblocks/badblocks.yaml
+      parameters:
+        SKIP_INSTALL: True
+
+    - name: memtester-tftp
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/memtester/memtester.yaml
+      parameters:
+        SKIP_INSTALL: True
+
+
+
+###################
+# dev-image.wic
+###################
+- deploy:
+    namespace: test-wic
+    timeout:
+      minutes: 100
+    to: flasher
+    images:
+      image:
+        url: ${WIC_DEV_IMAGE_URL}
+        compression: bz2
+      layout:
+        url: ${WIC_DEV_BMAP_URL}
+
+
+- boot:
+    namespace: test-wic
+    connection-namespace: dfu-firmware
+    timeout:
+      minutes: 10
+    method: u-boot
+    commands:
+    - run linux_sd
+    auto_login:
+      login_prompt: "login:"
+      username: root
+    prompts:
+    - "root@snarc-soca9:"
+    - "root@rzn1-snarc:"
+    transfer_overlay:
+      download_command: udhcpc -i eth1 -n; wget
+      unpack_command: tar --touch -C / -xzf
+
+- test:
+    namespace: test-wic
+    timeout:
+      minutes: 40
+    interactive:
+    - name: basic-cmds-wic
+      prompts: ["root@snarc-soca9", "root@rzn1-snarc"]
+      script:
+      - command: uname -a
+      - command: cat /proc/device-tree/model ; echo ""
+      - command: mount
+      - command: ps aux --sort -rss
+      - command: cat /proc/meminfo
+      - command: cat /proc/cpuinfo
+      - command: free -h
+      - command: sysctl -a | grep vm.min_free_kbytes
+      - command: memstat
+      - command: mount
+      - command: systemctl --no-pager status systemd-resolved
+      - command: systemctl --no-pager restart systemd-resolved
+      - command: systemctl --no-pager status systemd-resolved
+      - command: ifconfig -a
+      - command: ping -c 3 github.com
+      - command: which docker
+
+
+##################
+# Functional Tests
+##################
+- test:
+    namespace: test-wic
+    timeout:
+      minutes: 100
+    definitions:
+
+    - name: files-exist
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/files-exist/files-exist.yaml
+      parameters:
+        SKIP_INSTALL: true
+        EXTRA_FILES: '/etc/os-release'
+
+    - name: ethernet
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/ethernet/ethernet.yaml
+      parameters:
+        INTERFACE: eth1
+
+    - name: meminfo
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/meminfo/meminfo.yaml
+
+    - name: badblocks
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/badblocks/badblocks.yaml
+      parameters:
+        SKIP_INSTALL: True
+
+    - name: memtester
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/memtester/memtester.yaml
+      parameters:
+        SKIP_INSTALL: True
+
+    - name: yepkit-list
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/yepkit/yepkit.yaml
+      parameters:
+        LIST: true
+
+    - name: yepkit-down-all
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/yepkit/yepkit.yaml
+      parameters:
+        PORT_DOWN: a
+
+    - name: yepkit-get-1
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/yepkit/yepkit.yaml
+      parameters:
+        PORT_GET: 1
+    - name: yepkit-get-2
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/yepkit/yepkit.yaml
+      parameters:
+        PORT_GET: 2
+    - name: yepkit-get-3
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/yepkit/yepkit.yaml
+      parameters:
+        PORT_GET: 3
+
+    - name: yepkit-up-port-2
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/yepkit/yepkit.yaml
+      parameters:
+        PORT_UP: 2
+        PORT_DEVICE: /dev/sda
+
+    - name: block-device-sda
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/block-device/block-device.yaml
+      parameters:
+        SKIP_INSTALL: 'true'
+        DEVICE: /dev/sda
+        FORMAT_DEVICE: 'true'
+
+    - name: zero-sda
+      from: inline
+      path: inline/zero-sda.yaml
+      repository:
+        metadata:
+          format: Lava-Test Test Definition 1.0
+          name: zero-sda
+          description: write zeros to device sda
+        run:
+          steps:
+          - dd if=/dev/zero of=/dev/sda bs=1M count=1024
+
+    - name: device-read-perf
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/device-read-perf/device-read-perf.yaml
+      parameters:
+        SKIP_INSTALL: 'true'
+        DEVICE: sda mmcblk0
+
+    - name: yepkit-down-port-2
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/yepkit/yepkit.yaml
+      parameters:
+        PORT_DOWN: 2
+        PORT_DEVICE: /dev/sda
+
+    - name: spi-eeprom
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/eeprom/eeprom.yaml
+      parameters:
+        SKIP_INSTALL: 'true'
+        EEPROM: '/sys/bus/spi/devices/spi0.1/eeprom'
+
+    - name: docker-hello-world
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/docker/docker.yaml
+      parameters:
+        IMAGE: "hello-world"
+        SKIP_INSTALL: True
+
+    - name: docker
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/docker/docker.yaml
+      parameters:
+        IMAGE: "arm32v7/ubuntu"
+        SKIP_INSTALL: True
+
+    - name: optee-xtest
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/optee/optee-xtest.yaml
+
+    - name: cryptotest
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/cryptotest/cryptotest.yaml
+
+    - name: tpm
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/tpm/tpm.yaml
+
+metadata:
+  machine: ${MACHINE}
+  manifest branch: ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL}
+  manifest commit: ${MANIFEST_COMMIT}
+  build url: ${BUILD_URL}
+  build location: ${PUBLISH_SERVER}${PUB_DEST}
+
+notify:
+    recipients:
+    - to:
+        method: email
+        email: milan.stevanovic@se.com
+    criteria:
+        status: incomplete
+    verbosity: verbose
