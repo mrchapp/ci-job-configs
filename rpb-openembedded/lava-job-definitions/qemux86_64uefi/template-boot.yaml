@@ -13,7 +13,7 @@ visibility: public
 
 context:
   arch: x86_64
-  netdevice: tap
+  netdevice: user
   guestfs_interface: virtio
 
 actions:
@@ -25,45 +25,35 @@ actions:
     images:
       rootfs:
         image_arg: -drive id=disk0,file={rootfs},format=raw
-          -m 2048 -smp 4 -serial mon:stdio -show-cursor -object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0
+          -m 2048 -smp 4 -serial mon:stdio -object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0
         url: ${SYSTEM_URL}
         compression: gz
         apply-overlay: true
         sparse: false
       bios:
         image_arg: -drive if=pflash,format=raw,file={bios}
-        url: https://storage.kernelci.org/images/uefi/111bbcf87621/OVMF.fd-X64-RELEASE-111bbcf87621
+        url: ${FIRMWARE_EDK2}
     os: oe
-
-- boot:
-    namespace: boot0
-    timeout:
-      minutes: 10
-    method: qemu
-    media: tmpfs
-    expect_shell: False
-    boot_finished:
-     - 'reboot: Restarting system'
-     - 'reboot: System halted'
-     - 'Requesting system halt'
 
 - boot:
     namespace: target
     timeout:
-      minutes: 25
+      minutes: 60
     method: qemu
     media: tmpfs
+    docker:
+      image: maximuvarov/ledge_image_ubuntu_20.04_qemu5.2_v2
+      binary: /usr/bin/qemu-system-x86_64
     auto_login:
       login_prompt: 'login:'
       username: ledge
-      password_prompt: "Password:"
+      password_prompt: 'Password:'
       password: ledge
       login_commands:
-        - sudo -s
+      - sudo -s
     prompts:
-    - 'ledge-(.*)# '
-    - 'ledge-(.*)~: '
-    - 'ledge-.*:~\$$'
+    - ledge-.*:~\$
+    - ledge-qemux86-64:/(.*)#
 
 - test:
     namespace: target

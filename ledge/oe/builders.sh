@@ -254,6 +254,8 @@ INITRD_URL=""
 OVMF=$(find ${UPLOAD_DIR} -type f -name "ovmf.qcow2" -printf "%f\n")
 CERTS=$(find ${UPLOAD_DIR} -type f -name ledge-kernel-uefi-certs*.wic.gz -printf "%f\n");
 FIRMWARE=$(find ${UPLOAD_DIR} -type f -name firmware.uefi.uboot.bin -printf "%f\n");
+FIRMWARE_EDK2=$(find ${UPLOAD_DIR} -type f -name firmware.uefi-edk2.bin -printf "%f\n");
+FIRMWARE_EDK2_VARS=$(find ${UPLOAD_DIR} -type f -name LEDGE_*VARS.bin -printf "%f\n");
 
 case "${MACHINE}" in
   ledge-am57xx-evm)
@@ -402,6 +404,8 @@ INITRD_URL="${INITRD_URL}"
 OVMF="${BASE_URL}/${PUB_DEST}/${OVMF}"
 CERTS="${BASE_URL}/${PUB_DEST}/${CERTS}"
 FIRMWARE="${BASE_URL}/${PUB_DEST}/${FIRMWARE}"
+FIRMWARE_EDK2="${BASE_URL}/${PUB_DEST}/${FIRMWARE_EDK2}"
+FIRMWARE_EDK2_VARS="${BASE_URL}/${PUB_DEST}/${FIRMWARE_EDK2_VARS}"
 EOF
 
 cat ${WORKSPACE}/post_build_lava_parameters

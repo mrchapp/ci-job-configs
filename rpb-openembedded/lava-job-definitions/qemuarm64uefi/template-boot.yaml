@@ -27,46 +27,42 @@ actions:
       minutes: 15
     to: tmpfs
     images:
-      bios:
-        image_arg: '-bios {bios}'
-        url: https://storage.kernelci.org/images/uefi/111bbcf87621/QEMU_EFI.fd-AARCH64-RELEASE-111bbcf87621
-      rootfs:
-        image_arg: -drive id=disk0,file={rootfs},if=none,format=raw -device virtio-blk-device,drive=disk0 -m 4096 -smp 4 -nographic
+      1rootfs:
+        image_arg: -drive id=disk1,file={1rootfs},if=none,format=raw -device virtio-blk-device,drive=disk1
+          -smp 4 -serial stdio -nographic
         url: ${SYSTEM_URL}
         compression: gz
         apply-overlay: true
         sparse: false
+      2certs:
+        image_arg: -drive id=disk0,file={2certs},if=none,format=raw -device virtio-blk-device,drive=disk0
+        url: ${CERTS}
+      3bios:
+        image_arg: -pflash {3bios}
+        url: ${FIRMWARE_EDK2}
+      4efivars:
+        image_arg: -pflash {4efivars}
+        url: ${FIRMWARE_EDK2_VARS}
     os: oe
-
 - boot:
     namespace: target
     timeout:
-      minutes: 10
+      minutes: 60
     method: qemu
     media: tmpfs
-    expect_shell: False
-    boot_finished:
-     - 'reboot: Restarting system'
-     - 'reboot: System halted'
-     - 'Requesting system halt'
-
-- boot:
-    namespace: target
-    timeout:
-      minutes: 25
-    method: qemu
-    media: tmpfs
+    docker:
+      image: maximuvarov/ledge_image_ubuntu_20.04_qemu5.2_v2
+      binary: /usr/bin/qemu-system-aarch64
     auto_login:
       login_prompt: 'login:'
       username: ledge
-      password_prompt: "Password:"
+      password_prompt: 'Password:'
       password: ledge
       login_commands:
-        - sudo -s
+      - sudo -s
     prompts:
-    - 'ledge-(.*)# '
-    - 'ledge-(.*)~: '
-    - 'ledge-.*:~\$$'
+    - ledge-.*:~\$
+    - ledge-qemuarm64:/(.*)#
 
 - test:
     namespace: target
