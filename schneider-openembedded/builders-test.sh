@@ -205,7 +205,7 @@ if [[ "${IMAGES}" == *"${dipimg}"* ]]; then
 	grep -c ^processor /proc/cpuinfo
 	grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}'
 
-	time bitbake ${bbopt} ${dipimg} ${sdkimg}
+	time bitbake ${bbopt} ${dipimg}
 
 	case "${MACHINE}" in
 		*rzn1*)
@@ -224,6 +224,9 @@ if [[ "${IMAGES}" == *"${dipimg}"* ]]; then
 	ls -al ${DEPLOY_DIR_IMAGE}/cm3 || true
 	ls -al ${DEPLOY_DIR_IMAGE}/u-boot || true
 	ls -al ${DEPLOY_DIR_IMAGE}/fsbl || true
+
+	# Copy license and manifest information into the deploy dir 
+	cp -aR ./tmp/deploy/licenses/prod-image-*/*.manifest ${DEPLOY_DIR_IMAGE}
 fi
 
 if [[ "${IMAGES}" == *"${devimg}"* ]]; then
@@ -236,8 +239,7 @@ if [[ "${IMAGES}" == *"${devimg}"* ]]; then
 	ls -al ${DEPLOY_DIR_IMAGE}/fsbl || true
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
 
-	# Copy license and manifest information into the deploy dir 
-	cp -aR ./tmp/deploy/licenses/prod-image-*/*.manifest ${DEPLOY_DIR_IMAGE}
+	time bitbake ${bbopt} ${sdkimg}
 fi
 
 # Prepare files to publish
