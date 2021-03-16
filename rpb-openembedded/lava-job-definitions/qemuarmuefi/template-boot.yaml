@@ -59,7 +59,7 @@ actions:
       login_commands:
       - sudo -s
     prompts:
-    - ledge-.*:~\$
+    - ledge-.*:~\$$
     - ledge-qemuarm:/(.*)#
 
 
