@@ -158,6 +158,10 @@
               property-file: params_android-mainline-lkft-hikey960-aosp-master-mainline-gki.txt
             - project: lkft-generic-build
               property-file: params_android-mainline-lkft-hikey-aosp-master-mainline-gki.txt
+            - project: lkft-generic-build
+              property-file: params_android11-5.4-presubmit-lkft-db845c-android11-android11-5.4-gki.txt
+            - project: lkft-generic-build
+              property-file: params_android12-5.4-presubmit-lkft-db845c-aosp-master-5.4-gki.txt
 
     publishers:
         - logparser:
