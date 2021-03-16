@@ -216,9 +216,6 @@ if [[ "${IMAGES}" == *"${dipimg}"* ]]; then
 	# Generate pn-buildlist containing names of recipes, for CVE check below
 	time bitbake ${bbopt} ${dipimg} -g
 
-	DEPLOY_DIR_SDK=$(bitbake -e | grep "^DEPLOY_DIR="| cut -d'=' -f2 | tr -d '"')/sdk
-	cp -aR ${DEPLOY_DIR_SDK} ${DEPLOY_DIR_IMAGE}
-
 	ls -al ${DEPLOY_DIR_IMAGE} || true
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
 	ls -al ${DEPLOY_DIR_IMAGE}/cm3 || true
@@ -240,6 +237,8 @@ if [[ "${IMAGES}" == *"${devimg}"* ]]; then
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
 
 	time bitbake ${bbopt} ${sdkimg}
+	DEPLOY_DIR_SDK=$(bitbake -e | grep "^DEPLOY_DIR="| cut -d'=' -f2 | tr -d '"')/sdk
+	cp -aR ${DEPLOY_DIR_SDK} ${DEPLOY_DIR_IMAGE}
 fi
 
 # Prepare files to publish
