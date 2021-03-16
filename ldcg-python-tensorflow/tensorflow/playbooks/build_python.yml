@@ -97,12 +97,14 @@
     mode: 0400
     force: yes
 
-- name: build wheels of binary Python packages
+- name: build and install wheels of binary Python packages
   include_tasks: build_python_wheel.yml
   loop:
     - grpcio
     - "numpy{{ numpy_version }}"
     - "h5py{{ h5py_version }}"
+    - Keras_Preprocessing
+    - Keras_Applications
 
 - name: remove upper constraints
   file:

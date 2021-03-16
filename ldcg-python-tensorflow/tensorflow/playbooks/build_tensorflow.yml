@@ -35,22 +35,30 @@
       src: "{{ build_dir.path }}/tensorflow-{{ tensorflow_version }}.tar.gz"
       dest: "{{ build_dir.path }}/"
       remote_src: yes
+
+  - name: copy configure script
+    copy:
+      src: "files/configure_tensorflow"
+      dest: "{{ build_dir.path }}/tensorflow-{{ tensorflow_version }}/configure_tensorflow"
+      mode: 0400
+
   when: tensorflow_version != 'git'
 
-- name: fetch tensorflow from git
-  git:
-    repo: "https://github.com/tensorflow/tensorflow.git" # noqa 401
-    dest: "{{ build_dir.path }}/tensorflow-{{ tensorflow_version }}/"
-    depth: 1
-    recursive: yes
-    force: yes
-  when: tensorflow_version == 'git'
+- block:
+  - name: fetch tensorflow from git
+    git:
+      repo: "https://github.com/tensorflow/tensorflow.git" # noqa 401
+      dest: "{{ build_dir.path }}/tensorflow-{{ tensorflow_version }}/"
+      depth: 1
+      recursive: yes
+      force: yes
 
-- name: copy configure script
-  copy:
-    src: "files/configure_tensorflow"
-    dest: "{{ build_dir.path }}/tensorflow-{{ tensorflow_version }}/configure_tensorflow"
-    mode: 0400
+  - name: copy configure script
+    copy:
+      src: "files/configure_tensorflow-git"
+      dest: "{{ build_dir.path }}/tensorflow-{{ tensorflow_version }}/configure_tensorflow"
+      mode: 0400
+  when: tensorflow_version == 'git'
 
 - name: build tensorflow {{ tensorflow_version }}
   shell:
