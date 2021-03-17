@@ -13,7 +13,7 @@ visibility: public
 
 context:
   arch: arm64
-  netdevice: tap
+  netdevice: user
   machine: virt
   cpu: cortex-a57
   guestfs_interface: virtio
