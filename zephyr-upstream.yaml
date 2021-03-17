@@ -130,6 +130,7 @@
             time python3 ${HOME}/bin/linaro-cp.py \
               --api_version 3 \
               out/${PLATFORM} components/kernel/zephyr/${BRANCH}/${ZEPHYR_TOOLCHAIN_VARIANT}/${PLATFORM}/${BUILD_NUMBER}
+            echo "Build artifacts download URL: https://snapshots.linaro.org/components/kernel/zephyr/${BRANCH}/${ZEPHYR_TOOLCHAIN_VARIANT}/${PLATFORM}/${BUILD_NUMBER}/"
 
         - shell: |
             #!/bin/bash -ex
