@@ -77,8 +77,7 @@
             recipients: maxim.kuvyrkov@linaro.org
             content-type: text
             body: |
-              Jobs with no new results in $days days:
               ${{FILE,path="artifacts/stale-jobs.log"}}
             failure: true
             aborted: true
-# checksum: 4723cd11695a2171b044bd33385d3f37
+# checksum: a52639e7c4bdf4bf141dafef65175ba3
