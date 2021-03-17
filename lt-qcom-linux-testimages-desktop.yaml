@@ -79,6 +79,7 @@
               echo "NO_RECOMMENDATIONS = \"\"" >> auto.conf
               # remove kernel and modules to beign installed
               echo "MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS_remove = \"kernel-modules\"" >> auto.conf
+              echo "RDEPENDS_packagegroup-rpb_remove = \"kernel-modules\"" >> auto.conf
               echo "PACKAGE_EXCLUDE_append = \" kernel*\"" >> auto.conf
             else
               # configure serial in rpb-desktop-image-test
