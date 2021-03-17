@@ -1,0 +1,50 @@
+#include tcwg/default.yaml.inc
+
+- job:
+    name: tcwg-report-stale-rr-jobs
+    project-type: freestyle
+    defaults: global
+    properties:
+      - default-properties
+    parameters:
+      - string:
+          name: days
+          default: 10
+          description: 'List jobs with no successful run in DAYS'
+    disabled: false
+    node: tcwg-coordinator
+    concurrent: false
+    display-name: 'TCWG CCC Report Stale RR Jobs'
+    scm:
+      - jenkins-scripts-master
+    triggers:
+      - timed: '@daily'
+    wrappers:
+      - timeout:
+          timeout: 300
+      - timestamps
+    builders:
+      - shell: |
+          #!/bin/bash
+          set -euf -o pipefail
+          set -x
+
+          rm -rf artifacts
+          mkdir artifacts
+          ./jenkins-scripts/tcwg-report-stale-rr-jobs.sh --days "$days" 2>&1 \
+            | tee artifacts/stale-jobs.log
+          if [ x"$(cat artifacts/stale-jobs.log | wc -l)" != x"0" ]; then
+            exit 1
+          fi
+    publishers:
+        - archive:
+            artifacts: 'artifacts/**'
+            latest-only: false
+        - email-ext:
+            recipients: maxim.kuvyrkov@linaro.org
+            content-type: text
+            body: |
+              Jobs with no new results in $days days:
+              ${{FILE,path="artifacts/stale-jobs.log"}}
+            failure: true
+            aborted: true

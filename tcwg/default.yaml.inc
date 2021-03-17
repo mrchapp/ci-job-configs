@@ -26,6 +26,23 @@
           num-to-keep: 30
 #endif
 
+#if JENKINS_SCRIPTS_master
+- scm:
+    name: jenkins-scripts-master
+    scm:
+      - git:
+          url: https://git.linaro.org/toolchain/jenkins-scripts.git
+          refspec: +refs/heads/master:refs/remotes/origin/master
+          branches:
+            - master
+          basedir: jenkins-scripts
+          skip-tag: true
+          reference-repo: /home/tcwg-buildslave/snapshots-ref/jenkins-scripts.git
+          wipe-workspace: false
+          clean:
+            before: true
+          prune: true
+#else
 - scm:
     name: jenkins-scripts
     scm:
@@ -41,3 +58,4 @@
           clean:
             before: true
           prune: true
+#endif
