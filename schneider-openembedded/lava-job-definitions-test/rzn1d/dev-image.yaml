@@ -26,8 +26,11 @@ actions:
       sf_fsbl:
         image_arg: --alt sf_fsbl --download {sf_fsbl}
         url: ${FSBL_URL}
-      sf_trustedfw:
-        image_arg: --alt sf_trustedfw --download {sf_trustedfw}
+      sf_trustedfw0:
+        image_arg: --alt sf_trustedfw0 --download {sf_trustedfw0}
+        url: ${OPTEE_ITB_URL}
+      sf_trustedfw1:
+        image_arg: --alt sf_trustedfw1 --download {sf_trustedfw1}
         url: ${OPTEE_ITB_URL}
       sf_uboot0:
         image_arg: --alt sf_uboot0 --download {sf_uboot0}
