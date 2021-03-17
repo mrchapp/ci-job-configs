@@ -24,6 +24,14 @@
             branches:
               - common/android-4.14-stable
               - common/android-4.19-stable
+              - common/android-4.4-o
+              - common/android-4.4-p
+              - common/android-4.9-o
+              - common/android-4.9-p
+              - common/android-4.9-q
+              - common/android-4.14-p
+              - common/android-4.14-q
+              - common/android-4.19-q
             skip-tag: true
             shallow-clone: false
             wipe-workspace: false
