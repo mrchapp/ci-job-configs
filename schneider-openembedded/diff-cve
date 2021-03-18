@@ -8,14 +8,14 @@
 	next
 }
 
-# Skip layer name (poky commit a50fe284b982e2269d3b29236ba9796f216f7414)
-/^LAYER/ { next }
-
 # Multiline input, separated by blank lines
 BEGIN { RS="" ; FS="\n"; OFS="\t" }
 
 # For every line, from each input file
 {
+	# Ignore layer name (poky commit a50fe284b982e2269d3b29236ba9796f216f7414)
+	sub(/LAYER: \S+\n/, "", $0);
+
 	# Remove the prefix from each line
 	# Also collect prefix names for later
 	for (i = 1; i <= NF; i++) {
@@ -32,8 +32,9 @@ BEGIN { RS="" ; FS="\n"; OFS="\t" }
 	if ($1 ~ /^u-boot-rzn1-/) next;
 	if ($1 ~ /^linux-/) next;
 
-	# Ignore CVEs that are marked as "Patched"
+	# Ignore CVEs that are marked as "Patched" or "Whitelisted"
 	if ($4 == "Patched") next;
+	if ($4 == "Whitelisted") next;
 
 	# Indexing is done using PKGNAME-CVENUM for uniqueness.
 	# Tab as separator since dashes occur in components.
