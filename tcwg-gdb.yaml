@@ -20,7 +20,7 @@
             description: 'gdb revision to build'
         - string:
             name: target_list
-            default: 'aarch64-linux-gnu aarch64_be-linux-gnu aarch64-none-elf aarch64_be-none-elf arm-linux-gnueabi arm-linux-gnueabihf armv8l-linux-gnueabihf arm-netbsdelf arm-none-eabi armeb-linux-gnueabihf tcwg-x86_64-cam tcwg-apm_64-build tcwg-tk1_32-build'
+            default: 'tcwg-x86_64-cam tcwg-apm_64-build tcwg-tk1_32-build'
             description: 'List of targets to test'
         - string:
             name: bfd_list
@@ -117,16 +117,11 @@
             # Remove container on exit
             trap "build_container_cleanup" EXIT HUP INT QUIT TRAP KILL PIPE TERM
 
-            case $target in
-                tcwg-*) target_opt="" ;;
-                *) target_opt="--target $target" ;;
-            esac
-
             rm -rf build-$target || true
             mkdir -p build-$target
             cd build-$target
             result=0
-            jobs=1
+            jobs=$(nproc --all)
             echo BUILD STARTED $(date)
             echo WORKSPACE: ${WORKSPACE}
 
@@ -144,7 +139,7 @@
             # errors.
             ${BUILD_SHELL} -c "../configure --enable-targets=all --disable-ld --disable-gold --disable-gas --disable-gprof --disable-sim --disable-lto --prefix=`pwd`/install ${bfd}"
             ${BUILD_SHELL} -c "make all -j$jobs"
-            ${BUILD_SHELL} -c "PATH=$djpath:$PATH make check-gdb -j$jobs -k" || result=1
+            ${BUILD_SHELL} -c "PATH=$djpath:$PATH make check-gdb -j2 -k" || result=1
 
             sums=`find . -name "*.sum"`
             set +x
