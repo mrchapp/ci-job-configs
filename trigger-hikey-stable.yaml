@@ -13,7 +13,7 @@
         - build-discarder:
             days-to-keep: 30
             num-to-keep: 30
-    disabled: true
+    disabled: false
     node: triggers
     display-name: 'TOBEDELETED: only used for test purpose'
     scm:
@@ -21,15 +21,9 @@
             remotes:
                 - android-common:
                     url: https://android.googlesource.com/kernel/common
-                - linux-stable:
-                    url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
-                    refspec: +refs/heads/linux-5.4.y:refs/remotes/linux-stable/linux-5.4.y +refs/heads/master:refs/remotes/master/master
             branches:
-              - android-common/android-mainline
-              - android-common/android12-5.10
               - android-common/android12-5.4
-              - android-common/android11-5.4
-              - android-common/android11-5.4-lts
+              - android-common/android12-5.10
             skip-tag: true
             shallow-clone: false
             wipe-workspace: false
@@ -46,23 +40,51 @@
             git clean -fdx
             env
 
-            MAKE_KERNELVERSION=$(make kernelversion)
-            KERNEL_BRANCH=${GIT_BRANCH#android-common/}
-            KERNEL_DESCRIBE=${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}
+            KERNEL_BRANCH_REAL="${GIT_BRANCH#android-common/}"
+            MAKE_KERNELVERSION="$(make kernelversion)"
+            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-weekly"
+            KERNEL_DESCRIBE="${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}-$(date +%Y%m%d%H%M)"
 
-            echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} > properties.txt
-            echo KERNEL_BRANCH=${KERNEL_BRANCH} >> properties.txt
+            echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" > "properties.txt"
+            echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "properties.txt"
 
-            params=lkft-parameters.txt
-            echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} >> $params
-            echo SRCREV_kernel=${GIT_COMMIT} >> $params
-            echo MAKE_KERNELVERSION=${MAKE_KERNELVERSION} >> $params
-            echo KERNEL_BRANCH=${KERNEL_BRANCH} >> $params
-            cat $params
+            params="lkft-${KERNEL_BRANCH}.txt"
+            echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" >> "${params}"
+            echo "SRCREV_kernel=${GIT_COMMIT}" >> "${params}"
+            echo "MAKE_KERNELVERSION=${MAKE_KERNELVERSION}" >> "${params}"
+            echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "${params}"
+            cat "${params}"
 
-        - trigger-builds:
-            - project: lkft-android-common-gateway
-              property-file: lkft-parameters.txt
+            # generate files for the api callback build
+            f_api_callbacks="all-kernels.txt"
+            cp -fv  $params ${f_api_callbacks}
+            QA_BUILD_VERSION=${KERNEL_DESCRIBE}
+            echo "QA_BUILD_VERSION=${QA_BUILD_VERSION}" >> ${f_api_callbacks}
+            echo "CALLER_JOB_NAME=${JOB_NAME}" >> ${f_api_callbacks}
+            echo "CALLER_BUILD_NUMBER=${BUILD_NUMBER}" >>${f_api_callbacks}
+            echo "ANDROID_BUILD_CONFIG=lkft-gki-${KERNEL_BRANCH_REAL}" >>${f_api_callbacks}
+            echo "TEST_OTHER_PLANS_OVERRIDE=VTS CTS BENCHMARKS" >>${f_api_callbacks}
+
+            case "X${KERNEL_BRANCH_REAL}" in
+                "Xandroid12-5.4")
+                    build_configs_to_be_triggered="lkft-db845c-aosp-master-5.4-gki lkft-hikey960-aosp-master-5.4-gki"
+                    ;;
+                "Xandroid12-5.10")
+                    build_configs_to_be_triggered="lkft-db845c-aosp-master-android12-5.10-gki lkft-hikey960-aosp-master-android12-5.10-gki"
+                    ;;
+                "Xandroid11-5.4")
+                    build_configs_to_be_triggered="lkft-db845c-android11-android11-5.4-gki lkft-hikey960-android11-android11-5.4-gki"
+                    ;;
+                "X*")
+                    build_configs=""
+                    ;;
+            esac
+            echo "ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED=${build_configs_to_be_triggered}" >>${f_api_callbacks}
+
+            cat "${params}"
+            echo "=========================="
+            cat "${f_api_callbacks}"
+
     publishers:
         - email:
             recipients: 'yongqin.liu@linaro.org'
