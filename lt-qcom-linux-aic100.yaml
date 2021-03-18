@@ -1,0 +1,40 @@
+- job:
+    name: lt-qcom-linux-aic100
+    project-type: freestyle
+    defaults: global
+    properties:
+        - authorization:
+            anonymous:
+                - job-read
+                - job-extended-read
+            linaro-landing-team-qualcomm-personnel:
+                - job-build
+                - job-cancel
+        - build-discarder:
+            days-to-keep: 30
+            num-to-keep: 30
+            artifact-num-to-keep: 1
+    parameters:
+        - string:
+            name: KERNEL_VERSION
+            default: '5.4.1'
+        - string:
+            name: DEB_CONFIG
+            default: 'config-5.4.1-050401-generic'
+        - string:
+            name: RPM_CONFIG
+            default: 'config-5.4.1-1.el7.elrepo.x86_64'
+    disabled: false
+    node: docker-buster-amd64
+    display-name: 'Qualcomm LT Linux kernel for AIC100'
+    wrappers:
+        - timestamps
+    builders:
+        - shell:
+            !include-raw: lt-qcom-linux/builders-deps.sh
+        - shell:
+            !include-raw: lt-qcom-linux/aic100.sh
+    publishers:
+        - email-ext:
+            recipients: 'nicolas.dechesne@linaro.org'
+            always: true
