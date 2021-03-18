@@ -1,0 +1,92 @@
+- job:
+    name: lt-qcom-bootloader-rb5
+    project-type: freestyle
+    defaults: global
+    logrotate:
+        daysToKeep: 30
+        numToKeep: 30
+    properties:
+        - authorization:
+            anonymous:
+                - job-read
+                - job-extended-read
+                - job-workspace
+            linaro-landing-team-qualcomm-personnel:
+                - job-build
+                - job-cancel
+    parameters:
+        - string:
+            name: TOOLCHAIN_ARCH
+            default: 'arm64'
+        - string:
+            name: BRANCH
+            default: 'master'
+        - string:
+            name: QCOM_LINUX_FIRMWARE
+            default: 'http://releases.linaro.org/96boards/rb5/qualcomm/firmware/RB5_firmware_20210331-v4.zip'
+        - string:
+            name: QCOM_LINUX_FIRMWARE_MD5
+            default: 'd65ec09ba18dcafe291c870e0516c290'
+        - string:
+            name: QCOM_LINUX_FIRMWARE_LICENSE_MD5
+            default: 'cbbe399f2c983ad51768f4561587f000'
+        - string:
+            name: ABL_GIT_LINARO
+            default: 'https://git.linaro.org/landing-teams/working/qualcomm/abl.git'
+        - string:
+            name: ABL_GIT_REL
+            default: 'release/LU.UM.1.2.1.r1-23200-QRB5165.0'
+        - string:
+            name: ABL_CLANG_GIT
+            default: 'https://source.codeaurora.org/quic/la/platform/prebuilts/clang/host/linux-x86'
+        - string:
+            name: ABL_CLANG_REL
+            default: 'LA.UM.7.9.r1-07300-sm6150.0'
+        - string:
+            name: PUB_DEST
+            default: '96boards/rb5/linaro/rescue/${BUILD_NUMBER}'
+    disabled: false
+    node: docker-buster-amd64
+    display-name: 'Qualcomm bootloader for Qualcomm RB5'
+    scm:
+        - git:
+            url: https://git.linaro.org/landing-teams/working/qualcomm/db-boot-tools.git
+            refspec: +refs/heads/${BRANCH}:refs/remotes/origin/${BRANCH}
+            name: origin
+            branches:
+                - refs/heads/${BRANCH}
+            skip-tag: true
+            shallow-clone: true
+            wipe-workspace: false
+    wrappers:
+        - timestamps
+        - credentials-binding:
+            - text:
+                credential-id: LT_QCOM_KEY
+                variable: LT_QCOM_KEY
+        - credentials-binding:
+            - text:
+                credential-id: AUTH_TOKEN
+                variable: AUTH_TOKEN
+        - ssh-agent-credentials:
+                users:
+                    - 'LT_QUALCOMM_PRIVATE_KEY_SSH'
+        - build-name:
+            name: '#${BUILD_NUMBER}-${GIT_REVISION,length=8}'
+    builders:
+        - shell:
+            !include-raw: lt-qcom/install-gcc-toolchain.sh
+        - inject:
+            properties-file: gcc_toolchain_env
+        - linaro-publish-token
+        - shell:
+            !include-raw: lt-qcom-bootloader/rb5/builders.sh
+    publishers:
+        - groovy-postbuild:
+            script:
+                !include-raw:
+                  - rpb-openembedded/postbuild.groovy
+        - email-ext:
+            recipients: 'nicolas.dechesne@linaro.org anibal.limon@linaro.org'
+            failure: true
+            still-failing: true
