@@ -22,6 +22,9 @@
                 - android-common:
                     url: https://android.googlesource.com/kernel/common
             branches:
+              # needs to update the following configs:
+              #     lkft-android-common-gateway.yaml
+              #     lkft-gki-kernel.yaml
               - android-common/android11-5.4
               - android-common/android12-5.4
               - android-common/android12-5.10
