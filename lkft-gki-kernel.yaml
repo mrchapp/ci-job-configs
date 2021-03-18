@@ -164,6 +164,10 @@
               property-file: params_android12-5.4-presubmit-lkft-db845c-aosp-master-5.4-gki.txt
             - project: lkft-generic-build
               property-file: params_android12-5.10-presubmit-lkft-db845c-aosp-master-android12-5.10-gki.txt
+            - project: lkft-generic-build
+              property-file: params_android12-5.10-weekly-lkft-db845c-aosp-master-android12-5.10-gki.txt
+            - project: lkft-generic-build
+              property-file: params_android12-5.10-weekly-lkft-hikey960-aosp-master-android12-5.10-gki.txt
 
     publishers:
         - logparser:

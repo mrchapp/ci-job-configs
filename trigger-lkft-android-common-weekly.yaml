@@ -21,12 +21,9 @@
             remotes:
                 - android-common:
                     url: https://android.googlesource.com/kernel/common
-                    refspec: +refs/heads/android12-5.4:refs/remotes/android-common/android12-5.4
-                - linux-stable:
-                    url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
-                    refspec: +refs/heads/linux-5.4.y:refs/remotes/linux-stable/linux-5.4.y +refs/heads/master:refs/remotes/master/master
             branches:
               - android-common/android12-5.4
+              - android-common/android12-5.10
             skip-tag: true
             shallow-clone: false
             wipe-workspace: false
@@ -71,6 +68,9 @@
             case "X${KERNEL_BRANCH_REAL}" in
                 "Xandroid12-5.4")
                     build_configs_to_be_triggered="lkft-db845c-aosp-master-5.4-gki lkft-hikey960-aosp-master-5.4-gki"
+                    ;;
+                "Xandroid12-5.10")
+                    build_configs_to_be_triggered="lkft-db845c-aosp-master-android12-5.10-gki lkft-hikey960-aosp-master-android12-5.10-gki"
                     ;;
                 "Xandroid11-5.4")
                     build_configs_to_be_triggered="lkft-db845c-android11-android11-5.4-gki lkft-hikey960-android11-android11-5.4-gki"
