@@ -75,17 +75,19 @@
                     ;;
             esac
 
-            git checkout -B ${target_branch} linaro/${target_branch}
-            git merge --log --no-edit aosp/${KERNEL_BRANCH}
-            # push to the remote branch
-            git push linaro HEAD:${target_branch}
+            if [ -n "${target_branch}" ]; then
+              git checkout -B ${target_branch} linaro/${target_branch}
+              git merge --log --no-edit aosp/${KERNEL_BRANCH}
+              # push to the remote branch
+              git push linaro HEAD:${target_branch}
 
-            # Apply tag
-            tag=${KERNEL_DESCRIBE}-$(date +"%Y%m%d")-${BUILD_NUMBER}
-            git tag ${tag}
+              # Apply tag
+              tag=${KERNEL_DESCRIBE}-$(date +"%Y%m%d")-${BUILD_NUMBER}
+              git tag ${tag}
 
-            # Push tag
-            git push linaro ${tag}
+              # Push tag
+              git push linaro ${tag}
+            fi
 
     publishers:
         - logparser:

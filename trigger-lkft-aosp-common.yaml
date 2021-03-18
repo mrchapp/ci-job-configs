@@ -55,15 +55,20 @@
             echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} > properties.txt
             echo KERNEL_BRANCH=${KERNEL_BRANCH} >> properties.txt
 
-            params=lkft-parameters.txt
+            params=lkft-parameters-hikey.txt
             echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} >> $params
             echo SRCREV_kernel=${GIT_COMMIT} >> $params
             echo MAKE_KERNELVERSION=${MAKE_KERNELVERSION} >> $params
             echo KERNEL_BRANCH=${KERNEL_BRANCH} >> $params
             cat $params
 
+            if [ "X${KERNEL_BRANCH}X" = "Xandroid-4.14-stableX" ] || [ "X${KERNEL_BRANCH}X" = "Xandroid-4.19-stableX" ]; then
+              # only trigger the lkft-omap-merge-mirrors build job for the android-4.14-stable and android-4.19-stable branches
+              cp  "${params}" lkft-parameters-x15.txt
+            fi
+
         - trigger-builds:
             - project: lkft-omap-merge-mirrors
-              property-file: lkft-parameters.txt
+              property-file: lkft-parameters-x15.txt
             - project: lkft-hikey-merge-mirrors
-              property-file: lkft-parameters.txt
+              property-file: lkft-parameters-hikey.txt
