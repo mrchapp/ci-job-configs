@@ -1,0 +1,98 @@
+- job:
+    name: tcwg-trigger-gdb
+    project-type: freestyle
+    defaults: global
+    properties:
+        - authorization:
+            anonymous:
+                - job-read
+                - job-extended-read
+            linaro:
+                - job-build
+                - job-cancel
+        - build-discarder:
+            days-to-keep: 30
+            num-to-keep: 30
+    parameters:
+        - string:
+            name: ref_build
+            default: 'previous'
+            description: 'Reference build for comparison, e.g., "lastSuccess" or "previous" or job number or empty string to skip comparison'
+    disabled: false
+    node: tcwg-x86_64-dev-02
+    retry-count: 3
+    concurrent: false
+    display-name: 'TCWG Trigger GDB'
+    scm:
+        - git:
+            url: https://git.linaro.org/toolchain/binutils-gdb.git
+            refspec: +refs/heads/master:refs/remotes/origin/master
+            name: origin
+            branches:
+                - refs/heads/master
+            skip-tag: true
+            shallow-clone: true
+            wipe-workspace: false
+            clean:
+                before: true
+    triggers:
+        - pollscm: 'H/5 * * * *'
+    wrappers:
+        - timeout:
+            timeout: 1200
+        - timestamps
+        - ssh-agent-credentials:
+            # tcwg-buildslave user id
+            users:
+                - 'e0958a95-204f-4c14-a66c-5e2be6c5d50a'
+    builders:
+        - shell: |
+            #!/bin/bash
+
+            set -ex
+
+            shopt -s extglob
+
+            cat << EOF > gdb_parameters
+            log_name=${JOB_NAME}-${BUILD_NUMBER}/\$builder_type.\$target.\$bfd
+            dont_fail=true
+            bfd_list=--enable-64-bit-bfd=no
+            EOF
+
+            if [ x"$ref_build" != x ] ; then
+                case "$ref_build" in
+                    lastSuccess)   ref_build_num=$(wget -q --no-check-certificate -O - "${JOB_URL}lastSuccessfulBuild/buildNumber") ;;
+                    previous)      ref_build_num=$(wget -q --no-check-certificate -O - "${JOB_URL}lastCompletedBuild/buildNumber") ;;
+                    [1-9]*([0-9])) ref_build_num="$ref_build" ;;
+                    *) echo "ERROR: Cannot handle ref_build: $ref_build"; exit 1 ;;
+                esac
+
+            # Scrambled indentation because of here-doc
+                cat << EOF > compare_results_parameters
+            ref_logs=${JOB_NAME}-${ref_build_num}
+            new_logs=${JOB_NAME}-${BUILD_NUMBER}
+            pass_thresh=0.66
+            show_results=false
+            EOF
+            else
+                rm -f compare_results_parameters
+            fi
+        - trigger-builds:
+            - project: tcwg-gdb
+              property-file: gdb_parameters
+              block: true
+        - conditional-step:
+            condition-kind: file-exists
+            condition-filename: compare_results_parameters
+            steps:
+                - trigger-builds:
+                    - project: tcwg-compare-results
+                      property-file: compare_results_parameters
+                      block: true
+    publishers:
+        - workspace-cleanup:
+             include:
+              - "*_parameters"
+        - email-ext:
+             recipients: 'luis.machado@linaro.org'
+             aborted: true

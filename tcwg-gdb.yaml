@@ -12,7 +12,7 @@
                 - job-cancel
         - build-discarder:
             days-to-keep: 30
-            num-to-keep: 30
+            num-to-keep: 100
     parameters:
         - string:
             name: gdb_rev
@@ -20,7 +20,7 @@
             description: 'gdb revision to build'
         - string:
             name: target_list
-            default: 'aarch64-linux-gnu aarch64_be-linux-gnu aarch64-none-elf aarch64_be-none-elf arm-linux-gnueabi arm-linux-gnueabihf armv8l-linux-gnueabihf arm-none-eabi armeb-linux-gnueabihf tcwg-x86_64-cam tcwg-amp_32-build tcwg-amp_64-build tcwg-apm_64-build tcwg-apm_32-build tcwg-tk1_32-build'
+            default: 'aarch64-linux-gnu aarch64_be-linux-gnu aarch64-none-elf aarch64_be-none-elf arm-linux-gnueabi arm-linux-gnueabihf armv8l-linux-gnueabihf arm-netbsdelf arm-none-eabi armeb-linux-gnueabihf tcwg-x86_64-cam tcwg-apm_64-build tcwg-tk1_32-build'
             description: 'List of targets to test'
         - string:
             name: bfd_list
@@ -42,8 +42,12 @@
             name: log_server
             default: dev-01.tcwglab:/home/tcwg-buildslave/logs
             description: 'Log_Server'
+        - string:
+            name: build_container_distro
+            default: 'lts_1'
+            description: 'Distro to use on the builder with non-default container type: bionic, focal ...'
     disabled: false
-    node: tcwg-coordinator
+    node: tcwg-x86_64-dev-02
     retry-count: 3
     concurrent: true
     display-name: 'TCWG BBB GDB'
@@ -65,10 +69,7 @@
             name: label
             values:
                 - tcwg-x86_64-cam
-                - tcwg-amp_32-build
-                - tcwg-amp_64-build
                 - tcwg-apm_64-build
-                - tcwg-apm_32-build
                 - tcwg-tk1_32-build
         - axis:
             type: dynamic
@@ -103,7 +104,7 @@
             rm -rf jenkins-scripts
             git clone -b $scripts_branch --depth 1 https://git.linaro.org/toolchain/jenkins-scripts
 
-            ./jenkins-scripts/start-container-docker.sh --label $label --node $NODE_NAME --distro default --task build --prefix build_ > build-container.sh
+            bash -x ./jenkins-scripts/start-container-docker.sh --label $label --node $NODE_NAME --task build --prefix build_ --distro $build_container_distro > build-container.sh
             . ./build-container.sh
             BUILD_SHELL="build_container_exec bash"
             $BUILD_SHELL -c "echo \"Build session is up; ulimit config:\"; ulimit -a"
@@ -126,16 +127,55 @@
             echo BUILD STARTED $(date)
             echo WORKSPACE: ${WORKSPACE}
 
-            # For the moment, only build gdb (do not run the tests).
-            # Do this in a different subdir.
-            # GDB is no longer supported on arm-vxworks
-            case ${target} in
-              arm-vxworks) ;;
-              *)
-                ${BUILD_SHELL} -c "mkdir build-gdb && cd build-gdb && ../../configure --with-gnu-ld --enable-plugins --enable-tui --disable-gas --disable-binutils --disable-ld --disable-gold --disable-gprof $target_opt ${bfd}"
-                ${BUILD_SHELL} -c "cd build-gdb && make all -j$jobs"
-                ;;
-            esac
+            # Build our own version of dejagnu, using abe to try to
+            # avoid problems with the system's version
+            ${BUILD_SHELL} -c "git clone https://git.linaro.org/toolchain/abe.git"
+            ${BUILD_SHELL} -c "cd abe && ./configure --with-git-reference-dir=/home/tcwg-buildslave/snapshots-ref"
+            ${BUILD_SHELL} -c "cd abe && ./abe.sh --build dejagnu"
+            djpath=$(${BUILD_SHELL} -c "ls -d $PWD/abe/./builds/hosttools/*/bin")
+            [ -x $djpath/runtest ] || (echo "DejaGnu not built in the expected location: $djpath/runtest" && exit 1)
+
+            # If configure or build fails, the execution will stop
+            # because of 'set -e'. But for 'make check' we want to
+            # execute all the tests, and report if there were some
+            # errors.
+            ${BUILD_SHELL} -c "../configure --disable-ld --disable-gold --disable-gas --disable-gprof --disable-sim --disable-lto --prefix=`pwd`/install $target_opt ${bfd}"
+            ${BUILD_SHELL} -c "make all -j$jobs"
+            ${BUILD_SHELL} -c "PATH=$djpath:$PATH make check-gdb -j$jobs -k" || result=1
+
+            sums=`find . -name "*.sum"`
+            set +x
+            echo '############################################'
+            echo 'See unexpected results below:'
+            echo '############################################'
+            [ x"$sums" != x ] && egrep '^FAIL:|^XPASS:' $sums || true
+            echo '############################################'
+            echo 'See ends of sumfiles below:'
+            echo '############################################'
+            [ x"$sums" != x ] && tail $sums
+
+            set -x
+            # Split $logserver into "server:path".
+            basedir="${log_server#*:}"
+            log_server="${log_server%:*}"
+            eval dir=${log_name}
+            ${BUILD_SHELL} -c "ssh ${log_server} mkdir -p ${basedir}/${dir}"
+
+            # gcc-compare-results handles only .xz files, so compress
+            # them before upload. Since the file are created inside a
+            # container, the uid/gid may differ from the host's and
+            # cause permission errors during compression. Copy them,
+            # so that xz can operate.
+            rm -rf artifacts
+            mkdir -p artifacts
+            cp ${sums} artifacts/
+            for sum in ${sums}
+            do
+                log=$(echo $sum | sed 's/.sum/.log/')
+                cp $log artifacts/
+            done
+            xz artifacts/*.sum artifacts/*.log
+            ${BUILD_SHELL} -c "scp artifacts/*.sum.xz artifacts/*.log.xz ${log_server}:${basedir}/${dir}/"
 
             echo BUILD FINISHED $(date)
 
@@ -150,6 +190,6 @@
             exit $result
     publishers:
         - email-ext:
-            recipients: 'christophe.lyon@linaro.org'
-            matrix-trigger: only-parent
+            recipients: 'luis.machado@linaro.org'
             aborted: true
+            matrix-trigger: only-parent
