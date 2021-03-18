@@ -8,6 +8,9 @@
 	next
 }
 
+# Skip layer name (poky commit a50fe284b982e2269d3b29236ba9796f216f7414)
+/^LAYER/ { next }
+
 # Multiline input, separated by blank lines
 BEGIN { RS="" ; FS="\n"; OFS="\t" }
 
