@@ -3,7 +3,7 @@
 set -ex
 
 sudo apt update
-sudo apt install -y ccache bc kmod cpio dpkg-dev wget flex bison bc kmod cpio libssl-dev lz4 libelf-dev libssl-dev build-essential
+sudo apt install -y ccache bc kmod cpio dpkg-dev wget flex bison bc kmod cpio libssl-dev lz4 libelf-dev libssl-dev build-essential rsync rpm
 
 wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${KERNEL_VERSION}.tar.xz
 tar xf linux-${KERNEL_VERSION}.tar.xz
