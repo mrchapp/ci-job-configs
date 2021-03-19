@@ -143,7 +143,7 @@
 
             # Use GDB's combined summary file instead of each test's individual
             # summary.
-            sums=`./gdb/testsuite/gdb.sum`
+            sums="gdb/testsuite/gdb.sum"
             set +x
             echo '############################################'
             echo 'See unexpected results below:'
