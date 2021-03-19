@@ -44,6 +44,7 @@
             recipients: maxim.kuvyrkov@linaro.org
             content-type: text
             body: |
-              ${{FILE,path="artifacts/stale-jobs.log"}}
+              Jobs with no new results in $days days:
+              ${FILE,path="artifacts/stale-jobs.log"}
             failure: true
             aborted: true
