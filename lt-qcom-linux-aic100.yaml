@@ -33,6 +33,8 @@
         - shell:
             !include-raw: lt-qcom-linux/aic100.sh
     publishers:
+        - archive:
+            artifacts: 'out/*'
         - email-ext:
             recipients: 'nicolas.dechesne@linaro.org'
             always: true
