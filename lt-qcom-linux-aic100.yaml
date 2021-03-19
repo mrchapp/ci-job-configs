@@ -31,8 +31,6 @@
         - timestamps
     builders:
         - shell:
-            !include-raw: lt-qcom-linux/builders-deps.sh
-        - shell:
             !include-raw: lt-qcom-linux/aic100.sh
     publishers:
         - email-ext:
