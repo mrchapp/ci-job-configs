@@ -20,6 +20,6 @@ cp ../*.deb ${WORKSPACE}/out/
 # Build rpm packages
 make mrproper
 wget https://git.linaro.org/ci/job/configs.git/plain/lt-qcom-linux/aic100/${RPM_CONFIG} -O .config
-make EXTRAVERSION=-050401-generic -j$(nproc) rpm-pkg
+make EXTRAVERSION=-1.el7.elrepo.x86_64 -j$(nproc) rpm-pkg
 cp ~/rpmbuild/RPMS/x86_64/*.rpm ${WORKSPACE}/out/
 
