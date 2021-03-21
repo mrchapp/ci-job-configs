@@ -33,7 +33,7 @@
             wipe-workspace: false
     triggers:
         - pollscm:
-            cron: 'H * * * 6'
+            cron: 'H H * * 6'
     wrappers:
         - timestamps
         - build-name:
