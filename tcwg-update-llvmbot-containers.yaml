@@ -106,11 +106,11 @@
             #!/bin/bash
             set -ex
 
-            ./tcwg-update-llvmbot-containers.sh \
+            ./jenkins-scripts/tcwg-update-llvmbot-containers.sh \
             --NODE_NAME "$NODE_NAME" \
             --distro "$distro" \
             --master "$master" \
             --password "$TCWG_LLVMBOT_PASSWORD" \
             --force "$force" \
             --verbose "$verbose"
-# checksum: 3bd361b4dbd9a1f3f182fe8cfef7e297
+# checksum: 451c86753889aceeaab2ae9c96e37df0

@@ -102,9 +102,9 @@
               tcwg-llvmbot_*) group=tcwg-llvm ;;
               *) group=all ;;
             esac
-            ./tcwg-update-host-containers.sh \
+            ./jenkins-scripts/tcwg-update-host-containers.sh \
             --distro "$distro" \
             --group "$group" \
             --force "$force" \
             --verbose "$verbose"
-# checksum: 3f95e986bbd8d9c16f1e386f7ed210dc
+# checksum: 12bccd799d78a3a29b57f295569ff578

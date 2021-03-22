@@ -102,11 +102,11 @@
             #!/bin/bash
             set -ex
 
-            ./tcwg-update-llvmbot-containers.sh \
+            ./jenkins-scripts/tcwg-update-llvmbot-containers.sh \
             --NODE_NAME "$NODE_NAME" \
             --distro "$distro" \
             --master "buildkite" \
             --password "$TCWG_BUILDKITE_TOKEN_LIBCXX" \
             --force "$force" \
             --verbose "$verbose"
-# checksum: 89dc8bb58f412ffddce309e7733e4798
+# checksum: ba732ac409a5cf67e875423c5b1176aa

@@ -97,20 +97,20 @@
               tcwg-llvmbot_*) group=tcwg-llvm ;;
               *) group=all ;;
             esac
-            ./tcwg-update-host-containers.sh \
+            ./jenkins-scripts/tcwg-update-host-containers.sh \
             --distro "$distro" \
             --group "$group" \
             --force "$force" \
             --verbose "$verbose"
 #elif CONTAINER_jenkins
-            ./tcwg-update-host-containers.sh \
+            ./jenkins-scripts/tcwg-update-host-containers.sh \
             --distro "$distro" \
             --node "$NODE_NAME" \
             --force "$force" \
             --verbose "$verbose" || exit 125
           unstable-return: 125
 #elif CONTAINER_llvmbot
-            ./tcwg-update-llvmbot-containers.sh \
+            ./jenkins-scripts/tcwg-update-llvmbot-containers.sh \
             --NODE_NAME "$NODE_NAME" \
             --distro "$distro" \
             --master "$master" \
@@ -118,7 +118,7 @@
             --force "$force" \
             --verbose "$verbose"
 #elif CONTAINER_buildkite
-            ./tcwg-update-llvmbot-containers.sh \
+            ./jenkins-scripts/tcwg-update-llvmbot-containers.sh \
             --NODE_NAME "$NODE_NAME" \
             --distro "$distro" \
             --master "buildkite" \

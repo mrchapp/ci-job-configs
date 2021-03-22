@@ -102,10 +102,10 @@
             #!/bin/bash
             set -ex
 
-            ./tcwg-update-host-containers.sh \
+            ./jenkins-scripts/tcwg-update-host-containers.sh \
             --distro "$distro" \
             --node "$NODE_NAME" \
             --force "$force" \
             --verbose "$verbose" || exit 125
           unstable-return: 125
-# checksum: ccbd0f2d69a5c48111e90fa94d72fec3
+# checksum: 3897d69f4ccb651c14c771829e50cec9
