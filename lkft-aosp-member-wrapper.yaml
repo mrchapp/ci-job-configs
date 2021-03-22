@@ -64,6 +64,10 @@
               property-file: params_facc36a5db28d6ae2bfa05ca4f8f0a21.txt
             - project: lkft-aosp-member
               property-file: params_6ff83c1a3c2ac4d7ad241feef98ff352.txt
+            - project: lkft-aosp-member
+              property-file: params_693674c3b02fc16e54f21b96ac5ab027.txt
+            - project: lkft-aosp-member
+              property-file: params_cec2e2b5fcc2caf4851015135ab9ec51.txt
             - project: lkft-aosp
               property-file: params_lkft-master-x15
             - project: lkft-aosp

@@ -24,6 +24,9 @@
         - string:
             name: TARGET_PRODUCT
             default: 'hikey960'
+        - string:
+            name: MAKE_TARGETS
+            default: ''
     disabled: false
     node: docker-bionic-aosp
     display-name: 'Jobs for pure private aosp builds'

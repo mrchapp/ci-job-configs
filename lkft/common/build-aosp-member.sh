@@ -53,6 +53,7 @@ function build_android(){
         local opt_maniefst_url="https://android.googlesource.com/platform/manifest"
         [ -n "${MANIFEST_BRANCH}" ] && opt_manfest_branch="-b ${MANIFEST_BRANCH}"
         [ -n "${MANIFEST_URL}" ] && opt_maniefst_url="-m ${MANIFEST_URL}"
+        [ -n "${MAKE_TARGETS}" ] && export MAKE_TARGETS
         bash -x ./linaro-build.sh -tp "${TARGET_PRODUCT}" ${opt_maniefst_url} ${opt_manfest_branch}
     fi
     DIR_PUB_SRC_PRODUCT="${ANDROID_ROOT}/out/target/product/${TARGET_PRODUCT}"
@@ -61,17 +62,29 @@ function build_android(){
     cp -a ${ANDROID_ROOT}/out/pinned-manifest/*-pinned-manifest.xml ${DIR_PUB_SRC}
     wget https://git.linaro.org/ci/job/configs.git/blob_plain/HEAD:/lkft/common/build-info/member.txt -O ${DIR_PUB_SRC}/BUILD-INFO.txt
 
-    for f in ${ANDROID_IMAGE_FILES}; do
-        if [ ! -f ${DIR_PUB_SRC_PRODUCT}/${f} ]; then
-            continue
+    if [ -z "${PUBLISH_FILES}" ]; then
+        PUBLISH_FILES="${ANDROID_IMAGE_FILES}"
+    fi
+
+    for f in ${PUBLISH_FILES}; do
+        if [ "X${f}X" = "Xandroid-cts.zipX" ] || [ "X${f}X" = "Xandroid-vts.zipX" ]; then
+            f_src_path="${ANDROID_ROOT}/out/host/linux-x86/cts/${f}"
+        else
+            f_src_path="{DIR_PUB_SRC_PRODUCT}/${f}"
         fi
 
-        mv -vf ${DIR_PUB_SRC_PRODUCT}/${f} ${DIR_PUB_SRC}/${f}
-
-        if [ "Xramdisk.img" = "X${f}" ] || [ "Xramdisk-debug.img" = "X${f}" ]; then
+        if [ ! -f "${f_src_path}" ]; then
             continue
+        else
+            mv -vf "${f_src_path}" "${DIR_PUB_SRC}/${f}"
         fi
-        xz -T 0 ${DIR_PUB_SRC}/${f}
+
+        if [ "Xramdisk.img" = "X${f}" ] || [ "Xramdisk-debug.img" = "X${f}" ] || [ "Xandroid-cts.zip" = "X${f}" ] || [ "Xandroid-vts.zip" = "X${f}" ]; then
+            # files no need to compress
+            continue
+        else
+            xz -T 0 "${DIR_PUB_SRC}/${f}"
+        fi
     done
 
     if [ -f ${DIR_PUB_SRC_PRODUCT}/build_fingerprint.txt ]; then
@@ -86,6 +99,8 @@ function build_android(){
         [ -n "${TARGET_PRODUCT}" ] && echo "TARGET_PRODUCT=${TARGET_PRODUCT}" >>${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt
         [ -n "${MANIFEST_BRANCH}" ] && echo "MANIFEST_BRANCH=${MANIFEST_BRANCH}" >>${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt
         [ -n "${MANIFEST_URL}" ] && echo "MANIFEST_URL=${MANIFEST_URL}" >>${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt
+        [ -n "${MAKE_TARGETS}" ] && echo "MAKE_TARGETS=${MAKE_TARGETS}" >>${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt
+        [ -n "${PUBLISH_FILES}" ] && echo "PUBLISH_FILES=${PUBLISH_FILES}" >>${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt
     fi
 }
 
@@ -96,9 +111,12 @@ function clean_workspace(){
 
 # export parameters for publish/job submission steps
 function export_parameters(){
-
-    # beagle_x15 could not used as part of the url for snapshot site
-    if [ "X${TARGET_PRODUCT}" = "Xbeagle_x15" ]; then
+    if [ "X${f}X" = "Xandroid-cts.zipX" ]; then
+        PUB_DEST_TARGET="android-cts"
+    elif [ "X${f}X" = "Xandroid-vts.zipX" ]; then
+        PUB_DEST_TARGET="android-vts"
+    elif [ "X${TARGET_PRODUCT}" = "Xbeagle_x15" ]; then
+        # beagle_x15 could not used as part of the url for snapshot site
         PUB_DEST_TARGET=x15
     else
         PUB_DEST_TARGET=${TARGET_PRODUCT}
