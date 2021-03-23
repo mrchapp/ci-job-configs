@@ -31,6 +31,7 @@
           clean:
             before: true
           prune: true
+
 #END:   tcwg/default.yaml.inc
 
 - job:
@@ -113,4 +114,4 @@
             --password "$TCWG_LLVMBOT_PASSWORD" \
             --force "$force" \
             --verbose "$verbose"
-# checksum: 451c86753889aceeaab2ae9c96e37df0
+# checksum: 2b8b2079199a86037f284250da54b559

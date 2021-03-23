@@ -31,6 +31,7 @@
           clean:
             before: true
           prune: true
+
 #END:   tcwg/default.yaml.inc
 
 - job:
@@ -81,4 +82,4 @@
               ${FILE,path="artifacts/stale-jobs.log"}
             failure: true
             aborted: true
-# checksum: c3d0c8a91f44aabae71afdce6f25859b
+# checksum: 318ea585305553dcab255a943e5b6b8c

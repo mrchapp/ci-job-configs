@@ -82,6 +82,7 @@
           clean:
             before: true
           prune: true
+
 #END:   tcwg/default.yaml.inc
 
 - parameter:
@@ -111,7 +112,6 @@
           name: scripts_branch
           default: master
           description: 'Scripts revision to use'
-
 
 - parameter:
     name: component-parameters
@@ -507,4 +507,4 @@
           ci_project_config: '{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: 31831fe07354eeb23d4777357d6507cc
+# checksum: 49ff3e242266ea40445f509d1887d75f

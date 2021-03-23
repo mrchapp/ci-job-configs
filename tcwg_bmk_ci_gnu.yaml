@@ -107,6 +107,22 @@
           clean:
             before: true
           prune: true
+
+- scm:
+    name: bmk-scripts
+    scm:
+      - git:
+          url: https://git.linaro.org/toolchain/bmk-scripts.git
+          refspec: +refs/heads/*:refs/remotes/origin/* +refs/changes/*:refs/changes/*
+          branches:
+            - $bmk_branch
+          basedir: bmk-scripts
+          skip-tag: true
+          reference-repo: /home/tcwg-buildslave/snapshots-ref/bmk-scripts.git
+          wipe-workspace: false
+          clean:
+            before: true
+          prune: true
 #END:   tcwg/default.yaml.inc
 
 - parameter:
@@ -140,22 +156,6 @@
           name: bmk_branch
           default: master
           description: 'Benchmark scripts revision to use'
-
-- scm:
-    name: bmk-scripts
-    scm:
-      - git:
-          url: https://git.linaro.org/toolchain/bmk-scripts.git
-          refspec: +refs/heads/*:refs/remotes/origin/* +refs/changes/*:refs/changes/*
-          branches:
-            - $bmk_branch
-          basedir: bmk-scripts
-          skip-tag: true
-          reference-repo: /home/tcwg-buildslave/snapshots-ref/bmk-scripts.git
-          wipe-workspace: false
-          clean:
-            before: true
-          prune: true
 
 - parameter:
     name: component-parameters
@@ -548,4 +548,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 48a2de4bbbca665207e98b817da93455
+# checksum: acf639d97c9a9d1f4ac4e6fb8852d03e

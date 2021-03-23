@@ -75,6 +75,7 @@
           clean:
             before: true
           prune: true
+
 #END:   tcwg/default.yaml.inc
 
 - parameter:
@@ -104,7 +105,6 @@
           name: scripts_branch
           default: master
           description: 'Scripts revision to use'
-
 
 - parameter:
     name: component-parameters
@@ -493,4 +493,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: e38622620c6e2286a8d6a8f05d9ec9cf
+# checksum: d5990b65aed420f70925050a280f3dd9

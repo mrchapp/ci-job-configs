@@ -1,17 +1,11 @@
+#include tcwg/default.yaml.inc
+
 - job:
     name: tcwg-benchmark-#{HW}
     project-type: matrix
     defaults: global
     properties:
-        - authorization:
-            tcwg-benchmark:
-                - job-read
-                - job-extended-read
-                - job-build
-                - job-cancel
-        - build-discarder:
-            days-to-keep: 30
-            num-to-keep: 100
+      - default-properties
     parameters:
         - string:
             name: toolchain_url
@@ -134,27 +128,8 @@
     concurrent: true
     display-name: 'TCWG BBB Benchmark #{HW}'
     scm:
-        - git:
-            url: https://git.linaro.org/toolchain/jenkins-scripts.git
-            refspec: +refs/heads/*:refs/remotes/origin/* +refs/changes/*:refs/changes/*
-            branches:
-                - $scripts_branch
-            skip-tag: true
-            shallow-clone: true
-            wipe-workspace: false
-            clean:
-                before: true
-        - git:
-            url: https://git.linaro.org/toolchain/bmk-scripts.git
-            refspec: +refs/heads/*:refs/remotes/origin/* +refs/changes/*:refs/changes/*
-            branches:
-                - $bmk_branch
-            basedir: bmk-scripts
-            skip-tag: true
-            shallow-clone: true
-            wipe-workspace: false
-            clean:
-                before: true
+      - jenkins-scripts
+      - bmk-scripts
     axes:
         - axis:
             type: slave
@@ -194,8 +169,8 @@
 
               # Run the benchmark
 #if HW_tk1 || HW_tx1
-              exec ./tcwg-benchmark.sh
+              exec ./jenkins-scripts/tcwg-benchmark.sh
 #elif HW_stm32
-              exec ./tcwg-benchmark-bare.sh
+              exec ./jenkins-scripts/tcwg-benchmark-bare.sh
 #endif
             unstable-return: 125

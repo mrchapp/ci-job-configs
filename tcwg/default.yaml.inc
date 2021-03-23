@@ -4,7 +4,7 @@
     name: default-properties
     properties:
       - authorization:
-#if RR_tcwg_bmk
+#if RR_tcwg_bmk || TCWG_benchmark
           tcwg-benchmark:
             - job-read
             - job-extended-read
@@ -22,6 +22,8 @@
           days-to-keep: 30
 #if RR_tcwg_cross
           num-to-keep: 10
+#elif TCWG_benchmark
+          num-to-keep: 100
 #else
           num-to-keep: 30
 #endif
@@ -54,6 +56,24 @@
           basedir: jenkins-scripts
           skip-tag: true
           reference-repo: /home/tcwg-buildslave/snapshots-ref/jenkins-scripts.git
+          wipe-workspace: false
+          clean:
+            before: true
+          prune: true
+#endif
+
+#if RR_tcwg_bmk || TCWG_benchmark
+- scm:
+    name: bmk-scripts
+    scm:
+      - git:
+          url: https://git.linaro.org/toolchain/bmk-scripts.git
+          refspec: +refs/heads/*:refs/remotes/origin/* +refs/changes/*:refs/changes/*
+          branches:
+            - $bmk_branch
+          basedir: bmk-scripts
+          skip-tag: true
+          reference-repo: /home/tcwg-buildslave/snapshots-ref/bmk-scripts.git
           wipe-workspace: false
           clean:
             before: true
