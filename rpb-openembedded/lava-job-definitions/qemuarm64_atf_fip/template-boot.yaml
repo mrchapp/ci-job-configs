@@ -27,7 +27,7 @@ actions:
     images:
       1rootfs:
         image_arg: -drive id=disk1,file={1rootfs},if=none,format=raw -device virtio-blk-device,drive=disk1
-          -smp 4 -nographic
+          -nographic
         url: ${SYSTEM_URL} 
         compression: gz
         apply-overlay: true
