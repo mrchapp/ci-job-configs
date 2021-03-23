@@ -40,6 +40,12 @@
         - python3-virtualenv
         - python3-wheel
         - python3-zipp
+
+  - name: install requested dependencies
+    become: yes
+    dnf:
+      name: "{{ item }}"
+    loop: "{{ extra_dependencies_centos.split(' ') }}"
   when: ansible_os_family == 'RedHat'
 
 - block:
@@ -50,6 +56,7 @@
         - libhdf5-dev
         - pkg-config
       state: present
+      update_cache: true
 
   - name: install numpy build requirements
     become: yes
@@ -70,6 +77,12 @@
         - python3-venv
         - python3-wheel
         - python3-zipp
+
+  - name: install requested dependencies
+    become: yes
+    apt:
+      name: "{{ item }}"
+    loop: "{{ extra_dependencies_debian.split(' ') }}"
   when: ansible_os_family == 'Debian'
 
 - name: upgrade pip

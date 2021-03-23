@@ -27,6 +27,14 @@
             name: PYTHON_PACKAGES
             default: 'grpcio numpy==1.18.* h5py'
             description: 'space separates names of Python wheels to build'
+        - string:
+            name: EXTRA_DEPENDENCIES_CENTOS
+            default: ''
+            description: 'space separates names of extra package dependencies to install (space separated)'
+        - string:
+            name: EXTRA_DEPENDENCIES_DEBIAN
+            default: ''
+            description: 'space separates names of extra package dependencies to install (space separated)'
     disabled: false
     display-name: 'Build some Python package wheels'
     wrappers:
