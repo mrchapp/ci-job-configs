@@ -26,7 +26,7 @@
             default: '{distro}'
     disabled: false
     node: docker-{distro}-amd64
-    display-name: 'Qualcomm LT Linux kernel for AIC100 ({distro})'
+    display-name: 'Linux kernel for Qualcomm AIC100 ({distro})'
     wrappers:
         - timestamps
     builders:
