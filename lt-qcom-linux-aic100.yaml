@@ -1,6 +1,6 @@
 - job:
     name: lt-qcom-linux-aic100
-    project-type: freestyle
+    project-type: matrix
     defaults: global
     properties:
         - authorization:
