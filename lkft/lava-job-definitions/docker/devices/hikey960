@@ -42,9 +42,7 @@
     images:
       ptable:
         url: downloads://prm_ptable.img
-        reboot: hard-reset
       boot:
-        reboot: hard-reset
         url: downloads://boot.img
       userdata:
         url: downloads://userdata.img
