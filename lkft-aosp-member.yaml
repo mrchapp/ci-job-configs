@@ -27,6 +27,9 @@
         - string:
             name: MAKE_TARGETS
             default: ''
+        - string:
+            name: PUBLISH_FILES
+            default: ''
     disabled: false
     node: docker-bionic-aosp
     display-name: 'Jobs for pure private aosp builds'
