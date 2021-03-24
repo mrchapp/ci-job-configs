@@ -1,6 +1,14 @@
-- job:
+- project:
     name: lt-qcom-linux-aic100
-    project-type: matrix
+    jobs:
+        - 'lt-qcom-linux-aic100-{distro}':
+            distro: 'bionic'
+        - 'lt-qcom-linux-aic100-{distro}':
+            distro: 'centos7'
+- job-template:
+    name: 'lt-qcom-linux-aic100-{distro}'
+
+    project-type: freestyle
     defaults: global
     properties:
         - authorization:
@@ -12,26 +20,21 @@
                 - job-cancel
         - build-discarder:
             artifact-num-to-keep: 10
+    parameters:
+        - string:
+            name: DISTRO
+            default: '{distro}'
     disabled: false
-    node: master
-    display-name: 'Qualcomm LT Linux kernel for AIC100'
-    axes:
-        - axis:
-            type: slave
-            name: label
-            values:
-                - docker-bionic-amd64
-                - docker-buster-amd64
-    execution-strategy:
-        sequential: false
+    node: docker-{distro}-amd64
+    display-name: 'Qualcomm LT Linux kernel for AIC100 ({distro})'
     wrappers:
         - timestamps
     builders:
         - shell:
-            !include-raw: lt-qcom-linux/aic100.sh
+            !include-raw-escape: lt-qcom-linux/aic100.sh
     publishers:
         - archive:
-            artifacts: '*.deb *.rpm'
+            artifacts: 'out/*'
         - email-ext:
             recipients: 'nicolas.dechesne@linaro.org'
             always: true
