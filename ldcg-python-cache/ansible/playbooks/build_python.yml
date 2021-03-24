@@ -44,8 +44,7 @@
   - name: install requested dependencies
     become: yes
     dnf:
-      name: "{{ item }}"
-    loop: "{{ extra_dependencies_centos.split(' ') }}"
+      name: "{{ extra_dependencies_centos }}"
   when: ansible_os_family == 'RedHat'
 
 - block:
@@ -81,8 +80,7 @@
   - name: install requested dependencies
     become: yes
     apt:
-      name: "{{ item }}"
-    loop: "{{ extra_dependencies_debian.split(' ') }}"
+      name: "{{ extra_dependencies_debian }}"
   when: ansible_os_family == 'Debian'
 
 - name: upgrade pip
@@ -104,10 +102,6 @@
     state: directory
     mode: 0700
 
-- name: make a list of packages to build
-  set_fact:
-    wheel_names: "{{ python_packages.split(' ') }}"
-
 - name: build wheels of binary Python packages
   include_tasks: build_python_wheel.yml
-  loop: "{{ wheel_names }}"
+  loop: "{{ python_packages }}"

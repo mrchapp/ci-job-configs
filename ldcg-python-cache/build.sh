@@ -19,8 +19,29 @@ git clone --depth 1 https://git.linaro.org/ci/job/configs.git
 
 cd configs/ldcg-python-cache/ansible
 
-echo "python_packages: ${PYTHON_PACKAGES}" >> vars/vars.yml
-echo "extra_dependencies_debian: python3-dev ${EXTRA_DEPENDENCIES_DEBIAN}" >> vars/vars.yml
-echo "extra_dependencies_centos: python3-devel ${EXTRA_DEPENDENCIES_CENTOS}" >> vars/vars.yml
+# generate yaml with vars
+
+echo "python_packages:" >> vars/vars.yml
+
+for pkg in $PYTHON_PACKAGES
+do
+    echo "  - ${pkg}" >> vars/vars.yml
+done
+
+echo "extra_dependencies_debian:" >> vars/vars.yml
+echo "  - python3-dev" >> vars/vars.yml
+
+for pkg in $EXTRA_DEPENDENCIES_DEBIAN
+do
+    echo "  - ${pkg}" >> vars/vars.yml
+done
+
+echo "extra_dependencies_centos:" >> vars/vars.yml
+echo "  - python3-devel" >> vars/vars.yml
+
+for pkg in $EXTRA_DEPENDENCIES_CENTOS
+do
+    echo "  - ${pkg}" >> vars/vars.yml
+done
 
 ansible-playbook -i inventory playbooks/run.yml
