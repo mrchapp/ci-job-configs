@@ -67,8 +67,10 @@ function build_android(){
     fi
 
     for f in ${PUBLISH_FILES}; do
-        if [ "X${f}X" = "Xandroid-cts.zipX" ] || [ "X${f}X" = "Xandroid-vts.zipX" ]; then
-            f_src_path="${ANDROID_ROOT}/out/host/linux-x86/cts/${f}"
+        if [ "X${f}X" = "Xandroid-cts.zipX" ]; then
+            f_src_path="${ANDROID_ROOT}/out/host/linux-x86/cts/android-cts.zip"
+        elif [ "X${f}X" = "Xandroid-vts.zipX" ]; then
+            f_src_path="${ANDROID_ROOT}/out/host/linux-x86/vts/android-vts.zip"
         else
             f_src_path="${DIR_PUB_SRC_PRODUCT}/${f}"
         fi
