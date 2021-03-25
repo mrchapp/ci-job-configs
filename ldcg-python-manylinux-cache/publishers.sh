@@ -5,12 +5,6 @@ PUBLISH_TO=ldcg/python-cache/
 
 set -ex
 
-if [ -e /etc/debian_version ]; then
-  BUILD_NUMBER="${BUILD_NUMBER}-debian"
-else
-   sudo dnf install -y python3-requests wget
-fi
-
 ls -alR $COPY_FROM
 
 # Publish wheel files

@@ -1,14 +1,7 @@
 - job:
-    name: ldcg-python-cache
-    project-type: matrix
+    name: ldcg-python-manylinux-cache
+    project-type: freestyle
     defaults: global
-    axes:
-        - axis:
-            type: slave
-            name: nodes
-            values:
-                - docker-centos8-arm64-ldcg
-                - docker-buster-arm64-ldcg
     properties:
         - authorization:
             anonymous:
@@ -25,20 +18,24 @@
     parameters:
         - string:
             name: PYTHON_PACKAGES
-            default: 'grpcio numpy==1.18.* h5py'
+            default: ''
             description: 'space separates names of Python wheels to build'
         - string:
             name: EXTRA_DEPENDENCIES_CENTOS
             default: ''
-            description: 'space separates names of extra package dependencies to install (space separated)'
-        - string:
-            name: EXTRA_DEPENDENCIES_DEBIAN
-            default: ''
-            description: 'space separates names of extra package dependencies to install (space separated)'
-    disabled: true
+            description: 'space separates names of extra package dependencies to install (CentOS 7)'
+    disabled: false
+    node: leg-aarch64
+    concurrent: false
     display-name: 'Build some Python package wheels'
     wrappers:
         - timestamps
+    builders:
+        - shell:
+            !include-raw: ldcg-python-manylinux-cache/build.sh
+        - linaro-publish-token
+        - shell:
+            !include-raw: ldcg-python-manylinux-cache/publishers.sh
     publishers:
         - email:
             recipients: 'marcin.juszkiewicz@linaro.org'
