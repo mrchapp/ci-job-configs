@@ -70,7 +70,7 @@ function build_android(){
         if [ "X${f}X" = "Xandroid-cts.zipX" ] || [ "X${f}X" = "Xandroid-vts.zipX" ]; then
             f_src_path="${ANDROID_ROOT}/out/host/linux-x86/cts/${f}"
         else
-            f_src_path="{DIR_PUB_SRC_PRODUCT}/${f}"
+            f_src_path="${DIR_PUB_SRC_PRODUCT}/${f}"
         fi
 
         if [ ! -f "${f_src_path}" ]; then
