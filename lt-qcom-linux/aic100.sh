@@ -18,7 +18,6 @@ if [ "${DISTRO}" == "bionic" ]; then
     cp ../*.deb ${WORKSPACE}/out
 
 elif [ "${DISTRO}" == "centos7" ]; then
-    sudo yum check-update
     sudo yum install -y git which gcc ncurses-devel make gcc bc bison flex elfutils-libelf-devel openssl-devel vim rpm-build rsync
     make mrproper
     wget https://git.linaro.org/ci/job/configs.git/plain/lt-qcom-linux/aic100/config-5.4.1-1.el7.elrepo.x86_64 -O .config
