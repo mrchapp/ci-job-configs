@@ -56,7 +56,7 @@
             git fetch https://review.linaro.org/${GERRIT_PROJECT} ${GERRIT_REFSPEC}
             git checkout -q FETCH_HEAD
 
-            python3 yadp_builder.py --dryrun --server https://ci.linaro.org
+            python3 yadp_builder.py --server https://ci.linaro.org
     publishers:
         - email:
             recipients: 'linaro-infrastructure-errors@lists.linaro.org'
