@@ -1,5 +1,8 @@
-device_type: soca9
-job_name: SE ${MACHINE} dip-image-dev (nfs,wic) ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL} ${BUILD_NUMBER}
+device_type: rzn1d
+tags:
+- tpm
+
+job_name: SE ${MACHINE} dev-image (nfs,wic) ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL} ${BUILD_NUMBER}
 
 timeouts:
   job:
@@ -13,38 +16,67 @@ visibility: public
 
 actions:
 
-##################
-# Deploy WIC image
-##################
+####################
+# Deploy QSPI images
+####################
 - deploy:
-    timeout:
-      minutes: 20
-    to: flasher
+    namespace: dfu-firmware
+    to: tmpfs
     images:
-      image:
-        url: ${WIC_DEV_IMAGE_URL}
-        compression: bz2
-      layout:
-        url: ${WIC_DEV_BMAP_URL}
+      sf_fsbl:
+        image_arg: --alt sf_fsbl --download {sf_fsbl}
+        url: ${FSBL_URL}
+      sf_trustedfw0:
+        image_arg: --alt sf_trustedfw0 --download {sf_trustedfw0}
+        url: ${OPTEE_ITB_URL}
+      sf_trustedfw1:
+        image_arg: --alt sf_trustedfw1 --download {sf_trustedfw1}
+        url: ${OPTEE_ITB_URL}
+      sf_uboot0:
+        image_arg: --alt sf_uboot0 --download {sf_uboot0}
+        url: ${UBOOT_ITB_URL}
+      sf_uboot1:
+        image_arg: --alt sf_uboot1 --download {sf_uboot1}
+        url: ${UBOOT_ITB_URL}
+
+- command:
+    namespace: dfu-firmware
+    name: set_boot_to_nand
+
+- boot:
+    namespace: dfu-firmware
+    method: dfu
+    timeout:
+      minutes: 10
+
+- command:
+    namespace: test
+    name: set_boot_to_qspi
 
 ##########################
 # Configure ethernet ports
 ##########################
 - command:
+    namespace: test
     name: j17_off
 - command:
+    namespace: test
     name: j21_on
 - command:
+    namespace: test
     name: j22_off
 - command:
+    namespace: test
     name: j23_off
 - command:
+    namespace: test
     name: j24_off
 
 ###############
 # TFTP/NFS
 ###############
 - deploy:
+    namespace: test-nfs
     timeout:
       minutes: 15
     to: tftp
@@ -59,33 +91,35 @@ actions:
       compression: bz2
 
 - boot:
+    namespace: test-nfs
+    connection-namespace: dfu-firmware
     timeout:
       minutes: 20
     method: u-boot
     commands:
-      - run FPGA_INIT
       - setenv autoload no
       - dhcp
       - dhcp
       - env print
       - setenv serverip {SERVER_IP}
       - tftp {KERNEL_ADDR} {KERNEL}
-      - tftp 0x1000 {DTB}
+      - tftp {DTB_ADDR} {DTB}
       - "setenv bootargs 'console=ttyS0,115200n8 root=/dev/nfs rw nfsroot={NFS_SERVER_IP}:{NFSROOTFS},tcp,hard,intr,vers=3 rootwait coherent_pool=2M ip=dhcp'"
-      - bootz 0x01000000 - 0x00001000
+      - '{BOOTX}'
     auto_login:
       login_prompt: "login:"
       username: root
     prompts:
     - "root@snarc-soca9:"
-    - "root@rzn1-snarc:"
+    - "root@rzn1d400-bestla:"
 
 - test:
+    namespace: test-nfs
     timeout:
       minutes: 40
     interactive:
     - name: basic-cmds-tftp
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc"]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla"]
       script:
       - command: uname -a
       - command: cat /proc/device-tree/model ; echo ""
@@ -103,6 +137,7 @@ actions:
       - command: which docker
 
 - test:
+    namespace: test-nfs
     timeout:
       minutes: 40
     definitions:
@@ -154,10 +189,24 @@ actions:
 
 
 ###################
-# dip-image-dev.wic
+# dev-image.wic
 ###################
-# We already flashed the SDcard WIC image in the deploy step at the begging of this test run
+- deploy:
+    namespace: test-wic
+    timeout:
+      minutes: 100
+    to: flasher
+    images:
+      image:
+        url: ${WIC_DEV_IMAGE_URL}
+        compression: bz2
+      layout:
+        url: ${WIC_DEV_BMAP_URL}
+
+
 - boot:
+    namespace: test-wic
+    connection-namespace: dfu-firmware
     timeout:
       minutes: 10
     method: u-boot
@@ -168,17 +217,18 @@ actions:
       username: root
     prompts:
     - "root@snarc-soca9:"
-    - "root@rzn1-snarc:"
+    - "root@rzn1d400-bestla:"
     transfer_overlay:
       download_command: udhcpc -i eth1 -n; wget
       unpack_command: tar --touch -C / -xzf
 
 - test:
+    namespace: test-wic
     timeout:
       minutes: 40
     interactive:
     - name: basic-cmds-wic
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc"]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla"]
       script:
       - command: uname -a
       - command: cat /proc/device-tree/model ; echo ""
@@ -202,6 +252,7 @@ actions:
 # Functional Tests
 ##################
 - test:
+    namespace: test-wic
     timeout:
       minutes: 100
     definitions:
@@ -293,47 +344,6 @@ actions:
       parameters:
         PORT_GET: 3
 
-    - name: yepkit-up-port-1
-      from: git
-      history: false
-      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
-      branch: master
-      path: automated/linux/yepkit/yepkit.yaml
-      parameters:
-        PORT_UP: 1
-        PORT_DEVICE: /dev/ttyUSB0
-
-    - name: uart-loopback-forward
-      from: git
-      history: false
-      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
-      branch: master
-      path: automated/linux/uart-loopback/uart-loopback.yaml
-      parameters:
-        SKIP_INSTALL: 'true'
-        UART0: /dev/ttyUSB0
-        UART1: /dev/ttyS1
-    - name: uart-loopback-reverse
-      from: git
-      history: false
-      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
-      branch: master
-      path: automated/linux/uart-loopback/uart-loopback.yaml
-      parameters:
-        SKIP_INSTALL: 'true'
-        UART0: /dev/ttyS1
-        UART1: /dev/ttyUSB0
-
-    - name: yepkit-down-port-1
-      from: git
-      history: false
-      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
-      branch: master
-      path: automated/linux/yepkit/yepkit.yaml
-      parameters:
-        PORT_DOWN: 1
-        PORT_DEVICE: /dev/ttyUSB0
-
     - name: yepkit-up-port-2
       from: git
       history: false
@@ -395,8 +405,48 @@ actions:
       path: automated/linux/eeprom/eeprom.yaml
       parameters:
         SKIP_INSTALL: 'true'
-        EEPROM: '/sys/bus/spi/devices/spi0.0/eeprom'
+        EEPROM: '/sys/bus/spi/devices/spi0.1/eeprom'
 
+    - name: docker-hello-world
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/docker/docker.yaml
+      parameters:
+        IMAGE: "hello-world"
+        SKIP_INSTALL: True
+
+    - name: docker
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/docker/docker.yaml
+      parameters:
+        IMAGE: "arm32v7/ubuntu"
+        SKIP_INSTALL: True
+
+    - name: optee-xtest
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/optee/optee-xtest.yaml
+
+    - name: cryptotest
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/cryptotest/cryptotest.yaml
+
+    - name: tpm
+      from: git
+      history: false
+      repository: https://git.linaro.org/landing-teams/working/schneider/test-definitions.git
+      branch: master
+      path: automated/linux/tpm/tpm.yaml
 
 metadata:
   machine: ${MACHINE}
@@ -409,7 +459,7 @@ notify:
     recipients:
     - to:
         method: email
-        email: ryan.harkin@linaro.org
+        email: milan.stevanovic@se.com
     criteria:
         status: incomplete
     verbosity: verbose

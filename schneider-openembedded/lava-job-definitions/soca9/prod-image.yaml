@@ -1,5 +1,5 @@
 device_type: soca9
-job_name: SE ${MACHINE} dip-image (u-boot,nfs,wic) ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL} ${BUILD_NUMBER}
+job_name: SE ${MACHINE} prod-image (u-boot,nfs,wic) ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL} ${BUILD_NUMBER}
 
 timeouts:
   job:
@@ -281,7 +281,7 @@ actions:
 
 
 ###############
-# dip-image.wic
+# prod-image.wic
 ###############
 # We already flashed the SDcard WIC image in the deploy step at the begging of this test run
 - boot:

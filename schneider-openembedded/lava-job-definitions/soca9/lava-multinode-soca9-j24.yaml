@@ -80,7 +80,7 @@ actions:
 
 
 ###################
-# dip-image-dev.wic
+# dev-image.wic
 ###################
 # We already flashed the SDcard WIC image in the deploy step at the begging of this test run
 - boot:

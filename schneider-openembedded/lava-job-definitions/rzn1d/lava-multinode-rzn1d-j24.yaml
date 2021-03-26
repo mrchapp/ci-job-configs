@@ -40,8 +40,11 @@ actions:
       sf_fsbl:
         image_arg: --alt sf_fsbl --download {sf_fsbl}
         url: ${FSBL_URL}
-      sf_trustedfw:
-        image_arg: --alt sf_trustedfw --download {sf_trustedfw}
+      sf_trustedfw0:
+        image_arg: --alt sf_trustedfw0 --download {sf_trustedfw0}
+        url: ${OPTEE_ITB_URL}
+      sf_trustedfw1:
+        image_arg: --alt sf_trustedfw1 --download {sf_trustedfw1}
         url: ${OPTEE_ITB_URL}
       sf_uboot0:
         image_arg: --alt sf_uboot0 --download {sf_uboot0}
@@ -111,7 +114,7 @@ actions:
 
 
 ###################
-# dip-image-dev.wic
+# dev-image.wic
 ###################
 - deploy:
     namespace: test-wic
@@ -145,7 +148,7 @@ actions:
       username: root
     prompts:
     - "root@snarc-soca9:"
-    - "root@rzn1-snarc:"
+    - "root@rzn1d400-bestla:"
     transfer_overlay:
       download_command: udhcpc -i lan2 -n; wget
       unpack_command: tar --touch -C / -xzf
@@ -422,7 +425,7 @@ actions:
       minutes: 10
     interactive:
     - name: sleep-j24
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc"]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla"]
       script:
       - command: sleep 5
 
@@ -468,7 +471,7 @@ actions:
       minutes: 10
     interactive:
     - name: sleep-j24
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc"]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla"]
       script:
       - command: sleep 5
 

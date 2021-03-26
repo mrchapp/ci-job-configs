@@ -40,8 +40,8 @@ if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}; th
   sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}
 fi
 
-# Install ruamel.yaml==0.16.13
-pip install --user --force-reinstall ruamel.yaml==0.16.13
+# Install ruamel.yaml (version pinned for Python-2.7 compat)
+pip install --user --force-reinstall 'ruamel.yaml<0.17'
 
 set -ex
 
@@ -119,7 +119,7 @@ git submodule update
 machine_orig=${MACHINE}
 case "${MACHINE}" in
   *rzn1*)
-    MACHINE=rzn1-snarc
+    MACHINE=rzn1d400-bestla
     ;;
   *soca9*)
     MACHINE=snarc-soca9
@@ -178,22 +178,6 @@ case "${MACHINE}" in
   am57xx-evm|intel-core2-32|intel-corei7-64)
      IMAGES="rpb-console-image"
      ;;
-  *rzn1*)
-    clean_packages="\
-        openssl-native \
-        optee-os \
-    "
-    build_packages="${clean_packages}"
-    ;;
-  *soca9*)
-    clean_packages="\
-        base-files \
-        u-boot-socfpga \
-        linux-socfpga \
-        "
-    build_packages="${clean_packages}"
-    IMAGES="$(echo $IMAGES | sed -e 's/dip-image-edge//')"
-    ;;
 esac
 
 postfile=$(mktemp /tmp/postfile.XXXXX.conf)
@@ -208,40 +192,38 @@ if [ "${clean_packages}" != "" ]; then
     bitbake ${bbopt} ${build_packages}
 fi
 
-# Build all ${IMAGES} apart from dip-image-edge
-dipimg="dip-image"
-devimg="dip-image-dev"
-edgeimg="dip-image-edge"
-hasdipimg=$(echo ${IMAGES} | sed -e 's/'${devimg}'//g' -e 's/'${edgeimg}'//g')
+# Build all ${IMAGES}
+dipimg="prod-image"
+devimg="dev-image"
+sdkimg="sdk-image"
 
 DEPLOY_DIR_IMAGE=$(bitbake -e | grep "^DEPLOY_DIR_IMAGE="| cut -d'=' -f2 | tr -d '"')
 
-if [[ "${hasdipimg}" == *"${dipimg}"* ]]; then
+if [[ "${IMAGES}" == *"${dipimg}"* ]]; then
 	replace_dmverity_var "${dipimg}"
 
 	grep -c ^processor /proc/cpuinfo
 	grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}'
 
-	time bitbake ${bbopt} dip-image dip-sdk
+	time bitbake ${bbopt} ${dipimg}
 
 	case "${MACHINE}" in
 		*rzn1*)
-			cat tmp/deploy/images/rzn1-snarc/dip-image.squashfs-lzo.verity.env || true
-			time bitbake ${bbopt} fsbl optee-os u-boot-rzn1
-			time bitbake ${bbopt} -c do_install       fsbl        || true
-			time bitbake ${bbopt} -c do_fit_optee_os  optee-os    || true
-			time bitbake ${bbopt} -c do_fit_rzn1d     u-boot-rzn1 || true
+			cat tmp/work-shared/${MACHINE}/dm-verity/prod-image.squashfs-lzo.verity.env || true
 			;;
 	esac
 
 	# Generate pn-buildlist containing names of recipes, for CVE check below
-	time bitbake ${bbopt} dip-image -g
-
-	DEPLOY_DIR_SDK=$(bitbake -e | grep "^DEPLOY_DIR="| cut -d'=' -f2 | tr -d '"')/sdk
-	cp -aR ${DEPLOY_DIR_SDK} ${DEPLOY_DIR_IMAGE}
+	time bitbake ${bbopt} ${dipimg} -g
 
 	ls -al ${DEPLOY_DIR_IMAGE} || true
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
+	ls -al ${DEPLOY_DIR_IMAGE}/cm3 || true
+	ls -al ${DEPLOY_DIR_IMAGE}/u-boot || true
+	ls -al ${DEPLOY_DIR_IMAGE}/fsbl || true
+
+	# Copy license and manifest information into the deploy dir
+	cp -aR ./tmp/deploy/licenses/prod-image-*/*.manifest ${DEPLOY_DIR_IMAGE}
 fi
 
 if [[ "${IMAGES}" == *"${devimg}"* ]]; then
@@ -249,44 +231,14 @@ if [[ "${IMAGES}" == *"${devimg}"* ]]; then
 	time bitbake ${bbopt} ${devimg}
 
 	ls -al ${DEPLOY_DIR_IMAGE} || true
+	ls -al ${DEPLOY_DIR_IMAGE}/cm3 || true
+	ls -al ${DEPLOY_DIR_IMAGE}/u-boot || true
+	ls -al ${DEPLOY_DIR_IMAGE}/fsbl || true
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
 
-	# Copy license and manifest information into the deploy dir
-	cp -aR ./tmp/deploy/licenses/dip-image-dev-*/*.manifest ${DEPLOY_DIR_IMAGE}
-fi
-
-# now build dip-image-edge if it was in ${IMAGES}
-if [[ "${IMAGES}" == *"${edgeimg}"* ]]; then
-	rm -rf ${DEPLOY_DIR_IMAGE}-pre || true
-
-	# stash the deployed images for later
-	find ${DEPLOY_DIR_IMAGE} -type l -delete
-	mv ${DEPLOY_DIR_IMAGE} ${DEPLOY_DIR_IMAGE}-pre
-
-	replace_dmverity_var "${edgeimg}"
-
-	# replace layer meta-dip-dev with meta-edge and then build dip-image-edge
-	mkdir -p ${DEPLOY_DIR_IMAGE}
-	sed -i conf/bblayers.conf -e 's#meta-dip-dev#meta-edge#'
-	time bitbake ${bbopt} ${edgeimg}
-
-	# Overwrite pn-buildlist, for CVE check below
-	time bitbake ${bbopt} ${edgeimg} -g
-
-	# restore layer meta-dip-dev
-	sed -i conf/bblayers.conf -e 's#meta-edge#meta-dip-dev#'
-
-	# The kernel will exist in both ${DEPLOY_DIR_IMAGE} and ${DEPLOY_DIR_IMAGE}-pre
-	# The files will be binary identical, but have different date stamps
-	# So remove the newer ones
-	rm -f ${DEPLOY_DIR_IMAGE}/zImage-*.bin
-	rm -f ${DEPLOY_DIR_IMAGE}/*.dtb
-	rm -f ${DEPLOY_DIR_IMAGE}/modules-*.tgz
-
-	# Move the saved images back to the deploy dir
-	cp -aR ${DEPLOY_DIR_IMAGE}-pre/* ${DEPLOY_DIR_IMAGE}
-	ls -al ${DEPLOY_DIR_IMAGE}
-	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
+	time bitbake ${bbopt} ${sdkimg}
+	DEPLOY_DIR_SDK=$(bitbake -e | grep "^DEPLOY_DIR="| cut -d'=' -f2 | tr -d '"')/sdk
+	cp -aR ${DEPLOY_DIR_SDK} ${DEPLOY_DIR_IMAGE}
 fi
 
 # Prepare files to publish
@@ -297,7 +249,7 @@ find ${DEPLOY_DIR_IMAGE} -type l -delete
 
 ### Begin CVE check
 
-# Combine CVE reports for the recipes used in dip-image task.
+# Combine CVE reports for the recipes used in prod-image task.
 CVE_CHECK_DIR=$(bitbake -e | grep "^CVE_CHECK_DIR="| cut -d'=' -f2 | tr -d '"')
 if [ -e pn-buildlist ] && [ -e "${CVE_CHECK_DIR}" ]; then
 	sort pn-buildlist | while read r ; do
@@ -306,12 +258,12 @@ if [ -e pn-buildlist ] && [ -e "${CVE_CHECK_DIR}" ]; then
 
 	# Generate CVE listing with a fixed filename, so it can be retrieved
 	# from snapshots.linaro.org by subsequent builds using a known URL.
-	cp cve-${MACHINE}.new ${DEPLOY_DIR_IMAGE}/dip-image-${MACHINE}.rootfs.cve
+	cp cve-${MACHINE}.new ${DEPLOY_DIR_IMAGE}/prod-image-${MACHINE}.rootfs.cve
 
 	# Fetch previous CVE report
 	LATEST_DEST=$(echo $PUB_DEST | sed -e "s#/$BUILD_NUMBER/#/latest/#")
 	rm -f cve-${MACHINE}.old
-	wget -nv -O cve-${MACHINE}.old ${BASE_URL}/${LATEST_DEST}/dip-image-${MACHINE}.rootfs.cve || true
+	wget -nv -O cve-${MACHINE}.old ${BASE_URL}/${LATEST_DEST}/prod-image-${MACHINE}.rootfs.cve || true
 
 	# Download may fail (404 error), or might not contain the report (auth error)
 	if ! grep -q "PACKAGE NAME" cve-${MACHINE}.old 2>/dev/null; then
@@ -443,18 +395,15 @@ case "${MACHINE}" in
     # FIXME: several dtb files case
     ;;
   *rzn1*)
-    ROOTFS_TAR_BZ2=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-rzn1*-*-${BUILD_NUMBER}.rootfs.tar.bz2" | xargs -r basename)
-    ROOTFS_DEV_TAR_BZ2=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-dev-rzn1*-*-${BUILD_NUMBER}.rootfs.tar.bz2" | xargs -r basename)
-    ROOTFS_EDGE_TAR_BZ2=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-edge-rzn1*-*-${BUILD_NUMBER}.rootfs.tar.bz2" | xargs -r basename)
-    WIC_IMG=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-rzn1*-${BUILD_NUMBER}.rootfs.wic.bz2" | xargs -r basename)
-    WIC_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-rzn1*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
-    WIC_EDGE_IMG=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-edge-rzn1*-${BUILD_NUMBER}.rootfs.wic.bz2" | xargs -r basename)
-    WIC_EDGE_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-edge-rzn1*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
+    ROOTFS_TAR_BZ2=$(find ${DEPLOY_DIR_IMAGE} -type f -name "prod-image-${MACHINE}-*-${BUILD_NUMBER}.rootfs.tar.bz2" | xargs -r basename)
+    ROOTFS_DEV_TAR_BZ2=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-${MACHINE}-*-${BUILD_NUMBER}.rootfs.tar.bz2" | xargs -r basename)
+    WIC_IMG=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-rzn1*-${BUILD_NUMBER}.rootfs.wic.bz2" | xargs -r basename)
+    WIC_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-rzn1*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
 
     # The following images will have their size reported to SQUAD
-    UBOOT=$(find ${DEPLOY_DIR_IMAGE} -type f -name "u-boot-rzn1d-snarc-*.bin.spkg")
+    UBOOT=$(find ${DEPLOY_DIR_IMAGE}/u-boot -type f -name "u-boot-${MACHINE}-*.bin.spkg")
     UBOOT_IMG=$(basename ${UBOOT})
-    UBOOT_FIT=$(find ${DEPLOY_DIR_IMAGE} -type f -name "ubootfitImage*.itb")
+    UBOOT_FIT=$(find ${DEPLOY_DIR_IMAGE}/u-boot -type f -name "u-boot-${MACHINE}-*.itb")
     UBOOT_FIT_IMG=$(basename ${UBOOT_FIT})
     DTB=$(find ${DEPLOY_DIR_IMAGE} -type f -name "*rzn1*bestla*.dtb")
     DTB_IMG=$(basename ${DTB})
@@ -462,22 +411,20 @@ case "${MACHINE}" in
     KERNEL_IMG=$(basename ${KERNEL})
     KERNEL_FIT=$(find ${DEPLOY_DIR_IMAGE} -type f -name "fitImage*.itb")
     KERNEL_FIT_IMG=$(basename ${KERNEL_FIT})
-    FSBL=$(find ${DEPLOY_DIR_IMAGE} -type f -name "rzn1d-snarc-fsbl-fip*.spkg")
+    FSBL=$(find ${DEPLOY_DIR_IMAGE}/fsbl -type f -name "fsbl-fip-${MACHINE}-*.spkg")
     FSBL_IMG=$(basename ${FSBL})
-    OPTEE_FIT=$(find ${DEPLOY_DIR_IMAGE} -type f -name "optee-os*.itb")
+    OPTEE_FIT=$(find ${DEPLOY_DIR_IMAGE}/optee -type f -name "optee-os-${MACHINE}-*.itb")
     OPTEE_FIT_IMG=$(basename ${OPTEE_FIT})
-    UBI=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-rzn1-snarc-*-${BUILD_NUMBER}.rootfs.ubi")
+    UBI=$(find ${DEPLOY_DIR_IMAGE} -type f -name "prod-image-${MACHINE}-*-${BUILD_NUMBER}.rootfs.fitubi")
     UBI_IMG=$(basename ${UBI})
-    UBI_EDGE=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-edge-rzn1-snarc-*-${BUILD_NUMBER}.rootfs.ubi")
-    UBI_EDGE_IMG=$(basename ${UBI_EDGE})
-    WIC_DEV=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-dev-rzn1*-${BUILD_NUMBER}.rootfs.wic.bz2")
+    WIC_DEV=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-${MACHINE}-*-${BUILD_NUMBER}.rootfs.wic.bz2")
     WIC_DEV_IMG=$(basename ${WIC_DEV})
-    WIC_DEV_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-dev-rzn1*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
+    WIC_DEV_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-${MACHINE}-*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
     ;;
   *soca9*)
-    ROOTFS_TAR_BZ2=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-snarc-soca9-*-${BUILD_NUMBER}.rootfs.tar.bz2" | xargs -r basename)
-    ROOTFS_DEV_TAR_BZ2=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-dev-snarc-soca9*-${BUILD_NUMBER}.rootfs.tar.bz2" | xargs -r basename)
-    WIC_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-snarc-soca9-*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
+    ROOTFS_TAR_BZ2=$(find ${DEPLOY_DIR_IMAGE} -type f -name "prod-image-snarc-soca9-*-${BUILD_NUMBER}.rootfs.tar.bz2" | xargs -r basename)
+    ROOTFS_DEV_TAR_BZ2=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-snarc-soca9*-${BUILD_NUMBER}.rootfs.tar.bz2" | xargs -r basename)
+    WIC_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "prod-image-snarc-soca9-*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
 
     # The following images will have their size reported to SQUAD
     UBOOT=$(find ${DEPLOY_DIR_IMAGE} -type f -name "u-boot-with-spl-*.sfp")
@@ -486,11 +433,11 @@ case "${MACHINE}" in
     DTB_IMG=$(basename ${DTB})
     KERNEL=$(find ${DEPLOY_DIR_IMAGE} -type f -name "zImage--*soca9*.bin")
     KERNEL_IMG=$(basename ${KERNEL})
-    WIC=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-snarc-soca9-*-${BUILD_NUMBER}.rootfs.wic.bz2")
+    WIC=$(find ${DEPLOY_DIR_IMAGE} -type f -name "prod-image-snarc-soca9-*-${BUILD_NUMBER}.rootfs.wic.bz2")
     WIC_IMG=$(basename ${WIC})
-    WIC_DEV=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-dev-snarc-soca9-*-${BUILD_NUMBER}.rootfs.wic.bz2")
+    WIC_DEV=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-snarc-soca9-*-${BUILD_NUMBER}.rootfs.wic.bz2")
     WIC_DEV_IMG=$(basename ${WIC_DEV})
-    WIC_DEV_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dip-image-dev-snarc-soca9-*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
+    WIC_DEV_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-snarc-soca9-*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
     ;;
   *)
     DTB_IMG=$(find ${DEPLOY_DIR_IMAGE} -type f -name "*-${MACHINE}-*-${BUILD_NUMBER}.dtb" | xargs -r basename)
@@ -531,7 +478,6 @@ send_image_size_to_squad "IMG_SIZE_KERNEL_FIT" "${KERNEL_FIT}"
 send_image_size_to_squad "IMG_SIZE_FSBL"       "${FSBL}"
 send_image_size_to_squad "IMG_SIZE_OPTEE_FIT"  "${OPTEE_FIT}"
 send_image_size_to_squad "IMG_SIZE_UBI"        "${UBI}"
-send_image_size_to_squad "IMG_SIZE_UBI_EDGE"   "${UBI_EDGE}"
 send_image_size_to_squad "IMG_SIZE_WIC"        "${WIC}"
 send_image_size_to_squad "IMG_SIZE_WIC_DEV"    "${WIC_DEV}"
 
@@ -545,22 +491,18 @@ ROOTFS_SPARSE_BUILD_URL=${BASE_URL}${PUB_DEST}/${ROOTFS_IMG}
 ROOTFS_DESKTOP_SPARSE_BUILD_URL=${BASE_URL}${PUB_DEST}/${ROOTFS_DESKTOP_IMG}
 SYSTEM_URL=${BASE_URL}${PUB_DEST}/${ROOTFS_EXT4_IMG}
 OPTEE_ITB_URL=${BASE_URL}${PUB_DEST}/optee/${OPTEE_FIT_IMG}
-FSBL_URL=${BASE_URL}${PUB_DEST}/${FSBL_IMG}
-UBOOT_ITB_URL=${BASE_URL}${PUB_DEST}/${UBOOT_FIT_IMG}
+FSBL_URL=${BASE_URL}${PUB_DEST}/fsbl/${FSBL_IMG}
+UBOOT_ITB_URL=${BASE_URL}${PUB_DEST}/u-boot/${UBOOT_FIT_IMG}
 KERNEL_FIT_URL=${BASE_URL}${PUB_DEST}/${KERNEL_FIT_IMG}
 KERNEL_ZIMAGE_URL=${BASE_URL}${PUB_DEST}/${KERNEL_IMG}
 WIC_IMAGE_URL=${BASE_URL}${PUB_DEST}/${WIC_IMG}
 WIC_BMAP_URL=${BASE_URL}${PUB_DEST}/${WIC_BMAP}
 WIC_DEV_IMAGE_URL=${BASE_URL}${PUB_DEST}/${WIC_DEV_IMG}
 WIC_DEV_BMAP_URL=${BASE_URL}${PUB_DEST}/${WIC_DEV_BMAP}
-WIC_EDGE_IMAGE_URL=${BASE_URL}${PUB_DEST}/${WIC_EDGE_IMG}
-WIC_EDGE_BMAP_URL=${BASE_URL}${PUB_DEST}/${WIC_EDGE_BMAP}
 UBI_IMAGE_URL=${BASE_URL}${PUB_DEST}/${UBI_IMG}
-UBI_EDGE_IMAGE_URL=${BASE_URL}${PUB_DEST}/${UBI_EDGE_IMG}
 DTB_URL=${BASE_URL}${PUB_DEST}/${DTB_IMG}
 NFSROOTFS_URL=${BASE_URL}${PUB_DEST}/${ROOTFS_TAR_BZ2}
 NFSROOTFS_DEV_URL=${BASE_URL}${PUB_DEST}/${ROOTFS_DEV_TAR_BZ2}
-NFSROOTFS_EDGE_URL=${BASE_URL}${PUB_DEST}/${ROOTFS_EDGE_TAR_BZ2}
 RECOVERY_IMAGE_URL=${BASE_URL}${PUB_DEST}/juno-oe-uboot.zip
 LXC_ROOTFS_IMG=$(basename ${ROOTFS_IMG} .gz)
 DEVICE_TYPE=${MACHINE}

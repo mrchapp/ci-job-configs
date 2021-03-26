@@ -1,5 +1,5 @@
 device_type: rzn1d
-job_name: SE ${MACHINE} dip-image (u-boot,ubi) ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL} ${BUILD_NUMBER}
+job_name: SE ${MACHINE} prod-image (u-boot,ubi) ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL} ${BUILD_NUMBER}
 
 timeouts:
   job:
@@ -23,8 +23,11 @@ actions:
       sf_fsbl:
         image_arg: --alt sf_fsbl --download {sf_fsbl}
         url: ${FSBL_URL}
-      sf_trustedfw:
-        image_arg: --alt sf_trustedfw --download {sf_trustedfw}
+      sf_trustedfw0:
+        image_arg: --alt sf_trustedfw0 --download {sf_trustedfw0}
+        url: ${OPTEE_ITB_URL}
+      sf_trustedfw1:
+        image_arg: --alt sf_trustedfw1 --download {sf_trustedfw1}
         url: ${OPTEE_ITB_URL}
       sf_uboot0:
         image_arg: --alt sf_uboot0 --download {sf_uboot0}
@@ -197,7 +200,7 @@ actions:
         - message: nand0, sector size 128 KiB
 
 ###############
-# dip-image.ubi
+# prod-image.ubi
 ###############
 - deploy:
     namespace: test-ubi
@@ -241,7 +244,7 @@ actions:
     - "Current password: "
     - "New password: "
     - "Retype new password: "
-    - "root@rzn1-snarc:"
+    - "root@rzn1d400-bestla:"
 
 - test:
     namespace: test-ubi
@@ -250,7 +253,7 @@ actions:
       minutes: 60
     interactive:
     - name: basic-cmds-ubi
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc"]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla"]
       script:
       - command: uname -a
       - command: cat /proc/device-tree/model ; echo ""
@@ -266,6 +269,12 @@ actions:
       - command: ifconfig -a
       - command: ping -c 3 github.com
       - command: which docker
+      - command: systemctl --no-pager status docker
+      - command: sleep 100
+      - command: systemctl --no-pager status docker
+      - command: ifconfig -a
+      - command: docker run hello-world
+      - command: docker run -it ubuntu uname -a
 
 
 ##################
@@ -278,7 +287,7 @@ actions:
       minutes: 5
     interactive:
     - name: reboot-cmds-1
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc", "=> "]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla", "=> "]
       script:
       - command: reboot ; sleep 10
 
@@ -298,7 +307,7 @@ actions:
       password: azertAZERT12345
     prompts:
     - "root@snarc-soca9:"
-    - "root@rzn1-snarc:"
+    - "root@rzn1d400-bestla:"
 
 - test:
     namespace: test-reboot
@@ -307,7 +316,7 @@ actions:
       minutes: 5
     interactive:
     - name: check-1st-reboot
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc"]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla"]
       script:
       - command: echo "We came back from a reboot"
 
@@ -320,7 +329,7 @@ actions:
       minutes: 5
     interactive:
     - name: reboot-cmds-2
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc", "=> "]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla", "=> "]
       script:
       - command: reboot ; sleep 10
 
@@ -340,7 +349,7 @@ actions:
       password: "azertAZERT12345"
     prompts:
     - "root@snarc-soca9:"
-    - "root@rzn1-snarc:"
+    - "root@rzn1d400-bestla:"
 
 - test:
     namespace: test-reboot-2
@@ -349,7 +358,7 @@ actions:
       minutes: 5
     interactive:
     - name: check-2nd-reboot
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc", "=> "]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla", "=> "]
       script:
       - command: echo "We came back from the 2nd reboot"
 
@@ -361,7 +370,7 @@ actions:
       minutes: 5
     interactive:
     - name: poweroff-cmds
-      prompts: ["root@snarc-soca9", "root@rzn1-snarc", "=> "]
+      prompts: ["root@snarc-soca9", "root@rzn1d400-bestla", "=> "]
       script:
       - command: poweroff ; sleep 10
 

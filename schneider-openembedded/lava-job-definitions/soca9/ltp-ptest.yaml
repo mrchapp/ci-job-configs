@@ -1,5 +1,5 @@
 device_type: soca9
-job_name: SE ${MACHINE} dip-image-dev (LTP/PTEST) ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL} ${BUILD_NUMBER}
+job_name: SE ${MACHINE} dev-image (LTP/PTEST) ${MANIFEST_BRANCH}-${KERNEL_VERSION_PATCHLEVEL} ${BUILD_NUMBER}
 
 timeouts:
   job:
@@ -14,7 +14,7 @@ visibility: public
 actions:
 
 ###################
-# dip-image-dev.wic
+# dev-image.wic
 ###################
 - deploy:
     timeout:
