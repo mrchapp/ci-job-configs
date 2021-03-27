@@ -28,7 +28,7 @@ if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}; th
 fi
 
 # Install jinja2-cli and ruamel.yaml
-pip install --user --force-reinstall jinja2-cli ruamel.yaml
+pip install --user --force-reinstall jinja2-cli ruamel.yaml==0.16.13
 
 set -ex
 
