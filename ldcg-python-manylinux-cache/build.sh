@@ -8,7 +8,7 @@ rm -rf ${WORKSPACE}/*
 
 git clone --depth 1 https://git.linaro.org/ci/job/configs.git
 
-cd configs/ldcg-python-cache/
+cd configs/ldcg-python-manylinux-cache/
 
 echo "PYTHON_PACKAGES=${PYTHON_PACKAGES}" >> vars.sh
 echo "EXTRA_DEPENDENCIES_CENTOS=${EXTRA_DEPENDENCIES_CENTOS}" >> vars.sh
