@@ -2,7 +2,7 @@
 
 set -xe
 
-source vars.sh
+source "$(dirname $0)/vars.sh"
 
 # some packages require deps from EPEL
 yum install -y epel-release
