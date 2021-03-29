@@ -10,8 +10,8 @@ git clone --depth 1 https://git.linaro.org/ci/job/configs.git
 
 cd configs/ldcg-python-manylinux-cache/
 
-echo "PYTHON_PACKAGES=${PYTHON_PACKAGES}" >> vars.sh
-echo "EXTRA_DEPENDENCIES_CENTOS=${EXTRA_DEPENDENCIES_CENTOS}" >> vars.sh
+echo "PYTHON_PACKAGES=\"${PYTHON_PACKAGES}\"" >> vars.sh
+echo "EXTRA_DEPENDENCIES_CENTOS=\"${EXTRA_DEPENDENCIES_CENTOS}\"" >> vars.sh
 
 # 00:01:17.010 /usr/local/bin/manylinux-entrypoint: line 8: /tmp/wheels/build-manylinux2014-wheels.sh: Permission denied
 chmod 755 build-manylinux2014-wheels.sh
