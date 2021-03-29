@@ -13,7 +13,7 @@ cd configs/ldcg-python-manylinux-cache/
 echo "PYTHON_PACKAGES=${PYTHON_PACKAGES}" >> vars.sh
 echo "EXTRA_DEPENDENCIES_CENTOS=${EXTRA_DEPENDENCIES_CENTOS}" >> vars.sh
 
-docker run -it -u root -v $PWD:/tmp/wheels quay.io/pypa/manylinux2014_aarch64 /tmp/wheels/build-manylinux2014-wheels.sh
+docker run -u root -v $PWD:/tmp/wheels quay.io/pypa/manylinux2014_aarch64 /tmp/wheels/build-manylinux2014-wheels.sh
 
 for pkg in wheelhouse/*.whl
 do
