@@ -1,14 +1,13 @@
 #!/bin/bash
 
-COPY_FROM=/home/buildslave/wheels/
-
 set -xe
 
-rm -rf ${WORKSPACE}/*
+cd $WORKSPACE
 
-git clone --depth 1 https://git.linaro.org/ci/job/configs.git
+# remove generated vars and build script
+rm *.sh
 
-cd configs/ldcg-python-manylinux-cache/
+wget https://git.linaro.org/ci/job/configs.git/plain/ldcg-python-manylinux-cache/build-manylinux2014-wheels.sh
 
 echo "PYTHON_PACKAGES=\"${PYTHON_PACKAGES}\"" >> vars.sh
 echo "EXTRA_DEPENDENCIES_CENTOS=\"${EXTRA_DEPENDENCIES_CENTOS}\"" >> vars.sh
@@ -16,7 +15,11 @@ echo "EXTRA_DEPENDENCIES_CENTOS=\"${EXTRA_DEPENDENCIES_CENTOS}\"" >> vars.sh
 # 00:01:17.010 /usr/local/bin/manylinux-entrypoint: line 8: /tmp/wheels/build-manylinux2014-wheels.sh: Permission denied
 chmod 755 build-manylinux2014-wheels.sh
 
-docker run -u root -v $PWD:/tmp/wheels quay.io/pypa/manylinux2014_aarch64 /tmp/wheels/build-manylinux2014-wheels.sh
+docker run -u root -v $PWD:/tmp/workspace quay.io/pypa/manylinux2014_aarch64 /tmp/wheels/build-manylinux2014-wheels.sh
+
+# sort out wheel files for publishing
+
+COPY_FROM=${WORKSPACE}/wheels/
 
 for pkg in wheelhouse/*.whl
 do
@@ -27,6 +30,6 @@ do
 
   if $(echo $status | grep -q 404); then
     mkdir -p "${COPY_FROM}/${pkgdir}"
-    mv $pkg  "${COPY_FROM}/${pkgdir}/"
+    cp $pkg  "${COPY_FROM}/${pkgdir}/"
   fi
 done

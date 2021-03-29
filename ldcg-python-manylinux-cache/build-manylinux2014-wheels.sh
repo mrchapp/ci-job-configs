@@ -10,7 +10,19 @@ yum install -y epel-release
 # if one of dependencies is missing or wrong then exit
 yum install -y ${EXTRA_DEPENDENCIES_CENTOS} || exit
 
-cd /tmp/wheels
+cd /tmp/workspace
+
+# remove wheels/ wheelhouse/ from previous jobs
+# we do it here as they are root:root
+rm -rf wheel*
+
+# let use our own cache
+# TODO(hrw): enable after populating it with manylinux2014 files
+#export PIP_EXTRA_INDEX="https://snapshots.linaro.org/ldcg/python-cache/"
+
+# make use of all CPU cores for some builds
+export NPY_NUM_BUILD_JOBS="$(nproc)"
+export GRPC_PYTHON_BUILD_EXT_COMPILER_JOBS="$(nproc)"
 
 # create virtualenv for each Python version
 # and update pip as we want 19+

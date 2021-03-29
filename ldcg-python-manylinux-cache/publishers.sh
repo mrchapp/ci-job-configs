@@ -1,6 +1,6 @@
 #!/bin/bash
 
-COPY_FROM=/home/buildslave/wheels/
+COPY_FROM=${WORKSPACE}/wheels/
 PUBLISH_TO=ldcg/python-cache/
 
 set -ex
