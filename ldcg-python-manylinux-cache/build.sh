@@ -24,9 +24,10 @@ COPY_FROM=${WORKSPACE}/wheels/
 for pkg in wheelhouse/*.whl
 do
   pkgdir=$(echo `basename $pkg`|cut -d'-' -f1 | tr '[:upper:]_' '[:lower:]-')
+  pkgfile=$(basename $pkg)
 
   # do we have this package in cache already?
-  status=$(curl --head --silent {{ pip_extra_index_url }}/${pkgdir}/${pkg} | head -n 1)
+  status=$(curl --head --silent https://snapshots.linaro.org/ldcg/python-cache/${pkgdir}/${pkgfile} | head -n 1)
 
   if $(echo $status | grep -q 404); then
     mkdir -p "${COPY_FROM}/${pkgdir}"
