@@ -82,7 +82,7 @@
             set -x
 
             # install required python modules
-            pip install --user --force-reinstall Jinja2 requests urllib3 ruamel.yaml
+            pip install --user --force-reinstall Jinja2 requests urllib3 ruamel.yaml==0.16.13
 
             # no LTS 4.4 build for hikey
             if [ ${DEVICE_TYPE} = hi6220-hikey ] && [ ${BUILD_NAME} = linux-stable-rc-4.4-oe ]

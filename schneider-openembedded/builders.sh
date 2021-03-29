@@ -40,8 +40,8 @@ if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}; th
   sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}
 fi
 
-# Install ruamel.yaml
-pip install --user --force-reinstall ruamel.yaml
+# Install ruamel.yaml==0.16.13
+pip install --user --force-reinstall ruamel.yaml==0.16.13
 
 set -ex
 

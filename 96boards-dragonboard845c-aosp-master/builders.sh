@@ -12,8 +12,8 @@ wget -q \
 sudo dpkg -i --force-all *.deb
 rm -f *.deb
 
-# Install jinja2-cli and ruamel.yaml
-pip install --user --force-reinstall jinja2-cli ruamel.yaml
+# Install jinja2-cli and ruamel.yaml==0.16.13
+pip install --user --force-reinstall jinja2-cli ruamel.yaml==0.16.13
 
 # Set local configuration
 git config --global user.email "ci_notify@linaro.org"

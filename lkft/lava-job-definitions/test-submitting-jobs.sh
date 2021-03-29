@@ -34,6 +34,6 @@ done
 
 virtualenv .venv
 source .venv/bin/activate
-pip install Jinja2 requests urllib3 ruamel.yaml
+pip install Jinja2 requests urllib3 ruamel.yaml==0.16.13
 
 ${DIR_PARENT}/submit_for_testing-v2.sh

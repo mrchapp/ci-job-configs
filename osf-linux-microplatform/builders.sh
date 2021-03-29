@@ -33,8 +33,8 @@ fi
 sudo locale-gen en_US.UTF-8 && sudo update-locale LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# Install ruamel.yaml
-pip install --user --force-reinstall ruamel.yaml
+# Install ruamel.yaml==0.16.13
+pip install --user --force-reinstall ruamel.yaml==0.16.13
 
 set -ex
 

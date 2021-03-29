@@ -4,7 +4,7 @@ PARENT_DIR=$(cd $(dirname $0); pwd)
 
 virtualenv .venv
 source .venv/bin/activate
-pip install Jinja2 requests urllib3 ruamel.yaml
+pip install Jinja2 requests urllib3 ruamel.yaml==0.16.13
 
 export ART_URL=https://android-qa-reports.linaro.org/api/
 export BUILD_DIR=r-lcr-oreo

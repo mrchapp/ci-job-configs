@@ -16,7 +16,7 @@ set -e
 
 virtualenv --python=$(which python2) .venv
 source .venv/bin/activate
-pip install Jinja2 requests urllib3 ruamel.yaml
+pip install Jinja2 requests urllib3 ruamel.yaml==0.16.13
 
  export BASE_URL=http://snapshots.linaro.org
 export BOOT_URL=${BASE_URL}/${PUB_DEST}/boot-0.0+AUTOINC+06e4def583-fb1158a365-r0-hikey-20171012090440-346.uefi.img

@@ -409,8 +409,8 @@
         - inject:
             properties-file: publish_parameters
         - shell: |
-            # Install ruamel.yaml
-            pip install --user --force-reinstall ruamel.yaml
+            # Install ruamel.yaml==0.16.13
+            pip install --user --force-reinstall ruamel.yaml==0.16.13
             pip install --user --force-reinstall Jinja2
             export PUB_DEST=96boards/hikey/linaro/aosp-master/${BUILD_NUMBER}
             export VTS_URL=http://snapshots.linaro.org/${PUB_DEST}

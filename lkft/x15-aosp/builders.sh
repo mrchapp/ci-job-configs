@@ -16,8 +16,8 @@ wget -q http://mirrors.kernel.org/ubuntu/pool/universe/o/openjdk-8/openjdk-8-jre
   http://mirrors.kernel.org/ubuntu/pool/universe/o/openjdk-8/openjdk-8-jdk_8u45-b14-1_amd64.deb
 sudo dpkg -i --force-all *.deb
 
-# Install ruamel.yaml
-pip install --user --force-reinstall ruamel.yaml
+# Install ruamel.yaml==0.16.13
+pip install --user --force-reinstall ruamel.yaml==0.16.13
 pip install --user --force-reinstall Jinja2
 
 mkdir -p ${HOME}/bin ${WORKSPACE}/build/out

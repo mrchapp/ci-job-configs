@@ -16,7 +16,7 @@ set -e
 
 virtualenv --python=$(which python2) .venv
 source .venv/bin/activate
-pip install Jinja2 requests urllib3 ruamel.yaml
+pip install Jinja2 requests urllib3 ruamel.yaml==0.16.13
 
 export BUILD_ID=346
 export BUILD_NUMBER=346

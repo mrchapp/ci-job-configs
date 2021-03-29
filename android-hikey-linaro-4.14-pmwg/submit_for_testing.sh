@@ -5,7 +5,7 @@ set -ex
 rm -rf configs
 git clone --depth 1 http://git.linaro.org/ci/job/configs.git
 
-# Install jinja2-cli and ruamel.yaml
+# Install jinja2-cli and ruamel.yaml==0.16.13
 if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 update; then
   echo "INFO: apt update error - try again in a moment"
   sleep 15
@@ -17,7 +17,7 @@ if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}; th
   sleep 15
   sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}
 fi
-pip install --user --force-reinstall jinja2-cli ruamel.yaml
+pip install --user --force-reinstall jinja2-cli ruamel.yaml==0.16.13
 
 [ -z "${DEVICE_TYPE}" ] || \
 python configs/openembedded-lkft/submit_for_testing.py \
