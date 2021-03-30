@@ -12,9 +12,9 @@ yum install -y ${EXTRA_DEPENDENCIES_CENTOS} || exit
 
 cd /tmp/workspace
 
-# remove wheels/ wheelhouse/ from previous jobs
+# remove wheels and wheelhouse/ from previous jobs
 # we do it here as they are root:root
-rm -rf wheel*
+rm -rf wheel* *.whl
 
 # let use our own cache
 # TODO(hrw): enable after populating it with manylinux2014 files
