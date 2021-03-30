@@ -53,8 +53,6 @@ if [ -n "${GIT_COMMIT}" ]; then
 fi
 echo "GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)" > ${WORKSPACE}/env_var_parameters
 
-head -5 Makefile
-
 # Note that Zephyr SDK is needed even when building with the gnuarmemb
 # toolchain, ZEPHYR_SDK_INSTALL_DIR is needed to find things like conf
 ZEPHYR_SDK_URL="https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.12.3/zephyr-sdk-0.12.3-x86_64-linux-setup.run"
