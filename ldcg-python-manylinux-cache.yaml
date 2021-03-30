@@ -19,11 +19,15 @@
         - string:
             name: PYTHON_PACKAGES
             default: ''
-            description: 'space separates names of Python wheels to build'
+            description: 'space separated names of Python wheels to build'
         - string:
             name: EXTRA_DEPENDENCIES_CENTOS
             default: ''
-            description: 'space separates names of extra package dependencies to install (CentOS 7)'
+            description: 'space separated names of extra package dependencies to install (CentOS 7)'
+        - string:
+            name: EXTRA_PYTHON_PACKAGES
+            default: ''
+            description: 'space separated names of extra Python wheels to install before build starts'
     disabled: false
     node: leg-aarch64
     concurrent: false

@@ -31,7 +31,8 @@ do
     pyver=`basename $py`
     $py/bin/python -mvenv /tmp/$pyver
     source /tmp/$pyver/bin/activate
-    pip install -U pip wheel
+    pip install -U pip
+    pip install wheel ${EXTRA_PYTHON_PACKAGES}
     deactivate
 done
 
