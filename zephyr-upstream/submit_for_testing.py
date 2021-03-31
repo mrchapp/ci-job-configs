@@ -52,6 +52,10 @@ excluded_tests = [
     'tests/kernel/mem_protect/app_memory/test/zephyr.bin',
     'tests/kernel/fatal/test/zephyr.bin',
     'tests/bluetooth/shell/test_nble/zephyr.bin',
+    # This test includes watchdog reset, so the output is peculiar (startup
+    # banners appear over and over again), and isn't handled by current
+    # test job.
+    'tests/drivers/watchdog/wdt_basic_api/zephyr.bin',
 ]
 
 # Templates base path
