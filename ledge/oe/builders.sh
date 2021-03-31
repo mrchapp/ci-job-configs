@@ -318,7 +318,7 @@ case "${ORIG_MACHINE}" in
 	rm -rf ${UPLOAD_DIR}/ledge-qemuarm/*.stm32
 	rm -rf ${UPLOAD_DIR}/ledge-qemuarm/*.tsv
 		;;
-	FlashLayout_sdcard_ledge-stm32mp157c-dk2-optee.tsv.template	*)
+	*)
 		;;
 esac
 
