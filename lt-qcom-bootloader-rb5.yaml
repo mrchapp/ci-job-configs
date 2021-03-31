@@ -44,7 +44,7 @@
             default: 'LA.UM.7.9.r1-07300-sm6150.0'
         - string:
             name: PUB_DEST
-            default: '96boards/rb5/linaro/rescue/${BUILD_NUMBER}'
+            default: '96boards/qrb5165-rb5/linaro/rescue/${BUILD_NUMBER}'
     disabled: false
     node: docker-buster-amd64
     display-name: 'Qualcomm bootloader for Qualcomm RB5'
