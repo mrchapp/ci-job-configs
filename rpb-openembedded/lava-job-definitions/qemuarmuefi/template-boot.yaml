@@ -49,7 +49,7 @@ actions:
     method: qemu
     media: tmpfs
     docker:
-      image: maximuvarov/ledge_image_ubuntu_20.04_qemu5.2_v2
+      image: linaro/ci-amd64-ledge:stable
       binary: /usr/bin/qemu-system-arm
     auto_login:
       login_prompt: 'login:'
