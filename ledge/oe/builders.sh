@@ -312,13 +312,13 @@ case "${ORIG_MACHINE}" in
 
 	mkdir -p ${UPLOAD_DIR}/lava-images/debian
 	cd ${UPLOAD_DIR}/lava-images/debian
-	cp ${UPLOAD_DIR}/ledge-qemuarm/*-ledge-qemuarm-*.bootfs.vfat.gz ${UPLOAD_DIR}/lava-images/debian/
-	cp ${UPLOAD_DIR}/ledge-qemuarm/zImage-for-debian ${UPLOAD_DIR}/lava-images/debian/
+	mv ${UPLOAD_DIR}/ledge-qemuarm/*-ledge-qemuarm-*.bootfs.vfat.gz ${UPLOAD_DIR}/lava-images/debian/
+	mv ${UPLOAD_DIR}/ledge-qemuarm/zImage-for-debian ${UPLOAD_DIR}/lava-images/debian/
 
 	rm -rf ${UPLOAD_DIR}/ledge-qemuarm/*.stm32
 	rm -rf ${UPLOAD_DIR}/ledge-qemuarm/*.tsv
 		;;
-	*)
+	FlashLayout_sdcard_ledge-stm32mp157c-dk2-optee.tsv.template	*)
 		;;
 esac
 
@@ -326,9 +326,15 @@ esac
 CLEAN="Image-ledge* modules-*-mainline* \
 	*.env *.conf *.json *.wks \
 	dtb \
+	kernel-devicetrees.tgz \
 	*.txt \
         *.vfat *.ext4 \
 	fip.bin \
+	ledge-initramfs* \
+	*.manifest \
+	u-boot-basic-*-r0.bin u-boot-ledge-initial-env-ledge-qemuarm-basic-* \
+	ledge-*.bootfs.vfat.gz \
+	*.tsv.template \
 	"
 for c in ${CLEAN}; do
 	find ${UPLOAD_DIR} -name $c -exec rm -rf '{}' '+'
