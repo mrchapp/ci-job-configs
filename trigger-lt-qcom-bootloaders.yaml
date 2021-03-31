@@ -39,6 +39,7 @@
             - project: 'lt-qcom-bootloader-dragonboard410c'
             - project: 'lt-qcom-bootloader-dragonboard820c'
             - project: 'lt-qcom-bootloader-dragonboard845c'
+            - project: 'lt-qcom-bootloader-rb5'
     publishers:
         - email-ext:
             recipients: 'anibal.limon@linaro.org nicolas.dechesne@linaro.org'
