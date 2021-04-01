@@ -49,11 +49,9 @@ python ${HOME}/depot_tools/git_retry.py _ submodule sync --recursive
 python ${HOME}/depot_tools/git_retry.py _ submodule update --init --recursive --checkout
 
 git clean -fdx
-echo "GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)" >${WORKSPACE}/env_var_parameters
-# Build ID to use in external systems, like LAVA/SQUAD. Should include
-# ${BUILD_NUMBER}, to avoid mixing up results of different builds of the
-# same project git revision.
-echo "EXTERNAL_BUILD_ID=$(git rev-parse --short=8 HEAD)-${BUILD_NUMBER}" >>${WORKSPACE}/env_var_parameters
+
+GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)
+echo "GIT_COMMIT_ID=${GIT_COMMIT_ID}" >${WORKSPACE}/env_var_parameters
 
 # Toolchains are pre-installed by 'zephyr-upstream' job and come from:
 # https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
@@ -100,11 +98,20 @@ python3 -c "import sys; print(sys.getdefaultencoding())"
 
 # Clone Zephyr
 git clone --depth 1 ${ZEPHYR_GIT_URL} -b ${ZEPHYR_BRANCH} zephyr
-(cd zephyr; git describe --always; echo "ZEPHYR_GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)" >>${WORKSPACE}/env_var_parameters)
+cd zephyr
+git describe --always
+ZEPHYR_GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)
+echo "ZEPHYR_GIT_COMMIT_ID=${ZEPHYR_GIT_COMMIT_ID}" >>${WORKSPACE}/env_var_parameters)
+cd ..
 west init -l zephyr/
 west update
 (cd zephyr; git clean -fdx)
 . zephyr/zephyr-env.sh
+
+# Build ID to use in external systems, like LAVA/SQUAD. Should include
+# ${BUILD_NUMBER}, to avoid mixing up results of different builds of the
+# same project git revision.
+echo "EXTERNAL_BUILD_ID=${GIT_COMMIT_ID}-z${ZEPHYR_GIT_COMMIT_ID}-${BUILD_NUMBER}" >>${WORKSPACE}/env_var_parameters
 
 echo ""
 echo "########################################################################"
