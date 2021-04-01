@@ -100,7 +100,7 @@ python3 -c "import sys; print(sys.getdefaultencoding())"
 
 # Clone Zephyr
 git clone --depth 1 ${ZEPHYR_GIT_URL} -b ${ZEPHYR_BRANCH} zephyr
-(cd zephyr; git describe --always)
+(cd zephyr; git describe --always; echo "ZEPHYR_GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)" >>env_var_parameters)
 west init -l zephyr/
 west update
 (cd zephyr; git clean -fdx)

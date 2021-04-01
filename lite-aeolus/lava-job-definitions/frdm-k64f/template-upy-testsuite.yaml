@@ -46,3 +46,6 @@ metadata:
   platform: $PLATFORM
   git-url: $GIT_URL
   git-commit: $GIT_COMMIT_ID
+  zephyr-git-url: $ZEPHYR_GIT_URL
+  zephyr-git-branch: $ZEPHYR_BRANCH
+  zephyr-git-commit: $ZEPHYR_GIT_COMMIT_ID
