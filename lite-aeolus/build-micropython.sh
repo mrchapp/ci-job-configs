@@ -1,11 +1,3 @@
-git clone --depth 1 ${ZEPHYR_GIT_URL} -b ${ZEPHYR_BRANCH} zephyr
-(cd zephyr; git describe --always)
-west init -l zephyr/
-west update
-(cd zephyr; git clean -fdx)
-. zephyr/zephyr-env.sh
-
-
 small_rom() {
     echo "arduino_101" | grep -F -w -q "$1"
 }

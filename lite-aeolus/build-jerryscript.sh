@@ -1,9 +1,3 @@
-git clone --depth 1 ${ZEPHYR_GIT_URL} -b ${ZEPHYR_BRANCH} zephyr
-west init -l zephyr/
-west update
-(cd zephyr; git clean -fdx)
-. zephyr/zephyr-env.sh
-
 timeout 15m make -f ./targets/zephyr/Makefile.zephyr BOARD=${PLATFORM}
 
 cd ${WORKSPACE}
