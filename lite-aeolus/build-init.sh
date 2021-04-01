@@ -101,7 +101,7 @@ git clone --depth 1 ${ZEPHYR_GIT_URL} -b ${ZEPHYR_BRANCH} zephyr
 cd zephyr
 git describe --always
 ZEPHYR_GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)
-echo "ZEPHYR_GIT_COMMIT_ID=${ZEPHYR_GIT_COMMIT_ID}" >>${WORKSPACE}/env_var_parameters)
+echo "ZEPHYR_GIT_COMMIT_ID=${ZEPHYR_GIT_COMMIT_ID}" >>${WORKSPACE}/env_var_parameters
 cd ..
 west init -l zephyr/
 west update
