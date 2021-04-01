@@ -1,4 +1,4 @@
-export LANG=en_US.UTF-8
+export LANG=C.UTF-8
 export PYTHONIOENCODING=utf-8
 
 locale
