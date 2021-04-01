@@ -18,7 +18,7 @@
         - string:
             name: REPOSITORY
             default: 'staging'
-    disabled: false
+    disabled: true
     node: build-amd64
     display-name: 'LAVA Dispatcher Docker images based on staging-repo'
     scm:

@@ -15,7 +15,7 @@
             platform-leads:
                 - job-build
                 - job-cancel
-    disabled: false
+    disabled: true
     node: docker-stretch-amd64
     display-name: 'LAVA - Build ARMHF ARMMP Debian Buster files'
     wrappers:

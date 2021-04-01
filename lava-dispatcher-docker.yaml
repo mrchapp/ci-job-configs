@@ -18,7 +18,7 @@
         - string:
             name: REPOSITORY
             default: 'production'
-    disabled: false
+    disabled: true
     node: build-amd64
     display-name: 'LAVA Dispatcher Production Docker images'
     scm:
