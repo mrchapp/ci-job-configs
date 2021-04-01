@@ -1,6 +1,8 @@
 #!/bin/bash
 set -ex
 
+export LANG=C.UTF-8
+
 # Environment diagnostics.
 python3 --version
 ls -l ${HOME}/srv/toolchain/
@@ -83,11 +85,10 @@ install_zephyr_sdk()
 install_zephyr_sdk
 
 # Set build environment variables
-LANG=C
 ZEPHYR_BASE=${WORKSPACE}
 PATH=${ZEPHYR_BASE}/scripts:${PATH}
 OUTDIR=${HOME}/srv/zephyr/${ZEPHYR_TOOLCHAIN_VARIANT}/${PLATFORM}
-export LANG ZEPHYR_BASE PATH
+export ZEPHYR_BASE PATH
 CCACHE_DIR="${HOME}/srv/ccache"
 CCACHE_UNIFY=1
 CCACHE_SLOPPINESS=file_macro,include_file_mtime,time_macros

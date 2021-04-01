@@ -1,8 +1,3 @@
-export LANG=C.UTF-8
-export PYTHONIOENCODING=utf-8
-
-locale
-
 small_rom() {
     echo "arduino_101" | grep -F -w -q "$1"
 }
