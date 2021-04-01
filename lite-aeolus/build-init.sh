@@ -84,14 +84,6 @@ install_zephyr_sdk()
 
 install_zephyr_sdk
 
-# Clone Zephyr
-git clone --depth 1 ${ZEPHYR_GIT_URL} -b ${ZEPHYR_BRANCH} zephyr
-(cd zephyr; git describe --always)
-west init -l zephyr/
-west update
-(cd zephyr; git clean -fdx)
-. zephyr/zephyr-env.sh
-
 # Set build environment variables
 LANG=C
 ZEPHYR_BASE=${WORKSPACE}
@@ -105,6 +97,14 @@ USE_CCACHE=1
 export CCACHE_DIR CCACHE_UNIFY CCACHE_SLOPPINESS USE_CCACHE
 env |grep '^ZEPHYR'
 python3 -c "import sys; print(sys.getdefaultencoding())"
+
+# Clone Zephyr
+git clone --depth 1 ${ZEPHYR_GIT_URL} -b ${ZEPHYR_BRANCH} zephyr
+(cd zephyr; git describe --always)
+west init -l zephyr/
+west update
+(cd zephyr; git clean -fdx)
+. zephyr/zephyr-env.sh
 
 echo ""
 echo "########################################################################"
