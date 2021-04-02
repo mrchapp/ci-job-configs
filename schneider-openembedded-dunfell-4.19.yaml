@@ -100,6 +100,7 @@
         - ssh-agent-credentials:
             users:
                 - '768c1ba1-6052-4b97-a531-7e4fabda6979'
+                - '4840cea9-f64c-4d03-82d6-bd773f5229ae'
         - credentials-binding:
             - text:
                 credential-id: QA_REPORTS_TOKEN
