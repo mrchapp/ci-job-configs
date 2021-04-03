@@ -97,9 +97,6 @@ fi
 #DEL     cd -
 #DEL fi
 
-# RFS 2021/04/02 workaround "Host key verification failed" on github cloud
-export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no"
-
 git clone ${DISTRO_URL_BASE}/${DISTRO_DIR} -b ${MANIFEST_BRANCH}
 cd ${DISTRO_DIR}
 git log -1
