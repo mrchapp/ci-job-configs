@@ -29,7 +29,7 @@ actions:
     images:
       1rootfs:
         image_arg: -drive id=disk1,file={1rootfs},if=none,format=raw -device virtio-blk-device,drive=disk1
-          -smp 4 -serial stdio -nographic
+          -smp 4 -serial stdio -nographic -device i6300esb,id=watchdog0
         url: ${SYSTEM_URL}
         compression: gz
         apply-overlay: true

@@ -27,7 +27,7 @@ actions:
     images:
       1rootfs:
         image_arg: -drive id=disk1,file={1rootfs},if=none,format=raw -device virtio-blk-device,drive=disk1
-          -nographic
+          -nographic -device i6300esb,id=watchdog0
         url: ${SYSTEM_URL} 
         compression: gz
         apply-overlay: true

@@ -25,7 +25,7 @@ actions:
     images:
       rootfs:
         image_arg: -drive id=disk0,file={rootfs},format=raw
-          -m 2048 -smp 4 -serial mon:stdio -object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0
+          -m 2048 -smp 4 -serial mon:stdio -object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0 -device i6300esb,id=watchdog0
         url: ${SYSTEM_URL}
         compression: gz
         apply-overlay: true
