@@ -348,7 +348,7 @@ def main():
         # As of now, LAVA lab doesn't have boards with special harnesses,
         # so skip tests which require something beyond basic "console".
         if harness_section and harness_section["harness"] != "console":
-            print("Warning: test %s requires harness '%s', skipping" % (
+            print("SKIP %s: requires harness '%s'" % (
                 test, harness_section["harness"]
             ))
             continue
