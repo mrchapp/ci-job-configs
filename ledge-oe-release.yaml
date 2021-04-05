@@ -124,8 +124,6 @@
             properties-file: post_build_lava_parameters
         - linaro-publish-token
         - shell:
-            !include-raw: rpb-openembedded/buildinfo-protected.sh
-        - shell:
             !include-raw: rpb-openembedded/publishers.sh
         - shell:
             !include-raw: ledge/oe/submit_for_testing.sh

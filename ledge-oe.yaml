@@ -118,12 +118,6 @@
         - inject:
             properties-file: post_build_lava_parameters
         - linaro-publish-token
-        - shell: |
-            if [[ ${MACHINE} = "ledge-multi-armv7" || ${MACHINE} = "ledge-multi-armv8" ]]; then
-                   # qemu builds have to be public
-                   rm ${WORKSPACE}/BUILD-INFO.txt
-            fi
-
         - shell:
             !include-raw: rpb-openembedded/publishers.sh
         - shell:
