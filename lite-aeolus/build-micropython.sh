@@ -8,14 +8,14 @@ full_testsuite() {
 
 cd ports/zephyr
 
-if [ ${PLATFORM} = "qemu_x86" ]; then
+if [ ${PLATFORM} = "mps2_an385" ]; then
     # Build and run binary with embedded testsuite
-    timeout 10m ./run-builtin-testsuite.sh
-    make clean
-fi
-
-
-if small_rom ${PLATFORM}; then
+    timeout 5m ./run-builtin-testsuite.sh
+    # There's a separate build dir used by run-builtin-testsuite.sh,
+    # move binary where the code below expects it.
+    mkdir -p ports/zephyr/outdir/${PLATFORM}/zephyr/
+    cp ports/zephyr/outdir/${PLATFORM}-testsuite/zephyr/zephyr.bin ports/zephyr/outdir/${PLATFORM}/zephyr/
+elif small_rom ${PLATFORM}; then
     ./make-minimal BOARD=${PLATFORM}
 elif full_testsuite ${PLATFORM}; then
     ./make-bin-testsuite BOARD=${PLATFORM}
