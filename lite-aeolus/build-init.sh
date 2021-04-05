@@ -75,11 +75,12 @@ install_zephyr_sdk()
 {
     test -d ${ZEPHYR_SDK_INSTALL_DIR} && return 0
     test -f ${ZEPHYR_SDK_INSTALL_DIR}.lck && exit 1
-    sudo touch ${ZEPHYR_SDK_INSTALL_DIR}.lck
+    sudo chown ${USER} ${ZEPHYR_SDK_INSTALL_DIR}/..
+    touch ${ZEPHYR_SDK_INSTALL_DIR}.lck
     wget -q "${ZEPHYR_SDK_URL}"
     chmod +x $(basename ${ZEPHYR_SDK_URL})
     ./$(basename ${ZEPHYR_SDK_URL}) --quiet --nox11 -- <<< ${ZEPHYR_SDK_INSTALL_DIR}
-    sudo rm -f ${ZEPHYR_SDK_INSTALL_DIR}.lck
+    rm -f ${ZEPHYR_SDK_INSTALL_DIR}.lck
 }
 
 install_zephyr_sdk
