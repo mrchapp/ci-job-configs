@@ -13,8 +13,8 @@ if [ ${PLATFORM} = "mps2_an385" ]; then
     timeout 5m ./run-builtin-testsuite.sh
     # There's a separate build dir used by run-builtin-testsuite.sh,
     # move binary where the code below expects it.
-    mkdir -p ports/zephyr/outdir/${PLATFORM}/zephyr/
-    cp ports/zephyr/outdir/${PLATFORM}-testsuite/zephyr/zephyr.bin ports/zephyr/outdir/${PLATFORM}/zephyr/
+    mkdir -p outdir/${PLATFORM}/zephyr/
+    cp outdir/${PLATFORM}-testsuite/zephyr/zephyr.bin outdir/${PLATFORM}/zephyr/
 elif small_rom ${PLATFORM}; then
     ./make-minimal BOARD=${PLATFORM}
 elif full_testsuite ${PLATFORM}; then
