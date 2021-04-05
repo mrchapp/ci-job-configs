@@ -18,7 +18,7 @@ except ImportError:
 # Dump all YAML job definitions as submitted to LAVA
 DEBUG_DUMP_JOBDEFS = False
 
-excluded_tests = [
+old_excluded_tests = [
     # Leads to HARD FAULT.
     'tests/kernel/common/test/zephyr/zephyr.bin',
     # Doesn't run, no output.
@@ -103,13 +103,13 @@ def build_only():
 
 def generate_test_list(platform, device_type):
     build_only_tests = build_only()
-    fixed_excluded_tests = set(excluded_tests).union(set(build_only_tests))
+    fixed_excluded_tests = set(old_excluded_tests).union(set(build_only_tests))
     print('\n=== tests will be excluded ===')
     print('--- build only tests ---')
     for test in build_only_tests:
         print(test)
-    print('--- tests from excluded_tests list ---')
-    for test in excluded_tests:
+    print('--- tests from old_excluded_tests list ---')
+    for test in old_excluded_tests:
         print(test)
 
     test_list = file_list('out/{}/tests'.format(platform), 'zephyr.bin')
