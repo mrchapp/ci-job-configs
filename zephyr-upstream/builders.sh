@@ -9,7 +9,7 @@ echo
 ## Zephyr 2.2+ requires Python3.6. As it's not available in official distro
 ## packages for Ubuntu Xenial (16.04) which we use, install it from PPA.
 ##sudo add-apt-repository -y ppa:deadsnakes/ppa
-##sudo apt-get -q=2 update
+sudo apt-get -q=2 update
 ##sudo apt-get install -y python3.6
 ##sudo ln -sf python3.6 /usr/bin/python3
 
