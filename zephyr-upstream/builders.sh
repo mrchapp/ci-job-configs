@@ -6,15 +6,15 @@ echo "git revision: ${GIT_COMMIT}"
 echo "Root build cause: ${ROOT_BUILD_CAUSE}"
 echo
 
-# Zephyr 2.2+ requires Python3.6. As it's not available in official distro
-# packages for Ubuntu Xenial (16.04) which we use, install it from PPA.
-sudo add-apt-repository -y ppa:deadsnakes/ppa
-sudo apt-get -q=2 update
-sudo apt-get install -y python3.6
-sudo ln -sf python3.6 /usr/bin/python3
+## Zephyr 2.2+ requires Python3.6. As it's not available in official distro
+## packages for Ubuntu Xenial (16.04) which we use, install it from PPA.
+##sudo add-apt-repository -y ppa:deadsnakes/ppa
+##sudo apt-get -q=2 update
+##sudo apt-get install -y python3.6
+##sudo ln -sf python3.6 /usr/bin/python3
 
 sudo apt-get -q=2 -y install git ninja-build g++ g++-multilib gperf python3-ply \
-    gcc-arm-none-eabi python-requests rsync device-tree-compiler \
+    gcc-arm-none-eabi rsync device-tree-compiler \
     python3-pip python3-serial python3-setuptools python3-wheel \
     python3-requests util-linux rename srecord
 
