@@ -243,9 +243,7 @@
             ls -l out/
             exit 1
           fi
-          set +f
-          out_release=out/*-$release_name-$buildnumber
-          set -f
+          out_release=$(set +f; echo out/*-$release_name-$buildnumber)
           if ! [ -d "$out_release" ]; then
             echo "ERROR: no $out_release directory in builds artifacts:"
             ls -l out/
@@ -334,4 +332,4 @@
             predefined-parameters: |
               version=master
               distro=lts
-# checksum: a59ca9eb95bbf668930b5155da6a3763
+# checksum: 66c58d4c3ce0837067606f5492a558fe

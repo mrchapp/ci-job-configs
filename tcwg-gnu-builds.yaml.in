@@ -209,9 +209,7 @@
             ls -l out/
             exit 1
           fi
-          set +f
-          out_release=out/*-$release_name-$buildnumber
-          set -f
+          out_release=$(set +f; echo out/*-$release_name-$buildnumber)
           if ! [ -d "$out_release" ]; then
             echo "ERROR: no $out_release directory in builds artifacts:"
             ls -l out/
