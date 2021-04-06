@@ -19,7 +19,7 @@
       - release:
           binutils_branch: binutils-2_35-branch
           gcc_branch: releases/gcc-10
-          newlib_branch: newlib-3.3.0
+          newlib_branch: refs/tags/newlib-3.3.0
           distro: lts_1
     bmk:
       - coremark
@@ -545,4 +545,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 002536b89a186c346620c6a1dd299538
+# checksum: b452859dc5aa1c59a7ccc3b0594ad52b

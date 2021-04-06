@@ -49,7 +49,7 @@
           llvm_branch: release/11.x
 #endif
 #if TOOLCHAIN_gnu_eabi
-          newlib_branch: newlib-3.3.0
+          newlib_branch: refs/tags/newlib-3.3.0
 #endif
           distro: lts_1
     bmk:
