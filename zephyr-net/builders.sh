@@ -5,7 +5,7 @@ cat /etc/issue
 sudo apt-get -q=2 update
 
 sudo apt-get -q=2 -y install git ninja-build g++ g++-multilib gperf python3-ply \
-    gcc-arm-none-eabi python-requests rsync device-tree-compiler \
+    gcc-arm-none-eabi rsync device-tree-compiler \
     python3-pip python3-serial python3-setuptools python3-wheel \
     python3-requests util-linux rename
 
