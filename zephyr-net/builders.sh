@@ -94,7 +94,7 @@ export LANG ZEPHYR_BASE PATH
 CCACHE_DIR="${HOME}/srv/ccache-zephyr/${BRANCH}"
 CCACHE_UNIFY=1
 CCACHE_SLOPPINESS=file_macro,include_file_mtime,time_macros
-USE_CCACHE=0
+USE_CCACHE=1
 export CCACHE_DIR CCACHE_UNIFY CCACHE_SLOPPINESS USE_CCACHE
 env |grep '^ZEPHYR'
 mkdir -p "${CCACHE_DIR}"
