@@ -195,11 +195,6 @@ if [ "${clean_packages}" != "" ]; then
     bitbake ${bbopt} ${build_packages}
 fi
 
-# RFS temp debug for fsbl-fetcher failure against github cloud
-bbopt="$bbopt -v"
-bitbake ${bbopt} -c cleansstate fsbl
-bitbake ${bbopt} -c fetch fsbl
-
 # Build all ${IMAGES}
 dipimg="prod-image"
 devimg="dev-image"
