@@ -451,7 +451,7 @@
     publishers:
         - build-publishers
         - email-ext:
-            recipients: ${{FILE,path="artifacts/jenkins/mail-recipients.txt"}}
+            recipients: '${{FILE,path="artifacts/jenkins/mail-recipients.txt"}}'
             content-type: text
             body: |
               ${{FILE,path="artifacts/jenkins/mail-body.txt"}}
