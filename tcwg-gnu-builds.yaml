@@ -286,7 +286,7 @@
             linaro_cp_opts="--dry-run"
           fi
           time python3 ./linaro-cp.py --api_version 3 $linaro_cp_opts \
-            "$out_release/" gnu-toolchain
+            "$out_release/" "gnu-toolchain/$(basename "$out_release")"
 
 - job:
     name: tcwg-gnu-builds-monthly
@@ -332,4 +332,4 @@
             predefined-parameters: |
               version=master
               distro=lts
-# checksum: 66c58d4c3ce0837067606f5492a558fe
+# checksum: 6eadaacf14a0b8ffd682d66a01b93b79
