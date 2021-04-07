@@ -123,13 +123,15 @@
           ci_config: '{ci_config}'
           distro: '{distro}'
 
+# Beware: git branch names need the 'refs/heads/' prefix while tags
+# need 'refs/tags/'.
 - scm:
     name: component-scm
     scm:
         - git:
             url: '{url}'
             branches:
-              - 'refs/heads/{branch}'
+              - '{branch}'
             basedir: '{component}'
             skip-tag: true
             reference-repo: '/home/tcwg-buildslave/snapshots-ref/{reference}'
@@ -454,4 +456,4 @@
           ci_project_config: 'tcwg_bmk_{hw}'
     publishers:
         - bisect-publishers
-# checksum: 7d39fea402e4ca0f0019a61b15258406
+# checksum: 3a4ee7ab06086d55780a397957f5e585

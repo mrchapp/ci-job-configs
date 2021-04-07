@@ -1,3 +1,4 @@
+# Beware: git branch names need the 'refs/heads/' prefix, while tags need 'refs/tags/'
 - project:
     name: tcwg_kernel-#{TOOLCHAIN}
     toolchain_name: #{TOOLCHAIN}
@@ -11,22 +12,22 @@
     qemu_url: git://git.qemu.org/qemu.git
     toolchain_ver:
       - master:
-          binutils_branch: master
+          binutils_branch: refs/heads/master
 #if TOOLCHAIN_gnu
-          gcc_branch: master
+          gcc_branch: refs/heads/master
 #elif TOOLCHAIN_llvm
-          llvm_branch: main
+          llvm_branch: refs/heads/main
 #endif
-          qemu_branch: master
+          qemu_branch: refs/heads/master
           distro: lts
       - release:
-          binutils_branch: binutils-2_35-branch
+          binutils_branch: refs/heads/binutils-2_35-branch
 #if TOOLCHAIN_gnu
-          gcc_branch: releases/gcc-10
+          gcc_branch: refs/heads/releases/gcc-10
 #elif TOOLCHAIN_llvm
-          llvm_branch: release/11.x
+          llvm_branch: refs/heads/release/11.x
 #endif
-          qemu_branch: stable-5.0
+          qemu_branch: refs/heads/stable-5.0
           distro: lts_1
     target:
       - aarch64
@@ -34,16 +35,16 @@
     linux:
       - next:
           linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-          linux_branch: master
+          linux_branch: refs/heads/master
       - mainline:
           linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-          linux_branch: master
+          linux_branch: refs/heads/master
       - stable:
           linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-          linux_branch: linux-rolling-stable
+          linux_branch: refs/heads/linux-rolling-stable
       - lts:
           linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-          linux_branch: linux-rolling-lts
+          linux_branch: refs/heads/linux-rolling-lts
     linux_config:
       - defconfig
       - allmodconfig

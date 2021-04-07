@@ -1,3 +1,4 @@
+# Beware: git branch names need the 'refs/heads/' prefix, while tags need 'refs/tags/'
 - project:
     name: #{RR}
     toolchain_name: gnu
@@ -21,30 +22,30 @@
     toolchain_ver:
       - master:
 #if COMPONENTS_binutils
-          binutils_branch: master
+          binutils_branch: refs/heads/master
 #endif
 #if COMPONENTS_gcc
-          gcc_branch: master
+          gcc_branch: refs/heads/master
 #endif
 #if COMPONENTS_glibc
-          glibc_branch: master
+          glibc_branch: refs/heads/master
 #endif
 #if COMPONENTS_qemu
-          qemu_branch: master
+          qemu_branch: refs/heads/master
 #endif
           distro: lts
       - release:
 #if COMPONENTS_binutils
-          binutils_branch: binutils-2_35-branch
+          binutils_branch: refs/heads/binutils-2_35-branch
 #endif
 #if COMPONENTS_gcc
-          gcc_branch: releases/gcc-10
+          gcc_branch: refs/heads/releases/gcc-10
 #endif
 #if COMPONENTS_glibc
-          glibc_branch: release/2.32/master
+          glibc_branch: refs/heads/release/2.32/master
 #endif
 #if COMPONENTS_qemu
-          qemu_branch: stable-5.0
+          qemu_branch: refs/heads/stable-5.0
 #endif
           distro: lts_1
     target:

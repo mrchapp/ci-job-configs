@@ -106,13 +106,15 @@
           ci_config: '{ci_config}'
           distro: '{distro}'
 
+# Beware: git branch names need the 'refs/heads/' prefix while tags
+# need 'refs/tags/'.
 - scm:
     name: component-scm
     scm:
         - git:
             url: '{url}'
             branches:
-              - 'refs/heads/{branch}'
+              - '{branch}'
             basedir: '{component}'
             skip-tag: true
             reference-repo: '/home/tcwg-buildslave/snapshots-ref/{reference}'
