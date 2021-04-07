@@ -105,6 +105,9 @@ echo "########################################################################"
 echo "    build (twister)"
 echo "########################################################################"
 
+# Show ccache stats both before and after build.
+CCACHE_DIR=${CCACHE_DIR} ccache --show-stats
+
 time ${ZEPHYR_BASE}/scripts/twister \
   --platform ${PLATFORM} \
   --inline-logs \
@@ -142,5 +145,5 @@ echo "=== contents of ${WORKSPACE}/out/ ==="
 find out
 echo "=== end of contents of ${WORKSPACE}/out/ ==="
 
+CCACHE_DIR=${CCACHE_DIR} ccache --show-stats
 CCACHE_DIR=${CCACHE_DIR} ccache -M 30G
-CCACHE_DIR=${CCACHE_DIR} ccache -s
