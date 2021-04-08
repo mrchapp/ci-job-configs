@@ -373,7 +373,7 @@ def main():
     for test in test_list:
         yaml_config = get_yaml(test)
 
-        if should_skip(test, yaml_config):
+        if should_skip_test(test, yaml_config):
             continue
 
         re = get_regex(test, yaml_config)
