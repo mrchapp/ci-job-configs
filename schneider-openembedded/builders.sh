@@ -143,13 +143,6 @@ fi
 
 source ./setup-environment build-${machine_orig}/
 
-# For debugging, temporary checkout of DIP-secureboot & submodules
-git clone ${DISTRO_URL_BASE}/DIP-secureboot
-cd DIP-secureboot
-git submodule update --init
-cd ..
-rm -rf DIP-secureboot
-
 ln -s ${HOME}/srv/oe/downloads
 ln -s ${sstatecache} sstate-cache
 
