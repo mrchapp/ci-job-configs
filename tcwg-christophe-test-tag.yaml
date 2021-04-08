@@ -25,7 +25,8 @@
                 - refs/tags/newlib-3.3.0
             basedir: newlib
             skip-tag: true
-            wipe-workspace: true
+            reference-repo: '/home/tcwg-buildslave/snapshots-ref/newlib.git'
+            wipe-workspace: false
             clean:
               before: true
             prune: true
