@@ -133,7 +133,7 @@
                 If provided, a notification on the build/test results will be
                 sent to this email.
     disabled: false
-    node: docker-lkft
+    node: docker-buster-lkft
     display-name: 'LKFT - Linux Developer Builder (OpenEmbedded/sumo)'
     wrappers:
         - timeout:
