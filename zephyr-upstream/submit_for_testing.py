@@ -52,11 +52,19 @@ old_excluded_tests = [
     'tests/kernel/mem_protect/app_memory/test/zephyr.bin',
     'tests/kernel/fatal/test/zephyr.bin',
     'tests/bluetooth/shell/test_nble/zephyr.bin',
+    'tests/drivers/watchdog/wdt_basic_api/zephyr.bin',
+]
+
+# Can exclude both by base source path and specific test configuration
+# path, e.g.:
+# tests/drivers/watchdog/wdt_basic_api/drivers.watchdog
+# tests/drivers/watchdog/wdt_basic_api
+excluded_tests = {
     # This test includes watchdog reset, so the output is peculiar (startup
     # banners appear over and over again), and isn't handled by current
     # test job.
-    'tests/drivers/watchdog/wdt_basic_api/zephyr.bin',
-]
+    "tests/drivers/watchdog/wdt_basic_api": "Output doesn't match LAVA test monitor patterns",
+}
 
 # Templates base path
 template_base_path = 'configs/zephyr-upstream/lava-job-definitions'
@@ -216,6 +224,27 @@ def get_regex(test, yaml):
         return None
     return parse_yaml_harness_config(yaml_node)
 
+
+def should_skip_test(test, yaml_config):
+    # As of now, LAVA lab doesn't have boards with special harnesses,
+    # so skip tests which require something beyond basic "console".
+    harness_section = get_section_with_harness(test, yaml_config)
+    if harness_section and harness_section["harness"] != "console":
+        print("SKIP %s: requires harness '%s'" % (
+            test, harness_section["harness"]
+        ))
+        return True
+
+    assert test.endswith("/zephyr/zephyr.bin")
+    test_path = test.rsplit("/", 2)[0]
+    # Can exclude both by base source path and specific test configuration path.
+    if test_path in excluded_tests or test_path.rsplit("/", 1)[0] in excluded_tests:
+        reason = excluded_tests.get(test_path)
+        reason = reason or excluded_tests.get(test_path.rsplit("/", 1)[0])
+        print("SKIP %s: %s" % (test, reason))
+        return True
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--board-name",
@@ -343,14 +372,8 @@ def main():
     tests_submitted = 0
     for test in test_list:
         yaml_config = get_yaml(test)
-        harness_section = get_section_with_harness(test, yaml_config)
 
-        # As of now, LAVA lab doesn't have boards with special harnesses,
-        # so skip tests which require something beyond basic "console".
-        if harness_section and harness_section["harness"] != "console":
-            print("SKIP %s: requires harness '%s'" % (
-                test, harness_section["harness"]
-            ))
+        if should_skip(test, yaml_config):
             continue
 
         re = get_regex(test, yaml_config)
