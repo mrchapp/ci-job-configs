@@ -100,6 +100,10 @@ env |grep '^ZEPHYR'
 mkdir -p "${CCACHE_DIR}"
 rm -rf ${OUTDIR}
 
+if [ -n "${CCACHE_CTRL}" ]; then
+    CCACHE_DIR=${CCACHE_DIR} ccache ${CCACHE_CTRL}
+fi
+
 echo ""
 echo "########################################################################"
 echo "    build (twister)"
@@ -116,6 +120,8 @@ time ${ZEPHYR_BASE}/scripts/twister \
   --enable-slow \
   -x=USE_CCACHE=${USE_CCACHE} \
   ${TWISTER_EXTRA}
+
+CCACHE_DIR=${CCACHE_DIR} ccache --show-stats
 
 # Put report where rsync below will pick it up.
 cp ${OUTDIR}/twister.csv ${OUTDIR}/${PLATFORM}/
@@ -145,5 +151,4 @@ echo "=== contents of ${WORKSPACE}/out/ ==="
 find out
 echo "=== end of contents of ${WORKSPACE}/out/ ==="
 
-CCACHE_DIR=${CCACHE_DIR} ccache --show-stats
 CCACHE_DIR=${CCACHE_DIR} ccache -M 30G

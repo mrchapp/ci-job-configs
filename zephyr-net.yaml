@@ -50,6 +50,9 @@
         - string:
             name: USE_QA_SERVER
             default: '1'
+        - string:
+            name: CCACHE_CTRL
+            default: ''
 #        - string:
 #            name: TWISTER_EXTRA
 #            default: '--testcase-root samples/net/sockets/dumb_http_server'
