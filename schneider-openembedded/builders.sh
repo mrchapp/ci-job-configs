@@ -146,6 +146,10 @@ source ./setup-environment build-${machine_orig}/
 ln -s ${HOME}/srv/oe/downloads
 ln -s ${sstatecache} sstate-cache
 
+# RFS force clean buildwithout old sstate cache
+rm -rf ${HOME}/srv/oe/downloads && mkdir -p ${HOME}/srv/oe/downloads
+rm -rf ${sstatecache} && mkdir -p ${sstatecache}
+
 # Add job BUILD_NUMBER to output files names
 cat << EOF >> conf/auto.conf
 IMAGE_NAME_append = "-${BUILD_NUMBER}"
