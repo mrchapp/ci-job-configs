@@ -5,7 +5,6 @@
       - apm-02
       - apm-03
       - apm-04
-      - tcwg-d05-01
       - tcwg-sq-01
       - tcwg-sq-02
       - tcwg-tk1-10
@@ -96,7 +95,7 @@
             # .ssh/config settings (mainly the connexion port)
             case {slave_name} in
                 # Use port 22
-                apm-*|tcwg-d05-01|tcwg-amp-*|tcwg-m1-*)
+                apm-*|tcwg-m1-*)
                     slave_name={slave_name}
                     ;;
                 *)
