@@ -106,6 +106,9 @@ echo "########################################################################"
 echo "    mass-build (twister)"
 echo "########################################################################"
 
+# Show ccache stats both before and after build.
+CCACHE_DIR=${CCACHE_DIR} ccache --show-stats
+
 time ${ZEPHYR_BASE}/scripts/twister \
   --platform ${PLATFORM} \
   --inline-logs \
@@ -116,6 +119,8 @@ time ${ZEPHYR_BASE}/scripts/twister \
   -x=USE_CCACHE=${USE_CCACHE} \
   --jobs 2 \
   ${TWISTER_EXTRA}
+
+CCACHE_DIR=${CCACHE_DIR} ccache --show-stats
 
 # Put report where rsync below will pick it up.
 cp ${OUTDIR}/twister.csv ${OUTDIR}/${PLATFORM}/
@@ -146,4 +151,3 @@ find out
 echo "=== end of contents of ${WORKSPACE}/out/ ==="
 
 CCACHE_DIR=${CCACHE_DIR} ccache -M 30G
-CCACHE_DIR=${CCACHE_DIR} ccache -s
