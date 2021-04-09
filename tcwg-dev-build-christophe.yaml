@@ -64,10 +64,10 @@
             name: build_container_tag
             default: lts_1
             description: 'Distro to use on the builder with non-default container type: bionic, focal.'
-    disabled: false
+    disabled: true
     node: tcwg-x86_64-build
     concurrent: true
-    display-name: 'TCWG ZZZ Dev Build Christophe'
+    display-name: 'DELETE ME'
     scm:
         - git:
             url: https://git.linaro.org/toolchain/jenkins-scripts.git

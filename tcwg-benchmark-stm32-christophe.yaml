@@ -93,11 +93,11 @@
             name: bmk_branch
             default: master
             description: 'Bmk-scripts branch to use'
-    disabled: false
+    disabled: true
     node: tcwg-bmk-stm32-01
     child-workspace: $label
     concurrent: true
-    display-name: 'TCWG BBB Benchmark STM32'
+    display-name: 'DELETE ME'
     scm:
         - git:
             url: https://git.linaro.org/toolchain/jenkins-scripts.git
