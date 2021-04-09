@@ -101,7 +101,7 @@ mkdir -p "${CCACHE_DIR}"
 rm -rf ${OUTDIR}
 
 if [ -n "${CCACHE_CTRL}" ]; then
-    CCACHE_DIR=${CCACHE_DIR} ccache ${CCACHE_CTRL}
+    time CCACHE_DIR=${CCACHE_DIR} ccache ${CCACHE_CTRL}
 fi
 
 echo ""
