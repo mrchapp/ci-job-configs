@@ -18,7 +18,7 @@ rm -rf wheel* *.whl
 
 # let use our own cache
 # TODO(hrw): enable after populating it with manylinux2014 files
-#export PIP_EXTRA_INDEX="https://snapshots.linaro.org/ldcg/python-cache/"
+export PIP_EXTRA_INDEX="https://snapshots.linaro.org/ldcg/python-cache/"
 
 # make use of all CPU cores for some builds
 export NPY_NUM_BUILD_JOBS="$(nproc)"
