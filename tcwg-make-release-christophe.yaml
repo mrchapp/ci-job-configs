@@ -82,7 +82,7 @@
     node: tcwg-coordinator
     retry-count: 3
     concurrent: true
-    display-name: 'TCWG ZZZ Make Release Christophe'
+    display-name: 'DELETE ME'
     scm:
         - git:
             url: https://git-us.linaro.org/toolchain/abe.git
