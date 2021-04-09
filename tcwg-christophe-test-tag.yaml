@@ -14,10 +14,10 @@
         - build-discarder:
             days-to-keep: 30
             num-to-keep: 300
-    disabled: false
+    disabled: true
     node: tcwg-x86_64-dev-01-short
     retry-count: 3
-    display-name: 'TCWG ZZZ Christophe test tag'
+    display-name: 'DELETE ME'
     scm:
         - git:
             url: git://sourceware.org/git/newlib-cygwin.git
