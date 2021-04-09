@@ -453,7 +453,8 @@
     publishers:
         - build-publishers
         - email-ext:
-            recipients: '${{FILE,path="artifacts/jenkins/mail-recipients.txt"}}'
+            recipients: |
+              ${{FILE,path="artifacts/jenkins/mail-recipients.txt"}}
             content-type: text
             body: |
               ${{FILE,path="artifacts/jenkins/mail-body.txt"}}
@@ -551,4 +552,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: d5d4c542ea40f7f3e0c7d693deed8bd7
+# checksum: 9d0c64fb6bdf1288c153754645bc3ef4

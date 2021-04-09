@@ -372,7 +372,8 @@
     publishers:
         - build-publishers
         - email-ext:
-            recipients: '${{FILE,path="artifacts/jenkins/mail-recipients.txt"}}'
+            recipients: |
+              ${{FILE,path="artifacts/jenkins/mail-recipients.txt"}}
             content-type: text
             body: |
               ${{FILE,path="artifacts/jenkins/mail-body.txt"}}
@@ -470,4 +471,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 5f1b1c99edcca561b6228620c9c3afa7
+# checksum: 01921607b004f43484eb0e326a1c6967
