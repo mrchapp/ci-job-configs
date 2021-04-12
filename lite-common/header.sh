@@ -1,5 +1,9 @@
 cat /etc/issue
 
-ccache --version
-
 echo "PWD: $PWD"
+
+df -h
+
+gcc --version
+g++ --version
+ccache --version
