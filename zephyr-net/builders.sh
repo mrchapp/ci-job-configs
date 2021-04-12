@@ -5,31 +5,12 @@ sudo apt-get -q=2 update
 sudo apt-get -q=2 -y install ninja-build gperf python3-ply \
     gcc-arm-none-eabi rsync device-tree-compiler \
     python3-pip python3-serial python3-setuptools python3-wheel \
-    python3-requests util-linux rename
+    python3-requests python3-pyelftools util-linux rename
 
 set -ex
 
-# pip as shipped by distro may be not up to date enough to support some
-# quirky PyPI packages, specifically cmake was caught like that.
-sudo pip3 install --upgrade pip
-
 sudo pip3 install west
 west --version
-
-# Distro package is too old for Zephyr
-sudo pip3 install pyelftools
-
-# Pre-installed CMake is too old for the latest Zephyr
-# Recent recommendation to users is to install it via PyPI, let'd do the same
-sudo pip3 install cmake
-#cmake_version=3.9.5
-#wget -q https://cmake.org/files/v3.9/cmake-${cmake_version}-Linux-x86_64.tar.gz
-#tar xf cmake-${cmake_version}-Linux-x86_64.tar.gz
-#cp -a cmake-${cmake_version}-Linux-x86_64/bin/* /usr/local/bin/
-#cp -a cmake-${cmake_version}-Linux-x86_64/share/* /usr/local/share/
-#rm -rf cmake-${cmake_version}-Linux-x86_64
-#cmake -version
-
 
 git clone -b ${BRANCH} https://github.com/zephyrproject-rtos/zephyr.git
 west init -l zephyr/
