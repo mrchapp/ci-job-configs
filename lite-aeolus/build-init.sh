@@ -15,8 +15,8 @@ fi
 
 sudo apt-get -q=2 update
 
-#sudo apt-get -q=2 -y install git g++ libc6-dev-i386 g++-multilib python3-ply python3-yaml gcc-arm-none-eabi python-requests rsync device-tree-compiler
-sudo apt-get -q=2 -y install python3-pip python3-setuptools python3-serial rename socat
+# python-is-python2 is needed for Google depot_tools below.
+sudo apt-get -q=2 -y install python3-pip python3-setuptools python3-serial rename socat python-is-python2
 
 # pip as shipped by distro may be not up to date enough to support some
 # quirky PyPI packages, specifically cmake was caught like that.
@@ -38,8 +38,8 @@ git clone --depth 1 ${GIT_URL} -b ${BRANCH} ${WORKSPACE}
 # We used to call git-retry shell wrapper, until it started to choose
 # a wrong Python interpreter. "_" below is a param ignored when executing
 # git_retry.py directly.
-python3 ${HOME}/depot_tools/git_retry.py _ submodule sync --recursive
-python3 ${HOME}/depot_tools/git_retry.py _ submodule update --init --recursive --checkout
+python ${HOME}/depot_tools/git_retry.py _ submodule sync --recursive
+python ${HOME}/depot_tools/git_retry.py _ submodule update --init --recursive --checkout
 
 git clean -fdx
 
