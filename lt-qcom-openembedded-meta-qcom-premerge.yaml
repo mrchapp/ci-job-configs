@@ -15,7 +15,7 @@
                 - 'dragonboard-410c'
                 - 'dragonboard-845c'
                 - 'qrb5165-rb5'
-
+                - 'qcom-armv8a'
 - job-template:
     name: lt-qcom-openembedded-meta-qcom-premerge-{branch}
     project-type: matrix
