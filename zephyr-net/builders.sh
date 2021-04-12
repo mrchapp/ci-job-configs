@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cat /etc/issue
-
 sudo apt-get -q=2 update
 
 sudo apt-get -q=2 -y install git ninja-build g++ g++-multilib gperf python3-ply \
@@ -10,8 +8,6 @@ sudo apt-get -q=2 -y install git ninja-build g++ g++-multilib gperf python3-ply 
     python3-requests util-linux rename
 
 set -ex
-
-df -h
 
 # pip as shipped by distro may be not up to date enough to support some
 # quirky PyPI packages, specifically cmake was caught like that.

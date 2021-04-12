@@ -87,6 +87,8 @@
                 variable: QA_REPORTS_TOKEN
     builders:
         - shell:
+            !include-raw: lite-common/header.sh
+        - shell:
             !include-raw:
                 - lite-aeolus/build-init.sh
                 - lite-aeolus/build-micropython.sh
