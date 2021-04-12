@@ -38,8 +38,8 @@ git clone --depth 1 ${GIT_URL} -b ${BRANCH} ${WORKSPACE}
 # We used to call git-retry shell wrapper, until it started to choose
 # a wrong Python interpreter. "_" below is a param ignored when executing
 # git_retry.py directly.
-python ${HOME}/depot_tools/git_retry.py _ submodule sync --recursive
-python ${HOME}/depot_tools/git_retry.py _ submodule update --init --recursive --checkout
+python3 ${HOME}/depot_tools/git_retry.py _ submodule sync --recursive
+python3 ${HOME}/depot_tools/git_retry.py _ submodule update --init --recursive --checkout
 
 git clean -fdx
 
