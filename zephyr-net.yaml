@@ -109,6 +109,8 @@
     builders:
         - shell:
             !include-raw: lite-common/header.sh
+        - shell:
+            !include-raw: lite-common/install-toolchains.sh
         - shell: |
             echo TWISTER_EXTRA="--testcase-root samples/net/sockets/dumb_http_server --testcase-root samples/net/sockets/dumb_http_server_mt" >env_var_parameters
         - inject:

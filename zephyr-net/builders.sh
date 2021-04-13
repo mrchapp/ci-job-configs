@@ -24,42 +24,13 @@ fi
 echo "GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)" > ${WORKSPACE}/env_var_parameters
 echo "EXTERNAL_BUILD_ID=$(git rev-parse --short=8 HEAD)-${BUILD_NUMBER}" >> ${WORKSPACE}/env_var_parameters
 
-# Note that Zephyr SDK is needed even when building with the gnuarmemb
-# toolchain, ZEPHYR_SDK_INSTALL_DIR is needed to find things like conf
-ZEPHYR_SDK_URL="https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.12.3/zephyr-sdk-0.12.3-setup.run"
-export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.12.3"
-
-# GNU ARM Embedded is downloaded once (per release) and cached in a persistent
+# Toolchains are downloaded once (per release) and cached in a persistent
 # docker volume under ${HOME}/srv/toolchain/.
-GNUARMEMB_TOOLCHAIN_URL="https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/8-2019q3/RC1.1/gcc-arm-none-eabi-8-2019-q3-update-linux.tar.bz2"
+# Note that Zephyr SDK is needed even when building with the gnuarmemb
+# toolchain, ZEPHYR_SDK_INSTALL_DIR is needed to find things like conf.
+export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.12.3"
 export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/srv/toolchain/gcc-arm-none-eabi-8-2019-q3-update"
 
-install_zephyr_sdk()
-{
-    test -d ${ZEPHYR_SDK_INSTALL_DIR} && return 0
-    test -f ${ZEPHYR_SDK_INSTALL_DIR}.lck && exit 1
-    touch ${ZEPHYR_SDK_INSTALL_DIR}.lck
-    wget -q "${ZEPHYR_SDK_URL}"
-    chmod +x $(basename ${ZEPHYR_SDK_URL})
-    ./$(basename ${ZEPHYR_SDK_URL}) --quiet --nox11 -- <<< ${ZEPHYR_SDK_INSTALL_DIR}
-    rm -f ${ZEPHYR_SDK_INSTALL_DIR}.lck
-}
-
-install_arm_toolchain()
-{
-    test -d ${GNUARMEMB_TOOLCHAIN_PATH} && return 0
-    wget -q "${GNUARMEMB_TOOLCHAIN_URL}"
-    top=$(dirname ${GNUARMEMB_TOOLCHAIN_PATH})
-    rm -rf ${top}/_tmp.$$
-    mkdir -p ${top}/_tmp.$$
-    tar -C ${top}/_tmp.$$ -xaf $(basename ${GNUARMEMB_TOOLCHAIN_URL})
-    mv ${top}/_tmp.$$/$(basename ${GNUARMEMB_TOOLCHAIN_PATH}) ${top}
-}
-
-ls -l ${HOME}/srv/toolchain/
-install_zephyr_sdk
-install_arm_toolchain
-#find ${ZEPHYR_SDK_INSTALL_DIR}
 ${ZEPHYR_SDK_INSTALL_DIR}/sysroots/x86_64-pokysdk-linux/usr/bin/dtc --version
 
 # Set build environment variables
