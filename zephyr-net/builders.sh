@@ -92,6 +92,7 @@ CCACHE_DIR=${CCACHE_DIR} ccache --show-stats
 time ${ZEPHYR_BASE}/scripts/twister \
   --platform ${PLATFORM} \
   --inline-logs \
+  --verbose \
   --build-only \
   --outdir ${OUTDIR} \
   --enable-slow \
