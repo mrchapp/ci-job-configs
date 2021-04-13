@@ -19,7 +19,7 @@
           binutils_branch: refs/heads/binutils-2_35-branch
           gcc_branch: refs/heads/releases/gcc-10
           glibc_branch: refs/heads/release/2.32/master
-          qemu_branch: refs/heads/stable-5.0
+          qemu_branch: refs/tags/v5.2.0
           distro: lts_1
     target:
       - aarch64
@@ -508,4 +508,4 @@
           ci_project_config: '{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 8e09147ac80203266e73c85337e5d7d8
+# checksum: f3bdc6e7a12ed78feefc200be5e6592f

@@ -45,7 +45,7 @@
           glibc_branch: refs/heads/release/2.32/master
 #endif
 #if COMPONENTS_qemu
-          qemu_branch: refs/heads/stable-5.0
+          qemu_branch: refs/tags/v5.2.0
 #endif
           distro: lts_1
     target:

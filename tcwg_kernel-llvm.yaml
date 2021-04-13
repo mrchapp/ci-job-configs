@@ -16,7 +16,7 @@
       - release:
           binutils_branch: refs/heads/binutils-2_35-branch
           llvm_branch: refs/heads/release/11.x
-          qemu_branch: refs/heads/stable-5.0
+          qemu_branch: refs/tags/v5.2.0
           distro: lts_1
     target:
       - aarch64
@@ -511,4 +511,4 @@
           ci_project_config: '{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: f2e255f33eea9258dd58241fc3e1d7ac
+# checksum: ac0eaab4fc7300510b22a5408346d83d

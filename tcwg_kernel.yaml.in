@@ -27,7 +27,7 @@
 #elif TOOLCHAIN_llvm
           llvm_branch: refs/heads/release/11.x
 #endif
-          qemu_branch: refs/heads/stable-5.0
+          qemu_branch: refs/tags/v5.2.0
           distro: lts_1
     target:
       - aarch64
