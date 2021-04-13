@@ -54,7 +54,7 @@
             type: slave
             name: label
             values:
-                - docker-xenial-amd64-13
+                - docker-focal-amd64-lite
         - axis:
             type: user-defined
             name: ZEPHYR_TOOLCHAIN_VARIANT
