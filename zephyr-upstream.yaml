@@ -114,6 +114,8 @@
         - shell:
             !include-raw: lite-common/header.sh
         - shell:
+            !include-raw: lite-common/install-toolchains.sh
+        - shell:
             !include-raw: zephyr-upstream/builders.sh
         - inject:
             properties-file: env_var_parameters
