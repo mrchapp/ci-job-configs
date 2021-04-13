@@ -23,10 +23,10 @@
           llvm_branch: refs/heads/main
           distro: lts
       - release:
-          binutils_branch: refs/heads/binutils-2_35-branch
+          binutils_branch: refs/heads/binutils-2_36-branch
           gcc_branch: refs/heads/releases/gcc-10
           glibc_branch: refs/heads/release/2.32/master
-          llvm_branch: refs/heads/release/11.x
+          llvm_branch: refs/heads/release/12.x
           distro: lts_1
     bmk:
       - spec2k6
@@ -567,4 +567,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 233ed75f7b3e7a76b67e8b5a8dc8a886
+# checksum: f744df96827e8e89b65ab883cb2fdd23

@@ -10,7 +10,7 @@
           binutils_branch: refs/heads/master
           distro: lts
       - release:
-          binutils_branch: refs/heads/binutils-2_35-branch
+          binutils_branch: refs/heads/binutils-2_36-branch
           distro: lts_1
     target:
       - aarch64:
@@ -471,4 +471,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 01921607b004f43484eb0e326a1c6967
+# checksum: 557ca8a0570213fa83f592d455fdeeb7

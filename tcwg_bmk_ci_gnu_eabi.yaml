@@ -18,7 +18,7 @@
           newlib_branch: refs/heads/master
           distro: lts
       - release:
-          binutils_branch: refs/heads/binutils-2_35-branch
+          binutils_branch: refs/heads/binutils-2_36-branch
           gcc_branch: refs/heads/releases/gcc-10
           newlib_branch: refs/tags/newlib-3.3.0
           distro: lts_1
@@ -549,4 +549,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: de12f5592b0ea0454a142548f0de605d
+# checksum: f7dbec0a3515f757a1a4e5776f7f109c

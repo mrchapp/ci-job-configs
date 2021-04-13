@@ -21,7 +21,7 @@
           glibc_branch: refs/heads/master
           distro: lts
       - release:
-          binutils_branch: refs/heads/binutils-2_35-branch
+          binutils_branch: refs/heads/binutils-2_36-branch
           gcc_branch: refs/heads/releases/gcc-10
           glibc_branch: refs/heads/release/2.32/master
           distro: lts_1
@@ -552,4 +552,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 9d0c64fb6bdf1288c153754645bc3ef4
+# checksum: d7b453fc233e7aada159fb6ffe54f0a1

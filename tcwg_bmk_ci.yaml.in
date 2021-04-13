@@ -41,13 +41,13 @@
 #endif
           distro: lts
       - release:
-          binutils_branch: refs/heads/binutils-2_35-branch
+          binutils_branch: refs/heads/binutils-2_36-branch
           gcc_branch: refs/heads/releases/gcc-10
 #if !TOOLCHAIN_gnu_eabi
           glibc_branch: refs/heads/release/2.32/master
 #endif
 #if TOOLCHAIN_llvm
-          llvm_branch: refs/heads/release/11.x
+          llvm_branch: refs/heads/release/12.x
 #endif
 #if TOOLCHAIN_gnu_eabi
           newlib_branch: refs/tags/newlib-3.3.0

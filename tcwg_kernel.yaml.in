@@ -21,11 +21,11 @@
           qemu_branch: refs/heads/master
           distro: lts
       - release:
-          binutils_branch: refs/heads/binutils-2_35-branch
+          binutils_branch: refs/heads/binutils-2_36-branch
 #if TOOLCHAIN_gnu
           gcc_branch: refs/heads/releases/gcc-10
 #elif TOOLCHAIN_llvm
-          llvm_branch: refs/heads/release/11.x
+          llvm_branch: refs/heads/release/12.x
 #endif
           qemu_branch: refs/tags/v5.2.0
           distro: lts_1

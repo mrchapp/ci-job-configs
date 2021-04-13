@@ -14,8 +14,8 @@
           qemu_branch: refs/heads/master
           distro: lts
       - release:
-          binutils_branch: refs/heads/binutils-2_35-branch
-          llvm_branch: refs/heads/release/11.x
+          binutils_branch: refs/heads/binutils-2_36-branch
+          llvm_branch: refs/heads/release/12.x
           qemu_branch: refs/tags/v5.2.0
           distro: lts_1
     target:
@@ -511,4 +511,4 @@
           ci_project_config: '{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: ac0eaab4fc7300510b22a5408346d83d
+# checksum: eed56e463cdc44184f208b303ea703b9
