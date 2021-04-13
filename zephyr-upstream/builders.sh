@@ -115,7 +115,6 @@ time ${ZEPHYR_BASE}/scripts/twister \
   --verbose \
   --build-only \
   --outdir ${OUTDIR} \
-  ${TWISTER_SLOW_TESTS} \
   -x=USE_CCACHE=${USE_CCACHE} \
   --jobs 2 \
   ${TWISTER_EXTRA}

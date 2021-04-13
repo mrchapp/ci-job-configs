@@ -36,7 +36,7 @@
             name: GIT_COMMIT
             default: 'HEAD'
         - string:
-            name: TWISTER_SLOW_TESTS
+            name: TWISTER_EXTRA
             default: '--enable-slow'
     disabled: false
     node: master
