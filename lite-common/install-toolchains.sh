@@ -1,3 +1,4 @@
+#!/bin/bash
 # Toolchains are downloaded, installed, and cached on a persistent disk
 # under ${HOME}/srv/toolchain/ .
 
