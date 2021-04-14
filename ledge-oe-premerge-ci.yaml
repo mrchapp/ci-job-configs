@@ -41,7 +41,7 @@
             name: AUTH_GROUPS
             default: 'linaro'
         - string:
-            name: KERNEL_ARGS
+            name: BB_CLEANALL_PKGS
             default: ''
     disabled: false
     node: master

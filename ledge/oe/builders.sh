@@ -106,19 +106,27 @@ fi
 cat conf/{site,auto}.conf
 
 BIMAGES=""
+BCLEANALL=""
 case "${ORIG_MACHINE}" in
 	ledge-multi-armv7)
+		for i in ${BB_CLEANALL_PKGS}; do BCLEANALL+="mc:qemuarm:$i "; done
 		for i in ${IMAGES}; do BIMAGES+="mc:qemuarm:$i "; done
 		;;
 	ledge-multi-armv8)
+		for i in ${BB_CLEANALL_PKGS}; do BCLEANALL+="mc:qemuarm64:$i "; done
 		for i in ${IMAGES}; do BIMAGES+="mc:qemuarm64:$i "; done
 		;;
 	*)
+		BCLEANALL="${BB_CLEANALL_PKGS}"
 		BIMAGES=${IMAGES}
 		;;
 esac
 
 export BB_NUMBER_THREADS=4
+
+if [ -n "${BCLEANALL}" ]; then
+	bitbake -c cleanall ${BCLEANALL}
+fi
 
 # For armv7 multi some bug compiling images in one command
 # time bitbake ${BIMAGES} ${FIRMWARE}
@@ -391,7 +399,6 @@ LIBHUGETLBFS_VERSION=${LIBHUGETLBFS_VERSION}
 LIBHUGETLBFS_REVISION=${LIBHUGETLBFS_REVISION}
 MAKE_KERNELVERSION=${MAKE_KERNELVERSION}
 TOOLCHAIN="${TARGET_SYS} ${GCCVERSION}"
-KERNEL_ARGS="${KERNEL_ARGS}"
 INITRD_URL="${INITRD_URL}"
 OVMF="${BASE_URL}/${PUB_DEST}/${OVMF}"
 CERTS="${BASE_URL}/${PUB_DEST}/${CERTS}"
