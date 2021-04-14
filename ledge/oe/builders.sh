@@ -156,7 +156,7 @@ build_ledgerp_docs() {
 		sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 update || true
 	fi
 	# Install deps
-	pkg_list="python-sphinx texlive texlive-latex-extra libalgorithm-diff-perl \
+	pkg_list="python-pip python-sphinx texlive texlive-latex-extra libalgorithm-diff-perl \
                   texlive-humanities texlive-generic-recommended texlive-generic-extra \
                   latexmk"
 	if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}; then
