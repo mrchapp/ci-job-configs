@@ -112,7 +112,7 @@
         - shell:
             !include-raw: lite-common/install-toolchains.sh
         - shell: |
-            echo TWISTER_EXTRA="--testcase-root samples/net/sockets/dumb_http_server --testcase-root samples/net/sockets/dumb_http_server_mt" >env_var_parameters
+            echo TWISTER_EXTRA="--testcase-root samples/net/sockets/dumb_http_server --testcase-root samples/net/sockets/dumb_http_server_mt -x=BUILD_VERSION=ci_build_version" >env_var_parameters
         - inject:
             properties-file: env_var_parameters
         - shell:
