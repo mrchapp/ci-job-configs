@@ -19,10 +19,10 @@
     parameters:
         - string:
             name: IMAGES
-            default: 'ledge-gateway ledge-iot'
+            default: 'ledge-gateway ledge-iot ledge-gateway-lava ledge-iot-lava'
         - string:
             name: MANIFEST_BRANCH
-            default: 'ledge-rp-0.1'
+            default: 'ledge-rp-0.2'
         - string:
             name: PUB_DEST
             default: 'components/ledge/oe/${MANIFEST_BRANCH}/${MACHINE}/${BUILD_NUMBER}/'
@@ -58,8 +58,6 @@
                 - 'ledge-ti-am572x'
                 - 'ledge-stm32mp157c-dk2'
                 - 'ledge-qemux86-64'
-                - 'ledge-qemuarm'
-                - 'ledge-qemuarm64'
                 - 'ledge-synquacer'
                 - 'ledge-multi-armv7'
                 - 'ledge-multi-armv8'
@@ -72,7 +70,7 @@
             type: slave
             name: label
             values:
-                - docker-stretch-amd64
+                - docker-buster-amd64
     execution-strategy:
         sequential: false
     wrappers:
