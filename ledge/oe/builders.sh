@@ -18,25 +18,6 @@ cleanup_exit()
     echo "Running cleanup_exit..."
 }
 
-if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 update; then
-  echo "INFO: apt update error - try again in a moment"
-  sleep 15
-  sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 update || true
-fi
-
-pkg_list="bc ccache chrpath cpio diffstat gawk git expect pkg-config python-pip python-requests python-crypto texinfo wget zlib1g-dev libglib2.0-dev libpixman-1-dev python python3 sudo libelf-dev xz-utils pigz coreutils curl libcurl4-openssl-dev libc6-dev-i386 g++-multilib"
-if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}; then
-  echo "INFO: apt install error - try again in a moment"
-  sleep 15
-  sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}
-fi
-
-sudo locale-gen en_US.UTF-8 && sudo update-locale LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
-# install required python modules
-pip install --user --force-reinstall Jinja2 ruamel.yaml==0.16.13
-
 set -ex
 
 # Store the home repository
@@ -161,6 +142,11 @@ case "${ORIG_MACHINE}" in
 esac
 
 build_ledgerp_docs() {
+	if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 update; then
+		echo "INFO: apt update error - try again in a moment"
+		sleep 15
+		sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 update || true
+	fi
 	# Install deps
 	pkg_list="python-sphinx texlive texlive-latex-extra libalgorithm-diff-perl \
                   texlive-humanities texlive-generic-recommended texlive-generic-extra \
