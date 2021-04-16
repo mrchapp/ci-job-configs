@@ -53,7 +53,7 @@
     disabled: true
     node: tcwg-coordinator
     concurrent: true
-    display-name: 'TCWG Monitoring {slave_name}'
+    display-name: 'DELETE ME'
     scm:
       - jenkins
     triggers:
