@@ -42,7 +42,7 @@
             default: ''
         - string:
             name: DISTRO_URL_BASE
-            default: 'ssh://git@dev-private-git.linaro.org/schneider'
+            default: 'ssh://git@github.com/SE-DeviceIntelligence'
         - string:
             name: DISTRO_DIR
             default: 'DIP-Yocto-Linux-Distro'
