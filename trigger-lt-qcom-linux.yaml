@@ -31,6 +31,8 @@
     triggers:
         - timed: 'H/5 * * * *'
     wrappers:
+        - timeout:
+            timeout: 5
         - timestamps
         - credentials-binding:
             - text:
