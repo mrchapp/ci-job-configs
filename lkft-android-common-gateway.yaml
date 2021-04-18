@@ -12,7 +12,7 @@
                 - job-cancel
         - build-discarder:
             days-to-keep: 180
-            num-to-keep: 300
+            num-to-keep: 400
     parameters:
         - string:
             name: CALLER_JOB_NAME

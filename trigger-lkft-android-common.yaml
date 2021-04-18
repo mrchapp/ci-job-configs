@@ -12,7 +12,7 @@
                 - job-cancel
         - build-discarder:
             days-to-keep: 180
-            num-to-keep: 150
+            num-to-keep: 400
     disabled: false
     node: triggers
     display-name: 'Trigger for changes on android common kernel'
