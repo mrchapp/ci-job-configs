@@ -3,7 +3,9 @@ set -ex
 
 id
 
-## We don't build anything so far, just downloading pre-built.
+# During initial job setup, we didn't build anything, just downloaded
+# pre-built image to check LAVA integration, etc. Left around for
+# debugging.
 #wget -q https://people.linaro.org/~ed.mooring/Images/openamp-image-minimal-zcu102-zynqmp.wic.qemu-sd
 
 mkdir -p openamp
