@@ -8,6 +8,10 @@ id
 # debugging.
 #wget -q https://people.linaro.org/~ed.mooring/Images/openamp-image-minimal-zcu102-zynqmp.wic.qemu-sd
 
+if [ "${GIT_RECLONE}" == "1" ]; then
+    rm -rf openamp
+fi
+
 mkdir -p openamp
 cd openamp
 

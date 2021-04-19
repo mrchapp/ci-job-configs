@@ -45,6 +45,11 @@
         - string:
             name: USE_QA_SERVER
             default: '1'
+        # Normally we just pull to existing repo checkouts, but can re-clone
+        # from scratch with this setting.
+        - string:
+            name: GIT_RECLONE
+            default: '0'
     disabled: false
     node: master
     child-workspace: .
