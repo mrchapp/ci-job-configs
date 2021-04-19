@@ -10,7 +10,7 @@ cd ports/zephyr
 
 if [ ${PLATFORM} = "mps2_an385" ]; then
     # Build and run binary with embedded testsuite
-    timeout 5m ./run-builtin-testsuite.sh
+    timeout 8m ./run-builtin-testsuite.sh
     # There's a separate build dir used by run-builtin-testsuite.sh,
     # move binary where the code below expects it.
     mkdir -p outdir/${PLATFORM}/zephyr/
