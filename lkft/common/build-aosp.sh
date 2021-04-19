@@ -6,53 +6,53 @@ export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8
 #BUILD_CONFIG_FILENAME=aosp-master-x15
 #KERNEL_REPO_URL=/data/android/aosp-mirror/kernel/omap.git
 #OPT_MIRROR="-m /data/android/aosp-mirror/platform/manifest.git"
-#DIR_SRV_AOSP_MASTER="/data/android/aosp/pure-master/test-x15-lkft"
+#BUILD_ROOT="/data/android/aosp/pure-master/test-x15-lkft"
 #CLEAN_UP=false
 #IN_JENKINS=false
 
-DIR_SRV_AOSP_MASTER="${DIR_SRV_AOSP_MASTER:-/home/buildslave/srv/aosp-master}"
-KERNEL_REPO_URL=${KERNEL_REPO_URL:-https://android.googlesource.com/kernel/omap}
+BUILD_ROOT="${BUILD_ROOT:-/home/buildslave/srv/aosp-public}"
 OPT_MIRROR="${OPT_MIRROR:-}"
 CLEAN_UP=${CLEAN_UP:-true}
 
-ANDROID_ROOT="${DIR_SRV_AOSP_MASTER}/build"
-DIR_PUB_SRC="${ANDROID_ROOT}/out/dist"
+ANDROID_ROOT="${BUILD_ROOT}/build/aosp"
+DIR_PUB_SRC="${BUILD_ROOT}/dist"
+AOSP_REPO_BACKUP="${BUILD_ROOT}/aosp-repo-backup"
 ANDROID_IMAGE_FILES="boot.img dtb.img dtbo.img super.img vendor.img product.img system.img system_ext.img vbmeta.img userdata.img ramdisk.img ramdisk-debug.img recovery.img cache.img"
 ANDROID_IMAGE_FILES="${ANDROID_IMAGE_FILES} vendor_boot-debug.img vendor_boot.img"
 
 # functions for clean the environemnt before repo sync and build
 function prepare_environment(){
-    if [ ! -d "${DIR_SRV_AOSP_MASTER}" ]; then
-      sudo mkdir -p "${DIR_SRV_AOSP_MASTER}"
-      sudo chmod 777 "${DIR_SRV_AOSP_MASTER}"
+    if [ ! -d "${BUILD_ROOT}" ]; then
+      sudo mkdir -p "${BUILD_ROOT}"
+      sudo chmod 777 "${BUILD_ROOT}"
     fi
-    cd "${DIR_SRV_AOSP_MASTER}"
+    cd "${BUILD_ROOT}"
 
-    # clean files under ${DIR_SRV_AOSP_MASTER}
-    rm -rf .repo/manifests* .repo/local_manifests build-tools jenkins-tools
+    # clean manifest files under ${ANDROID_ROOT}
+    rm -rf "${ANDROID_ROOT}/.repo/manifests" "${ANDROID_ROOT}/.repo/manifests.git" "${ANDROID_ROOT}/.repo/manifests.xml" "${ANDROID_ROOT}/.repo/local_manifests" "${ANDROID_ROOT}/build-tools" "${ANDROID_ROOT}/jenkins-tools"
 
     # clean the build directory as it is used accross multiple builds
     # by removing all files except the .repo directory
     if ${CLEAN_UP}; then
-        rm -fr ${DIR_SRV_AOSP_MASTER}/.repo-backup
+        rm -fr "${AOSP_REPO_BACKUP}"
         if [ -d "${ANDROID_ROOT}/.repo" ]; then
-            mv -f ${ANDROID_ROOT}/.repo ${DIR_SRV_AOSP_MASTER}/.repo-backup
+            mv -f "${ANDROID_ROOT}/.repo" "${AOSP_REPO_BACKUP}"
         fi
-        rm -fr ${ANDROID_ROOT}/ && mkdir -p ${ANDROID_ROOT}
-        if [ -d "${DIR_SRV_AOSP_MASTER}/.repo-backup" ]; then
-            mv -f ${DIR_SRV_AOSP_MASTER}/.repo-backup ${ANDROID_ROOT}/.repo
+        rm -fr "${ANDROID_ROOT}" && mkdir -p "${ANDROID_ROOT}"
+        if [ -d "${AOSP_REPO_BACKUP}" ]; then
+            mv -f "${AOSP_REPO_BACKUP}" "${ANDROID_ROOT}/.repo"
         fi
     fi
 }
 
 ###############################################################
-# Build Android for X15
+# Build Android userspace images
 # All operations following should be done under ${ANDROID_ROOT}
 ###############################################################
 function build_android(){
-    cd ${ANDROID_ROOT}
-    rm -fr ${DIR_PUB_SRC} && mkdir -p ${DIR_PUB_SRC}
-    rm -fr ${ANDROID_ROOT}/out/pinned-manifest
+    mkdir -p "${ANDROID_ROOT}" && cd "${ANDROID_ROOT}"
+    rm -fr "${DIR_PUB_SRC}" && mkdir -p "${DIR_PUB_SRC}"
+    rm -fr "${ANDROID_ROOT}/out/pinned-manifest"
 
     rm -fr android-build-configs linaro-build.sh
     wget -c https://android-git.linaro.org/android-build-configs.git/plain/linaro-build.sh -O linaro-build.sh
@@ -60,44 +60,73 @@ function build_android(){
     if [ -n "${ANDROID_BUILD_CONFIG}" ]; then
         bash -x ./linaro-build.sh -c "${ANDROID_BUILD_CONFIG}"
         # ${ANDROID_BUILD_CONFIG} will be repo synced after build
-        source android-build-configs/${ANDROID_BUILD_CONFIG}
+        # shellcheck source=/dev/null
+        source "android-build-configs/${ANDROID_BUILD_CONFIG}"
         export TARGET_PRODUCT
     elif [ -n "${TARGET_PRODUCT}" ]; then
-        local manfest_branch="master"
-        [ -n "${MANIFEST_BRANCH}" ] && manfest_branch=${MANIFEST_BRANCH}
-        bash -x ./linaro-build.sh -tp "${TARGET_PRODUCT}" -b "${manfest_branch}"
+        local opt_manfest_branch="-b master"
+        local opt_maniefst_url="https://android.googlesource.com/platform/manifest"
+        [ -n "${MANIFEST_BRANCH}" ] && opt_manfest_branch="-b ${MANIFEST_BRANCH}"
+        [ -n "${MANIFEST_URL}" ] && opt_maniefst_url="-m ${MANIFEST_URL}"
+        [ -n "${MAKE_TARGETS}" ] && export MAKE_TARGETS
+        # shellcheck disable=SC2086
+        bash -x ./linaro-build.sh -tp "${TARGET_PRODUCT}" ${opt_maniefst_url} ${opt_manfest_branch}
     fi
     DIR_PUB_SRC_PRODUCT="${ANDROID_ROOT}/out/target/product/${TARGET_PRODUCT}"
 
-    mkdir -p ${DIR_PUB_SRC}
-    cp -a ${ANDROID_ROOT}/out/pinned-manifest/*-pinned-manifest.xml ${DIR_PUB_SRC}
-    wget https://git.linaro.org/ci/job/configs.git/blob_plain/HEAD:/android-lcr/hikey/build-info/aosp-master-template.txt -O ${DIR_PUB_SRC}/BUILD-INFO.txt
+    mkdir -p "${DIR_PUB_SRC}"
+    # shellcheck disable=SC2086
+    cp -a ${ANDROID_ROOT}/out/pinned-manifest/*-pinned-manifest.xml "${DIR_PUB_SRC}"
+    wget https://git.linaro.org/ci/job/configs.git/blob_plain/HEAD:/android-lcr/hikey/build-info/aosp-master-template.txt -O "${DIR_PUB_SRC}/BUILD-INFO.txt"
 
-    for f in ${ANDROID_IMAGE_FILES}; do
-        if [ ! -f ${DIR_PUB_SRC_PRODUCT}/${f} ]; then
-            continue
+    if [ -z "${PUBLISH_FILES}" ]; then
+        PUBLISH_FILES="${ANDROID_IMAGE_FILES}"
+    fi
+
+    for f in ${PUBLISH_FILES}; do
+        if [ "X${f}X" = "Xandroid-cts.zipX" ]; then
+            f_src_path="${ANDROID_ROOT}/out/host/linux-x86/cts/android-cts.zip"
+        elif [ "X${f}X" = "Xandroid-vts.zipX" ]; then
+            f_src_path="${ANDROID_ROOT}/out/host/linux-x86/vts/android-vts.zip"
+        else
+            f_src_path="${DIR_PUB_SRC_PRODUCT}/${f}"
         fi
 
-        mv -vf ${DIR_PUB_SRC_PRODUCT}/${f} ${DIR_PUB_SRC}/${f}
-
-        if [ "Xramdisk.img" = "X${f}" ] || [ "Xramdisk-debug.img" = "X${f}" ]; then
+        if [ ! -f "${f_src_path}" ]; then
             continue
+        else
+            mv -vf "${f_src_path}" "${DIR_PUB_SRC}/${f}"
         fi
-        xz -T 0 ${DIR_PUB_SRC}/${f}
+
+        if [ "Xramdisk.img" = "X${f}" ] || [ "Xramdisk-debug.img" = "X${f}" ] || [ "Xandroid-cts.zip" = "X${f}" ] || [ "Xandroid-vts.zip" = "X${f}" ]; then
+            # files no need to compress
+            continue
+        else
+            xz -T 0 "${DIR_PUB_SRC}/${f}"
+        fi
     done
 
-    if [ -f ${DIR_PUB_SRC_PRODUCT}/build_fingerprint.txt ]; then
-        cp -vf ${DIR_PUB_SRC_PRODUCT}/build_fingerprint.txt ${DIR_PUB_SRC}/
+    if [ -f "${DIR_PUB_SRC_PRODUCT}/build_fingerprint.txt" ]; then
+        cp -vf "${DIR_PUB_SRC_PRODUCT}/build_fingerprint.txt" "${DIR_PUB_SRC}/"
     fi
 
     if [ -n "${ANDROID_BUILD_CONFIG}" ]; then
-        cp -vf android-build-configs/${ANDROID_BUILD_CONFIG} ${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt
+        cp -vf "android-build-configs/${ANDROID_BUILD_CONFIG}" "${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt"
+    else
+        ANDROID_BUILD_CONFIG="build-config"
+        rm -f "${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt"
+        [ -n "${TARGET_PRODUCT}" ] && echo "TARGET_PRODUCT=${TARGET_PRODUCT}" >> "${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt"
+        [ -n "${MANIFEST_BRANCH}" ] && echo "MANIFEST_BRANCH=${MANIFEST_BRANCH}" >> "${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt"
+        [ -n "${MANIFEST_URL}" ] && echo "MANIFEST_URL=${MANIFEST_URL}" >> "${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt"
+        [ -n "${MAKE_TARGETS}" ] && echo "MAKE_TARGETS=${MAKE_TARGETS}" >> "${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt"
+        [ -n "${PUBLISH_FILES}" ] && echo "PUBLISH_FILES=${PUBLISH_FILES}" >> "${DIR_PUB_SRC}/${ANDROID_BUILD_CONFIG}.txt"
     fi
+    cd "${DIR_PUB_SRC}" && md5sum ./* > "MD5SUM.txt"
 }
 
 # clean workspace to save space
 function clean_workspace(){
-    cd ${ANDROID_ROOT}
+    cd "${ANDROID_ROOT}"
     # Delete sources after build to save space
     rm -rf art/ dalvik/ kernel/ bionic/ developers/ libcore/ sdk/ bootable/ development/
     rm -fr libnativehelper/ system/ build/ device/ test/ build-info/ docs/ packages/
@@ -107,19 +136,23 @@ function clean_workspace(){
 
 # export parameters for publish/job submission steps
 function export_parameters(){
-
-    # beagle_x15 could not used as part of the url for snapshot site
-    if [ "X${TARGET_PRODUCT}" = "Xbeagle_x15" ]; then
+    if [ "X${f}X" = "Xandroid-cts.zipX" ]; then
+        PUB_DEST_TARGET="android-cts"
+    elif [ "X${f}X" = "Xandroid-vts.zipX" ]; then
+        PUB_DEST_TARGET="android-vts"
+    elif [ "X${TARGET_PRODUCT}" = "Xbeagle_x15" ]; then
+        # beagle_x15 could not used as part of the url for snapshot site
         PUB_DEST_TARGET=x15
     else
         PUB_DEST_TARGET=${TARGET_PRODUCT}
     fi
 
     # Publish parameters
-    cp -a ${DIR_PUB_SRC}/*-pinned-manifest.xml ${WORKSPACE}/ || true
-    echo "PUB_DEST=android/lkft/${PUB_DEST_TARGET}/${BUILD_NUMBER}" > ${WORKSPACE}/publish_parameters
-    echo "PUB_SRC=${DIR_PUB_SRC}" >> ${WORKSPACE}/publish_parameters
-    echo "PUB_EXTRA_INC=^[^/]+\.(txt|img|xz|dtb|dtbo|zip)$|MLO|vmlinux|System.map" >> ${WORKSPACE}/publish_parameters
+    # shellcheck disable=SC2086
+    cp -a ${DIR_PUB_SRC}/*-pinned-manifest.xml "${WORKSPACE}" || true
+    echo "PUB_DEST=android/lkft/${PUB_DEST_TARGET}/${BUILD_NUMBER}" > "${WORKSPACE}/publish_parameters"
+    echo "PUB_SRC=${DIR_PUB_SRC}" >> "${WORKSPACE}/publish_parameters"
+    echo "PUB_EXTRA_INC=^[^/]+\.(txt|img|xz|dtb|dtbo|zip)$|MLO|vmlinux|System.map" >> "${WORKSPACE}/publish_parameters"
 }
 
 function main(){
