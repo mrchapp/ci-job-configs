@@ -27,6 +27,7 @@ else
 fi
 if [ ! -d embeddedsw ]; then
     git clone https://github.com/Xilinx/embeddedsw
+    (cd embeddedsw; git checkout xilinx-v2019.2)
 else
     (cd embeddedsw; git checkout xilinx-v2019.2)
 fi
