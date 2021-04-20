@@ -1,4 +1,4 @@
-timeout 15m make -f ./targets/zephyr/Makefile.zephyr BOARD=${PLATFORM}
+timeout 8m make -f ./targets/zephyr/Makefile.zephyr BOARD=${PLATFORM}
 
 cd ${WORKSPACE}
 mkdir -p out/${PLATFORM}
