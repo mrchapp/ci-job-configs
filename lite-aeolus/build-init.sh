@@ -46,35 +46,12 @@ git clone --depth 1 ${GIT_URL} -b ${BRANCH} ${WORKSPACE}
 GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)
 echo "GIT_COMMIT_ID=${GIT_COMMIT_ID}" >${WORKSPACE}/env_var_parameters
 
-# Toolchains are pre-installed by 'zephyr-upstream' job and come from:
-# https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
-# https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.12.3/zephyr-sdk-0.12.3-setup.run
-# To install Zephyr SDK: ./zephyr-sdk-0.12.3-setup.run --quiet --nox11 -- <<< "${HOME}/srv/toolchain/zephyr-sdk-0.12.3"
-
-case "${ZEPHYR_TOOLCHAIN_VARIANT}" in
-  gccarmemb)
-    export GCCARMEMB_TOOLCHAIN_PATH="${HOME}/srv/toolchain/gcc-arm-none-eabi-9-2019-q4-major"
-  ;;
-esac
-
+# Toolchains are downloaded once (per release) and cached in a persistent
+# docker volume under ${HOME}/srv/toolchain/.
 # Note that Zephyr SDK is needed even when building with the gnuarmemb
-# toolchain, ZEPHYR_SDK_INSTALL_DIR is needed to find things like conf
-ZEPHYR_SDK_URL="https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.12.3/zephyr-sdk-0.12.3-x86_64-linux-setup.run"
-export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.12.3"
-
-install_zephyr_sdk()
-{
-    test -d ${ZEPHYR_SDK_INSTALL_DIR} && return 0
-    test -f ${ZEPHYR_SDK_INSTALL_DIR}.lck && exit 1
-    sudo chown ${USER} ${ZEPHYR_SDK_INSTALL_DIR}/..
-    touch ${ZEPHYR_SDK_INSTALL_DIR}.lck
-    wget -q "${ZEPHYR_SDK_URL}"
-    chmod +x $(basename ${ZEPHYR_SDK_URL})
-    ./$(basename ${ZEPHYR_SDK_URL}) --quiet --nox11 -- <<< ${ZEPHYR_SDK_INSTALL_DIR}
-    rm -f ${ZEPHYR_SDK_INSTALL_DIR}.lck
-}
-
-install_zephyr_sdk
+# toolchain, ZEPHYR_SDK_INSTALL_DIR is needed to find things like conf.
+export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.12.4"
+export GCCARMEMB_TOOLCHAIN_PATH="${HOME}/srv/toolchain/gcc-arm-none-eabi-9-2019-q4-major"
 
 # Set build environment variables
 ZEPHYR_BASE=${WORKSPACE}
