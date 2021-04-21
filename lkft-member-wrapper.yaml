@@ -76,6 +76,10 @@
 
         - trigger-builds:
             - project: lkft-member-build
+              property-file: params_959a59b53ff1461b41784db4665363d9.txt
+            - project: lkft-member-build
+              property-file: params_1acc4a0b4d84c2caf136e4196f5f1a47.txt
+            - project: lkft-member-build
               property-file: params_927501fb333e6715f573c7f085107f30.txt
             - project: lkft-member-build
               property-file: params_b257960da2650d3caaf4f4dd979b081f.txt
