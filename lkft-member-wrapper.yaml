@@ -87,6 +87,12 @@
               property-file: params_8ffd4c85051e1337236f199329f8c7a5.txt
             - project: lkft-member-build
               property-file: params_2ad26db752fc7161505f7c46848a7f05.txt
+            - project: lkft-member-build
+              property-file: params_d63785394d1abb84aa1e42f92c33c0b1.txt
+            - project: lkft-member-build
+              property-file: params_e584aefdf81f254ecc755231065f97e3.txt
+            - project: lkft-member-build
+              property-file: params_9f41cb6dcb64a5b49cbf9e81199e06a3.txt
     publishers:
         - email:
             recipients: 'yongqin.liu@linaro.org'
