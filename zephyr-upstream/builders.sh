@@ -8,8 +8,9 @@ echo
 
 sudo apt-get -q=2 update
 
+# gcc-arm-none-eabi
 sudo apt-get -q=2 -y install git ninja-build g++ gperf python3-ply \
-    gcc-arm-none-eabi rsync device-tree-compiler \
+    rsync device-tree-compiler \
     python3-pip python3-serial python3-setuptools python3-wheel \
     python3-requests python3-pyelftools util-linux rename srecord \
     protobuf-compiler python3-protobuf
