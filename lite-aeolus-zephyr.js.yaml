@@ -30,7 +30,7 @@
         - string:
             name: QA_SERVER
             default: 'https://qa-reports.linaro.org'
-    disabled: false
+    disabled: true
     node: master
     child-workspace: .
     display-name: 'LITE Aeolus - Zephyr.js'
