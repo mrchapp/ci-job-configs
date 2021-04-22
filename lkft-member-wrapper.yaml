@@ -54,15 +54,15 @@
 
             ## find the build configs for the branch
             rm -fr android-build-configs-private
-            git clone -b lkft ${ANDROID_BUILD_CONFIG_REPO_URL} android-build-configs-private
-            build_configs=$(grep "${KERNEL_BRANCH}" android-build-configs-private/lkft/lkft-member-builds|cut -d= -f2|tr -d \")
+            git clone -b lkft "${ANDROID_BUILD_CONFIG_REPO_URL}" android-build-configs-private
+            build_configs=$(grep "${KERNEL_BRANCH}=" android-build-configs-private/lkft/lkft-member-builds|cut -d= -f2|tr -d \")
 
             rm -fr params_*.txt test_*.txt
             for build_config in ${build_configs}; do
                 md5sum_val="$(echo ${KERNEL_BRANCH}-${build_config}|md5sum|awk '{print $1}')"
                 f_params="params_${md5sum_val}.txt"
 
-                cat << __EOF__ > ${f_params}
+                cat << __EOF__ > "${f_params}"
             ANDROID_BUILD_CONFIG=${build_config}
             KERNEL_DESCRIBE=${KERNEL_DESCRIBE}
             KERNEL_BRANCH=${KERNEL_BRANCH}
