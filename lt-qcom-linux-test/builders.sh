@@ -3,7 +3,7 @@
 set -x
 
 wget_error() {
-	wget -c $1 -P out/
+	wget --read-timeout=60 -c $1 -P out/
 	retcode=$?
 	if [ $retcode -ne 0 ]; then
 		exit $retcode
