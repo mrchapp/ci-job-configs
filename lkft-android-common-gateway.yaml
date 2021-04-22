@@ -45,6 +45,7 @@
 
             # clean the property files for the builds that to be triggered
             rm -f "all-kernels.txt" "api_callbacks_properties.txt" "lkft-android12-5.4-x15.txt" "lkft-android-mainline-x15.txt" "lkft-android-mainline-hikey.txt"
+            rm -f "prop_triggered_or_ignored"
             skip_build=false
             if [ "X${IGNORE_KERNELVERSION_CHECK}X" == "XfalseX" ]; then
                 ssh-keyscan -p 29418 android-review.linaro.org >> ~/.ssh/known_hosts
