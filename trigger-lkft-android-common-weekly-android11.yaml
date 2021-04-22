@@ -21,11 +21,9 @@
             remotes:
                 - android-common:
                     url: https://android.googlesource.com/kernel/common
-                - linux-stable:
-                    url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
-                    refspec: +refs/heads/linux-5.4.y:refs/remotes/linux-stable/linux-5.4.y +refs/heads/master:refs/remotes/master/master
             branches:
               - android-common/android11-5.4
+              - android-common/android13-5.10
             skip-tag: true
             shallow-clone: false
             wipe-workspace: false
@@ -42,20 +40,20 @@
             git clean -fdx
             env
 
-            KERNEL_BRANCH_REAL=${GIT_BRANCH#android-common/}
-            MAKE_KERNELVERSION=$(make kernelversion)
-            KERNEL_BRANCH=${KERNEL_BRANCH_REAL}-weekly
-            KERNEL_DESCRIBE=${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}-$(date +%Y%m%d%H%M)
+            KERNEL_BRANCH_REAL="${GIT_BRANCH#android-common/}"
+            MAKE_KERNELVERSION="$(make kernelversion)"
+            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-weekly"
+            KERNEL_DESCRIBE="${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}-$(date +%Y%m%d%H%M)"
 
-            echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} > properties.txt
-            echo KERNEL_BRANCH=${KERNEL_BRANCH} >> properties.txt
+            echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" > "properties.txt"
+            echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "properties.txt"
 
-            params=lkft-${KERNEL_BRANCH}.txt
-            echo KERNEL_DESCRIBE=${KERNEL_DESCRIBE} >> $params
-            echo SRCREV_kernel=${GIT_COMMIT} >> $params
-            echo MAKE_KERNELVERSION=${MAKE_KERNELVERSION} >> $params
-            echo KERNEL_BRANCH=${KERNEL_BRANCH} >> $params
-            cat $params
+            params="lkft-${KERNEL_BRANCH}.txt"
+            echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" >> "${params}"
+            echo "SRCREV_kernel=${GIT_COMMIT}" >> "${params}"
+            echo "MAKE_KERNELVERSION=${MAKE_KERNELVERSION}" >> "${params}"
+            echo "KERNEL_BRANCH=${KERNEL_BRANCH}" >> "${params}"
+            cat "${params}"
 
             # generate files for the api callback build
             f_api_callbacks="all-kernels.txt"
@@ -73,6 +71,9 @@
                     ;;
                 "Xandroid11-5.4")
                     build_configs_to_be_triggered="lkft-db845c-android11-android11-5.4-gki lkft-hikey960-android11-android11-5.4-gki"
+                    ;;
+                "Xandroid13-5.10")
+                    build_configs_to_be_triggered="lkft-db845c-aosp-master-android13-5.10-gki lkft-hikey960-aosp-master-android13-5.10-gki"
                     ;;
                 "X*")
                     build_configs=""
