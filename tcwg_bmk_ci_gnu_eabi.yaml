@@ -47,6 +47,10 @@
           cron_schedule: H H H * *
       - O3-vs-O3_LTO:
           cron_schedule: H H H * *
+      - O3_VECT:
+          cron_schedule: H H H/7 * *
+      - O3_LTO_VECT:
+          cron_schedule: H H H/7 * *
     jobs:
       - 'tcwg_bmk_ci_gnu_eabi-build-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
       - 'tcwg_bmk_ci_gnu_eabi-bisect-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
@@ -65,6 +69,10 @@
         cflags: O2-vs-O2_LTO
       - toolchain_name: llvm
         cflags: O3-vs-O3_LTO
+      - toolchain_name: llvm
+        cflags: O3_VECT
+      - toolchain_name: llvm
+        cflags: O3_LTO_VECT
 
 - view:
     name: tcwg_bmk_ci_gnu_eabi
@@ -549,4 +557,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: f7dbec0a3515f757a1a4e5776f7f109c
+# checksum: 479252d06d3ef9a6be6cc2e8e461e460
