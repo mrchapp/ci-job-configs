@@ -75,7 +75,7 @@
         sequential: false
     wrappers:
         - timeout:
-            timeout: 400
+            timeout: 800
         - timestamps
         - ssh-agent-credentials:
             users:
