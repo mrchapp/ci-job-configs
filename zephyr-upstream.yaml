@@ -14,9 +14,9 @@
                 - job-build
                 - job-cancel
         - build-discarder:
-            days-to-keep: 30
-            num-to-keep: 30
-            artifact-num-to-keep: 30
+            days-to-keep: 60
+            num-to-keep: 60
+            artifact-num-to-keep: 60
         - throttle:
             option: category
             categories: [lite-zephyr]
