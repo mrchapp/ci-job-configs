@@ -151,10 +151,11 @@
             esac
 
 
-            if [ "${ROOT_BUILD_CAUSE}" = "SCMTRIGGER" ]; then
-                echo "Skipping LAVA testing for SCM Trigger builds (to not overload LAVA)"
-                unset DEVICE_TYPE
-            fi
+            # 2021-04-28 - try to submit all (== ~2 builds per day) to LAVA.
+            #if [ "${ROOT_BUILD_CAUSE}" = "SCMTRIGGER" ]; then
+            #    echo "Skipping LAVA testing for SCM Trigger builds (to not overload LAVA)"
+            #    unset DEVICE_TYPE
+            #fi
 
             if [ -n "${DEVICE_TYPE}" ]; then
                 rm -rf configs
