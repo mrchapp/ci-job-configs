@@ -263,16 +263,6 @@ case "${MACHINE}" in
 	  # we can't install and boot the whole image.
 	  KERNEL_IMG='Image-for-debian'
     ;;
-  ledge-stm32mp157c-dk2)
-	  cd ${DEPLOY_DIR_IMAGE}
-	  tar -cpzf ../ledge-stm32mp157c-dk2.tar.gz .
-	  mv ../ledge-stm32mp157c-dk2.tar.gz .
-	  cd -
-	  RIMAGE=ledge-stm32mp157c-dk2.tar.gz
-	  # Only use the iot flashlayout to deploy, since it's a superset of the
-	  # gateway image
-	  FLASH_LAYOUT=$(find ${UPLOAD_DIR} -type f -name "FlashLayout_sdcard_${MACHINE}-*iot-lava*.tsv" -printf "%f\n")
-    ;;
   juno)
     DTB_IMG=$(find ${UPLOAD_DIR} -type f -name "*Image-*${MACHINE}*.dtb" -printf "%f\n")
     ;;
@@ -303,6 +293,8 @@ case "${ORIG_MACHINE}" in
 		#Cleanup
 		rm -rf ${UPLOAD_DIR}/lava-images/${i}
 	done
+	STM32_FLASH_IMAGE_URL="lava-images/ledge-stm32mp157c-dk2-ledge-iot-lava.tar.gz"
+	STM32_FLASH_IMAGE_LAYOUT="lava-images/ledge-stm32mp157c-dk2-ledge-iot-lava.tsv"
 
 	mkdir -p ${UPLOAD_DIR}/lava-images/debian
 	cd ${UPLOAD_DIR}/lava-images/debian
@@ -337,6 +329,7 @@ find ${UPLOAD_DIR} -type l -delete
 
 case "${ORIG_MACHINE}" in
 	ledge-multi-armv7)
+		PUB_DEST_ORIG="${PUB_DEST}"
 		PUB_DEST="${PUB_DEST}/ledge-qemuarm"
 		;;
 	ledge-multi-armv8)
@@ -379,8 +372,6 @@ SYSTEM_URL=${BASE_URL}/${PUB_DEST}/${ROOTFS_IMG}
 SYSTEM_URL_GW=${BASE_URL}/${PUB_DEST}/${ROOTFS_IMG_GW}
 KERNEL_URL=${BASE_URL}/${PUB_DEST}/${KERNEL_IMG}
 DTB_URL=${BASE_URL}/${PUB_DEST}/${DTB_IMG}
-RECOVERY_IMAGE_URL=${BASE_URL}/${PUB_DEST}/${RIMAGE}
-RECOVERY_IMAGE_LAYOUT=${BASE_URL}/${PUB_DEST}/${FLASH_LAYOUT}
 NFSROOTFS_URL=${BASE_URL}/${PUB_DEST}/${ROOTFS_TARXZ_IMG}
 EXT4_IMAGE_URL=${BASE_URL}/${PUB_DEST}/${ROOTFS_EXT4}
 HDD_URL=${BASE_URL}/${PUB_DEST}/${HDD_IMG}
@@ -405,6 +396,8 @@ CERTS="${BASE_URL}/${PUB_DEST}/${CERTS}"
 FIRMWARE="${BASE_URL}/${PUB_DEST}/${FIRMWARE}"
 FIRMWARE_EDK2="${BASE_URL}/${PUB_DEST}/${FIRMWARE_EDK2}"
 FIRMWARE_EDK2_VARS="${BASE_URL}/${PUB_DEST}/${FIRMWARE_EDK2_VARS}"
+STM32_FLASH_IMAGE_URL="${BASE_URL}/${PUB_DEST_ORIG}/${STM32_FLASH_IMAGE_URL}"
+STM32_FLASH_IMAGE_LAYOUT="${BASE_URL}/${PUB_DEST_ORIG}/${STM32_FLASH_IMAGE_LAYOUT}"
 EOF
 
 cat ${WORKSPACE}/post_build_lava_parameters

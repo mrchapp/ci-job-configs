@@ -1,5 +1,5 @@
 device_type: ${DEVICE_TYPE}
-job_name: LEDGE RP boot ${MACHINE} ${MANIFEST_BRANCH} ${BUILD_NUMBER}
+job_name: LEDGE RP: ${DEVICE_TYPE} ${MANIFEST_BRANCH} ${BUILD_NUMBER}
 
 timeouts:
   job:
@@ -22,9 +22,9 @@ actions:
     to: flasher
     images:
       tarball:
-        url: ${RECOVERY_IMAGE_URL}
+        url: ${STM32_FLASH_IMAGE_URL}
       layout:
-        url: ${RECOVERY_IMAGE_LAYOUT}
+        url: ${STM32_FLASH_IMAGE_LAYOUT}
     os: oe
 
 - boot:

@@ -56,7 +56,6 @@
             name: MACHINE
             values:
                 - 'ledge-ti-am572x'
-                - 'ledge-stm32mp157c-dk2'
                 - 'ledge-qemux86-64'
                 - 'ledge-synquacer'
                 - 'ledge-multi-armv7'
