@@ -28,8 +28,8 @@
             shallow-clone: true
             wipe-workspace: false
     triggers:
-        - timed: 'H 1 * * *'
-        - pollscm: 'H 8,14,20 * * *'
+        - timed: 'H 21 * * *'
+        - pollscm: 'H 9 * * *'
     wrappers:
         - timestamps
         - build-name:
