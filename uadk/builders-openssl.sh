@@ -11,6 +11,9 @@ echo "#${BUILD_NUMBER}-${ghprbActualCommit:0:8}" > ${WORKSPACE}/version.txt
 #sudo apt update -q=2
 #sudo apt install -q=2 --yes --no-install-recommends zlib1g-dev libnuma-dev
 
+# clean up directories
+rm -rf uadk-master uadk-shared-v2
+
 # use UADK master
 git clone --depth 1 https://github.com/Linaro/uadk.git ${WORKSPACE}/uadk-master
 cd ${WORKSPACE}/uadk-master
