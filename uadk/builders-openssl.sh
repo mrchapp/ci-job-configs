@@ -41,7 +41,9 @@ autoreconf -vfi
 ./configure \
   --prefix=${WORKSPACE}/uadk-shared-v2/usr/local \
   --libdir=${WORKSPACE}/uadk-shared-v2/usr/local/lib
-LD_LIBRARY_PATH=${WORKSPACE}/uadk-shared-v2/usr/local/lib make -j$(nproc)
+LD_LIBRARY_PATH=${WORKSPACE}/uadk-shared-v2/usr/local/lib \
+C_INCLUDE_PATH=${WORKSPACE}/uadk-shared-v2/usr/local/include \
+make -j$(nproc)
 make install && make clean
 
 # FIXME: openssl: symbol lookup error: openssl: undefined symbol: EVP_mdc2, version OPENSSL_1_1_0
