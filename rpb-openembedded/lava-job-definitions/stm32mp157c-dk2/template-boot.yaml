@@ -1,5 +1,5 @@
 device_type: ${DEVICE_TYPE}
-job_name: LEDGE RP: ${DEVICE_TYPE} ${MANIFEST_BRANCH} ${BUILD_NUMBER}
+job_name: LEDGE RP ${DEVICE_TYPE} ${MANIFEST_BRANCH} ${BUILD_NUMBER}
 
 timeouts:
   job:
