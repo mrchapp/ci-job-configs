@@ -20,7 +20,7 @@ actions:
       minutes: 10
     to: flasher
     images:
-      image:
+      IMAGE:
         url: ${SYSTEM_URL}
         compression: gz
 - boot:
