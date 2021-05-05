@@ -183,6 +183,7 @@ case "${MACHINE}" in
      ;;
   *rzn1*)
     clean_packages="\
+        fsbl \
         u-boot-rzn1 \
     "
     ;;
