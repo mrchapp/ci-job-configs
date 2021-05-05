@@ -181,6 +181,17 @@ case "${MACHINE}" in
   am57xx-evm|intel-core2-32|intel-corei7-64)
      IMAGES="rpb-console-image"
      ;;
+  *rzn1*)
+    clean_packages="\
+        u-boot-rzn1 \
+    "
+    ;;
+  *soca9*)
+    clean_packages="\
+        edgeagent \
+        "
+    IMAGES="$(echo $IMAGES | sed -e 's/dip-image-edge//')"
+    ;;
 esac
 
 postfile=$(mktemp /tmp/postfile.XXXXX.conf)
@@ -191,8 +202,7 @@ cat ${postfile}
 bbopt="-R ${postfile}"
 
 if [ "${clean_packages}" != "" ]; then
-    bitbake ${bbopt} -c cleansstate ${clean_packages}
-    bitbake ${bbopt} ${build_packages}
+    bitbake ${bbopt} -c cleanall ${clean_packages}
 fi
 
 # Build all ${IMAGES}
