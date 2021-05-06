@@ -93,7 +93,7 @@
             default: 'master'
             # TODO: once patch above merged, change the default to below
             #default: 'master'
-    disabled: false
+    disabled: true
     node: docker-bionic-art
     display-name: 'Tip: build ART & deps'
     concurrent: true

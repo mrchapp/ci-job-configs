@@ -44,7 +44,7 @@
         - string:
             name: SCRIPT_OPTIONS
             default: '--default'
-    disabled: false
+    disabled: true
     node: docker-bionic-art
     display-name: 'Tip: Target Test'
     concurrent: true
