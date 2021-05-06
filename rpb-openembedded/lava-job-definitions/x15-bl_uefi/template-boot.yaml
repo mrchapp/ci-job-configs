@@ -48,12 +48,8 @@ actions:
         - sudo -s
 
     prompts:
-    - 'root@debian:~#'
-    - '/ #'
-    - 'root@ledge-ti-am572x:~#'
-    - 'ledge-(.*)# '
-    - 'ledge-(.*)~: '
     - 'ledge-.*:~\$$'
+    - 'ledge-ti-am572x:/(.*)#'
 
 metadata:
   machine: ${MACHINE}
