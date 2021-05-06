@@ -104,6 +104,7 @@
             ART_BUILD_SCRIPTS_DIR="${WORKSPACE}/art-build-scripts"
             git clone https://android-git.linaro.org/git/linaro-art/art-build-scripts.git ${ART_BUILD_SCRIPTS_DIR}
 
+            set -x
             cd ${ART_BUILD_SCRIPTS_DIR}/jenkins
             ./setup_host.sh
             ./setup_android.sh
