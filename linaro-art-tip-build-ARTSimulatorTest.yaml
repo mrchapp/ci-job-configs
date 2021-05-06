@@ -15,6 +15,7 @@
                 - job-workspace
             linaro-art:
                 - job-build
+                - job-cancel
                 - job-read
                 - job-extended-read
                 - job-workspace
