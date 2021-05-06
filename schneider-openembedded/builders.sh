@@ -217,14 +217,16 @@ if [[ "${IMAGES}" == *"${dipimg}"* ]]; then
 
 	time bitbake ${bbopt} ${dipimg}
 
+	# Make a copy of the CVE report using a fixed filename, because:
+	# 1) later invocations of bitbake may overwrite the report, and
+	# 2) facilitate later retrieval from snapshots.linaro.org via "latest" link.
+	cp ${DEPLOY_DIR_IMAGE}/${dipimg}-${MACHINE}.cve ${DEPLOY_DIR_IMAGE}/${dipimg}-${MACHINE}.rootfs.cve
+
 	case "${MACHINE}" in
 		*rzn1*)
 			cat tmp/work-shared/${MACHINE}/dm-verity/prod-image.squashfs-lzo.verity.env || true
 			;;
 	esac
-
-	# Generate pn-buildlist containing names of recipes, for CVE check below
-	time bitbake ${bbopt} ${dipimg} -g
 
 	ls -al ${DEPLOY_DIR_IMAGE} || true
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
@@ -240,6 +242,9 @@ if [[ "${IMAGES}" == *"${devimg}"* ]]; then
 	replace_dmverity_var ""
 	time bitbake ${bbopt} ${devimg}
 
+	# Make a copy of the CVE report using a fixed filename
+	cp ${DEPLOY_DIR_IMAGE}/${devimg}-${MACHINE}.cve ${DEPLOY_DIR_IMAGE}/${devimg}-${MACHINE}.rootfs.cve
+
 	ls -al ${DEPLOY_DIR_IMAGE} || true
 	ls -al ${DEPLOY_DIR_IMAGE}/cm3 || true
 	ls -al ${DEPLOY_DIR_IMAGE}/u-boot || true
@@ -247,6 +252,10 @@ if [[ "${IMAGES}" == *"${devimg}"* ]]; then
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
 
 	time bitbake ${bbopt} ${sdkimg}
+
+	# Make a copy of the CVE report using a fixed filename
+	cp ${DEPLOY_DIR_IMAGE}/${sdkimg}-${MACHINE}.cve ${DEPLOY_DIR_IMAGE}/${sdkimg}-${MACHINE}.rootfs.cve
+
 	DEPLOY_DIR_SDK=$(bitbake -e | grep "^DEPLOY_DIR="| cut -d'=' -f2 | tr -d '"')/sdk
 	cp -aR ${DEPLOY_DIR_SDK} ${DEPLOY_DIR_IMAGE}
 fi
@@ -259,16 +268,10 @@ find ${DEPLOY_DIR_IMAGE} -type l -delete
 
 ### Begin CVE check
 
-# Combine CVE reports for the recipes used in prod-image task.
-CVE_CHECK_DIR=$(bitbake -e | grep "^CVE_CHECK_DIR="| cut -d'=' -f2 | tr -d '"')
-if [ -e pn-buildlist ] && [ -e "${CVE_CHECK_DIR}" ]; then
-	sort pn-buildlist | while read r ; do
-		cat ${CVE_CHECK_DIR}/${r} 2>/dev/null || true
-	done >cve-${MACHINE}.new
+if [ -e ${DEPLOY_DIR_IMAGE}/${dipimg}-${MACHINE}.rootfs.cve ] ; then
 
-	# Generate CVE listing with a fixed filename, so it can be retrieved
-	# from snapshots.linaro.org by subsequent builds using a known URL.
-	cp cve-${MACHINE}.new ${DEPLOY_DIR_IMAGE}/prod-image-${MACHINE}.rootfs.cve
+	# Get the current CVE report
+	cp ${DEPLOY_DIR_IMAGE}/${dipimg}-${MACHINE}.rootfs.cve cve-${MACHINE}.new
 
 	# Fetch previous CVE report
 	LATEST_DEST=$(echo $PUB_DEST | sed -e "s#/$BUILD_NUMBER/#/latest/#")
@@ -293,26 +296,23 @@ if [ -e pn-buildlist ] && [ -e "${CVE_CHECK_DIR}" ]; then
 		EOF
 	fi
 
-	if [ -e cve-${MACHINE}.old ]; then
-		# Do diffs between old and current CVE report.
-		wget -nv -O diff-cve https://git.linaro.org/ci/job/configs.git/plain/schneider-openembedded/diff-cve
-		gawk -f diff-cve cve-${MACHINE}.old cve-${MACHINE}.new | tee ${WORKSPACE}/cve-${MACHINE}.txt
+	# Do diffs between old and current CVE report.
+	wget -nv -O diff-cve https://git.linaro.org/ci/job/configs.git/plain/schneider-openembedded/diff-cve
+	gawk -f diff-cve cve-${MACHINE}.old cve-${MACHINE}.new | tee ${WORKSPACE}/cve-${MACHINE}.txt
 
-		# Same thing, but against arbitrary (but fixed) baseline
-		case "${MACHINE}" in
-			*rzn1*)
-			wget -nv -O cve-${MACHINE}.base https://releases.linaro.org/members/schneider/openembedded/2020.09-dunfell/rzn1d-5.4/dip-image-rzn1-snarc.rootfs.cve
-			;;
-			*soca9*)
-			wget -nv -O cve-${MACHINE}.base https://releases.linaro.org/members/schneider/openembedded/2020.09-dunfell/soca9-5.4/dip-image-snarc-soca9.rootfs.cve
-			;;
-		esac
-		gawk -f diff-cve cve-${MACHINE}.base cve-${MACHINE}.new > ${WORKSPACE}/base-cve-${MACHINE}.txt
-	else
-		echo "CVE check skipped because no previous build was found"
-	fi
-	### End CVE check
+	# Same thing, but against arbitrary (but fixed) baseline
+	case "${MACHINE}" in
+		*rzn1*)
+		wget -nv -O cve-${MACHINE}.base https://releases.linaro.org/members/schneider/openembedded/2020.09-dunfell/rzn1d-5.4/dip-image-rzn1-snarc.rootfs.cve
+		;;
+		*soca9*)
+		wget -nv -O cve-${MACHINE}.base https://releases.linaro.org/members/schneider/openembedded/2020.09-dunfell/soca9-5.4/dip-image-snarc-soca9.rootfs.cve
+		;;
+	esac
+	gawk -f diff-cve cve-${MACHINE}.base cve-${MACHINE}.new > ${WORKSPACE}/base-cve-${MACHINE}.txt
 fi
+
+### End CVE check
 
 # FIXME: IMAGE_FSTYPES_remove doesn't work
 rm -f ${DEPLOY_DIR_IMAGE}/*.rootfs.ext4 \
