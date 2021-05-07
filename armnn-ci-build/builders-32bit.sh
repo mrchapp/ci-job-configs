@@ -120,6 +120,8 @@ cmake .. -DCMAKE_LINKER=/usr/bin/arm-linux-gnueabihf-ld \
 -DARMNNREF=1
 make -j$(nproc)
 
+export XZ_DEFAULTS="-T 0"
+
 cd ${WORKSPACE}
 rm -rf boost_*.tar.bz2 boost_* protobuf tensorflow
 find ${WORKSPACE} -type f -name *.o -delete
