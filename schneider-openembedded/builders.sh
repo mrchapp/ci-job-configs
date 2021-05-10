@@ -438,7 +438,7 @@ case "${MACHINE}" in
     KERNEL_IMG=$(basename ${KERNEL})
     WIC=$(find ${DEPLOY_DIR_IMAGE} -type f -name "prod-image-snarc-soca9-${BUILD_NUMBER}.rootfs.wic.bz2")
     WIC_IMG=$(basename ${WIC})
-    WIC_DEV=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-snarc-soca9-*-${BUILD_NUMBER}.rootfs.wic.bz2")
+    WIC_DEV=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-snarc-soca9-${BUILD_NUMBER}.rootfs.wic.bz2")
     WIC_DEV_IMG=$(basename ${WIC_DEV})
     WIC_DEV_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-snarc-soca9-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
     ;;
