@@ -11,6 +11,7 @@
                 - job-read
                 - job-extended-read
                 - job-workspace
+                - job-configure
             linaro-art:
                 - job-build
                 - job-cancel
@@ -49,6 +50,6 @@
             #!/bin/bash -xe
 
             # Build scripts
-            ssh-agent -l
+            ssh-add -l
             ssh git@dev-private-git.linaro.org help
             git clone ssh://git@dev-private-git.linaro.org/linaro-art/platform/manifest.git
