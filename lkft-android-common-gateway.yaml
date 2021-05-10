@@ -109,7 +109,7 @@
                         ;;
                     "Xandroid13-5.10-presubmit")
                         KERNEL_BRANCH_REAL="android13-5.10"
-                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-aosp-master-android13-5.10-gki lkft-member-wrapper"
+                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-aosp-master-android13-5.10-gki"
                         TEST_OTHER_PLANS_OVERRIDE="CTS_PRESUBMIT"
                         ;;
                     "X*")
