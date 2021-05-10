@@ -32,10 +32,10 @@
     parameters:
         - string:
             name: KERNEL_BRANCH
-            default: 'linux-5.5.y'
+            default: 'linux-5.12.y'
         - string:
             name: KERNEL_VERSION
-            default: '5.5'
+            default: '5.12'
         - string:
             name: KERNEL_VERSION_OVERRIDE
             default: '${KERNEL_VERSION}'
@@ -62,7 +62,7 @@
             default: 'lkft/sumo'
         - string:
             name: PUB_DEST
-            default: 'openembedded/lkft/lkft/sumo/${MACHINE}/${DISTRO}/linux-stable-rc-ddiaz-${KERNEL_VERSION}/${BUILD_NUMBER}'
+            default: 'openembedded/lkft/${MANIFEST_BRANCH}/${MACHINE}/${DISTRO}/linux-stable-rc-ddiaz-${KERNEL_VERSION}/${BUILD_NUMBER}'
         - string:
             name: LAVA_SERVER
             default: 'https://lkft.validation.linaro.org/RPC2/'
@@ -71,7 +71,7 @@
             default: 'https://staging-qa-reports.linaro.org'
         - string:
             name: QA_SERVER_PROJECT
-            default: 'linux-stable-rc-5.5-oe'
+            default: 'linux-stable-rc-linux-5.12.y'
         - string:
             name: KSELFTEST_PATH
             default: '/opt/kselftests/mainline/'
@@ -80,7 +80,7 @@
             default: ''
         - string:
             name: LAVA_JOB_PRIORITY
-            default: '72'
+            default: '78'
         - string:
             name: SANITY_LAVA_JOB_PRIORITY
             default: '80'
@@ -100,13 +100,14 @@
             name: MATRIX_COMBINATIONS
     disabled: false
     node: master
-    display-name: 'LKFT - Linux Stable RC 5.5.y (OpenEmbedded/sumo)'
+    display-name: 'LKFT - Linux Stable RC 5.12.y (OpenEmbedded/sumo)'
     axes:
         - axis:
             type: user-defined
             name: MACHINE
             values:
                 - 'am57xx-evm'
+                - 'beaglebone'
                 - 'dragonboard-410c'
                 - 'hikey'
                 - 'intel-core2-32'
@@ -122,7 +123,7 @@
             type: slave
             name: label
             values:
-                - docker-lkft
+                - docker-buster-lkft
     execution-strategy:
         sequential: false
     wrappers:
