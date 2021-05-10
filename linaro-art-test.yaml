@@ -18,6 +18,12 @@
                 - job-read
                 - job-extended-read
                 - job-workspace
+            julien.duraj@linaro.org:
+                - job-build
+                - job-configure
+                - job-read
+                - job-extended-read
+                - job-workspace
         - build-discarder:
             days-to-keep: 60
             num-to-keep: 60
