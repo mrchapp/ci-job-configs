@@ -1,0 +1,19 @@
+- name: set TensorFlow version
+  set_fact:
+    tensorflow_version: "{{ tf_ver.value.tensorflow_version }}"
+    numpy_version: "{{ tf_ver.value.numpy_version }}"
+    h5py_version: "{{ tf_ver.value.h5py_version }}"
+
+- name: build Bazel
+  include_role:
+    name: bazel
+  vars:
+    bazel_version: "{{ tf_ver.value.bazel_version }}"
+
+- name: go through each Python version
+  include_role:
+    name: tensorflow
+    tasks_from: manylinux-build.yml
+  loop: "{{ tf_ver.value.python_versions }}"
+  loop_control:
+    loop_var: py_ver

@@ -1,0 +1,21 @@
+- name: enable EPEL
+  become: true
+  package:
+    name:
+      - epel-release
+
+- name: install h5py build requirements
+  become: true
+  package:
+    name:
+      - hdf5-devel
+    state: present
+
+- name: install numpy build requirements
+  become: true
+  package:
+    name:
+      - gcc-gfortran
+      - openblas-devel
+      - lapack-devel
+    state: present

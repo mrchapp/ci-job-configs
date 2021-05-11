@@ -1,0 +1,4 @@
+- name: stop bazel server  # noqa no-changed-when
+  command:
+    cmd: bazel shutdown
+    chdir: "{{ build_dir }}/tensorflow-{{ tensorflow_version }}/"

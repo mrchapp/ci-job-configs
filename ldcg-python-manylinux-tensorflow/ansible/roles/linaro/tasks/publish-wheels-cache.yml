@@ -1,0 +1,18 @@
+- name: prepare wheels for publishing  # noqa no-changed-when
+  shell:
+    cmd: |
+      set -xe
+      # we do not want tensorflow in wheel cache - it has own space
+      rm -rf tensorflow*
+      for pkg in */*.whl
+      do
+        # do we have this package on server already?
+        status=$(curl --head --silent https://snapshots.linaro.org/ldcg/python-cache/${pkg} | head -n 1)
+        if $(echo $status | grep -q 404); then
+          echo "uploading $pkg"
+        else
+          rm -rf "{{ wheels_dir }}/$pkg"
+        fi
+      done
+    chdir: "{{ wheels_dir }}"
+    executable: "/bin/bash"

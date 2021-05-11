@@ -1,0 +1,12 @@
+- name: install bazel build requirements
+  become: true
+  package:
+    name:
+      - cmake
+      - gcc-c++
+      - java-11-openjdk-devel
+      - python3
+      - unzip
+      - which
+      - zip
+    state: present

@@ -1,0 +1,12 @@
+- include: deps.yml
+
+- include: build.yml
+  when: bazel_version < "3.5.0"
+
+- include: fetch-binary.yml
+  when: bazel_version >= "3.5.0"
+
+#- name: clean bazel cache
+#  file:
+#    path: ~/.cache/bazel
+#    state: absent

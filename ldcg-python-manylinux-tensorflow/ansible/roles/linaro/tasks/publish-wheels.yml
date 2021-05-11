@@ -1,0 +1,12 @@
+- name: prepare wheels for publishing  # noqa no-changed-when
+  shell:
+    cmd: |
+      set -xe
+      for pkg in *.whl
+      do
+        pkgdir=$(echo `basename $pkg`|cut -d'-' -f1 | tr '[:upper:]' '[:lower:]')
+        mkdir -p "{{ wheels_dir }}/$pkgdir"
+        mv $pkg  "{{ wheels_dir }}/$pkgdir"
+      done
+    chdir: "{{ wheels_dir }}"
+    executable: "/bin/bash"

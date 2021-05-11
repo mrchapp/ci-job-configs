@@ -1,0 +1,7 @@
+- name: install tensorflow build requirements
+  become: true
+  yum:
+    name:
+      - expect
+      - git
+      - patch

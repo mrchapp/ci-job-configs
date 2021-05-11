@@ -1,0 +1,75 @@
+- name: copy upper constraints
+  template:
+    src: "files/upper-constraints.txt"
+    dest: "{{ wheels_dir }}/upper-constraints.txt"
+    mode: 0400
+    force: true
+
+- name: create {{ py_ver }} virtualenv
+  include_role:
+    name: python
+    tasks_from: virtualenv.yml
+
+- name: build and install wheels of binary Python packages
+  include_role:
+    name: python
+    tasks_from: wheel.yml
+  loop:
+    - grpcio
+    - "numpy{{ numpy_version }}"
+    - "h5py{{ h5py_version }}"
+    - Keras_Applications
+    - Keras_Preprocessing
+  loop_control:
+    loop_var: wheel_name
+
+- name: remove TensorFlow {{ tensorflow_version }} sources from previous build
+  file:
+    path: "{{ build_dir }}/tensorflow-{{ tensorflow_version }}/"
+    state: absent
+
+- include: fetch.yml
+
+- name: build TensorFlow {{ tensorflow_version }}  # noqa no-changed-when
+  shell:
+    cmd: |
+      set -xe
+      source {{ virtualenv_path }}/bin/activate
+      expect configure_tensorflow
+      bazel clean --expunge
+      export BAZEL_LINKLIBS=-l%:libstdc++.a
+      bazel build --config=noaws --config=nogcp --config=nonccl \
+            //tensorflow/tools/pip_package:build_pip_package --verbose_failures
+      mkdir tensorflow-pkg
+      bazel-bin/tensorflow/tools/pip_package/build_pip_package --cpu ./tensorflow-pkg
+    chdir: "{{ build_dir }}/tensorflow-{{ tensorflow_version }}/"
+    executable: /bin/bash
+
+- name: stop bazel server
+  include_role:
+    name: bazel
+    tasks_from: stop.yml
+
+- name: get list of wheel files
+  find:
+    path: "{{ build_dir }}/tensorflow-{{ tensorflow_version }}/tensorflow-pkg/"
+    patterns: "tensorflow_*.whl"
+    file_type: file
+  register: wheel_files
+
+- name: get filename of latest wheel
+  set_fact:
+    wheel_file: "{{ wheel_files.files | sort(attribute='mtime') | last }}"
+
+- name: install Python package
+  pip:
+    name: "{{ wheel_file.path }}"
+    virtualenv: "{{ virtualenv_path }}"
+    virtualenv_python: "/opt/python/{{ py_ver }}/bin/python3"
+    extra_args: "--extra-index-url {{ pip_extra_index_url }}"
+
+- name: copy resulting wheel
+  copy:
+    src: "{{ wheel_file.path }}"
+    dest: "{{ wheels_dir }}"
+    mode: 0400

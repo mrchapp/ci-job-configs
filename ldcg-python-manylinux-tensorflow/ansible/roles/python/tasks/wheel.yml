@@ -1,0 +1,32 @@
+- name: build wheels of Python package {{ wheel_name }}  # noqa no-changed-when
+  shell:
+    cmd: |
+      source {{ virtualenv_path }}/bin/activate
+      pip3 wheel -w '{{ wheels_dir }}' \
+        --extra-index-url {{ pip_extra_index_url }} \
+        -c "{{ wheels_dir }}/upper-constraints.txt" \
+        "{{ wheel_name }}"
+    executable: /bin/bash
+  environment:
+    NPY_NUM_BUILD_JOBS: "{{ ansible_processor_vcpus }}"
+    GRPC_PYTHON_BUILD_EXT_COMPILER_JOBS: "{{ ansible_processor_vcpus }}"
+
+- name: get list of wheel files matching {{ wheel_name }}
+  find:
+    path: "{{ wheels_dir }}"
+    patterns: 
+      - "{{ wheel_name | regex_replace('.=.*', '') }}*py3*.whl"
+      - "{{ wheel_name | regex_replace('.=.*', '') }}*{{ py_ver }}*.whl"
+    file_type: file
+  register: wheel_files
+
+- name: get filename of latest {{ wheel_name }} wheel
+  set_fact:
+    wheel_file: "{{ wheel_files.files | sort(attribute='mtime') | last }}"
+
+- name: install {{ wheel_file.path | basename }} Python package
+  pip:
+    name: "{{ wheel_file.path }}"
+    virtualenv: "{{ virtualenv_path }}"
+    virtualenv_python: "/opt/python/{{ py_ver }}/bin/python3"
+    extra_args: "--extra-index-url {{ pip_extra_index_url }} -c '{{ wheels_dir }}/upper-constraints.txt'"

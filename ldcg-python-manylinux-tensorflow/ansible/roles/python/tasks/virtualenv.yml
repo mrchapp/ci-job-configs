@@ -1,0 +1,14 @@
+- name: set virtualenv path
+  set_fact:
+    virtualenv_path: "{{ build_dir }}/venv-{{ py_ver }}"
+
+- name: create {{ py_ver }} virtualenv
+  pip:
+    virtualenv: "{{ virtualenv_path }}"
+    virtualenv_command: "/opt/python/{{ py_ver }}/bin/python3 -mvenv"
+    extra_args: "--extra-index-url {{ pip_extra_index_url }}"
+    name:
+      - "pip>21.1"
+      - pkgconfig
+      - "Cython>=0.23"
+      - wheel

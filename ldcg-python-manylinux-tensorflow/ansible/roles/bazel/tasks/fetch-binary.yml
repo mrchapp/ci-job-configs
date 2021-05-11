@@ -1,0 +1,7 @@
+- name: fetch Bazel {{ bazel_version }} binary from Github
+  become: true
+  get_url:
+    url: "https://github.com/bazelbuild/bazel/releases/download/{{ bazel_version }}/bazel-{{ bazel_version }}-linux-arm64"
+    dest: /usr/local/bin/bazel
+    mode: 0755
+    force: true

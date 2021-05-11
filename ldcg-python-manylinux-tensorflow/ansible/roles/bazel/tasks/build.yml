@@ -1,0 +1,36 @@
+- name: fetch bazel {{ bazel_version }} source
+  get_url:
+    url: "https://github.com/bazelbuild/bazel/releases/download/{{ bazel_version }}/bazel-{{ bazel_version }}-dist.zip"
+    dest: "{{ build_dir }}"
+    mode: 0600
+
+- name: create directory to build bazel {{ bazel_version }}
+  file:
+    path: "{{ build_dir }}/bazel-{{ bazel_version }}/"
+    state: directory
+    mode: 0700
+
+- name: unpack bazel {{ bazel_version }} source
+  unarchive:
+    src: "{{ build_dir }}/bazel-{{ bazel_version }}-dist.zip"
+    dest: "{{ build_dir }}/bazel-{{ bazel_version }}"
+    remote_src: true
+    creates: "{{ build_dir }}/bazel-{{ bazel_version }}/compile.sh"
+
+- name: build bazel {{ bazel_version }}
+  shell:
+    cmd: |
+      set -xe
+      BAZEL_LINKLIBS=-l%:libstdc++.a EXTRA_BAZEL_ARGS='--host_javabase=@local_jdk//:jdk' ./compile.sh
+    chdir: "{{ build_dir }}/bazel-{{ bazel_version }}/"
+    creates: "{{ build_dir }}/bazel-{{ bazel_version }}/output/bazel"
+    executable: /bin/bash
+
+- name: install bazel {{ bazel_version }}
+  become: true
+  copy:
+    src: "{{ build_dir }}/bazel-{{ bazel_version }}/output/bazel"
+    dest: /usr/local/bin/bazel
+    mode: 0755
+    force: true
+    remote_src: true
