@@ -23,6 +23,7 @@
                     url: https://android.googlesource.com/kernel/common
             branches:
               - android-common/android12-5.4
+              - android-common/android12-5.10
             skip-tag: true
             shallow-clone: false
             wipe-workspace: false
@@ -65,6 +66,9 @@
             echo "TEST_OTHER_PLANS_OVERRIDE=VTS CTS BENCHMARKS" >>${f_api_callbacks}
 
             case "X${KERNEL_BRANCH_REAL}" in
+                "Xandroid12-5.10")
+                    build_configs_to_be_triggered="lkft-member-wrapper"
+                    ;;
                 "Xandroid12-5.4")
                     build_configs_to_be_triggered="lkft-db845c-aosp-master-5.4-gki lkft-hikey960-aosp-master-5.4-gki"
                     ;;
