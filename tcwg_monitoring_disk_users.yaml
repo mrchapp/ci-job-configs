@@ -3,7 +3,6 @@
     slave_name:
       - dev-01.tcwglab
       - dev-02.tcwglab
-      - tcwg-d05-01
       - tcwg-sq-01.tcwglab
       - tcwg-sq-02.tcwglab
       - tcwg-tk1-10.tcwglab
