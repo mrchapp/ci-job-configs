@@ -72,4 +72,4 @@
   copy:
     src: "{{ wheel_file.path }}"
     dest: "{{ wheels_dir }}"
-    mode: 0400
+    mode: 0666
