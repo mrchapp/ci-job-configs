@@ -76,23 +76,35 @@
 
         - trigger-builds:
             - project: lkft-member-build
-              property-file: params_959a59b53ff1461b41784db4665363d9.txt
-            - project: lkft-member-build
-              property-file: params_1acc4a0b4d84c2caf136e4196f5f1a47.txt
-            - project: lkft-member-build
               property-file: params_927501fb333e6715f573c7f085107f30.txt
             - project: lkft-member-build
               property-file: params_b257960da2650d3caaf4f4dd979b081f.txt
             - project: lkft-member-build
-              property-file: params_8ffd4c85051e1337236f199329f8c7a5.txt
+              property-file: params_c78cc805cbb2d7a43d80ae5be3936a46.txt
+            - project: lkft-member-build
+              property-file: params_6c2f6d66b6b0e4e4a2a2cf42b639566a.txt
             - project: lkft-member-build
               property-file: params_2ad26db752fc7161505f7c46848a7f05.txt
             - project: lkft-member-build
-              property-file: params_d63785394d1abb84aa1e42f92c33c0b1.txt
+              property-file: params_8ffd4c85051e1337236f199329f8c7a5.txt
+            - project: lkft-member-build
+              property-file: params_b162684e117edff09035d88a812eabb6.txt
+            - project: lkft-member-build
+              property-file: params_aac20f524eb3766e861dd92a2f90b2b0.txt
+            - project: lkft-member-build
+              property-file: params_18b311065f598c54b3adb88d809106f3.txt
+            - project: lkft-member-build
+              property-file: params_bffb5c33bf6f506687580e07ccb29eb2.txt
+            - project: lkft-member-build
+              property-file: params_856f0b50dbbe8b8ee001d902a267b40f.txt
             - project: lkft-member-build
               property-file: params_e584aefdf81f254ecc755231065f97e3.txt
             - project: lkft-member-build
               property-file: params_9f41cb6dcb64a5b49cbf9e81199e06a3.txt
+            - project: lkft-member-build
+              property-file: params_5654d7b4ecf574ec36dc173dfdbede02.txt
+            - project: lkft-member-build
+              property-file: params_a3648a685034f8bc048e327935a18b71.txt
     publishers:
         - email:
             recipients: 'yongqin.liu@linaro.org'

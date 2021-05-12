@@ -81,10 +81,6 @@
                 TEST_OTHER_PLANS_OVERRIDE=""
 
                 case "X${KERNEL_BRANCH}" in
-                    "Xandroid12-5.4")
-                        cp -fv "${params}" "lkft-${KERNEL_BRANCH}-x15.txt"
-                        echo "ANDROID_BUILD_CONFIG=lkft-x15-aosp-master-5.4" >> "lkft-${KERNEL_BRANCH}-x15.txt"
-                        ;;
                     "Xandroid-mainline")
                         cp -fv "${params}"  "lkft-${KERNEL_BRANCH}-x15.txt"
                         echo "ANDROID_BUILD_CONFIG=lkft-x15-aosp-master-mainline" >> "lkft-${KERNEL_BRANCH}-x15.txt"
@@ -99,7 +95,7 @@
                         ;;
                     "Xandroid12-5.4-presubmit")
                         KERNEL_BRANCH_REAL="android12-5.4"
-                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-aosp-master-5.4-gki lkft-member-wrapper"
+                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-member-wrapper"
                         TEST_OTHER_PLANS_OVERRIDE="CTS_PRESUBMIT"
                         ;;
                     "Xandroid12-5.10-presubmit")
@@ -147,8 +143,6 @@
         - trigger-builds:
             - project: lkft-gki-kernel
               property-file: all-kernels.txt
-            - project: lkft-generic-omap-build
-              property-file: lkft-android12-5.4-x15.txt
             - project: lkft-generic-omap-build
               property-file: lkft-android-mainline-x15.txt
             - project: lkft-generic-build
