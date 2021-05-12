@@ -9,7 +9,7 @@ cd /tmp/workspace
 
 # remove wheels and wheelhouse/ from previous jobs
 # we do it here as they are root:root
-rm -rf wheel* *.whl cache*
+rm -rf wheel* *.whl cache* configs
 
 git clone --depth 1 https://git.linaro.org/ci/job/configs.git                                                                                                                
                                                                                                                                                                              
