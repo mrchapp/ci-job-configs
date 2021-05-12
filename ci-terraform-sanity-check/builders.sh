@@ -2,7 +2,7 @@
 
 update_terraform()
 {
-    export TFVERS=0.11.14
+    export TFVERS=0.11.15
     mkdir -p ̃~/.local/bin
     if [ ! -x ~/.local/bin/terraform_${TFVERS} ]
     then
