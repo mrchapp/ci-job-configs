@@ -4,7 +4,7 @@
       set -xe
       for pkg in *.whl
       do
-        pkgdir=$(echo `basename $pkg`|cut -d'-' -f1 | tr '[:upper:]' '[:lower:]')
+        pkgdir=$(echo `basename $pkg`|cut -d'-' -f1 | tr '[:upper:]_' '[:lower:]-')
         mkdir -p "{{ wheels_dir }}/$pkgdir"
         mv $pkg  "{{ wheels_dir }}/$pkgdir"
       done
