@@ -15,7 +15,11 @@ export PATH=${GNUARMEMB_TOOLCHAIN_PATH}/bin:$PATH
 git clone https://git.trustedfirmware.org/trusted-firmware-m.git -b ${BRANCH}
 (cd trusted-firmware-m; git checkout ${GIT_COMMIT})
 git clone --depth 1 https://github.com/ARMmbed/mbed-crypto.git -b mbedcrypto-3.0.1
-GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://github.com/ARM-software/CMSIS_5.git -b 5.5.0
+
+# This will clone files via git-lfs, whhich may hit Github quota.
+# git clone --depth 1 https://github.com/ARM-software/CMSIS_5.git -b 5.5.0
+wget -q https://github.com/ARM-software/CMSIS_5/releases/download/5.5.0/ARM.CMSIS.5.5.0.pack
+unzip ARM.CMSIS.5.5.0.pack -d CMSIS_5
 
 cd trusted-firmware-m
 echo "GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)" > ${WORKSPACE}/env_var_parameters
