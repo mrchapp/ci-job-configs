@@ -6,9 +6,9 @@
   pip:
     virtualenv: "{{ virtualenv_path }}"
     virtualenv_command: "/opt/python/{{ py_ver }}/bin/python3 -mvenv"
-    extra_args: "--extra-index-url {{ pip_extra_index_url }}"
+    extra_args: "--extra-index-url {{ pip_extra_index_url }} -c '{{ wheels_dir }}/upper-constraints.txt'"
     name:
-      - "pip>21.1"
+      - pip
       - pkgconfig
-      - "Cython>=0.23"
+      - Cython
       - wheel

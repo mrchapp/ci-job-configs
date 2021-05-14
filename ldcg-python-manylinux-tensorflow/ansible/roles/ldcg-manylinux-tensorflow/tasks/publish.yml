@@ -1,0 +1,22 @@
+- name: run repair on wheels
+  include_role:
+    name: linaro
+    tasks_from: auditwheel-repair.yml
+
+- name: prepare wheels for publishing
+  include_role:
+    name: linaro
+    tasks_from: publish-wheels.yml
+
+- name: copy wheels for cache upload
+  copy:
+    src: "{{ wheels_dir }}"
+    dest: "{{ build_dir }}/cache_upload"
+    mode: 0600
+
+- name: prepare wheels for cache
+  include_role:
+    name: linaro
+    tasks_from: publish-wheels-cache.yml
+  vars:
+    wheels_dir: "{{ build_dir }}/cache_upload"

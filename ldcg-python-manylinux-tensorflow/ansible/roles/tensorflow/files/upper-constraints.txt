@@ -1,8 +1,13 @@
 Cython>=0.29
+pip>=21
 
+# those differ between 1.5/2.4/git
+gast{{ gast_version }}
+grpcio{{ grpcio_version }}
+h5py{{ h5py_version }}
+numpy{{ numpy_version }}
 
 # entries below are taken from Tensorflow 1.15.4/2.4.1 source code.
-grpcio~=1.32.0
 
 absl-py ~= 0.10
 astor >= 0.6.0
@@ -18,9 +23,6 @@ termcolor ~= 1.1.0
 typing_extensions ~= 3.7.4
 wheel ~= 0.35
 wrapt ~= 1.12.1
-# These packages needs to be pinned exactly as newer versions are
-# incompatible with the rest of the ecosystem
-gast == 0.3.3
 
 # tensorboard and tensorflow-estimator dependencies are not listed
 # they are fetched on installation

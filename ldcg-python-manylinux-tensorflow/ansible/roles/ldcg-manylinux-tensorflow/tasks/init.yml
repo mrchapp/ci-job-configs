@@ -1,0 +1,15 @@
+- name: install TensorFlow build dependencies
+  include_role:
+    name: tensorflow
+    tasks_from: deps.yml
+
+- name: install build dependencies for Python wheels
+  include_role:
+    name: python
+    tasks_from: deps.yml
+
+- name: create directory to build wheels
+  file:
+    path: "{{ wheels_dir }}"
+    state: directory
+    mode: 0755

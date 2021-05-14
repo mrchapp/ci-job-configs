@@ -30,7 +30,7 @@
 
 - include: fetch.yml
 
-- name: build TensorFlow {{ tensorflow_version }}  # noqa no-changed-when
+- name: build TensorFlow {{ tensorflow_version }} for {{ py_ver }}  # noqa no-changed-when
   shell:
     cmd: |
       set -xe
@@ -66,7 +66,7 @@
     name: "{{ wheel_file.path }}"
     virtualenv: "{{ virtualenv_path }}"
     virtualenv_python: "/opt/python/{{ py_ver }}/bin/python3"
-    extra_args: "--extra-index-url {{ pip_extra_index_url }}"
+    extra_args: "--extra-index-url {{ pip_extra_index_url }} -c '{{ wheels_dir }}/upper-constraints.txt'"
 
 - name: copy resulting wheel
   copy:

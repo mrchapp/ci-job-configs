@@ -1,7 +1,7 @@
 #!/usr/bin/expect
 spawn "./configure"
 expect {
-  "*Please specify the location of python*" {send "/usr/bin/python3\r";exp_continue}
+  "*Please specify the location of python*" {send "\r";exp_continue}
   "*Please input the desired Python library path to use*" {send "\r";exp_continue}
   "*Do you wish to build TensorFlow with ROCm support*" {send "n\r";exp_continue}
   "*Do you wish to build TensorFlow with CUDA support*" {send "n\r";exp_continue}

@@ -15,6 +15,23 @@
         - build-discarder:
             days-to-keep: 7
             num-to-keep: 7
+    parameters:
+        - bool:
+            name: buildgit
+            default: false
+            description: 'Build git HEAD'
+        - bool:
+            name: build25
+            default: false
+            description: 'Build 2.5.x version'
+        - bool:
+            name: build24
+            default: false
+            description: 'Build 2.4.x version'
+        - bool:
+            name: build115
+            default: false
+            description: 'Build 1.15.x version'
     disabled: false
     node: leg-aarch64
     concurrent: false

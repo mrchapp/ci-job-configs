@@ -3,21 +3,10 @@
     ../vars/vars.yml
 
   tasks:
-    - name: install TensorFlow build dependencies
+    - name: initialize job
       include_role:
-        name: tensorflow
-        tasks_from: deps.yml
-
-    - name: install build dependencies for Python wheels
-      include_role:
-        name: python
-        tasks_from: deps.yml
-
-    - name: create directory to build wheels
-      file:
-        path: "{{ wheels_dir }}"
-        state: directory
-        mode: 0755
+        name: ldcg-manylinux-tensorflow
+        tasks_from: init.yml
 
     - name: go through each TensorFlow version
       include_role:
@@ -26,26 +15,9 @@
       loop: "{{ versions | dict2items }}"
       loop_control:
         loop_var: tf_ver
+      when: tf_ver.key in to_be_built
 
-    - name: run repair on wheels
+    - name: do publishing stuff
       include_role:
-        name: linaro
-        tasks_from: auditwheel-repair.yml
-
-    - name: prepare wheels for publishing
-      include_role:
-        name: linaro
-        tasks_from: publish-wheels.yml
-
-    - name: copy wheels for cache upload
-      copy:
-        src: "{{ wheels_dir }}"
-        dest: "{{ build_dir }}/cache_upload"
-        mode: 0666
-
-    - name: prepare wheels for cache
-      include_role:
-        name: linaro
-        tasks_from: publish-wheels-cache.yml
-      vars:
-        wheels_dir: "{{ build_dir }}/cache_upload"
+        name: ldcg-manylinux-tensorflow
+        tasks_from: publish.yml
