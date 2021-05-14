@@ -23,10 +23,10 @@
             default: 'master'
         - string:
             name: QCOM_LINUX_FIRMWARE
-            default: 'http://releases.linaro.org/96boards/rb5/qualcomm/firmware/RB5_firmware_20210331-v4.zip'
+            default: 'http://releases.linaro.org/96boards/rb5/qualcomm/firmware/RB5_firmware_20210331-v4.1.zip'
         - string:
             name: QCOM_LINUX_FIRMWARE_MD5
-            default: 'd65ec09ba18dcafe291c870e0516c290'
+            default: '498aeeeb2603ddcf619c7e613c763791'
         - string:
             name: QCOM_LINUX_FIRMWARE_LICENSE_MD5
             default: 'cbbe399f2c983ad51768f4561587f000'

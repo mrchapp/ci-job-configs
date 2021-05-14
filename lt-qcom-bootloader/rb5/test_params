@@ -1,8 +1,8 @@
 export BUILD_NUMBER=0
 export TOOLCHAIN_ARCH='arm64'
 export BRANCH='master'
-export QCOM_LINUX_FIRMWARE='http://releases.linaro.org/96boards/rb5/qualcomm/firmware/RB5_firmware_20210331-v4.zip'
-export QCOM_LINUX_FIRMWARE_MD5='d65ec09ba18dcafe291c870e0516c290'
+export QCOM_LINUX_FIRMWARE='http://releases.linaro.org/96boards/rb5/qualcomm/firmware/RB5_firmware_20210331-v4.1.zip'
+export QCOM_LINUX_FIRMWARE_MD5='498aeeeb2603ddcf619c7e613c763791'
 export QCOM_LINUX_FIRMWARE_LICENSE_MD5='cbbe399f2c983ad51768f4561587f000'
 export ABL_GIT_LINARO='https://git.linaro.org/landing-teams/working/qualcomm/abl.git'
 export ABL_GIT_REL='release/LU.UM.1.2.1.r1-23200-QRB5165.0'

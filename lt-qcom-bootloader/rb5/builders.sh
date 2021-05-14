@@ -26,6 +26,7 @@ rm -rf bootloaders-linux
 #      "*/05-BTFM/BTFM.bin" \
 #      "*/10-imagefv/imagefv.elf" \
 unzip -j -d bootloaders-linux $(basename ${QCOM_LINUX_FIRMWARE}) \
+      "*/cdt.bin" \
       "*/02-firehose_prog/prog_firehose_ddr.elf" \
       "*/04_aop/aop.mbn" \
       "*/06-cmnlib/cmnlib.mbn" \
