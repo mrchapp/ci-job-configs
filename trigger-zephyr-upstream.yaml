@@ -16,14 +16,14 @@
             num-to-keep: 30
     disabled: false
     node: triggers
-    display-name: 'Trigger for Zephyr project (master)'
+    display-name: 'Trigger for Zephyr project (main)'
     scm:
         - git:
             url: https://github.com/zephyrproject-rtos/zephyr.git
-            refspec: +refs/heads/master:refs/remotes/origin/master
+            refspec: +refs/heads/main:refs/remotes/origin/main
             name: origin
             branches:
-                - refs/heads/master
+                - refs/heads/main
             skip-tag: true
             shallow-clone: true
             wipe-workspace: false
