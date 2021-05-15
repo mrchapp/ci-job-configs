@@ -25,7 +25,7 @@
     parameters:
         - string:
             name: BRANCH
-            default: 'master'
+            default: 'main'
         - string:
             name: LAVA_SERVER
             default: 'validation.linaro.org/RPC2/'
@@ -41,9 +41,9 @@
     disabled: false
     node: master
     child-workspace: .
-    display-name: 'Zephyr project (master)'
+    display-name: 'Zephyr project (main)'
 # We should avoid starting this job "on its own". That's because default
-# Git revision it builds is master/HEAD, and as this is a matrix job,
+# Git revision it builds is main/HEAD, and as this is a matrix job,
 # different sub-builds may get different actual HEAD revision (e.g. if
 # the tree is actively committed to). Instead, it should be triggered
 # externally, with GIT_COMMIT parameter set to a specific SHA1 revision
