@@ -31,10 +31,10 @@
     parameters:
         - string:
             name: BRANCH
-            default: 'master'
+            default: 'main'
         - string:
             name: GIT_COMMIT
-            default: 'master'
+            default: 'HEAD'
         - string:
             name: LAVA_SERVER
             default: 'validation.linaro.org/RPC2/'
