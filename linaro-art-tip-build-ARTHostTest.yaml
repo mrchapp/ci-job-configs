@@ -34,7 +34,7 @@
             default: 'master'
         - string:
             name: BUILD_CONFIG_FILENAME
-            default: 'linaro-art-tip'
+            default: 'linaro-art-tip-short'
         - bool:
             name: CLEAN_BUILD
             default: false
@@ -104,9 +104,6 @@
             ANDROID_BUILD_DIR="${HOME}/srv/${JOB_NAME}/android"
             ART_BUILD_SCRIPTS_DIR="${WORKSPACE}/art-build-scripts"
             git clone https://android-git.linaro.org/git/linaro-art/art-build-scripts.git ${ART_BUILD_SCRIPTS_DIR}
-            cd ${ART_BUILD_SCRIPTS_DIR}
-            git fetch https://android-git.linaro.org/git/linaro-art/art-build-scripts.git refs/changes/39/22239/1 && git checkout FETCH_HEAD
-            cd -
 
             cd ${ART_BUILD_SCRIPTS_DIR}/jenkins
             ./setup_host.sh
