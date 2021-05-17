@@ -33,7 +33,7 @@
             default: 'https://github.com/zephyrproject-rtos/zephyr'
         - string:
             name: ZEPHYR_BRANCH
-            default: 'master'
+            default: 'main'
         - string:
             name: LAVA_SERVER
             default: 'validation.linaro.org/RPC2/'
