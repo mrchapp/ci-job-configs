@@ -4,8 +4,7 @@ set -xe
 
 cd $WORKSPACE
 
-# remove generated vars and build script
-rm -f *.sh configs
+rm -rf *.sh configs
 
 git clone --depth 1 https://git.linaro.org/ci/job/configs.git
 
