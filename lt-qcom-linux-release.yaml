@@ -104,6 +104,8 @@
         sequential: false
     wrappers:
         - timestamps
+        - timeout:
+            timeout: 300
         - build-name:
             name: '#${BUILD_NUMBER}'
         - credentials-binding:
