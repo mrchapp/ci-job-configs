@@ -50,9 +50,9 @@ make install && make clean
 # $ which openssl
 # $ /usr/local/bin/openssl
 # Using the system /usr/bin/openssl returns an error too
-#sudo \
-#  LD_LIBRARY_PATH=${WORKSPACE}/uadk-shared-v2/usr/local/lib \
-#  openssl engine -t uadk
+sudo \
+  LD_LIBRARY_PATH=${WORKSPACE}/uadk-shared-v2/usr/local/lib \
+  ${WORKSPACE}/uadk/test/sanity_test.sh
 
 cd ${WORKSPACE}
 tar -cJf uadk-openssl.tar.xz uadk-*-v*/
