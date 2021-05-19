@@ -38,7 +38,7 @@
             default: 'master'
         - string:
             name: BUILD_CONFIG_FILENAME
-            default: 'linaro-art-tip'
+            default: 'linaro-art-tip-short'
     disabled: false
     node: docker-bionic-art
     display-name: 'Tip: Benchmarks (Pixel 3)'

@@ -34,8 +34,8 @@
             default: 'master'
         - string:
             name: BUILD_CONFIG_FILENAME
-            default: 'linaro-art-tip'
-    disabled: true
+            default: 'linaro-art-tip-short'
+    disabled: false
     node: docker-bionic-art
     display-name: 'Tip: VIXL Test'
     concurrent: true
