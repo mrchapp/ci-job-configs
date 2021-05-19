@@ -111,6 +111,8 @@
 
             cd ${ANDROID_BUILD_DIR}
             [[ ${CLEAN_BUILD} == "true" ]] && rm -rf out/
+            . build/envsetup.sh
+            lunch armv8
             perl scripts/jenkins/test_launcher.pl \
               scripts/tests/test_art_host.sh
     publishers:
