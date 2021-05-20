@@ -62,7 +62,7 @@ function build_android(){
 
     mkdir -p "${DIR_PUB_SRC}"
     # shellcheck disable=SC2086
-    cp -a ${ANDROID_ROOT}/out/pinned-manifest/*-pinned-manifest.xml "${DIR_PUB_SRC}"
+    cp -a ${ANDROID_ROOT}/out/pinned-manifest/*-pinned-manifest.xml "${DIR_PUB_SRC}/pinned-manifest.xml"
     wget https://git.linaro.org/ci/job/configs.git/blob_plain/HEAD:/lkft/common/build-info/member.txt -O "${DIR_PUB_SRC}/BUILD-INFO.txt"
 
     if [ -z "${PUBLISH_FILES}" ]; then
@@ -130,7 +130,7 @@ function export_parameters(){
 
     # Publish parameters
     # shellcheck disable=SC2086
-    cp -a ${DIR_PUB_SRC}/*-pinned-manifest.xml "${WORKSPACE}" || true
+    cp -a ${DIR_PUB_SRC}/*-pinned-manifest.xml "${WORKSPACE}/pinned-manifest.xml" || true
     echo "PUB_DEST=android/lkft/protected/aosp/${PUB_DEST_TARGET}/${BUILD_NUMBER}" > "${WORKSPACE}/publish_parameters"
     echo "PUB_SRC=${DIR_PUB_SRC}" >> "${WORKSPACE}/publish_parameters"
     echo "PUB_EXTRA_INC=^[^/]+\.(txt|img|xz|dtb|dtbo|zip)$|MLO|vmlinux|System.map" >> "${WORKSPACE}/publish_parameters"
