@@ -106,22 +106,38 @@
             cd /home/buildslave/srv/aosp-master/build/device/linaro/hikey/; git reset --hard; cd -;
 
             pushd /home/buildslave/srv/aosp-master/build/out/
-            for img in "boot.img dt.img vendor.img system.img userdata.img"; do
-            pxz -9 $img
+            for img in "boot.img dt.img vendor.img system.img userdata.img super.img"; do
+              pxz -9 $img
             done
             cp ramdisk.img *.img.xz dist/pub/
             popd
 
             pushd /home/buildslave/srv/aosp-master/build/
             rm -rf out/target/product/hikey960
-            make TARGET_KERNEL_USE=4.14 bootimage vendorimage out/target/product/hikey960/dt.img
+            make TARGET_KERNEL_USE=4.14 bootimage vendorimage superimage out/target/product/hikey960/dt.img
+            cp out/target/product/hikey960/super.img out/super-4.14.img
             cp out/target/product/hikey960/vendor.img out/vendor-4.14.img
             cp out/target/product/hikey960/boot.img out/boot-4.14.img
             cp out/target/product/hikey960/dt.img out/dt-4.14.img
+            cp out/target/product/hikey960/dt.img out/dt-4.14.img
+            xz out/super-4.14.img
             xz out/vendor-4.14.img
             xz out/boot-4.14.img
             xz out/dt-4.14.img
-            cp out/boot-4.14.img.xz out/vendor-4.14.img.xz out/dt-4.14.img.xz out/dist/pub/
+            cp out/boot-4.14.img.xz out/super-4.14.img.xz  out/vendor-4.14.img.xz out/dt-4.14.img.xz out/dist/pub/
+
+            rm -rf out/target/product/hikey960
+            make TARGET_KERNEL_USE=4.19 bootimage vendorimage superimage out/target/product/hikey960/dt.img
+            cp out/target/product/hikey960/super.img out/super-4.19.img
+            cp out/target/product/hikey960/vendor.img out/vendor-4.19.img
+            cp out/target/product/hikey960/boot.img out/boot-4.19.img
+            cp out/target/product/hikey960/dt.img out/dt-4.19.img
+            cp out/target/product/hikey960/dt.img out/dt-4.19.img
+            xz out/super-4.19.img
+            xz out/vendor-4.19.img
+            xz out/boot-4.19.img
+            xz out/dt-4.19.img
+            cp out/boot-4.19.img.xz out/super-4.19.img.xz  out/vendor-4.19.img.xz out/dt-4.19.img.xz out/dist/pub/
             popd
 
             wget https://git.linaro.org/ci/job/configs.git/blob_plain/HEAD:/android-lcr/hikey/build-info/aosp-master-template.txt -O build/out/dist/pub/BUILD-INFO.txt
