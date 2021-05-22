@@ -46,7 +46,7 @@ pip3 install -r "$LAVA_TEST_CASES_PATH/requirements.txt"
 
 SEND_TESTJOB=false
 case "${MACHINE}" in
-  apq8016-sbc|apq8096-db820c|sdm845-db845c)
+  apq8016-sbc|apq8096-db820c|sdm845-mtp|sdm845-db845c|qcs404-evb-4000)
     SEND_TESTJOB=true
 
     export SMOKE_TESTS="pwd, uname -a, ip a, vmstat, lsblk, lscpu"
