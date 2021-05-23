@@ -129,8 +129,8 @@ function export_parameters(){
     fi
 
     # Publish parameters
-    # shellcheck disable=SC2086
-    cp -a ${DIR_PUB_SRC}/*-pinned-manifest.xml "${WORKSPACE}/pinned-manifest.xml" || true
+    # The pinned-manifest was copied into the publist directory as pinned-manifest.xml already
+    cp -a "${DIR_PUB_SRC}/pinned-manifest.xml" "${WORKSPACE}"
     echo "PUB_DEST=android/lkft/protected/aosp/${PUB_DEST_TARGET}/${BUILD_NUMBER}" > "${WORKSPACE}/publish_parameters"
     echo "PUB_SRC=${DIR_PUB_SRC}" >> "${WORKSPACE}/publish_parameters"
     echo "PUB_EXTRA_INC=^[^/]+\.(txt|img|xz|dtb|dtbo|zip)$|MLO|vmlinux|System.map" >> "${WORKSPACE}/publish_parameters"
