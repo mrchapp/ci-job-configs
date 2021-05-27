@@ -80,33 +80,29 @@ function remove_unused_firmware() {
 
 	# Remove all not needed firmware by platform, In db845c it ran out of space causing
 	# boot failure.
-	case "${MACHINE}" in
-		apq8016-sbc|apq8096-db820c|sdm845-db845c)
-			mkdir -p out/archive
-			firmware_list_file=$(realpath ./configs/lt-qcom-linux-test/firmware.list/${MACHINE})
+	mkdir -p out/archive
+	firmware_list_file=$(realpath ./configs/lt-qcom-linux-test/firmware.list/${MACHINE})
 
-			cd out/archive
-			cpio -idv -H newc < ../../$target_file
+	cd out/archive
+	cpio -idv -H newc < ../../$target_file
 
-			if [ -f "$firmware_list_file" ]; then
-				for f in $(find ./lib/firmware/ -type f)
-				do
-					if ! grep -qxFe "$f" $firmware_list_file; then
-						rm -fv "$f"
-					fi
-				done
-				find lib/firmware/ -xtype l -delete
-				find lib/firmware/ -type d -empty -delete
-
-			else
-				rm -rf lib/firmware
+	if [ -f "$firmware_list_file" ]; then
+		for f in $(find ./lib/firmware/ -type f)
+		do
+			if ! grep -qxFe "$f" $firmware_list_file; then
+				rm -fv "$f"
 			fi
+		done
+		find lib/firmware/ -xtype l -delete
+		find lib/firmware/ -type d -empty -delete
 
-			find . | cpio -R 0:0 -ov -H newc > ../../$target_file
-			cd ../../
-			rm -rf out/archive
-		;;
-	esac
+	else
+		rm -rf lib/firmware
+	fi
+
+	find . | cpio -R 0:0 -ov -H newc > ../../$target_file
+	cd ../../
+	rm -rf out/archive
 }
 
 function create_ramdisk_from_folder() {
