@@ -83,28 +83,23 @@ function remove_unused_firmware() {
 	case "${MACHINE}" in
 		apq8016-sbc|apq8096-db820c|sdm845-db845c)
 			mkdir -p out/archive
+			firmware_list_file=$(realpath ./configs/lt-qcom-linux-test/firmware.list/${MACHINE})
+
 			cd out/archive
 			cpio -idv -H newc < ../../$target_file
 
-			if [ "${MACHINE}" = "apq8016-sbc" ]; then
-				rm -rf lib/firmware/ar* lib/firmware/htc* lib/firmware/wil* lib/firmware/qca*
-				rm -rf lib/firmware/ath* lib/firmware/LICENSE.QualcommAtheros_ath10k
-				rm -rf lib/firmware/qcom/a530* lib/firmware/qcom/a630*
-				rm -rf lib/firmware/qcom/msm8996 lib/firmware/qcom/sdm845 lib/firmware/K2026090.mem
-				rm -rf lib/firmware/qcom/venus-4.2 lib/firmware/qcom/venus-5.2 lib/firmware/qcom/venus-5.4
-			elif [ "${MACHINE}" = "apq8096-db820c" ]; then
-				rm -rf lib/firmware/ar* lib/firmware/htc* lib/firmware/wil* lib/firmware/qca*
-				rm -rf lib/firmware/ath3* lib/firmware/ath6* lib/firmware/ath9* 
-				rm -rf lib/firmware/ath10k/QCA4* lib/firmware/ath10k/QCA9* lib/firmware/ath10k/WCN*
-				rm -rf lib/firmware/a300* lib/firmware/qcom/a300* lib/firmware/qcom/a630*
-				rm -rf lib/firmware/qcom/msm8916 lib/firmware/wlan lib/firmware/qcom/sdm845 lib/firmware/K2026090.mem
-				rm -rf lib/firmware/qcom/venus-1.8 lib/firmware/qcom/venus-5.2 lib/firmware/qcom/venus-5.4
-			elif [ "${MACHINE}" = "sdm845-db845c" ]; then
-				rm -rf lib/firmware/ar* lib/firmware/htc* lib/firmware/wil*
-				rm -rf lib/firmware/ath3* lib/firmware/ath6* lib/firmware/ath9* lib/firmware/ath10k/QCA*
-				rm -rf lib/firmware/a300* lib/firmware/qcom/a300* lib/firmware/qcom/a530*
-				rm -rf lib/firmware/qcom/msm8916 lib/firmware/wlan lib/firmware/qcom/msm8996
-				rm -rf lib/firmware/qcom/venus-1.8 lib/firmware/qcom/venus-4.2 lib/firmware/qcom/venus-5.4
+			if [ -f "$firmware_list_file" ]; then
+				for f in $(find ./lib/firmware/ -type f)
+				do
+					if ! grep -qxFe "$f" $firmware_list_file; then
+						rm -fv "$f"
+					fi
+				done
+				find lib/firmware/ -xtype l -delete
+				find lib/firmware/ -type d -empty -delete
+
+			else
+				rm -rf lib/firmware
 			fi
 
 			find . | cpio -R 0:0 -ov -H newc > ../../$target_file
@@ -180,36 +175,27 @@ KERNEL_CMDLINE_APPEND=
 # Set per MACHINE configuration
 case "${MACHINE}" in
 	apq8016-sbc)
-		FIRMWARE_URL="${FIRMWARE_URL_apq8016_sbc}"
 		ROOTFS_PARTITION=/dev/mmcblk0p14
 		;;
 	apq8096-db820c)
-		FIRMWARE_URL="${FIRMWARE_URL_apq8096_db820c}"
 		BOOTIMG_PAGESIZE=4096
 		ROOTFS_PARTITION=/dev/sda1
 		;;
 	sdm845-mtp)
-		FIRMWARE_URL="${FIRMWARE_URL_sdm845_mtp}"
-
 		# XXX: using Android userdata since we don't have Linux parttable
 		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
 		;;
 	sdm845-db845c)
 		BOOTIMG_PAGESIZE=4096
-		FIRMWARE_URL="${FIRMWARE_URL_sdm845_db845c}"
 
 		ROOTFS_PARTITION=/dev/sda1
 		KERNEL_CMDLINE_APPEND="clk_ignore_unused pd_ignore_unused"
 		;;
 	qcs404-evb-1000)
-		FIRMWARE_URL="${FIRMWARE_URL_qcs404_evb_1000}"
-
 		# Use userdata for now.
 		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
 		;;
 	qcs404-evb-4000)
-		FIRMWARE_URL="${FIRMWARE_URL_qcs404_evb_4000}"
-
 		# Use userdata for now.
 		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
 		;;
@@ -248,10 +234,9 @@ Build description:
 * kernel modules URL: $KERNEL_MODULES_URL
 * Ramdisk URL: $RAMDISK_URL
 * RootFS URL: $ROOTFS_URL
-* Firmware URL: $FIRMWARE_URL
 EOF
 
-# Ramdisk/RootFS image, firmware and modules populate, download step
+# Ramdisk/RootFS image and modules populate, download step
 wget_error ${RAMDISK_URL}
 ramdisk_file=out/$(basename ${RAMDISK_URL})
 ramdisk_file_type=$(file $ramdisk_file)
@@ -282,15 +267,8 @@ if [[ ! -z "${KERNEL_MODULES_URL}" ]]; then
 		modules_file=$modules_file.gz
 	fi
 fi
-if [[ ! -z "${FIRMWARE_URL}" ]]; then
-	firmware_file=""
-	for f in ${FIRMWARE_URL}; do
-		wget_error $f
-	        firmware_file="$firmware_file out/$(basename $f)"
-	done
-fi
 
-# Uncompress images to be able populate with firmware and modules
+# Uncompress images to be able populate with modules
 rootfs_desktop_comp=''
 if [[ $rootfs_desktop_file_type = *"gzip compressed data"* ]]; then
 	${GZ} -d $rootfs_desktop_file
@@ -313,7 +291,7 @@ if [[ $ramdisk_file_type = *"gzip compressed data"* ]]; then
 fi
 
 
-# If rootfs is Android sparse image convert to ext4 to populate with firmware and modules
+# If rootfs is Android sparse image convert to ext4 to populate with modules
 if [[ $rootfs_desktop_file_type = *"Android sparse image"* ]]; then
 	rootfs_desktop_file_ext4=out/$(basename ${rootfs_desktop_file} .img).ext4
 	simg2img $rootfs_desktop_file $rootfs_desktop_file_ext4
@@ -335,32 +313,13 @@ else
 	exit 1
 fi
 
-# Populate firmware and modules
+# Populate modules and remove not used firmware in ramdisk
+remove_unused_firmware "$ramdisk_file" "$ramdisk_file_type"
 if [[ ! -z "$modules_file" ]]; then
 	modules_file_type=$(file $modules_file)
 	copy_archive_to_rootfs "$modules_file" "$modules_file_type" "$ramdisk_file" "$ramdisk_file_type"
 	copy_archive_to_rootfs "$modules_file" "$modules_file_type" "$rootfs_file" "$rootfs_file_type"
 	copy_archive_to_rootfs "$modules_file" "$modules_file_type" "$rootfs_desktop_file" "$rootfs_desktop_file_type"
-fi
-if [[ ! -z "${firmware_file}" ]]; then
-	firmware_tmp_dir="firmware_tmp"
-	firmware_tmp_file="firmware_tmp.tar.gz"
-
-	mkdir -p $firmware_tmp_dir
-	for firmware in ${firmware_file}; do
-		dpkg-deb -x $firmware $firmware_tmp_dir
-	done
-	cd $firmware_tmp_dir
-	tar -czpf ../$firmware_tmp_file *
-	cd ../
-
-	ffile_type=$(file $firmware_tmp_file)
-	copy_archive_to_rootfs "$firmware_tmp_file" "$ffile_type" "$ramdisk_file" "$ramdisk_file_type"
-	remove_unused_firmware "$ramdisk_file" "$ramdisk_file_type"
-	copy_archive_to_rootfs "$firmware_tmp_file" "$ffile_type" "$rootfs_file" "$rootfs_file_type"
-	copy_archive_to_rootfs "$firmware_tmp_file" "$ffile_type" "$rootfs_desktop_file" "$rootfs_desktop_file_type"
-
-	rm -rf $firmware_tmp_dir $firmware_tmp_file 
 fi
 
 # If rootfs was Android sparse image trasform from ext4
