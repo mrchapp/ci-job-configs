@@ -171,37 +171,30 @@ RAMDISK_BASE=0x84000000
 SERIAL_CONSOLE=ttyMSM0
 KERNEL_DT_URL="${KERNEL_DT_URL}/qcom/${MACHINE}.dtb"
 KERNEL_CMDLINE_APPEND=
+ROOTFS_PARTITION=/dev/disk/by-partlabel/rootfs
 
 # Set per MACHINE configuration
 case "${MACHINE}" in
 	apq8016-sbc)
-		ROOTFS_PARTITION=/dev/mmcblk0p14
 		;;
 	apq8096-db820c)
 		BOOTIMG_PAGESIZE=4096
-		ROOTFS_PARTITION=/dev/sda1
 		;;
 	sdm845-mtp)
-		# XXX: using Android userdata since we don't have Linux parttable
 		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
 		;;
 	sdm845-db845c)
 		BOOTIMG_PAGESIZE=4096
 
-		ROOTFS_PARTITION=/dev/sda1
 		KERNEL_CMDLINE_APPEND="clk_ignore_unused pd_ignore_unused"
 		;;
 	qcs404-evb-1000)
-		# Use userdata for now.
 		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
 		;;
 	qcs404-evb-4000)
-		# Use userdata for now.
 		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
 		;;
 	qrb5165-rb5)
-		# Use userdata for now.
-		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
 		;;
 	*)
 		echo "Currently MACHINE: ${MACHINE} isn't supported"
