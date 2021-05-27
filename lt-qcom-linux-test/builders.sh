@@ -205,7 +205,14 @@ if [ -z "${KERNEL_IMAGE_URL}" ]; then
 fi
 
 # find rootfs and ramdisk to use
-./configs/lt-qcom-linux-test/get_latest_testimage.py
+case "${MACHINE}" in
+	apq8016-sbc|apq8096-db820c|sdm845-db845c|qrb5165-rb5)
+		./configs/lt-qcom-linux-test/get_latest_testimage.py
+	;;
+	*)
+		./configs/lt-qcom-linux-test/get_latest_testimage.py https://snapshots.linaro.org/member-builds/qcomlt/testimages/arm64/ https://snapshots.linaro.org/member-builds/qcomlt/testimages-desktop/arm64/
+	;;
+esac
 RAMDISK_URL=$(cat output.log  | grep RAMDISK_URL | cut -d= -f2)
 ROOTFS_URL=$(cat output.log  | grep ROOTFS_URL | cut -d= -f2)
 ROOTFS_DESKTOP_URL=$(cat output.log  | grep ROOTFS_DESKTOP_URL | cut -d= -f2)

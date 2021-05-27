@@ -32,8 +32,8 @@ def get_base_url(url, job_url):
     return (page, base_url)
 
 def main(url='https://snapshots.linaro.org/member-builds/qcomlt/testimages/qcom-armv8a/',
-         job_url='https://ci.linaro.org/job/lt-qcom-linux-testimages/',
          desktop_url='https://snapshots.linaro.org/member-builds/qcomlt/testimages-desktop/qcom-armv8a/',
+         job_url='https://ci.linaro.org/job/lt-qcom-linux-testimages/',
          desktop_job_url='https://ci.linaro.org/job/lt-qcom-linux-testimages-desktop/',
          output='output.log'):
 
