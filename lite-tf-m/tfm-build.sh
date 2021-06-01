@@ -18,18 +18,24 @@ else
 fi
 
 # Set the config file to use
-configfile=ConfigRegression
+#configfile=ConfigRegression
 
-target=AN521
+#target=AN521
 
 # Generate the S and NS makefiles
-cmake -G"Unix Makefiles" \
-        -DPROJ_CONFIG=`$readlink -f ../configs/$configfile.cmake` \
-        -DTARGET_PLATFORM=$target \
-        -DCMAKE_BUILD_TYPE=Debug \
-        -DBL2=False \
-        -DCOMPILER=GNUARM \
-        ../
+#cmake -G"Unix Makefiles" \
+#        -DPROJ_CONFIG=`$readlink -f ../configs/$configfile.cmake` \
+#        -DTARGET_PLATFORM=$target \
+#        -DCMAKE_BUILD_TYPE=Debug \
+#        -DBL2=False \
+#        -DCOMPILER=GNUARM \
+#        ../
+
+cmake -DTFM_PLATFORM=mps2/an521 \
+      -DCMAKE_TOOLCHAIN_FILE=../toolchain_GNUARM.cmake \
+      -DCMAKE_BUILD_TYPE=Debug \
+      -DTFM_TEST_REPO_PATH=../../tf-m-tests \
+      ../
 
 # Build the binaries
 make install
