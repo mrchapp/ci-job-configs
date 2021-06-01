@@ -61,7 +61,7 @@
             github-hooks: true
             permit-all: true
             white-list-target-branches:
-                - 'zeus'
+                - 'hardknott'
                 - 'dunfell'
             auth-id: 'GITHUB_TOKEN'
     axes:
