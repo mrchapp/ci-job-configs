@@ -3,7 +3,7 @@ set -ex
 
 export DEBIAN_FRONTEND=noninteractive
 sudo apt-get -qq update
-sudo apt-get -qq -y install python3 python3-pip python3-setuptools srecord libffi-dev libssl-dev
+sudo apt-get -qq -y install python3 python3-pip python3-setuptools python3-click srecord libffi-dev libssl-dev
 
 # As a first step, upgrade pip itself. The one shipping with Ubuntu 18.04
 # is rather old by now, and may have issues installing modern .whl packages.
