@@ -121,7 +121,7 @@ function submit_jobs_for_config(){
 
     # clean environments
     unset TEST_DEVICE_TYPE TEST_LAVA_SERVER TEST_QA_SERVER TEST_QA_SERVER_TEAM TEST_QA_SERVER_PROJECT TEST_QA_SERVER_ENVIRONMENT
-    unset ANDROID_VERSION KERNEL_BRANCH KERNEL_REPO TEST_METADATA_TOOLCHAIN TEST_VTS_URL TEST_CTS_URL REFERENCE_BUILD_URL
+    unset ANDROID_VERSION KERNEL_BRANCH KERNEL_REPO TEST_METADATA_TOOLCHAIN TEST_VTS_URL TEST_CTS_URL REFERENCE_BUILD_URL ANDROID_VENDOR_FINGERPRINT
     unset PUBLISH_FILES TEST_OTHER_PLANS TEST_TEMPLATES_TYPE TEST_LAVA_JOB_GROUP TEST_LAVA_JOB_PRIORITY
     unset IMAGE_SUPPORTED_CACHE IMAGE_SUPPORTED_VENDOR_BOOT
     unset HIKEY960_SUPPORT_SUPER
@@ -175,6 +175,16 @@ function submit_jobs_for_config(){
     fi
 
     export TEST_VTS_VERSION TEST_CTS_VERSION
+
+    f_fingerprint_ref="build_fingerprint_ref.txt"
+    download_fingerprint "${REFERENCE_BUILD_URL}" "build_fingerprint_ref.txt"
+    fingerprint_ref=$(cut -d: -f2 "${f_fingerprint_ref}")
+    if [ -n "${f_fingerprint_ref}" ]; then
+        ANDROID_VENDOR_FINGERPRINT="${fingerprint_ref}"
+    else
+        ANDROID_VENDOR_FINGERPRINT=""
+    fi
+    export ANDROID_VENDOR_FINGERPRINT
 
     # works when cache partition part is guarded with IMAGE_SUPPORTED_CACHE
     # default is to support cache partition with cache.img

@@ -23,6 +23,7 @@ metadata:
   android.name: "{{JOB_NAME}}"
   android.url: "{{REFERENCE_BUILD_URL}}"
   android.version: "{{ANDROID_VERSION}}"
+  android.build.vendor.fingerprint: "{{ANDROID_VENDOR_FINGERPRINT}}"
   git branch: "{{KERNEL_BRANCH}}"
   git repo: "{{KERNEL_REPO}}"
   git commit: "{{KERNEL_COMMIT}}"
