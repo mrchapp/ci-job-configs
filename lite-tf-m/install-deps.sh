@@ -28,7 +28,5 @@ df -h
 # List available toolchains
 ls -l ${TOOLCHAINS}
 
-git lfs install
-
 # Preclude spammy "advices"
 git config --global advice.detachedHead false
