@@ -81,10 +81,16 @@
             values:
                 - 'apq8016-sbc'
                 - 'apq8096-db820c'
-                - 'sdm845-db845c'
-                - 'sdm845-mtp'
+                - 'msm8998-mtp'
                 - 'qcs404-evb-1000'
                 - 'qcs404-evb-4000'
+                - 'qrb5165-rb5'
+                - 'sm8150-mtp'
+                - 'sm8250-mtp'
+                - 'sm8350-mtp'
+                - 'sc7180-idp'
+                - 'sdm845-db845c'
+                - 'sdm845-mtp'
         - axis:
             type: slave
             name: label

@@ -171,26 +171,18 @@ ROOTFS_PARTITION=/dev/disk/by-partlabel/rootfs
 
 # Set per MACHINE configuration
 case "${MACHINE}" in
-	apq8016-sbc)
+	apq8016-sbc|qrb5165-rb5)
 		;;
 	apq8096-db820c)
 		BOOTIMG_PAGESIZE=4096
 		;;
-	sdm845-mtp)
+	msm8998-mtp|qcs404-evb-1000|qcs404-evb-4000|sm8150-mtp|sm8250-mtp|sm8350-mtp|sc7180-idp|sdm845-mtp)
 		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
 		;;
 	sdm845-db845c)
 		BOOTIMG_PAGESIZE=4096
 
 		KERNEL_CMDLINE_APPEND="clk_ignore_unused pd_ignore_unused"
-		;;
-	qcs404-evb-1000)
-		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
-		;;
-	qcs404-evb-4000)
-		ROOTFS_PARTITION=/dev/disk/by-partlabel/userdata
-		;;
-	qrb5165-rb5)
 		;;
 	*)
 		echo "Currently MACHINE: ${MACHINE} isn't supported"
