@@ -43,9 +43,9 @@ make install
 
 # Convert S and NS binaries to .hex file
 arm-none-eabi-objcopy -S --gap-fill 0xff -O ihex \
-        install/outputs/$target/tfm_s.axf tfm_s.hex
+        install/outputs/*/*/tfm_s.axf tfm_s.hex
 arm-none-eabi-objcopy -S --gap-fill 0xff -O ihex \
-        install/outputs/$target/tfm_ns.axf tfm_ns.hex
+        install/outputs/*/*/tfm_ns.axf tfm_ns.hex
 
 # Generate a single hex file for convenience/QEMU sake
 srec_cat tfm_s.hex -Intel tfm_ns.hex -Intel -o tfm_full.hex -Intel
