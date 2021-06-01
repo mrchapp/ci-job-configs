@@ -72,7 +72,12 @@ function build_android(){
         # shellcheck disable=SC2086
         bash -x ./linaro-build.sh -tp "${TARGET_PRODUCT}" ${opt_maniefst_url} ${opt_manfest_branch}
     fi
-    DIR_PUB_SRC_PRODUCT="${ANDROID_ROOT}/out/target/product/${TARGET_PRODUCT}"
+    if [ "X${TARGET_PRODUCT}X" = "Xaosp_arm64X" ]; then
+        # for cts and vts
+        DIR_PUB_SRC_PRODUCT="${ANDROID_ROOT}/out/target/product/generic_arm64"
+    else
+        DIR_PUB_SRC_PRODUCT="${ANDROID_ROOT}/out/target/product/${TARGET_PRODUCT}"
+    fi
 
     mkdir -p "${DIR_PUB_SRC}"
     # shellcheck disable=SC2086
