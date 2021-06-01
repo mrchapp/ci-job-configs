@@ -34,7 +34,7 @@
             default: 'master'
         - string:
             name: GIT_COMMIT
-            default: 'a6b336c1509f'
+            default: 'af4e9be30a5d'
         - string:
             name: LAVA_SERVER
             default: 'validation.linaro.org/RPC2/'
