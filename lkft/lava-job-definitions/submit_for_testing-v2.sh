@@ -104,6 +104,15 @@ function update_device_template(){
     fi
 }
 
+function download_fingerprint(){
+    local fingerprint_base_url="${1}"
+    local fingerprint_name="${2}"
+    if ! wget "${fingerprint_base_url}/${fingerprint_name}" -O "${fingerprint_name}"; then
+        rm -f "${fingerprint_name}"
+        touch "${fingerprint_name}"
+    fi
+}
+
 function submit_jobs_for_config(){
     local build_config=$1 && shift
 
@@ -133,11 +142,39 @@ function submit_jobs_for_config(){
     [ -z "${TEST_LAVA_JOB_GROUP}" ] && TEST_LAVA_JOB_GROUP=lkft
     [ -n "${TEST_LAVA_JOB_PRIORITY}" ] && DEFAULT_TEST_LAVA_JOB_PRIORITY="${TEST_LAVA_JOB_PRIORITY}"
     [ -z "${TEST_LAVA_JOB_PRIORITY}" ] && TEST_LAVA_JOB_PRIORITY="${DEFAULT_TEST_LAVA_JOB_PRIORITY}"
+    [ -n "${HIKEY960_SUPPORT_SUPER}" ] && export HIKEY960_SUPPORT_SUPER
     export TEST_LAVA_JOB_GROUP TEST_LAVA_JOB_PRIORITY
     export ANDROID_VERSION KERNEL_BRANCH KERNEL_REPO TEST_METADATA_TOOLCHAIN TEST_VTS_URL TEST_CTS_URL REFERENCE_BUILD_URL
-    export TEST_VTS_VERSION=$(echo ${TEST_VTS_URL} | awk -F"/" '{print$(NF-1)}')
-    export TEST_CTS_VERSION=$(echo ${TEST_CTS_URL} | awk -F"/" '{print$(NF-1)}')
-    [ -n "${HIKEY960_SUPPORT_SUPER}" ] && export HIKEY960_SUPPORT_SUPER
+    TEST_VTS_VERSION=$(echo "${TEST_VTS_URL}" | tr -s '/' | sed 's|/$||' | awk -F"/" '{print$(NF)}')
+    TEST_CTS_VERSION=$(echo "${TEST_CTS_URL}" | tr -s '/' | sed 's|/$||' | awk -F"/" '{print$(NF)}')
+
+    if echo "${TEST_VTS_VERSION}"|grep '/aosp-master-throttled/'; then
+        # for aosp master cts/vts packages
+        build_number_vts=$(echo "${TEST_VTS_URL}" | tr -s '/' | sed 's|/$||' | awk -F"/" '{print$(NF-1)}')
+        TEST_VTS_VERSION="aosp-master-throttled#${build_number_vts}"
+    else
+        # for EAP cts/vts packages
+        f_fingerprint_vts="build_fingerprint_vts.txt"
+        download_fingerprint "${TEST_VTS_URL}" "build_fingerprint_vts.txt"
+        fingerprint_vts=$(cut -d: -f2 "${f_fingerprint_vts}")
+        if [ -n "${f_fingerprint_vts}" ]; then
+            TEST_VTS_VERSION="${fingerprint_vts}"
+        fi
+    fi
+
+    if echo "${TEST_CTS_VERSION}"|grep '/aosp-master-throttled/'; then
+        build_number_cts=$(echo "${TEST_CTS_URL}" | tr -s '/' | sed 's|/$||' | awk -F"/" '{print$(NF-1)}')
+        TEST_CTS_VERSION="aosp-master-throttled#${build_number_cts}"
+    else
+        f_fingerprint_cts="build_fingerprint_cts.txt"
+        download_fingerprint "${TEST_CTS_URL}" "build_fingerprint_cts.txt"
+        fingerprint_cts=$(cut -d: -f2 "${f_fingerprint_cts}")
+        if [ -n "${f_fingerprint_cts}" ]; then
+            TEST_CTS_VERSION="${fingerprint_cts}"
+        fi
+    fi
+
+    export TEST_VTS_VERSION TEST_CTS_VERSION
 
     # works when cache partition part is guarded with IMAGE_SUPPORTED_CACHE
     # default is to support cache partition with cache.img
