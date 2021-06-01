@@ -2,6 +2,7 @@
 {% endblock global_settings %}
 
 device_type: {% block device_type %}{% endblock device_type %}
+{% block device_tags %}{% endblock device_tags %}
 job_name: {% block job_name %}{% endblock job_name %}
 
 {% block priority %}
