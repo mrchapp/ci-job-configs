@@ -34,6 +34,7 @@ fi
 cmake -DTFM_PLATFORM=mps2/an521 \
       -DCMAKE_TOOLCHAIN_FILE=../toolchain_GNUARM.cmake \
       -DCMAKE_BUILD_TYPE=Debug \
+      -DBL2=False \
       -DTFM_TEST_REPO_PATH=../../tf-m-tests \
       ../
 
