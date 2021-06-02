@@ -46,13 +46,9 @@ C_INCLUDE_PATH=${WORKSPACE}/uadk-shared-v2/usr/local/include \
 make -j$(nproc)
 make install && make clean
 
-# FIXME: openssl: symbol lookup error: openssl: undefined symbol: EVP_mdc2, version OPENSSL_1_1_0
-# $ which openssl
-# $ /usr/local/bin/openssl
-# Using the system /usr/bin/openssl returns an error too
 sudo \
   LD_LIBRARY_PATH=/usr/local/lib:${WORKSPACE}/uadk-shared-v2/usr/local/lib \
-  ${WORKSPACE}/uadk-openssl/test/sanity_test.sh \
+  ${WORKSPACE}/uadk/test/sanity_test.sh \
   ${WORKSPACE}/uadk-shared-v2/usr/local/lib/engines-1.1/uadk.so
 
 cd ${WORKSPACE}
