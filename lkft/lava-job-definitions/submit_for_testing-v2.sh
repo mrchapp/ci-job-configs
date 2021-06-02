@@ -105,9 +105,9 @@ function update_device_template(){
 }
 
 function download_fingerprint(){
-    local fingerprint_base_url="${1}"
+    local fingerprint_url="${1}"
     local fingerprint_name="${2}"
-    if ! wget "${fingerprint_base_url}/${fingerprint_name}" -O "${fingerprint_name}"; then
+    if ! wget "${fingerprint_url}" -O "${fingerprint_name}"; then
         rm -f "${fingerprint_name}"
         touch "${fingerprint_name}"
     fi
@@ -155,7 +155,7 @@ function submit_jobs_for_config(){
     elif echo "${TEST_VTS_URL}"|grep '/protected/'; then
         # for EAP cts/vts packages
         f_fingerprint_vts="build_fingerprint_vts.txt"
-        download_fingerprint "${TEST_VTS_URL}" "build_fingerprint_vts.txt"
+        download_fingerprint "${TEST_VTS_URL}/build_fingerprint.txt" "build_fingerprint_vts.txt"
         fingerprint_vts=$(cut -d: -f2 "${f_fingerprint_vts}")
         if [ -n "${f_fingerprint_vts}" ]; then
             TEST_VTS_VERSION="EAP-Android12#${fingerprint_vts}"
@@ -167,7 +167,7 @@ function submit_jobs_for_config(){
         TEST_CTS_VERSION="aosp-master-throttled#${build_number_cts}"
     elif echo "${TEST_CTS_URL}"|grep '/protected/'; then
         f_fingerprint_cts="build_fingerprint_cts.txt"
-        download_fingerprint "${TEST_CTS_URL}" "build_fingerprint_cts.txt"
+        download_fingerprint "${TEST_CTS_URL}/build_fingerprint.txt" "build_fingerprint_cts.txt"
         fingerprint_cts=$(cut -d: -f2 "${f_fingerprint_cts}")
         if [ -n "${f_fingerprint_cts}" ]; then
             TEST_CTS_VERSION="EAP-Android12#${fingerprint_cts}"
@@ -177,7 +177,7 @@ function submit_jobs_for_config(){
     export TEST_VTS_VERSION TEST_CTS_VERSION
 
     f_fingerprint_ref="build_fingerprint_ref.txt"
-    download_fingerprint "${REFERENCE_BUILD_URL}" "build_fingerprint_ref.txt"
+    download_fingerprint "${REFERENCE_BUILD_URL}/build_fingerprint.txt" "build_fingerprint_ref.txt"
     fingerprint_ref=$(cut -d: -f2 "${f_fingerprint_ref}")
     if [ -n "${f_fingerprint_ref}" ]; then
         ANDROID_VENDOR_FINGERPRINT="${fingerprint_ref}"
