@@ -155,7 +155,7 @@ function submit_jobs_for_config(){
     elif echo "${TEST_VTS_URL}"|grep '/protected/'; then
         # for EAP cts/vts packages
         f_fingerprint_vts="build_fingerprint_vts.txt"
-        download_fingerprint "${TEST_VTS_URL}/build_fingerprint.txt" "build_fingerprint_vts.txt"
+        download_fingerprint "${TEST_VTS_URL}/build_fingerprint.txt" "${f_fingerprint_vts}"
         fingerprint_vts=$(cut -d: -f2 "${f_fingerprint_vts}")
         if [ -n "${f_fingerprint_vts}" ]; then
             TEST_VTS_VERSION="EAP-Android12#${fingerprint_vts}"
@@ -167,7 +167,7 @@ function submit_jobs_for_config(){
         TEST_CTS_VERSION="aosp-master-throttled#${build_number_cts}"
     elif echo "${TEST_CTS_URL}"|grep '/protected/'; then
         f_fingerprint_cts="build_fingerprint_cts.txt"
-        download_fingerprint "${TEST_CTS_URL}/build_fingerprint.txt" "build_fingerprint_cts.txt"
+        download_fingerprint "${TEST_CTS_URL}/build_fingerprint.txt" "${f_fingerprint_cts}"
         fingerprint_cts=$(cut -d: -f2 "${f_fingerprint_cts}")
         if [ -n "${f_fingerprint_cts}" ]; then
             TEST_CTS_VERSION="EAP-Android12#${fingerprint_cts}"
@@ -177,7 +177,7 @@ function submit_jobs_for_config(){
     export TEST_VTS_VERSION TEST_CTS_VERSION
 
     f_fingerprint_ref="build_fingerprint_ref.txt"
-    download_fingerprint "${REFERENCE_BUILD_URL}/build_fingerprint.txt" "build_fingerprint_ref.txt"
+    download_fingerprint "${REFERENCE_BUILD_URL}/build_fingerprint.txt" "${f_fingerprint_ref}"
     fingerprint_ref=$(cut -d: -f2 "${f_fingerprint_ref}")
     if [ -n "${f_fingerprint_ref}" ]; then
         ANDROID_VENDOR_FINGERPRINT="${fingerprint_ref}"
@@ -185,6 +185,21 @@ function submit_jobs_for_config(){
         ANDROID_VENDOR_FINGERPRINT=""
     fi
     export ANDROID_VENDOR_FINGERPRINT
+
+    if [ -n "${REFERENCE_BUILD_URL_SYSTEM_IMG_XZ}" ]; then
+        f_fingerprint_gsi="build_fingerprint_gsi.txt"
+        gsi_base_url=$(dirname "${REFERENCE_BUILD_URL_SYSTEM_IMG_XZ}")
+        download_fingerprint "${gsi_base_url}/build_fingerprint.txt" "${f_fingerprint_gsi}"
+        fingerprint_gsi=$(cut -d: -f2 "${f_fingerprint_gsi}")
+        if [ -n "${fingerprint_gsi}" ]; then
+            ANDROID_GSI_FINGERPRINT="${fingerprint_gsi}"
+        else
+            ANDROID_GSI_FINGERPRINT=""
+        fi
+    else
+        ANDROID_GSI_FINGERPRINT=""
+    fi
+    export ANDROID_GSI_FINGERPRINT
 
     # works when cache partition part is guarded with IMAGE_SUPPORTED_CACHE
     # default is to support cache partition with cache.img
