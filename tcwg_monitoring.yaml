@@ -1,9 +1,9 @@
 - project:
     name: tcwg_monitoring
     slave_name:
-      - apm-01
-      - apm-02
-      - apm-03
+      - tcwg-apm-01
+      - tcwg-apm-02
+      - tcwg-apm-03
       - tcwg-sq-01
       - tcwg-sq-02
       - tcwg-tk1-10
