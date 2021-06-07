@@ -247,6 +247,12 @@ actions:
       - command: ifconfig -a
       - command: ping -c 3 github.com
       - command: which docker
+      - command: systemctl --no-pager status docker
+      - command: sleep 100
+      - command: systemctl --no-pager status docker
+      - command: ifconfig -a
+      - command: docker run hello-world
+      - command: docker run -it ubuntu uname -a
 
 - test:
     timeout:

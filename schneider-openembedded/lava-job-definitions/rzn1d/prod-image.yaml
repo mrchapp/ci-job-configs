@@ -274,7 +274,7 @@ actions:
       - command: systemctl --no-pager status docker
       - command: ifconfig -a
       - command: docker run hello-world
-#     - command: docker run -it ubuntu uname -a
+      - command: docker run -it ubuntu uname -a
 
 
 ##################
