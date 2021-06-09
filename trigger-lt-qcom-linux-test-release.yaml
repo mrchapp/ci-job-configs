@@ -1,5 +1,5 @@
 - job:
-    name: trigger-lt-qcom-linux-release
+    name: trigger-lt-qcom-linux-test-release
     project-type: freestyle
     defaults: global
     properties:
@@ -28,7 +28,7 @@
             default: 'apq8016-sbc sdm845-db845c qrb5165-rb5'
     disabled: false
     node: triggers
-    display-name: 'Trigger for LT Qualcomm Linux Release build'
+    display-name: 'Trigger for LT Qualcomm Linux test Release build'
     triggers:
         - timed: 'H/5 * * * *'
     wrappers:
@@ -43,7 +43,7 @@
             git clone --depth 1 http://git.linaro.org/ci/job/configs.git
 
             set +e
-            ./configs/trigger-lt-qcom-linux-release/get_latest_kernel_release_build.py \
+            ./configs/trigger-lt-qcom-linux-test-release/get_latest_kernel_release_build.py \
               > release_parameters
             ret=$?
             cat release_parameters
