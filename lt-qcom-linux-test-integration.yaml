@@ -1,5 +1,5 @@
 - job:
-    name: lt-qcom-linux-mainline
+    name: lt-qcom-linux-test-integration
     project-type: matrix
     defaults: global
     logrotate:
@@ -34,7 +34,7 @@
             default: 'noversion'
         - string:
             name: KERNEL_FLAVOR
-            default: 'linux-mainline'
+            default: 'linux-integration'
         - string:
             name: KERNEL_REPO
             default: 'https://git.linaro.org/landing-teams/working/qualcomm/kernel.git'
@@ -64,16 +64,17 @@
             default: 'https://qa-reports.linaro.org'
         - string:
             name: QA_SERVER_PROJECT
-            default: 'linux-master'
+            default: 'linux-integration'
         - string:
             name: BOOTRR_GIT_REPO
             default: 'https://github.com/andersson/bootrr.git'
         - string:
             name: BOOTRR_GIT_BRANCH
             default: 'master'
+
     disabled: false
     node: master
-    display-name: 'Qualcomm LT Linux Mainline images build'
+    display-name: 'Qualcomm LT Linux Integration images build'
     axes:
         - axis:
             type: user-defined

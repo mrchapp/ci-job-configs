@@ -61,6 +61,6 @@
             unstable-on-warning: true
             fail-on-error: false
         - trigger-parameterized-builds:
-            - project: lt-qcom-linux-{flavor}
+            - project: lt-qcom-linux-test-{flavor}
               condition: SUCCESS
               property-file: lt_qcom_parameters

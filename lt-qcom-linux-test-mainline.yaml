@@ -1,5 +1,5 @@
 - job:
-    name: lt-qcom-linux-release
+    name: lt-qcom-linux-test-mainline
     project-type: matrix
     defaults: global
     logrotate:
@@ -18,9 +18,6 @@
                 - job-cancel
     parameters:
         - string:
-            name: MACHINES
-            default: 'apq8016-sbc sdm845-db845c qrb5165-rb5'
-        - string:
             name: KERNEL_IMAGE_URL
             default: ''
         - string:
@@ -37,7 +34,7 @@
             default: 'noversion'
         - string:
             name: KERNEL_FLAVOR
-            default: 'linux-release'
+            default: 'linux-mainline'
         - string:
             name: KERNEL_REPO
             default: 'https://git.linaro.org/landing-teams/working/qualcomm/kernel.git'
@@ -54,11 +51,8 @@
             name: KERNEL_TOOLCHAIN
             default: 'unknown'
         - string:
-            name: RELEASE_NAME
-            default: ''
-        - string:
             name: PUB_DEST
-            default: "member-builds/qcomlt/${KERNEL_FLAVOR}/${RELEASE_NAME}/${MACHINE}/${BUILD_NUMBER}"
+            default: "member-builds/qcomlt/${KERNEL_FLAVOR}/${MACHINE}/${BUILD_NUMBER}"
         - string:
             name: LAVA_SERVER
             default: 'https://validation.linaro.org/RPC2/'
@@ -70,7 +64,7 @@
             default: 'https://qa-reports.linaro.org'
         - string:
             name: QA_SERVER_PROJECT
-            default: 'linux-release'
+            default: 'linux-master'
         - string:
             name: BOOTRR_GIT_REPO
             default: 'https://github.com/andersson/bootrr.git'
@@ -79,18 +73,29 @@
             default: 'master'
     disabled: false
     node: master
-    display-name: 'Qualcomm LT Linux Release images build'
+    display-name: 'Qualcomm LT Linux Mainline images build'
     axes:
         - axis:
-            type: dynamic
+            type: user-defined
             name: MACHINE
             values:
-                - MACHINES
+                - 'apq8016-sbc'
+                - 'apq8096-db820c'
+                - 'msm8998-mtp'
+                - 'qcs404-evb-1000'
+                - 'qcs404-evb-4000'
+                - 'qrb5165-rb5'
+                - 'sm8150-mtp'
+                - 'sm8250-mtp'
+                - 'sm8350-mtp'
+                - 'sc7180-idp'
+                - 'sdm845-db845c'
+                - 'sdm845-mtp'
         - axis:
             type: slave
             name: label
             values:
-                - docker-buster-amd64
+                - docker-stretch-amd64
     execution-strategy:
         sequential: false
     wrappers:
