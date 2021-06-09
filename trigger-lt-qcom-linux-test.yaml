@@ -1,14 +1,14 @@
 - project:
-    name: trigger-lt-qcom-linux
+    name: trigger-lt-qcom-linux-test
     jobs:
-        - 'trigger-lt-qcom-linux-{flavor}':
+        - 'trigger-lt-qcom-linux-test-{flavor}':
             flavor: 'mainline'
             kernelci: 'mainline'
-        - 'trigger-lt-qcom-linux-{flavor}':
+        - 'trigger-lt-qcom-linux-test-{flavor}':
             flavor: 'integration'
             kernelci: 'qcom-lt'
 - job-template:
-    name: 'trigger-lt-qcom-linux-{flavor}'
+    name: 'trigger-lt-qcom-linux-test-{flavor}'
     project-type: freestyle
     defaults: global
     properties:
@@ -27,7 +27,7 @@
             num-to-keep: 30
     disabled: false
     node: triggers
-    display-name: 'Trigger for LT Qualcomm Linux build: {flavor}'
+    display-name: 'Trigger for LT Qualcomm Linux test build: {flavor}'
     triggers:
         - timed: 'H/5 * * * *'
     wrappers:
