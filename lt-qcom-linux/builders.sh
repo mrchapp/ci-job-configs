@@ -71,9 +71,7 @@ make KERNELRELEASE=${SRCVERSION}-qcomlt-${ARCH} \
      DEBEMAIL="dragonboard@lists.96boards.org" \
      DEBFULLNAME="Linaro Qualcomm Landing Team" \
      -j$(nproc) ${KERNEL_BUILD_TARGET}
-if [ "${INSTALL_MOD}" ]; then
-     make KERNELRELEASE=${SRCVERSION}-qcomlt-${ARCH} -j$(nproc) INSTALL_MOD_STRIP=1 INSTALL_MOD_PATH=./INSTALL_MOD_PATH modules_install
-fi
+make KERNELRELEASE=${SRCVERSION}-qcomlt-${ARCH} -j$(nproc) INSTALL_MOD_STRIP=1 INSTALL_MOD_PATH=./INSTALL_MOD_PATH modules_install
 cd ..
 
 cat > params <<EOF
