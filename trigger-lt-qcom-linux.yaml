@@ -9,6 +9,8 @@
             branch: 'release/qcomlt-5.10'
         - 'trigger-lt-qcom-linux-{branch}':
             branch: 'release/qcomlt-5.12'
+        - 'trigger-lt-qcom-linux-{branch}':
+            branch: 'release/qcomlt-5.13'
 - job-template:
     name: trigger-lt-qcom-linux-{branch}
     project-type: freestyle
