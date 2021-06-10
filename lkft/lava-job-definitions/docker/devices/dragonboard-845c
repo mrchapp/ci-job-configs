@@ -1,6 +1,11 @@
 {% extends "template-lkft.yaml" %}
 
 {% block device_type %}dragonboard-845c{% endblock %}
+{% block device_tags %}
+tags:
+- lcg
+{% endblock device_tags %}
+
 
 {% block deploy_target %}
 - deploy:
