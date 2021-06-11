@@ -17,7 +17,7 @@ git clone https://git.trustedfirmware.org/trusted-firmware-m.git -b ${BRANCH}
 #git clone --depth 1 https://github.com/ARMmbed/mbed-crypto.git -b mbedcrypto-3.0.1
 git clone --depth 1 https://github.com/ARMmbed/mbedtls.git -b mbedtls-2.23.0
 git clone https://git.trustedfirmware.org/TF-M/tf-m-tests.git
-(cd tf-m-tests; git checkout 652bb8a1502c95bfd1ee8e44ccd1126ce74ae41f)
+(cd tf-m-tests; git checkout 06e6f6576d48ac1e9867f51119b2bbe2ad30eaae)
 
 cd trusted-firmware-m
 echo "GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)" > ${WORKSPACE}/env_var_parameters
