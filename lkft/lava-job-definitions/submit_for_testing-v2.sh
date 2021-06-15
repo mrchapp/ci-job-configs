@@ -196,10 +196,12 @@ function submit_jobs_for_config(){
         else
             ANDROID_GSI_FINGERPRINT=""
         fi
+        ANDROID_GSI_URL="${REFERENCE_BUILD_URL_SYSTEM_IMG_XZ}"
     else
         ANDROID_GSI_FINGERPRINT=""
+        ANDROID_GSI_URL=""
     fi
-    export ANDROID_GSI_FINGERPRINT
+    export ANDROID_GSI_FINGERPRINT ANDROID_GSI_URL
 
     # works when cache partition part is guarded with IMAGE_SUPPORTED_CACHE
     # default is to support cache partition with cache.img
