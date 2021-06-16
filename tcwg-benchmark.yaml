@@ -235,7 +235,7 @@
                         NODE_NAME=$(cat $lock)
                         export NODE_NAME
                         exec ./jenkins-scripts/tcwg-benchmark.sh
-                      ) 9>$HOME/boards/$lock &
+                      ) 9>$lock &
                       res=0 && wait $! || res=$?
                       if [ $res != 123 ]; then
                         exit $res
@@ -248,4 +248,4 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
-# checksum: d7b7c6e69a94a1138cf51c498112c949
+# checksum: 5e15b7987e722a8408d6e2c192e81a99

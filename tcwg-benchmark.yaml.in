@@ -257,7 +257,7 @@
                         NODE_NAME=$(cat $lock)
                         export NODE_NAME
                         exec ./jenkins-scripts/tcwg-benchmark.sh
-                      ) 9>$HOME/boards/$lock &
+                      ) 9>$lock &
                       res=0 && wait $! || res=$?
                       if [ $res != 123 ]; then
                         exit $res
