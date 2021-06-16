@@ -130,7 +130,7 @@
             description: 'Reboot the board before building and running the benchmarks.'
         - string:
             name: displaytag
-            default: ''
+            default: '#$BUILD_NUMBER'
             description: 'Tag to display in the Jenkins console, so that the build name is more meaningful'
         - bool:
             name: ignore_errors
@@ -200,4 +200,4 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
-# checksum: 7d242ebb8b6208da8f2499e8dafd65c0
+# checksum: 53996c70a714e5fa10dd78456ca94540
