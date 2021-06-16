@@ -211,10 +211,10 @@
             - trigger-builds:
                 - project: tcwg-benchmark
                   block: true
+                  current-parameters: true
                   parameter-factories:
                     - factory: filebuild
                       file-pattern: artifacts/bmk-*-parameters
-                      current-parameters: true
       - conditional-step:
           condition-kind: not
           condition-operand:
@@ -252,4 +252,4 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
-# checksum: 3a07dcf391e2f2752e3716fdb1fea8fb
+# checksum: bf68d1256c22a9c1fd356242956b1085

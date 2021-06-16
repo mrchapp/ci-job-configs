@@ -237,10 +237,10 @@
             - trigger-builds:
                 - project: tcwg-benchmark
                   block: true
+                  current-parameters: true
                   parameter-factories:
                     - factory: filebuild
                       file-pattern: artifacts/bmk-*-parameters
-                      current-parameters: true
       - conditional-step:
           condition-kind: not
           condition-operand:
