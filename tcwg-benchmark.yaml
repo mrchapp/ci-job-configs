@@ -232,7 +232,7 @@
                   while true; do
                     for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*); do
                       (
-                        flock -en -E 123 9 || exit 1
+                        flock -en -E 123 9 || exit 123
                         NODE_NAME=$(cat <&9)
                         export NODE_NAME
                         exec ./jenkins-scripts/tcwg-benchmark.sh
@@ -249,4 +249,4 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
-# checksum: 686c48063e77208491efc30df037d7f5
+# checksum: 66426c819c7ec5ea4818489066be7c5c
