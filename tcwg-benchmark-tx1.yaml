@@ -196,4 +196,8 @@
               # Run the benchmark
               exec ./jenkins-scripts/tcwg-benchmark.sh
             unstable-return: 125
-# checksum: 4a9e451c93b875f1488500a23f4dde07
+    publishers:
+      - archive:
+          artifacts: 'artifacts/**'
+          latest-only: false
+# checksum: 7d242ebb8b6208da8f2499e8dafd65c0
