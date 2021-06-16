@@ -34,7 +34,7 @@
             default: master
             description: 'Bmk-scripts branch to use'
     disabled: false
-    node: tcwg-bmk-coordinator
+    node: tcwg-bmk-bkp-01
     concurrent: true
     display-name: 'TCWG BBB Benchmark Compare'
     scm:

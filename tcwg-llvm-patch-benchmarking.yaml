@@ -72,7 +72,7 @@
               bmk_branch=master
             description: 'Benchmark parameters, see tcwg-benchmark job'
     disabled: true
-    node: tcwg-bmk-coordinator
+    node: tcwg-bmk-bkp-01
     concurrent: true
     display-name: 'TCWG ZZZ LLVM Patch Benchmarking'
     scm:

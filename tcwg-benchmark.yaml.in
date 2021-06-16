@@ -159,7 +159,7 @@
 #endif
     disabled: false
 #if !HW_any
-    node: tcwg-bmk-coordinator
+    node: tcwg-bmk-bkp-01
     child-workspace: $label
 #endif
     concurrent: true

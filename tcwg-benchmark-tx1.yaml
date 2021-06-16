@@ -153,7 +153,7 @@
             default: master
             description: 'Bmk-scripts branch to use'
     disabled: false
-    node: tcwg-bmk-coordinator
+    node: tcwg-bmk-bkp-01
     child-workspace: $label
     concurrent: true
     display-name: 'TCWG BBB Benchmark tx1'
@@ -200,4 +200,4 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
-# checksum: 53996c70a714e5fa10dd78456ca94540
+# checksum: eb3cdb748a0197218638a8556b4926e7
