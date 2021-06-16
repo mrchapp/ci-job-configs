@@ -163,6 +163,8 @@
             allowed-slaves:
               - tcwg-bmk-bkp-01
               - tcwg-bmk-sq
+              - tcwg-bmk-tk1
+              - tcwg-bmk-tx1
             description: 'Bmk node; used internally, do not touch'
     disabled: false
     concurrent: true
@@ -250,4 +252,4 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
-# checksum: 304820beaf09d975d55d888fb3460ed0
+# checksum: 3a07dcf391e2f2752e3716fdb1fea8fb

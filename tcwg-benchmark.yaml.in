@@ -153,6 +153,8 @@
             allowed-slaves:
               - tcwg-bmk-bkp-01
               - tcwg-bmk-sq
+              - tcwg-bmk-tk1
+              - tcwg-bmk-tx1
             description: 'Bmk node; used internally, do not touch'
 #endif
     disabled: false
