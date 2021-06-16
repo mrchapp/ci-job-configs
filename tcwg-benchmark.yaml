@@ -167,6 +167,7 @@
     disabled: false
     concurrent: true
     display-name: 'TCWG BBB Benchmark'
+    workspace: workspace/tcwg-benchmark-${NODE_NAME}_$EXECUTOR_NUMBER
     scm:
       - jenkins-scripts
       - bmk-scripts
@@ -248,4 +249,4 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
-# checksum: 5e15b7987e722a8408d6e2c192e81a99
+# checksum: beb42414928b240c63706550f9b409ab

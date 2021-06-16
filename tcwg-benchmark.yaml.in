@@ -165,6 +165,7 @@
     display-name: 'TCWG BBB Benchmark #{HW}'
 #else
     display-name: 'TCWG BBB Benchmark'
+    workspace: workspace/tcwg-benchmark-${NODE_NAME}_$EXECUTOR_NUMBER
 #endif
     scm:
       - jenkins-scripts
