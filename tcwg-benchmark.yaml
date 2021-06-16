@@ -198,7 +198,7 @@
                   count=0
                   while read -a bmks; do
                     echo "bench_list=${bmks[@]}" > artifacts/bmk-$count-parameters
-                    echo "bmk_node=tcwg-bmk-$bmk_hw"
+                    echo "bmk_node=tcwg-bmk-$bmk_hw" >> artifacts/bmk-$count-parameters
                     count=$(($count+1))
                   done < <(./bmk-scripts/break-up-bmks.sh \
                              --bench_list "$bench_list" \
@@ -248,4 +248,4 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
-# checksum: 887e138f298c5c62d64839e47428b589
+# checksum: d7b7c6e69a94a1138cf51c498112c949
