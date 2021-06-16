@@ -159,9 +159,9 @@
         - node:
             name: bmk_node
             default-slaves:
-              - tcwg-bmk-coordinator
+              - tcwg-bmk-bkp-01
             allowed-slaves:
-              - tcwg-bmk-coordinator
+              - tcwg-bmk-bkp-01
               - tcwg-bmk-sq
             description: 'Bmk node; used internally, do not touch'
     disabled: false
@@ -183,7 +183,7 @@
       - conditional-step:
           condition-kind: execution-node
           nodes:
-            - tcwg-bmk-coordinator
+            - tcwg-bmk-bkp-01
           steps:
             - shell:
                 command: |
@@ -219,7 +219,7 @@
           condition-operand:
             condition-kind: execution-node
             nodes:
-              - tcwg-bmk-coordinator
+              - tcwg-bmk-bkp-01
           steps:
             - shell:
                 command: |
@@ -247,4 +247,4 @@
                     sleep 30
                   done
                 unstable-return: 125
-# checksum: 2dd91d0feb588fd69b481bb59490ccc0
+# checksum: 0d0def49560fd65fe94e5b36cb7891b0
