@@ -3,24 +3,25 @@
 - job:
 #if HW_any
     name: tcwg-benchmark
-    project-type: freestyle
 #else
     name: tcwg-benchmark-#{HW}
-    project-type: matrix
 #endif
+    project-type: freestyle
     defaults: global
     properties:
       - default-properties
     parameters:
-#if HW_any
         - choice:
             name: bmk_hw
             choices:
+#if HW_any
               - sq
               - tk1
               - tx1
-            description: 'Hardware to use for benchmarking'
+#else
+              - #{HW}
 #endif
+            description: 'Hardware to use for benchmarking'
         - string:
             name: toolchain_url
             default: ''
@@ -40,7 +41,7 @@
 #if HW_stm32
            default: 'coremark'
 #else
-           default: 'bzip2'
+           default: 'all'
 #endif
            description: 'List of benchmarks to run (from spec2k6). Use "all" to run all of them.'
         - string:
@@ -75,14 +76,10 @@
             description: 'Number of benchmark iterations'
         - string:
             name: results_id
-#if HW_any
-            default: '@hw_tag@/tcwg-benchmark/@build_num@'
-#elif HW_tk1
-            default: 'tk1_32/tcwg-benchmark/@build_num@'
-#elif HW_tx1
-            default: 'tx1_64/tcwg-benchmark/@build_num@'
-#elif HW_stm32
+#if HW_stm32
             default: 'stm32_STM32L476RGTx/tcwg-benchmark/@build_num@'
+#else
+            default: '@hw_tag@/tcwg-benchmark/@build_num@'
 #endif
             description: 'ID for benchmarking results; results will appear in bkp-01.tcwglab:/home/tcwg-benchmark/results-$results_id/'
         - bool:
@@ -96,26 +93,16 @@
         - choice:
             name: run_profile
             choices:
-#if HW_any
               - parallel
               - serial
-#else
-              - parallel9x1
-              - parallel9x4
-              - parallel3x3
-              - parallel3x1
-              - serial1
-#endif
-            description: 'Benchmark profile to use: parallel3x3 runs on 3 boards and 3 CPUs in parallel; parallel3x1 runs on 3 boards on 1 CPU in parallel; serial1 runs on a single board on 1 CPU.'
-        - string:
+            description: 'Run benchmarks in parallel or serially.'
+        - choice:
             name: image_arch
-#if HW_any
-            default: 'arm64'
-#elif HW_tk1
-            default: 'armhf'
-#elif HW_tx1
-            default: 'arm64'
+            choices:
+#if HW_tx1 || HW_sq
+              - arm64
 #endif
+              - armhf
             description: 'Docker image architecture -- arm64 or armhf'
         - bool:
             name: reboot
@@ -153,47 +140,22 @@
             allowed-slaves:
               - tcwg-bmk-bkp-01
               - tcwg-bmk-sq
+              - tcwg-bmk-stm32
               - tcwg-bmk-tk1
               - tcwg-bmk-tx1
             description: 'Bmk node; used internally, do not touch'
 #endif
     disabled: false
-#if !HW_any
-    node: tcwg-bmk-bkp-01
-    child-workspace: $label
-#endif
     concurrent: true
 #if !HW_any
-    display-name: 'TCWG BBB Benchmark #{HW}'
+    display-name: 'TCWG Benchmark #{HW}'
 #else
-    display-name: 'TCWG BBB Benchmark'
-    workspace: workspace/tcwg-benchmark-${NODE_NAME}_$EXECUTOR_NUMBER
+    display-name: 'TCWG Benchmark'
 #endif
+    workspace: workspace/tcwg-benchmark-${NODE_NAME}_$EXECUTOR_NUMBER
     scm:
       - jenkins-scripts
       - bmk-scripts
-#if !HW_any
-    axes:
-        - axis:
-            type: slave
-            name: label
-            values:
-# if HW_tk1 || HW_tx1
-              - tcwg-bmk-#{HW}-01
-              - tcwg-bmk-#{HW}-02
-              - tcwg-bmk-#{HW}-03
-              - tcwg-bmk-#{HW}-04
-              - tcwg-bmk-#{HW}-05
-              - tcwg-bmk-#{HW}-06
-              - tcwg-bmk-#{HW}-07
-              - tcwg-bmk-#{HW}-08
-              - tcwg-bmk-#{HW}-09
-# elif HW_stm32
-              - tcwg-bmk-#{HW}-01
-# endif
-    execution-strategy:
-        sequential: false
-#endif
     wrappers:
         - timeout:
             timeout: 900
@@ -202,13 +164,8 @@
             users:
                 - 'tcwg-benchmark'
         - build-name:
-#if !HW_any
-            name: '#$BUILD_NUMBER-$displaytag'
-#else
             name: '$displaytag'
-#endif
     builders:
-#if HW_any
       - conditional-step:
           condition-kind: execution-node
           nodes:
@@ -267,7 +224,11 @@
                         touch $lock
                         NODE_NAME=$(cat <&9)
                         export NODE_NAME
+#if HW_stm32
+                        exec ./jenkins-scripts/tcwg-benchmark-bare.sh
+#else
                         exec ./jenkins-scripts/tcwg-benchmark.sh
+#endif
                       ) 9<$lock &
                       res=0 && wait $! || res=$?
                       if [ $res != 123 ]; then
@@ -277,22 +238,6 @@
                     sleep 30
                   done
                 unstable-return: 125
-#else
-        - shell:
-            command: |
-              #!/bin/bash
-
-              set -ex
-              ssh-add -l
-
-              # Run the benchmark
-# if HW_tk1 || HW_tx1
-              exec ./jenkins-scripts/tcwg-benchmark.sh
-# elif HW_stm32
-              exec ./jenkins-scripts/tcwg-benchmark-bare.sh
-# endif
-            unstable-return: 125
-#endif
     publishers:
       - archive:
           artifacts: 'artifacts/**'

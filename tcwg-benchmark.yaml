@@ -78,7 +78,7 @@
             description: 'Rsync-friendly path to the sysroot to run against; use libs from toolchain_url tarball/rsync if "tarball"; use system libs if empty'
         - string:
            name: bench_list
-           default: 'bzip2'
+           default: 'all'
            description: 'List of benchmarks to run (from spec2k6). Use "all" to run all of them.'
         - string:
             name: cflags
@@ -123,10 +123,11 @@
             choices:
               - parallel
               - serial
-            description: 'Benchmark profile to use: parallel3x3 runs on 3 boards and 3 CPUs in parallel; parallel3x1 runs on 3 boards on 1 CPU in parallel; serial1 runs on a single board on 1 CPU.'
-        - string:
+            description: 'Run benchmarks in parallel or serially.'
+        - choice:
             name: image_arch
-            default: 'arm64'
+            choices:
+              - armhf
             description: 'Docker image architecture -- arm64 or armhf'
         - bool:
             name: reboot
@@ -163,12 +164,13 @@
             allowed-slaves:
               - tcwg-bmk-bkp-01
               - tcwg-bmk-sq
+              - tcwg-bmk-stm32
               - tcwg-bmk-tk1
               - tcwg-bmk-tx1
             description: 'Bmk node; used internally, do not touch'
     disabled: false
     concurrent: true
-    display-name: 'TCWG BBB Benchmark'
+    display-name: 'TCWG Benchmark'
     workspace: workspace/tcwg-benchmark-${NODE_NAME}_$EXECUTOR_NUMBER
     scm:
       - jenkins-scripts
@@ -256,4 +258,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: a06d7fdde2b03de9f77736da236a8bfd
+# checksum: 96a6712b8532bf6d1a16129245e215fa

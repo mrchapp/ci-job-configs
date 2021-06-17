@@ -50,11 +50,16 @@
 
 - job:
     name: tcwg-benchmark-tk1
-    project-type: matrix
+    project-type: freestyle
     defaults: global
     properties:
       - default-properties
     parameters:
+        - choice:
+            name: bmk_hw
+            choices:
+              - tk1
+            description: 'Hardware to use for benchmarking'
         - string:
             name: toolchain_url
             default: ''
@@ -71,7 +76,7 @@
             description: 'Rsync-friendly path to the sysroot to run against; use libs from toolchain_url tarball/rsync if "tarball"; use system libs if empty'
         - string:
            name: bench_list
-           default: 'bzip2'
+           default: 'all'
            description: 'List of benchmarks to run (from spec2k6). Use "all" to run all of them.'
         - string:
             name: cflags
@@ -105,7 +110,7 @@
             description: 'Number of benchmark iterations'
         - string:
             name: results_id
-            default: 'tk1_32/tcwg-benchmark/@build_num@'
+            default: '@hw_tag@/tcwg-benchmark/@build_num@'
             description: 'ID for benchmarking results; results will appear in bkp-01.tcwglab:/home/tcwg-benchmark/results-$results_id/'
         - bool:
             name: forceinstall
@@ -114,15 +119,13 @@
         - choice:
             name: run_profile
             choices:
-              - parallel9x1
-              - parallel9x4
-              - parallel3x3
-              - parallel3x1
-              - serial1
-            description: 'Benchmark profile to use: parallel3x3 runs on 3 boards and 3 CPUs in parallel; parallel3x1 runs on 3 boards on 1 CPU in parallel; serial1 runs on a single board on 1 CPU.'
-        - string:
+              - parallel
+              - serial
+            description: 'Run benchmarks in parallel or serially.'
+        - choice:
             name: image_arch
-            default: 'armhf'
+            choices:
+              - armhf
             description: 'Docker image architecture -- arm64 or armhf'
         - bool:
             name: reboot
@@ -153,29 +156,12 @@
             default: master
             description: 'Bmk-scripts branch to use'
     disabled: false
-    node: tcwg-bmk-bkp-01
-    child-workspace: $label
     concurrent: true
-    display-name: 'TCWG BBB Benchmark tk1'
+    display-name: 'TCWG Benchmark tk1'
+    workspace: workspace/tcwg-benchmark-${NODE_NAME}_$EXECUTOR_NUMBER
     scm:
       - jenkins-scripts
       - bmk-scripts
-    axes:
-        - axis:
-            type: slave
-            name: label
-            values:
-              - tcwg-bmk-tk1-01
-              - tcwg-bmk-tk1-02
-              - tcwg-bmk-tk1-03
-              - tcwg-bmk-tk1-04
-              - tcwg-bmk-tk1-05
-              - tcwg-bmk-tk1-06
-              - tcwg-bmk-tk1-07
-              - tcwg-bmk-tk1-08
-              - tcwg-bmk-tk1-09
-    execution-strategy:
-        sequential: false
     wrappers:
         - timeout:
             timeout: 900
@@ -184,21 +170,79 @@
             users:
                 - 'tcwg-benchmark'
         - build-name:
-            name: '#$BUILD_NUMBER-$displaytag'
+            name: '$displaytag'
     builders:
-        - shell:
-            command: |
-              #!/bin/bash
+      - conditional-step:
+          condition-kind: execution-node
+          nodes:
+            - tcwg-bmk-bkp-01
+          steps:
+            - shell:
+                command: |
+                  #!/bin/bash
 
-              set -ex
-              ssh-add -l
+                  set -euf -o pipefail
+                  set -x
 
-              # Run the benchmark
-              exec ./jenkins-scripts/tcwg-benchmark.sh
-            unstable-return: 125
+                  rm -rf artifacts
+                  mkdir artifacts
+
+                  n_boards=$(set +f; ls -tr $HOME/boards/tcwg-bmk-$bmk_hw-*.lock | wc -l)
+                  count=1
+                  while read -a bmks; do
+                    echo "bench_list=${bmks[@]}" > artifacts/bmk-$count-parameters
+                    echo "displaytag=#$BUILD_NUMBER-$bmk_hw-$count" >> artifacts/bmk-$count-parameters
+                    echo "bmk_node=tcwg-bmk-$bmk_hw" >> artifacts/bmk-$count-parameters
+                    count=$(($count+1))
+                  done < <(./bmk-scripts/break-up-bmks.sh \
+                             --bench_list "$bench_list" \
+                             --bmk_hw "$bmk_hw" \
+                             --n_boards "$n_boards" \
+                             --run_profile "$run_profile")
+            - trigger-builds:
+                - project: tcwg-benchmark
+                  block: true
+                  current-parameters: true
+                  parameter-factories:
+                    - factory: filebuild
+                      file-pattern: artifacts/bmk-*-parameters
+      - conditional-step:
+          condition-kind: not
+          condition-operand:
+            condition-kind: execution-node
+            nodes:
+              - tcwg-bmk-bkp-01
+          steps:
+            - shell:
+                command: |
+                  #!/bin/bash
+
+                  set -euf -o pipefail
+                  set -x
+
+                  rm -rf artifacts
+                  mkdir artifacts
+
+                  while true; do
+                    for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock); do
+                      (
+                        flock -en -E 123 9
+                        touch $lock
+                        NODE_NAME=$(cat <&9)
+                        export NODE_NAME
+                        exec ./jenkins-scripts/tcwg-benchmark.sh
+                      ) 9<$lock &
+                      res=0 && wait $! || res=$?
+                      if [ $res != 123 ]; then
+                        exit $res
+                      fi
+                    done
+                    sleep 30
+                  done
+                unstable-return: 125
     publishers:
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 5454ad1bbb6ffdb07f337b163349606f
+# checksum: f5650d8252695f5b5e29d137ee89b521
