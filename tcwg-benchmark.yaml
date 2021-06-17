@@ -198,7 +198,7 @@
                   rm -rf artifacts
                   mkdir artifacts
 
-                  n_boards=$(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock | wc -l)
+                  n_boards=$(set +f; ls -tr $HOME/boards/tcwg-bmk-$bmk_hw-*.lock | wc -l)
                   count=1
                   while read -a bmks; do
                     echo "bench_list=${bmks[@]}" > artifacts/bmk-$count-parameters
@@ -256,4 +256,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 240b0035fbd2b01ecedac7d62d58114a
+# checksum: a06d7fdde2b03de9f77736da236a8bfd
