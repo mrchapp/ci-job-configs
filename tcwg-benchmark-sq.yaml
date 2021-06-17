@@ -201,7 +201,7 @@
                              --n_boards "$n_boards" \
                              --run_profile "$run_profile")
             - trigger-builds:
-                - project: tcwg-benchmark
+                - project: tcwg-benchmark-sq
                   block: true
                   current-parameters: true
                   parameter-factories:
@@ -246,4 +246,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 49bbae7fff7fd4cefe33c3f71c03697f
+# checksum: 22026198269468221ae4e82fbdb0e8e7

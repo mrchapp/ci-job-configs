@@ -198,7 +198,11 @@
                              --n_boards "$n_boards" \
                              --run_profile "$run_profile")
             - trigger-builds:
+#if HW_any
                 - project: tcwg-benchmark
+#else
+                - project: tcwg-benchmark-#{HW}
+#endif
                   block: true
                   current-parameters: true
                   parameter-factories:
