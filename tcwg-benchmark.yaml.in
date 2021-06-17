@@ -1,5 +1,14 @@
 #include tcwg/default.yaml.inc
 
+#if !HW_any
+- job:
+    name: tcwg-benchmark-#{HW}
+    project-type: matrix
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
+#endif
+
 - job:
 #if HW_any
     name: tcwg-benchmark

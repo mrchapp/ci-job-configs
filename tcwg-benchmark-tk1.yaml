@@ -50,6 +50,13 @@
 
 - job:
     name: tcwg-benchmark-tk1
+    project-type: matrix
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
+
+- job:
+    name: tcwg-benchmark-tk1
     project-type: freestyle
     defaults: global
     properties:
@@ -245,4 +252,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: f5650d8252695f5b5e29d137ee89b521
+# checksum: 6ca8633bcf64b4f37ffafaa6f801d007

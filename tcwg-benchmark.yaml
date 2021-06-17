@@ -48,6 +48,7 @@
           prune: true
 #END:   tcwg/default.yaml.inc
 
+
 - job:
     name: tcwg-benchmark
     project-type: freestyle
@@ -258,4 +259,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 96a6712b8532bf6d1a16129245e215fa
+# checksum: 8e4d29cb5392a9328130564c071f8558
