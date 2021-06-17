@@ -200,4 +200,5 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
-# checksum: 8f1f856de6ff091c9b3cef89a2ab6748
+          allow-empty: true
+# checksum: 5454ad1bbb6ffdb07f337b163349606f

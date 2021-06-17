@@ -294,3 +294,4 @@
       - archive:
           artifacts: 'artifacts/**'
           latest-only: false
+          allow-empty: true
