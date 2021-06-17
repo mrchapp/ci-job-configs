@@ -198,6 +198,7 @@
                   rm -rf artifacts
                   mkdir artifacts
 
+                  n_boards=$(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock | wc -l)
                   count=1
                   while read -a bmks; do
                     echo "bench_list=${bmks[@]}" > artifacts/bmk-$count-parameters
@@ -207,6 +208,7 @@
                   done < <(./bmk-scripts/break-up-bmks.sh \
                              --bench_list "$bench_list" \
                              --bmk_hw "$bmk_hw" \
+                             --n_boards "$n_boards" \
                              --run_profile "$run_profile")
             - trigger-builds:
                 - project: tcwg-benchmark
@@ -233,9 +235,10 @@
                   mkdir artifacts
 
                   while true; do
-                    for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*); do
+                    for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock); do
                       (
                         flock -en -E 123 9
+                        touch $lock
                         NODE_NAME=$(cat <&9)
                         export NODE_NAME
                         exec ./jenkins-scripts/tcwg-benchmark.sh
@@ -253,4 +256,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: e60822f114aaac15d93493126c93d5b2
+# checksum: 240b0035fbd2b01ecedac7d62d58114a
