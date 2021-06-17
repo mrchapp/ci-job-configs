@@ -76,11 +76,7 @@
             description: 'Number of benchmark iterations'
         - string:
             name: results_id
-#if HW_stm32
-            default: 'stm32_STM32L476RGTx/tcwg-benchmark/@build_num@'
-#else
             default: '@hw_tag@/tcwg-benchmark/@build_num@'
-#endif
             description: 'ID for benchmarking results; results will appear in bkp-01.tcwglab:/home/tcwg-benchmark/results-$results_id/'
         - bool:
             name: forceinstall
@@ -185,12 +181,36 @@
                   rm -rf artifacts
                   mkdir artifacts
 
+                  case "$bmk_hw:$image_arch" in
+#if HW_sq || HW_any
+                    sq:arm64) hw_tag=sq_64 ;;
+                    sq:armhf) hw_tag=sq_32 ;;
+#endif
+#if HW_stm32 || HW_any
+                    stm32:*) hw_tag=stm32_STM32L476RGTx ;;
+#endif
+#if HW_tk1 || HW_any
+                    tk1:armhf) hw_tag=tk1_32 ;;
+#endif
+#if HW_tx1 || HW_any
+                    tx1:arm64) hw_tag=tx1_64 ;;
+                    tx1:armhf) hw_tag=tx1_32 ;;
+#endif
+                  esac
+
+                  results_id=$(echo "$results_id" | sed \
+                                 -e "s/@build_num@/$BUILD_NUMBER/g" \
+                                 -e "s/@hw_tag@/$hw_tag/g")
+
                   n_boards=$(set +f; ls -tr $HOME/boards/tcwg-bmk-$bmk_hw-*.lock | wc -l)
                   count=1
                   while read -a bmks; do
-                    echo "bench_list=${bmks[@]}" > artifacts/bmk-$count-parameters
-                    echo "displaytag=#$BUILD_NUMBER+$count-$displaytag" >> artifacts/bmk-$count-parameters
-                    echo "bmk_node=tcwg-bmk-$bmk_hw" >> artifacts/bmk-$count-parameters
+                    cat > artifacts/bmk-$count-parameters <<EOF
+                  bench_list=${bmks[@]}"
+                  displaytag=#$BUILD_NUMBER+$count-$displaytag
+                  bmk_node=tcwg-bmk-$bmk_hw
+                  results_id=$results_id
+                  EOF
                     count=$(($count+1))
                   done < <(./bmk-scripts/break-up-bmks.sh \
                              --bench_list "$bench_list" \

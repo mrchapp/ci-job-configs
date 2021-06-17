@@ -188,12 +188,24 @@
                   rm -rf artifacts
                   mkdir artifacts
 
+                  case "$bmk_hw:$image_arch" in
+                    tx1:arm64) hw_tag=tx1_64 ;;
+                    tx1:armhf) hw_tag=tx1_32 ;;
+                  esac
+
+                  results_id=$(echo "$results_id" | sed \
+                                 -e "s/@build_num@/$BUILD_NUMBER/g" \
+                                 -e "s/@hw_tag@/$hw_tag/g")
+
                   n_boards=$(set +f; ls -tr $HOME/boards/tcwg-bmk-$bmk_hw-*.lock | wc -l)
                   count=1
                   while read -a bmks; do
-                    echo "bench_list=${bmks[@]}" > artifacts/bmk-$count-parameters
-                    echo "displaytag=#$BUILD_NUMBER+$count-$displaytag" >> artifacts/bmk-$count-parameters
-                    echo "bmk_node=tcwg-bmk-$bmk_hw" >> artifacts/bmk-$count-parameters
+                    cat > artifacts/bmk-$count-parameters <<EOF
+                  bench_list=${bmks[@]}"
+                  displaytag=#$BUILD_NUMBER+$count-$displaytag
+                  bmk_node=tcwg-bmk-$bmk_hw
+                  results_id=$results_id
+                  EOF
                     count=$(($count+1))
                   done < <(./bmk-scripts/break-up-bmks.sh \
                              --bench_list "$bench_list" \
@@ -246,4 +258,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 766ce7e71287357ce92b60412e5f3c63
+# checksum: c9b2ef438d8f3d1eb140257e99b4c1df

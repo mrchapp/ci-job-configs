@@ -110,7 +110,7 @@
             description: 'Number of benchmark iterations'
         - string:
             name: results_id
-            default: 'stm32_STM32L476RGTx/tcwg-benchmark/@build_num@'
+            default: '@hw_tag@/tcwg-benchmark/@build_num@'
             description: 'ID for benchmarking results; results will appear in bkp-01.tcwglab:/home/tcwg-benchmark/results-$results_id/'
         - bool:
             name: forceinstall
@@ -187,12 +187,23 @@
                   rm -rf artifacts
                   mkdir artifacts
 
+                  case "$bmk_hw:$image_arch" in
+                    stm32:*) hw_tag=stm32_STM32L476RGTx ;;
+                  esac
+
+                  results_id=$(echo "$results_id" | sed \
+                                 -e "s/@build_num@/$BUILD_NUMBER/g" \
+                                 -e "s/@hw_tag@/$hw_tag/g")
+
                   n_boards=$(set +f; ls -tr $HOME/boards/tcwg-bmk-$bmk_hw-*.lock | wc -l)
                   count=1
                   while read -a bmks; do
-                    echo "bench_list=${bmks[@]}" > artifacts/bmk-$count-parameters
-                    echo "displaytag=#$BUILD_NUMBER+$count-$displaytag" >> artifacts/bmk-$count-parameters
-                    echo "bmk_node=tcwg-bmk-$bmk_hw" >> artifacts/bmk-$count-parameters
+                    cat > artifacts/bmk-$count-parameters <<EOF
+                  bench_list=${bmks[@]}"
+                  displaytag=#$BUILD_NUMBER+$count-$displaytag
+                  bmk_node=tcwg-bmk-$bmk_hw
+                  results_id=$results_id
+                  EOF
                     count=$(($count+1))
                   done < <(./bmk-scripts/break-up-bmks.sh \
                              --bench_list "$bench_list" \
@@ -245,4 +256,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 2ebe447e3b4934efe22bc836ba9ab427
+# checksum: e74659e4ca8ba33080c6142e6a265c66
