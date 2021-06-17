@@ -7,8 +7,7 @@
     defaults: global
     disabled: true
     display-name: 'DELETE ME'
-#endif
-
+#else
 - job:
 #if HW_any
     name: tcwg-benchmark
@@ -252,3 +251,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
+#endif
