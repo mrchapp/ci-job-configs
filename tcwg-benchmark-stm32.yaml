@@ -133,7 +133,7 @@
             description: 'Reboot the board before building and running the benchmarks.'
         - string:
             name: displaytag
-            default: '#$BUILD_NUMBER'
+            default: ''
             description: 'Tag to display in the Jenkins console, so that the build name is more meaningful'
         - bool:
             name: ignore_errors
@@ -170,7 +170,7 @@
             users:
                 - 'tcwg-benchmark'
         - build-name:
-            name: '$displaytag'
+            name: '#$BUILD_NUMBER-$displaytag'
     builders:
       - conditional-step:
           condition-kind: execution-node
@@ -191,7 +191,7 @@
                   count=1
                   while read -a bmks; do
                     echo "bench_list=${bmks[@]}" > artifacts/bmk-$count-parameters
-                    echo "displaytag=#$BUILD_NUMBER-$bmk_hw-$count" >> artifacts/bmk-$count-parameters
+                    echo "displaytag=#$BUILD_NUMBER+$count-$displaytag" >> artifacts/bmk-$count-parameters
                     echo "bmk_node=tcwg-bmk-$bmk_hw" >> artifacts/bmk-$count-parameters
                     count=$(($count+1))
                   done < <(./bmk-scripts/break-up-bmks.sh \
@@ -245,4 +245,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: d2a48c09f6aef6670df1e3bac4489d85
+# checksum: c48275665b795a5efec9e65aa582b398
