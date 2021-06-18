@@ -128,6 +128,7 @@
         - choice:
             name: image_arch
             choices:
+              - arm64
               - armhf
             description: 'Docker image architecture -- arm64 or armhf'
         - bool:
@@ -240,4 +241,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: cd72627e2d1b9b1a1bde955b5c7442e0
+# checksum: 38413022080ff38133060f295fbdba92

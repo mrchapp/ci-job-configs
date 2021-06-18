@@ -1,13 +1,5 @@
 #include tcwg/default.yaml.inc
 
-#if HW_sq || HW_stm32 || HW_tk1 || HW_tx1
-- job:
-    name: tcwg-benchmark-#{HW}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
-#else
 - job:
     name: tcwg-benchmark#{BACKEND}
     project-type: freestyle
@@ -39,11 +31,7 @@
             description: 'Rsync-friendly path to the sysroot to run against; use libs from toolchain_url tarball/rsync if "tarball"; use system libs if empty'
         - string:
            name: bench_list
-#if HW_stm32
-           default: 'coremark'
-#else
            default: 'all'
-#endif
            description: 'List of benchmarks to run (from spec2k6). Use "all" to run all of them.'
         - string:
             name: cflags
@@ -83,11 +71,7 @@
             description: 'ID for benchmarking results; results will appear in bkp-01.tcwglab:/home/tcwg-benchmark/results-$results_id/'
         - bool:
             name: forceinstall
-#if HW_stm32
-            default: 'true'
-#else
             default: 'false'
-#endif
             description: 'Force clean re-install of benchmark sources'
         - choice:
             name: run_profile
@@ -98,9 +82,7 @@
         - choice:
             name: image_arch
             choices:
-#if HW_tx1 || HW_sq
               - arm64
-#endif
               - armhf
             description: 'Docker image architecture -- arm64 or armhf'
         - bool:
@@ -247,4 +229,3 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-#endif
