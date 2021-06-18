@@ -136,7 +136,7 @@
                 flock -e 9
                 touch $lock
                 board=$(cat <&9)
-                rsync -az --delete ./jenkins-scripts $board:jenkins-scripts/
+                rsync -az --delete ./jenkins-scripts/ $board:jenkins-scripts/
                 node=$(echo "$board" \
                          | sed -e "s/tcwg-bmk-/tcwg-/" -e "s/\.tcwglab\$//")
                 ssh -Snone $board ./jenkins-scripts/tcwg-update-host-containers.sh \
