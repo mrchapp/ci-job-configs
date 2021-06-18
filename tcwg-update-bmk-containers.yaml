@@ -55,7 +55,7 @@
     parameters:
         - label:
             name: nodes
-            default: tcwg-bmk-sq || tcwg-bmk-tk1 || tcwg-bmk-tx1
+            default: tcwg-bmk-hw
             all-nodes: true
             matching-label: 'allCases'
             description: 'Machines to run on'
@@ -133,4 +133,4 @@
               ) 9<$lock &
             done
             wait
-# checksum: 4c654208e0b480be5bac6dcb496e70fe
+# checksum: 71f442f3c47c624b25f0325c339e565f

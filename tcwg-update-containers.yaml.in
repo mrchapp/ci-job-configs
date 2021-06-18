@@ -22,7 +22,7 @@
         - label:
             name: nodes
 #if CONTAINER_host
-            default: tcwg && !tcwg-bmk && !tcwg-short
+            default: tcwg && !tcwg-bmk-hw && !tcwg-short
 #elif CONTAINER_jenkins
             # We can't restart coordinator nodes because we can't block-out
             # matrix master jobs.  Similarly, we can't restart nodes with
@@ -32,7 +32,7 @@
 #elif CONTAINER_llvmbot || CONTAINER_buildkite
             default: tcwg-llvmbot
 #elif CONTAINER_bmk
-            default: tcwg-bmk-sq || tcwg-bmk-tk1 || tcwg-bmk-tx1
+            default: tcwg-bmk-hw
 #endif
             all-nodes: true
             matching-label: 'allCases'
