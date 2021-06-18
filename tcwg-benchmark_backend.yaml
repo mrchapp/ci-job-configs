@@ -212,7 +212,7 @@
                 if [ $res != 123 ]; then
                   exit $res
                 fi
-                done
+              done
               sleep 30
             done
           unstable-return: 125
@@ -221,4 +221,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: fdc83123826e35097e0de13f95db674d
+# checksum: a5eb7522bffc1a4719e05a4670ed2e01

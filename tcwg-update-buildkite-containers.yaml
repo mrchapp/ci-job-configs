@@ -58,7 +58,6 @@
             default: tcwg-llvmbot
             all-nodes: true
             matching-label: 'allCases'
-            node-eligibility: 'ignore-offline'
             description: 'Machines to run on'
         - string:
             name: distro
@@ -110,4 +109,4 @@
             --password "$TCWG_BUILDKITE_TOKEN_LIBCXX" \
             --force "$force" \
             --verbose "$verbose"
-# checksum: 0a92b4667e64509d75e0d0744438b21c
+# checksum: af6845ac29f3319143bf5ed529dd822d

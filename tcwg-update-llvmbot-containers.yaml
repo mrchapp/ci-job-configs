@@ -58,7 +58,6 @@
             default: tcwg-llvmbot
             all-nodes: true
             matching-label: 'allCases'
-            node-eligibility: 'ignore-offline'
             description: 'Machines to run on'
         - string:
             name: distro
@@ -114,4 +113,4 @@
             --password "$TCWG_LLVMBOT_PASSWORD" \
             --force "$force" \
             --verbose "$verbose"
-# checksum: 5b00aa26336e2fd0548fff8e0a8760bd
+# checksum: 86db4ab0fe8e2d1d076588d2353c88a7

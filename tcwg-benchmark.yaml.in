@@ -237,7 +237,7 @@
                 if [ $res != 123 ]; then
                   exit $res
                 fi
-                done
+              done
               sleep 30
             done
           unstable-return: 125

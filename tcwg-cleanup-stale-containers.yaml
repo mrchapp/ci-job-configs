@@ -22,7 +22,6 @@
             default: tcwg
             all-nodes: true
             matching-label: 'allCases'
-            node-eligibility: 'ignore-offline'
             description: 'Machines to run on'
         - string:
             name: cleanup_running_hours
