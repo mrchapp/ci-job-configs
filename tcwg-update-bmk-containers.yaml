@@ -98,41 +98,39 @@
             #!/bin/bash
             set -ex
 
-            while true; do
-              for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock); do
-                (
-                  flock -e 9
-                  touch $lock
-                  board=$(cat <&9)
-                  rsync -az --delete ./jenkins-scripts $board:jenkins-scripts/
-                  node=$(echo "$board" \
-                           | sed -e "s/tcwg-bmk-/tcwg-/" -e "s/\.tcwglab\$//")
-                  ssh -Snone $board ./jenkins-scripts/tcwg-update-host-containers.sh \
-                    --distro "$distro" \
-                    --force "$force" \
-                    --verbose "$verbose"
-                  ssh -Snone $board ./jenkins-scripts/tcwg-update-host-containers.sh \
-                    --distro "$distro" \
-                    --node "$node" \
-                    --force "$force" \
-                    --verbose "$verbose"
+            for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock); do
+              (
+                flock -e 9
+                touch $lock
+                board=$(cat <&9)
+                rsync -az --delete ./jenkins-scripts $board:jenkins-scripts/
+                node=$(echo "$board" \
+                         | sed -e "s/tcwg-bmk-/tcwg-/" -e "s/\.tcwglab\$//")
+                ssh -Snone $board ./jenkins-scripts/tcwg-update-host-containers.sh \
+                  --distro "$distro" \
+                  --force "$force" \
+                  --verbose "$verbose"
+                ssh -Snone $board ./jenkins-scripts/tcwg-update-host-containers.sh \
+                  --distro "$distro" \
+                  --node "$node" \
+                  --force "$force" \
+                  --verbose "$verbose"
 
-                  # We start the jenkins container above so that it can process
-                  # all the queued cleanup and maintenance tasks.
-                  # Here we wait for jenkins container to become idle by looking
-                  # at number of processes.  Idle container has
-                  # - HEADER
-                  # - tini
-                  # - sudo java
-                  # - java
-                  # processes -- 4 lines.
-                  while sleep 60; do
-                    if [ "$(ssh -Snone $board docker top $node | wc -l)" -le "4" ]; then
-                      break
-                    fi
-                  done
-                ) 9<$lock &
-              done
+                # We start the jenkins container above so that it can process
+                # all the queued cleanup and maintenance tasks.
+                # Here we wait for jenkins container to become idle by looking
+                # at number of processes.  Idle container has
+                # - HEADER
+                # - tini
+                # - sudo java
+                # - java
+                # processes -- 4 lines.
+                while sleep 60; do
+                  if [ "$(ssh -Snone $board docker top $node | wc -l)" -le "4" ]; then
+                    break
+                  fi
+                done
+              ) 9<$lock &
             done
             wait
-# checksum: 7d3251e725e663fe60fc23eccbc51451
+# checksum: 4c654208e0b480be5bac6dcb496e70fe
