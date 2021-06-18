@@ -84,6 +84,10 @@
             - text:
                 credential-id: TCWG_BUILDKITE_TOKEN_LIBCXX
                 variable: TCWG_BUILDKITE_TOKEN_LIBCXX
+#elif CONTAINER_bmk
+        - ssh-agent-credentials:
+            users:
+                - 'tcwg-benchmark'
 #endif
         - build-name:
             name: '#${BUILD_NUMBER}-${NODE_NAME}'

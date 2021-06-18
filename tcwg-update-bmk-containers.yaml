@@ -90,6 +90,9 @@
         - timeout:
             timeout: 600
         - timestamps
+        - ssh-agent-credentials:
+            users:
+                - 'tcwg-benchmark'
         - build-name:
             name: '#${BUILD_NUMBER}-${NODE_NAME}'
     builders:
@@ -133,4 +136,4 @@
               ) 9<$lock &
             done
             wait
-# checksum: 71f442f3c47c624b25f0325c339e565f
+# checksum: ddd5c29084ca5e85879d872302a24e1d
