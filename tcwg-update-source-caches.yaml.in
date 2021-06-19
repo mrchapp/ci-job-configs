@@ -120,6 +120,7 @@
 #elif CACHE_bmk_ref
                   node-label: tcwg-hw-bmk
 #endif
+                  ignore-offline-nodes: false
               block: false
     publishers:
         - email-ext:
