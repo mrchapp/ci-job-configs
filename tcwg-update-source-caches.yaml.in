@@ -93,7 +93,7 @@
 #elif CACHE_bmk_ref
             cache_dir=/home/shared/git
             sudo mkdir -p $cache_dir
-            sudo chmod 0777 $cache_dir
+            sudo chown $USER:tcwg-infra $cache_dir
 #endif
             # Use previous cache to speed up re-generation.
             rsync -a --del $cache_dir/ $new_cache/
@@ -112,7 +112,7 @@
 #if CACHE_snapshots_ref
                 command=set -ex; cache_dir=$HOME/snapshots-ref; mkdir -p $cache_dir; rsync -az --del dev-01.tcwglab:$cache_dir/ $cache_dir/
 #elif CACHE_bmk_ref
-                command=set -ex; cache_dir=/home/shared/git; sudo mkdir -p $cache_dir; sudo chmod 0777 $cache_dir; rsync -az --del bkp-01.tcwglab:$cache_dir/ $cache_dir/
+                command=set -ex; cache_dir=/home/shared/git; sudo mkdir -p $cache_dir; sudo chown tcwg-buildslave:tcwg-infra $cache_dir; rsync -az --del bkp-01.tcwglab:$cache_dir/ $cache_dir/
 #endif
 
                 displayname=#{CACHE}
