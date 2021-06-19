@@ -33,12 +33,8 @@
             description: 'Generate misc file'
         - bool:
             name: update_abe_git
-#if CACHE_snapshots_ref
             default: true
-#elif CACHE_bmk_ref
-            default: false
-#endif
-            description: 'Update ABE Git repos'
+            description: 'Update Git repos'
         - bool:
             name: verbose
             default: true

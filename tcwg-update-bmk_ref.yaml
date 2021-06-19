@@ -55,8 +55,8 @@
             description: 'Generate misc file'
         - bool:
             name: update_abe_git
-            default: false
-            description: 'Update ABE Git repos'
+            default: true
+            description: 'Update Git repos'
         - bool:
             name: verbose
             default: true
@@ -127,4 +127,4 @@
             recipients: tcwg-validation@linaro.org
             aborted: true
 
-# checksum: 16d6f01bffd916ac54b01b30122984fd
+# checksum: 0b56262b965522a704df465fb2c66741

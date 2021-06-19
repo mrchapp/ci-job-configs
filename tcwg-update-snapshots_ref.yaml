@@ -56,7 +56,7 @@
         - bool:
             name: update_abe_git
             default: true
-            description: 'Update ABE Git repos'
+            description: 'Update Git repos'
         - bool:
             name: verbose
             default: true
@@ -126,4 +126,4 @@
             recipients: tcwg-validation@linaro.org
             aborted: true
 
-# checksum: 990c59131cc4717d50acfa3094aafaf6
+# checksum: 3048100726a3611e6091fd1726b73dc0
