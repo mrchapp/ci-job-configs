@@ -194,7 +194,7 @@
             set -x
 
             rm -rf artifacts
-            mkdir artifacts/jenkins
+            mkdir -p artifacts/jenkins
 
             while true; do
               for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock); do
@@ -203,7 +203,7 @@
                   touch $lock
                   boardname=$(cat <&9)
                   export boardname
-                  echo "$boardname" > artifacts/jenkins/build-name
+                  echo "#$BUILD_NUMBER-$displaytag-$boardname" > artifacts/jenkins/build-name
                   if [ x"$bmk_hw" = x"stm32" ]; then
                     exec ./jenkins-scripts/tcwg-benchmark-bare.sh
                   else
@@ -246,4 +246,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 7f309f71eb5ad2cc15378c21cc2ea0d6
+# checksum: 3ccf71eeefe892f4f02142fc8f40292b
