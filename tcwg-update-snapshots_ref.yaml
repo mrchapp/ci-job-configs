@@ -97,8 +97,11 @@
             set -ex
 
             new_cache=$(mktemp -d)
+            trap "rm -rf $new_cache" EXIT
             cache_dir=$HOME/snapshots-ref
-            rsync -a --del $cache_dir/ $new_cache/
+            # Use previous cache to speed up re-generation.
+            # Don't fail if old cache doesn't exist.
+            rsync -a --del $cache_dir/ $new_cache/ || true
             ./jenkins-scripts/tcwg-generate-source-cache.sh \
               --cache_dir "$new_cache" \
               --generate_abe "$generate_abe" \
@@ -124,4 +127,4 @@
             recipients: tcwg-validation@linaro.org
             aborted: true
 
-# checksum: eaf57813fa4ad585d70ace4a5b8c0a2f
+# checksum: bad6e07782719106b24b63312032a65d

@@ -87,12 +87,15 @@
             set -ex
 
             new_cache=$(mktemp -d)
+            trap "rm -rf $new_cache" EXIT
 #if CACHE_snapshots_ref
             cache_dir=$HOME/snapshots-ref
 #elif CACHE_bmk_ref
             cache_dir=/home/shared/git
 #endif
-            rsync -a --del $cache_dir/ $new_cache/
+            # Use previous cache to speed up re-generation.
+            # Don't fail if old cache doesn't exist.
+            rsync -a --del $cache_dir/ $new_cache/ || true
             ./jenkins-scripts/tcwg-generate-source-cache.sh \
               --cache_dir "$new_cache" \
               --generate_abe "$generate_abe" \
