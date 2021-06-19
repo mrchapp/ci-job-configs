@@ -190,7 +190,7 @@
           command: |
             #!/bin/bash
 
-            set -euf -o pipefail
+            set -ef -o pipefail
             set -x
 
             rm -rf artifacts
@@ -246,4 +246,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 3ccf71eeefe892f4f02142fc8f40292b
+# checksum: 1fff735d72666249920380e34772e10c

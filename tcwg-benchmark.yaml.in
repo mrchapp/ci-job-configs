@@ -196,7 +196,7 @@
           command: |
             #!/bin/bash
 
-            set -euf -o pipefail
+            set -ef -o pipefail
             set -x
 
             rm -rf artifacts
