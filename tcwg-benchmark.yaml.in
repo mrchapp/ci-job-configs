@@ -200,19 +200,40 @@
             set -x
 
             rm -rf artifacts
-            mkdir artifacts
+            mkdir artifacts/jenkins
 
             while true; do
               for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock); do
                 (
                   flock -en -E 123 9
                   touch $lock
-                  NODE_NAME=$(cat <&9)
-                  export NODE_NAME
+                  boardname=$(cat <&9)
+                  export boardname
+                  echo "$boardname" > artifacts/jenkins/build-name
                   if [ x"$bmk_hw" = x"stm32" ]; then
                     exec ./jenkins-scripts/tcwg-benchmark-bare.sh
                   else
-                    exec ./jenkins-scripts/tcwg-benchmark.sh
+                    exec ./jenkins-scripts/tcwg-benchmark.sh \
+                      --boardname "$boardname" \
+                      --toolchain_url "$toolchain_url" \
+                      --toolchain_type "$toolchain_type" \
+                      --sysroot "$sysroot" \
+                      --bench_list "$bench_list" \
+                      --cflags "$cflags" \
+                      --ldflags "$ldflags" \
+                      --extension "$extension" \
+                      --testmode "$testmode" \
+                      --iterations "$iterations" \
+                      --results_id "$results_id" \
+                      --forceinstall "$forceinstall" \
+                      --run_profile "$run_profile" \
+                      --image_arch "$image_arch" \
+                      --reboot "$reboot" \
+                      --ignore_errors "$ignore_errors" \
+                      --clean_older_than "$clean_older_than" \
+                      --builder "$builder" \
+                      --BUILD_NUMBER "$BUILD_NUMBER" \
+                      --WORKSPACE "$WORKSPACE"
                   fi
                 ) 9<$lock &
                 res=0 && wait $! || res=$?
@@ -223,6 +244,9 @@
               sleep 30
             done
           unstable-return: 125
+      - build-name-setter:
+          name: 'artifacts/jenkins/build-name'
+          file: true
 #endif
     publishers:
       - archive:
