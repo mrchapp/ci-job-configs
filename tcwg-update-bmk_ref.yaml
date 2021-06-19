@@ -120,11 +120,11 @@
               parameter-factories:
                 - factory: allnodesforlabel
                   name: nodes
-                  node-label: tcwg && !tcwg-bmk && !tcwg-short && !tcwg-llvmbot
+                  node-label: tcwg-hw-bmk
               block: false
     publishers:
         - email-ext:
             recipients: tcwg-validation@linaro.org
             aborted: true
 
-# checksum: 0b56262b965522a704df465fb2c66741
+# checksum: 60fe326216a06de9309c8434145e0687

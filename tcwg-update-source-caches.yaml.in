@@ -115,7 +115,11 @@
               parameter-factories:
                 - factory: allnodesforlabel
                   name: nodes
+#if CACHE_snapshots_ref
                   node-label: tcwg && !tcwg-bmk && !tcwg-short && !tcwg-llvmbot
+#elif CACHE_bmk_ref
+                  node-label: tcwg-hw-bmk
+#endif
               block: false
     publishers:
         - email-ext:
