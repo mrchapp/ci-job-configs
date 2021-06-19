@@ -1,7 +1,7 @@
 #include tcwg/default.yaml.inc
 
 - job:
-    name: tcwg-update-snapshots_ref
+    name: tcwg-update-#{CACHE}
     project-type: freestyle
     defaults: global
     properties:
@@ -9,15 +9,35 @@
     parameters:
         - bool:
             name: generate_abe
+#if CACHE_snapshots_ref
             default: true
+#elif CACHE_bmk_ref
+            default: false
+#endif
             description: 'Generate ABE snapshots'
         - bool:
-            name: generate_misc
+            name: generate_bmk
+#if CACHE_snapshots_ref
+            default: false
+#elif CACHE_bmk_ref
             default: true
+#endif
+            description: 'Generate benchmark source cache'
+        - bool:
+            name: generate_misc
+#if CACHE_snapshots_ref
+            default: true
+#elif CACHE_bmk_ref
+            default: false
+#endif
             description: 'Generate misc file'
         - bool:
             name: update_abe_git
+#if CACHE_snapshots_ref
             default: true
+#elif CACHE_bmk_ref
+            default: false
+#endif
             description: 'Update ABE Git repos'
         - bool:
             name: verbose
@@ -37,8 +57,12 @@
             description: 'Docker image tag to use'
     disabled: false
     concurrent: false
+#if CACHE_snapshots_ref
     node: tcwg-x86_64-dev-01
-    display-name: 'TCWG CCC Update reference ABE snapshots on TCWG machines'
+#elif CACHE_bmk_ref
+    node: tcwg-bmk-bkp-01
+#endif
+    display-name: 'TCWG CCC Update #{CACHE} cache on TCWG machines'
     triggers:
         - timed: '@weekly'
     scm:
@@ -48,35 +72,50 @@
             timeout: 600
         - timestamps
         - ssh-agent-credentials:
-            # tcwg-buildslave user id
             users:
+#if CACHE_snapshots_ref
+                # tcwg-buildslave user id
                 - 'e0958a95-204f-4c14-a66c-5e2be6c5d50a'
+#elif CACHE_bmk_ref
+                - 'tcwg-benchmark'
+#endif
         - build-name:
             name: '#${BUILD_NUMBER}'
     builders:
         - shell: |
             #!/bin/bash
             set -ex
-            snapshots_dir=$HOME/snapshots-ref
-            rsync -a --del $snapshots_dir/ ${snapshots_dir}-new/
+
+            new_cache=$(mktemp -d)
+#if CACHE_snapshots_ref
+            cache_dir=$HOME/snapshots-ref
+#elif CACHE_bmk_ref
+            cache_dir=/home/shared/git
+#endif
+            rsync -a --del $cache_dir/ $new_cache/
             ./jenkins-scripts/tcwg-generate-source-cache.sh \
-            --dir-abe ${snapshots_dir}-new \
-            --generate-abe $generate_abe \
-            --generate-misc $generate_misc \
-            --update-abe-git $update_abe_git \
-            --verbose $verbose \
-            --abe-branch $abe_branch
-            rsync -a --del ${snapshots_dir}-new/ $snapshots_dir/
+              --cache_dir "$new_cache" \
+              --generate_abe "$generate_abe" \
+              --generate_bmk "$generate_bmk" \
+              --generate_misc "$generate_misc" \
+              --update_abe_git "$update_abe_git" \
+              --verbose "$verbose" \
+              --abe_branch "$abe_branch"
+            rsync -a --del $new_cache/ $cache_dir/
         - trigger-builds:
             - project: tcwg-buildslave-command
               predefined-parameters: |
-                command=set -ex; snapshots_dir=$HOME/snapshots-ref; mkdir -p $snapshots_dir/; rsync -a --del $snapshots_dir/ ${snapshots_dir}-new/; rsync -az --del $NODE_NAME.tcwglab:${snapshots_dir}/ ${snapshots_dir}-new/; flock -x ${snapshots_dir}.lock -c "rsync -a --del ${snapshots_dir}-new/ $snapshots_dir/"; rm -rf ${snapshots_dir}-new/
-                displayname=snapshot-refs
+#if CACHE_snapshots_ref
+                command=set -ex; cache_dir=$HOME/snapshots-ref; mkdir -p $cache_dir/; rsync -az --del dev-01.tcwglab:$cache_dir/ $cache_dir/
+#elif CACHE_bmk_ref
+                command=set -ex; cache_dir=/home/shared/git; sudo mkdir -p $cache_dir/; sudo chmod 0777 $cache_dir; rsync -az --del bkp-01.tcwglab:$cache_dir/ $cache_dir/
+#endif
+
+                displayname=#{CACHE}
               parameter-factories:
                 - factory: allnodesforlabel
                   name: nodes
                   node-label: tcwg && !tcwg-bmk && !tcwg-short && !tcwg-llvmbot
-                  ignore-offline-nodes: true
               block: false
     publishers:
         - email-ext:
