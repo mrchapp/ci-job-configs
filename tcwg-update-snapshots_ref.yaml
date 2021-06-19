@@ -100,8 +100,7 @@
             trap "rm -rf $new_cache" EXIT
             cache_dir=$HOME/snapshots-ref
             # Use previous cache to speed up re-generation.
-            # Don't fail if old cache doesn't exist.
-            rsync -a --del $cache_dir/ $new_cache/ || true
+            rsync -a --del $cache_dir/ $new_cache/
             ./jenkins-scripts/tcwg-generate-source-cache.sh \
               --cache_dir "$new_cache" \
               --generate_abe "$generate_abe" \
@@ -114,7 +113,7 @@
         - trigger-builds:
             - project: tcwg-buildslave-command
               predefined-parameters: |
-                command=set -ex; cache_dir=$HOME/snapshots-ref; mkdir -p $cache_dir/; rsync -az --del dev-01.tcwglab:$cache_dir/ $cache_dir/
+                command=set -ex; cache_dir=$HOME/snapshots-ref; mkdir -p $cache_dir; rsync -az --del dev-01.tcwglab:$cache_dir/ $cache_dir/
 
                 displayname=snapshots_ref
               parameter-factories:
@@ -127,4 +126,4 @@
             recipients: tcwg-validation@linaro.org
             aborted: true
 
-# checksum: bad6e07782719106b24b63312032a65d
+# checksum: 990c59131cc4717d50acfa3094aafaf6
