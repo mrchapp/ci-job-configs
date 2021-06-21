@@ -1,15 +1,15 @@
 - project:
     name: trigger-lt-qcom-linux
     jobs:
-        - 'trigger-lt-qcom-linux-{branch}':
+        - 'trigger-lt-qcom-linux-release-5.7':
             branch: 'release/qcomlt-5.7'
-        - 'trigger-lt-qcom-linux-{branch}':
+        - 'trigger-lt-qcom-linux-release-5.9':
             branch: 'release/qcomlt-5.9'
-        - 'trigger-lt-qcom-linux-{branch}':
+        - 'trigger-lt-qcom-linux-release-5.10':
             branch: 'release/qcomlt-5.10'
-        - 'trigger-lt-qcom-linux-{branch}':
+        - 'trigger-lt-qcom-linux-release-5.12':
             branch: 'release/qcomlt-5.12'
-        - 'trigger-lt-qcom-linux-{branch}':
+        - 'trigger-lt-qcom-linux-release-5.13':
             branch: 'release/qcomlt-5.13'
 - job-template:
     name: trigger-lt-qcom-linux-{branch}
