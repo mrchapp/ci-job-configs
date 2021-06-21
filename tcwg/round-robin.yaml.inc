@@ -404,7 +404,7 @@
             echo "$build_name" > artifacts/jenkins/build-name
             # artifacts/jenkins/mail-*.txt will be overwritten in successful builds.
 #if RR_tcwg_bmk
-            echo "christophe.lyon@linaro.org" > artifacts/jenkins/mail-recipients.txt
+            echo "maxim.kuvyrkov@linaro.org" > artifacts/jenkins/mail-recipients.txt
 #elif RR_tcwg_binutils || RR_tcwg_gcc
             echo "prathamesh.kulkarni@linaro.org,tcwg-gcc@linaro.org" > artifacts/jenkins/mail-recipients.txt
 #elif RR_tcwg_kernel
@@ -453,8 +453,10 @@
     publishers:
         - build-publishers
         - email-ext:
+            # Strangely, we no longer need to double-{ ${FILE} macro in
+            # recipients section.  It appears to bypass job-template expansion.
             recipients: |
-              ${{FILE,path="artifacts/jenkins/mail-recipients.txt"}}
+              ${FILE,path="artifacts/jenkins/mail-recipients.txt"}
             content-type: text
             body: |
               ${{FILE,path="artifacts/jenkins/mail-body.txt"}}
