@@ -6,9 +6,10 @@
     name: default-properties
     properties:
       - authorization:
-          tcwg-benchmark:
+          anonymous:
             - job-read
             - job-extended-read
+          linaro:
             - job-build
             - job-cancel
       - build-discarder:
@@ -241,4 +242,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 38413022080ff38133060f295fbdba92
+# checksum: fa41652ca5fd8993aedef5adcd43acd7

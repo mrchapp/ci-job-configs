@@ -9,9 +9,10 @@
     name: default-properties
     properties:
       - authorization:
-          tcwg-benchmark:
+          anonymous:
             - job-read
             - job-extended-read
+          linaro:
             - job-build
             - job-cancel
       - build-discarder:
@@ -464,4 +465,4 @@
           ci_project_config: 'tcwg_bmk_{hw}'
     publishers:
         - bisect-publishers
-# checksum: d0c5e4d91a9c64578ba29ea95bd969f4
+# checksum: b3fc01c7ad9c5cdfa33e35a1752faacc
