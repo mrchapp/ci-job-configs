@@ -27,33 +27,32 @@
           distro: lts_1
     bmk:
       - spec2k6
-    cflags:
-      - Os:
+    metric:
+      - speed:
           cron_schedule: H H H/7 * *
-      - Os_LTO:
+          cflags:
+            - O2
+            - O2_LTO
+            - O3
+            - O3_LTO
+      - size:
           cron_schedule: H H H/7 * *
-      - Oz:
+          cflags:
+            - Os
+            - Os_LTO
+            - Oz
+            - Oz_LTO
+      - vect:
           cron_schedule: H H H/7 * *
-      - Oz_LTO:
-          cron_schedule: H H H/7 * *
-      - O2:
-          cron_schedule: H H H/7 * *
-      - O2_LTO:
-          cron_schedule: H H H/7 * *
-      - O3:
-          cron_schedule: H H H/7 * *
-      - O3_LTO:
-          cron_schedule: H H H/7 * *
-      - Os-vs-Os_LTO:
+          cflags:
+            - O3_VECT
+            - O3_LTO_VECT
+      - versus:
           cron_schedule: H H H * *
-      - O2-vs-O2_LTO:
-          cron_schedule: H H H * *
-      - O3-vs-O3_LTO:
-          cron_schedule: H H H * *
-      - O3_VECT:
-          cron_schedule: H H H/7 * *
-      - O3_LTO_VECT:
-          cron_schedule: H H H/7 * *
+          cflags:
+            - Os-vs-Os_LTO
+            - O2-vs-O2_LTO
+            - O3-vs-O3_LTO
     jobs:
       - 'tcwg_bmk_ci_gnu-build-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
       - 'tcwg_bmk_ci_gnu-bisect-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
@@ -67,15 +66,11 @@
       - toolchain_name: gnu_eabi
         cflags: Oz_LTO
       - toolchain_name: llvm
-        cflags: Os-vs-Os_LTO
-      - toolchain_name: llvm
-        cflags: O2-vs-O2_LTO
-      - toolchain_name: llvm
-        cflags: O3-vs-O3_LTO
-      - toolchain_name: llvm
         cflags: O3_VECT
       - toolchain_name: llvm
         cflags: O3_LTO_VECT
+      - toolchain_name: llvm
+        metric: versus
 
 - view:
     name: tcwg_bmk_ci_gnu
@@ -560,4 +555,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 0d0bc83d8d6ac1a5839dde45275a89b2
+# checksum: 0af013a716f84edb5dbbae24d6a503d6
