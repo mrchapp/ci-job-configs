@@ -73,6 +73,26 @@
         cflags: O3_VECT
       - toolchain_name: llvm
         cflags: O3_LTO_VECT
+      - hw: sq
+        cflags: O2
+      - hw: sq
+        cflags: O2_LTO
+      - hw: sq
+        cflags: O3
+      - hw: sq
+        cflags: O3_LTO
+      - hw: sq
+        cflags: Os-vs-Os_LTO
+      - hw: sq
+        cflags: O2-vs-O2_LTO
+      - hw: sq
+        cflags: O3-vs-O3_LTO
+      - hw: sq
+        cflags: O3_VECT
+      - hw: sq
+        cflags: O3_LTO_VECT
+      - hw: sq
+        toolchain_ver: master
 
 - view:
     name: tcwg_bmk_ci_gnu_eabi
@@ -561,4 +581,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: cb70d2bb899665f494f544ab5b3bd5d2
+# checksum: 240af8d0011d3da7cb6b9d6bf704d38f
