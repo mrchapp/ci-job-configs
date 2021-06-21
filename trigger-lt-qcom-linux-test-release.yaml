@@ -22,7 +22,7 @@
             default: 'http://snapshots.linaro.org/member-builds/qcomlt/kernel/'
         - string:
             name: RELEASE_NAMES
-            default: 'release_qcomlt-5.7 release_qcomlt-5.9 release_qcomlt-5.10 alimon_tracking'
+            default: 'release_qcomlt-5.7 release_qcomlt-5.9 release_qcomlt-5.10 release_qcomlt-5.12 release_qcomlt-5.13'
         - string:
             name: MACHINES
             default: 'apq8016-sbc sdm845-db845c qrb5165-rb5'
