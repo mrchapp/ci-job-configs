@@ -463,12 +463,13 @@
         - build-publishers
         - email-ext:
             # Strangely, we no longer need to double-{ ${FILE} macro in
-            # recipients section.  It appears to bypass job-template expansion.
+            # recipients and body sections.  They appear to bypass
+            # job-template expansion.
             recipients: |
               ${FILE,path="artifacts/jenkins/mail-recipients.txt"}
             content-type: text
             body: |
-              ${{FILE,path="artifacts/jenkins/mail-body.txt"}}
+              ${FILE,path="artifacts/jenkins/mail-body.txt"}
             failure: true
             success: true
             aborted: true
@@ -563,4 +564,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 0a70aa9a2cd446983c2f307bc771c311
+# checksum: 69b5dc2d37c0c29c0497a3b3ab688dca
