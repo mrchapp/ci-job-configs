@@ -478,7 +478,7 @@
           queue-scanning: 'ALL'
     parameters:
       - build-parameters:
-          ci_project: 'tcwg_bmk_{hw}'
+          ci_project: 'tcwg_bmk_gnu_eabi_{hw}'
           ci_config: 'gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
           binutils_url: '{binutils_url}'
           gcc_url: '{gcc_url}'
@@ -527,11 +527,11 @@
           # run bisections for all configurations in-order.
           blocking-jobs:
             - "tcwg_bmk_dev_.*-tcwg_bmk_{hw}"
-            - "tcwg_bmk_ci_.*-bisect-tcwg_bmk_{hw}-.*"
+            - "tcwg_bmk_ci_gnu_eabi-bisect-tcwg_bmk_{hw}-gnu_eabi-.*"
           queue-scanning: 'BUILDABLE'
     parameters:
       - bisect-parameters:
-          ci_project: 'tcwg_bmk_{hw}'
+          ci_project: 'tcwg_bmk_gnu_eabi_{hw}'
           ci_config: 'gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
           distro: '{distro}'
     disabled: false
@@ -552,4 +552,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: fcdb52b1dfa9738dde25a6cd9ced6622
+# checksum: 7c0963c225f258276cc6cada9417a68a

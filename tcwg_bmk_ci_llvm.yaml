@@ -493,7 +493,7 @@
           queue-scanning: 'ALL'
     parameters:
       - build-parameters:
-          ci_project: 'tcwg_bmk_{hw}'
+          ci_project: 'tcwg_bmk_llvm_{hw}'
           ci_config: 'llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
           binutils_url: '{binutils_url}'
           gcc_url: '{gcc_url}'
@@ -545,11 +545,11 @@
           # run bisections for all configurations in-order.
           blocking-jobs:
             - "tcwg_bmk_dev_.*-tcwg_bmk_{hw}"
-            - "tcwg_bmk_ci_.*-bisect-tcwg_bmk_{hw}-.*"
+            - "tcwg_bmk_ci_llvm-bisect-tcwg_bmk_{hw}-llvm-.*"
           queue-scanning: 'BUILDABLE'
     parameters:
       - bisect-parameters:
-          ci_project: 'tcwg_bmk_{hw}'
+          ci_project: 'tcwg_bmk_llvm_{hw}'
           ci_config: 'llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
           distro: '{distro}'
     disabled: false
@@ -570,4 +570,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 0935f7ff99845263b883749109bcb100
+# checksum: 3ff691ae0f683d5f089dc0d376b36388
