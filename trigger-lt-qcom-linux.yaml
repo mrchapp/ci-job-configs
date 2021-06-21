@@ -12,7 +12,7 @@
         - 'trigger-lt-qcom-linux-release-5.13':
             branch: 'release/qcomlt-5.13'
 - job-template:
-    name: trigger-lt-qcom-linux-{branch}
+    name: trigger-lt-qcom-linux
     project-type: freestyle
     defaults: global
     logrotate:
