@@ -196,10 +196,14 @@
             rm -rf artifacts
             mkdir -p artifacts/jenkins
 
+            # Retry benchmarking once, just in case we selected a board that
+            # recently went offline.
+            retry_bmk=true
+
             while true; do
               for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock); do
                 (
-                  flock -en -E 123 9
+                  flock -en -E 124 9
                   touch $lock
                   boardname=$(cat <&9)
                   export boardname
@@ -231,9 +235,18 @@
                   fi
                 ) 9<$lock &
                 res=0 && wait $! || res=$?
-                if [ $res != 123 ]; then
-                  exit $res
+                if [ $res != 0 ]; then
+                  if [ $res = 124 ]; then
+                    # Try to lock next board.
+                    continue
+                  elif [ $res = 125 ] && $retry_bmk; then
+                    # Failed to prepare board for benchmarking,
+                    # retry with a different board.
+                    retry_bmk=false
+                    continue
+                  fi
                 fi
+                exit $res
               done
               sleep 30
             done
@@ -246,4 +259,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: 1fff735d72666249920380e34772e10c
+# checksum: 8d686f042cb5ab167b24deaa69541ef8
