@@ -146,13 +146,10 @@ source ./setup-environment build-${machine_orig}/
 ln -s ${HOME}/srv/oe/downloads
 ln -s ${sstatecache} sstate-cache
 
-# Add job BUILD_NUMBER to output files names
+# Add job BUILD_NUMBER to output files names, overriding the
+# default suffix of "-${DATETIME}" from bitbake.conf
 cat << EOF >> conf/auto.conf
-IMAGE_NAME_append = "-${BUILD_NUMBER}"
-KERNEL_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
-MODULE_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
-DT_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
-BOOT_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
+IMAGE_VERSION_SUFFIX = "-${BUILD_NUMBER}"
 EOF
 
 # get build stats to make sure that we use sstate properly
@@ -404,9 +401,9 @@ case "${MACHINE}" in
     WIC_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "dev-image-rzn1*-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
 
     # The following images will have their size reported to SQUAD
-    UBOOT=$(find ${DEPLOY_DIR_IMAGE}/u-boot -type f -name "u-boot-${MACHINE}.bin.spkg")
+    UBOOT=$(find ${DEPLOY_DIR_IMAGE}/u-boot -type f -name "u-boot-${MACHINE}-${BUILD_NUMBER}.bin.spkg")
     UBOOT_IMG=$(basename ${UBOOT})
-    UBOOT_FIT=$(find ${DEPLOY_DIR_IMAGE}/u-boot -type f -name "u-boot-${MACHINE}.itb")
+    UBOOT_FIT=$(find ${DEPLOY_DIR_IMAGE}/u-boot -type f -name "u-boot-${MACHINE}-${BUILD_NUMBER}.itb")
     UBOOT_FIT_IMG=$(basename ${UBOOT_FIT})
     DTB=$(find ${DEPLOY_DIR_IMAGE} -type f -name "*rzn1*bestla*.dtb")
     DTB_IMG=$(basename ${DTB})
@@ -414,9 +411,9 @@ case "${MACHINE}" in
     KERNEL_IMG=$(basename ${KERNEL})
     KERNEL_FIT=$(find ${DEPLOY_DIR_IMAGE} -type f -name "fitImage*.itb")
     KERNEL_FIT_IMG=$(basename ${KERNEL_FIT})
-    FSBL=$(find ${DEPLOY_DIR_IMAGE}/fsbl -type f -name "fsbl-fip-${MACHINE}.spkg")
+    FSBL=$(find ${DEPLOY_DIR_IMAGE}/fsbl -type f -name "fsbl-fip-${MACHINE}-${BUILD_NUMBER}.spkg")
     FSBL_IMG=$(basename ${FSBL})
-    OPTEE_FIT=$(find ${DEPLOY_DIR_IMAGE}/optee -type f -name "optee-os-${MACHINE}.itb")
+    OPTEE_FIT=$(find ${DEPLOY_DIR_IMAGE}/optee -type f -name "optee-os-${MACHINE}-${BUILD_NUMBER}.itb")
     OPTEE_FIT_IMG=$(basename ${OPTEE_FIT})
     UBI=$(find ${DEPLOY_DIR_IMAGE} -type f -name "prod-image-${MACHINE}-${BUILD_NUMBER}.rootfs.fitubi")
     UBI_IMG=$(basename ${UBI})
@@ -430,9 +427,9 @@ case "${MACHINE}" in
     WIC_BMAP=$(find ${DEPLOY_DIR_IMAGE} -type f -name "prod-image-snarc-soca9-${BUILD_NUMBER}.rootfs.wic.bmap" | xargs -r basename)
 
     # The following images will have their size reported to SQUAD
-    UBOOT=$(find ${DEPLOY_DIR_IMAGE} -type f -name "u-boot-with-spl.sfp")
+    UBOOT=$(find ${DEPLOY_DIR_IMAGE} -type f -name "u-boot-with-spl-${BUILD_NUMBER}.sfp")
     UBOOT_IMG=$(basename ${UBOOT})
-    DTB=$(find ${DEPLOY_DIR_IMAGE} -type f -name "*soca9*_qspi_micronN25Q_bestla_512m.dtb")
+    DTB=$(find ${DEPLOY_DIR_IMAGE} -type f -name "*soca9*_qspi_micronN25Q_bestla_512m*.dtb")
     DTB_IMG=$(basename ${DTB})
     KERNEL=$(find ${DEPLOY_DIR_IMAGE} -type f -name "zImage--*soca9*.bin")
     KERNEL_IMG=$(basename ${KERNEL})
