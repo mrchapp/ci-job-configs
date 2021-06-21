@@ -54,7 +54,15 @@
     project-type: freestyle
     defaults: global
     properties:
-      - default-properties
+      - authorization:
+          tcwg-benchmark:
+            - job-read
+            - job-extended-read
+            - job-build
+            - job-cancel
+      - build-discarder:
+          days-to-keep: 30
+          num-to-keep: 100
     parameters:
         - choice:
             name: bmk_hw
@@ -242,4 +250,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: fa41652ca5fd8993aedef5adcd43acd7
+# checksum: 1f2792ebd96f7eb48531b8f63758105f

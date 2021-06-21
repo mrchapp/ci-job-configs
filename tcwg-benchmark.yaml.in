@@ -5,7 +5,15 @@
     project-type: freestyle
     defaults: global
     properties:
-      - default-properties
+      - authorization:
+          tcwg-benchmark:
+            - job-read
+            - job-extended-read
+            - job-build
+            - job-cancel
+      - build-discarder:
+          days-to-keep: 30
+          num-to-keep: 100
     parameters:
         - choice:
             name: bmk_hw
