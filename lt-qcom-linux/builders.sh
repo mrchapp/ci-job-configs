@@ -66,6 +66,7 @@ if [ "${UPDATE_DEFCONFIG}" ]; then
 fi
 
 make KERNELRELEASE=${SRCVERSION}-qcomlt-${ARCH} \
+     KDEB_SOURCENAME=linux-${SRCVERSION}-qcomlt-${ARCH} \
      KDEB_PKGVERSION=${PKGVERSION}-${BUILD_NUMBER} \
      KDEB_CHANGELOG_DIST=${KDEB_CHANGELOG_DIST} \
      DEBEMAIL="dragonboard@lists.96boards.org" \
