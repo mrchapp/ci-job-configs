@@ -10,6 +10,13 @@
           linaro:
             - job-build
             - job-cancel
+#if TCWG_benchmark
+          # Allow users in tcwg-benchmark group (e.g., tcwg-buildslave)
+          # start and stop builds.  We use this in tcwg_bmk* CI loops.
+          tcwg-benchmark:
+            - job-build
+            - job-cancel
+#endif
       - build-discarder:
           days-to-keep: 30
 #if RR_tcwg_cross
