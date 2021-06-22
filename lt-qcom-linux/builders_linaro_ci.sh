@@ -17,7 +17,7 @@ mkdir -p out
 cp linux/.config ${WORKSPACE}/out/kernel.config
 cp linux/{System.map,vmlinux} ${WORKSPACE}/out/
 cp linux/arch/$ARCH/boot/Image* ${WORKSPACE}/out/
-(mkdir -p out/dtbs && cd linux/arch/$ARCH/boot/dts && cp -a --parents $(find . -name *.dtb) ${WORKSPACE}/out/dtbs)
+(mkdir -p out/dtbs && cd linux/arch/$ARCH/boot/dts && cp -a --parents $(find . -name '*.dtb') ${WORKSPACE}/out/dtbs)
 
 
 cat > ${WORKSPACE}/out/HEADER.textile << EOF
