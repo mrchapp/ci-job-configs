@@ -43,8 +43,8 @@ do
         pyver=`basename $py`
         source /tmp/$pyver/bin/activate
         pkgname=$(python3 -c "import re;print(re.split(r'([<=>~]*)=', '${pkg}')[0])")
-        pip wheel $pkg
-        auditwheel repair ${pkgname}*${pyver}-linux_aarch64.whl
+        pip wheel $pkg || true
+        auditwheel repair $(ls -ct1 ${pkgname}*whl |head -n1) || true
         deactivate
     done
 done
