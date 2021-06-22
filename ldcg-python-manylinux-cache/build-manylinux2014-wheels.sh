@@ -41,9 +41,8 @@ do
     for py in /opt/python/cp3[67891]*
     do
         pyver=`basename $py`
-        pkgname=`echo $pkg | cut -d'=' -f1`
-        echo $pkgname
         source /tmp/$pyver/bin/activate
+        pkgname=$(python3 -c "import re;print(re.split(r'([<=>~]*)=', '${pkg}')[0])")
         pip wheel $pkg
         auditwheel repair ${pkgname}*${pyver}-linux_aarch64.whl
         deactivate
