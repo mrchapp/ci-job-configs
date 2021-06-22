@@ -429,7 +429,7 @@ case "${MACHINE}" in
     # The following images will have their size reported to SQUAD
     UBOOT=$(find ${DEPLOY_DIR_IMAGE} -type f -name "u-boot-with-spl-${BUILD_NUMBER}.sfp")
     UBOOT_IMG=$(basename ${UBOOT})
-    DTB=$(find ${DEPLOY_DIR_IMAGE} -type f -name "zImage-snarc-soca9*.dtb")
+    DTB=$(find ${DEPLOY_DIR_IMAGE} -type f -name "zImage-*soca9*.dtb")
     DTB_IMG=$(basename ${DTB})
     KERNEL=$(find ${DEPLOY_DIR_IMAGE} -type f -name "zImage--*soca9*.bin")
     KERNEL_IMG=$(basename ${KERNEL})
