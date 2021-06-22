@@ -7,8 +7,10 @@ source "$(dirname $0)/vars.sh"
 # some packages require deps from EPEL
 yum install -y epel-release
 
-# if one of dependencies is missing or wrong then exit
-yum install -y ${EXTRA_DEPENDENCIES_CENTOS} || exit
+if ! [ -z $EXTRA_DEPENDENCIES_CENTOS ]; then
+    # if one of dependencies is missing or wrong then exit
+    yum install -y ${EXTRA_DEPENDENCIES_CENTOS} || exit
+fi
 
 cd /tmp/workspace
 
