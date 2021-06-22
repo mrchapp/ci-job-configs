@@ -26,7 +26,7 @@ export GRPC_PYTHON_BUILD_EXT_COMPILER_JOBS="$(nproc)"
 
 # create virtualenv for each Python version
 # and update pip as we want 19+
-for py in /opt/python/cp3[6789]*
+for py in /opt/python/cp3[67891]*
 do
     pyver=`basename $py`
     $py/bin/python -mvenv /tmp/$pyver
@@ -38,7 +38,7 @@ done
 
 for pkg in $PYTHON_PACKAGES
 do
-    for py in /opt/python/cp3[6789]*
+    for py in /opt/python/cp3[67891]*
     do
         pyver=`basename $py`
         pkgname=`echo $pkg | cut -d'=' -f1`
