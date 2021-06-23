@@ -12,6 +12,7 @@ if [ -z "${ARCH}" ]; then
 fi
 
 if [ ! "${ARCH}" = "arm64" ]; then
+    echo > pub_dest_parameters
     echo "Exiting... only publish arm64 builds..."
     exit 0
 fi
