@@ -2,6 +2,11 @@
 
 set -ex
 
+if [ ! -d "out" ]; then
+    echo "Avoid publishing, not out directory exists."
+    exit 0
+fi
+
 # Create MD5SUMS file
 (cd out && md5sum $(find . -type f) > MD5SUMS.txt)
 

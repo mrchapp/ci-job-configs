@@ -11,6 +11,11 @@ if [ -z "${ARCH}" ]; then
     export ARCH=arm64
 fi
 
+if [ ! "${ARCH}" = "arm64" ]; then
+    echo "Exiting... only publish arm64 builds..."
+    exit 0
+fi
+
 mkdir -p out
 (cd linux/INSTALL_MOD_PATH && find . | cpio -R 0:0 -ov -H newc | gzip > ${WORKSPACE}/out/kernel-modules.cpio.gz)
 (cd linux/INSTALL_MOD_PATH && tar cJvf ${WORKSPACE}/out/kernel-modules.tar.xz .)
