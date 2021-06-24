@@ -95,7 +95,7 @@
       - string:
           name: mail_recipients
           default: default
-          description: "Comma-separated list of email recipients; use 'default' unless testing"
+          description: "Comma-separated list of email recipients"
       - string:
           name: distro
           default: '{distro}'
@@ -511,4 +511,4 @@
           ci_project_config: '{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 8496ad0fa0e9a4655c2021aac8a39dcb
+# checksum: ecb8046f06706e53a06395386393c611

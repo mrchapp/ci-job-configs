@@ -64,6 +64,9 @@
       - coremark
 #else
       - spec2k6
+#if 0
+      - spec2017
+#endif
 #endif
     cflags:
       - Os:
@@ -134,6 +137,36 @@
         cflags: O3_LTO_VECT
       - hw: sq
         toolchain_ver: master
+#if 0
+      - bmk: spec2017
+        hw: tk1
+      - bmk: spec2017
+        hw: tx1
+      - bmk: spec2017
+        cflags: Os_LTO
+      - bmk: spec2017
+        cflags: Oz
+      - bmk: spec2017
+        cflags: Oz_LTO
+      - bmk: spec2017
+        cflags: O2
+      - bmk: spec2017
+        cflags: O2_LTO
+      - bmk: spec2017
+        cflags: O3
+      - bmk: spec2017
+        cflags: O3_LTO
+      - bmk: spec2017
+        cflags: Os-vs-Os_LTO
+      - bmk: spec2017
+        cflags: O2-vs-O2_LTO
+      - bmk: spec2017
+        cflags: O3-vs-O3_LTO
+      - bmk: spec2017
+        cflags: O3_VECT
+      - bmk: spec2017
+        cflags: O3_LTO_VECT
+#endif
 
 - view:
     name: tcwg_bmk_ci_#{TOOLCHAIN}

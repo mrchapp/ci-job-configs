@@ -87,7 +87,7 @@
       - string:
           name: mail_recipients
           default: default
-          description: "Comma-separated list of email recipients; use 'default' unless testing"
+          description: "Comma-separated list of email recipients"
       - string:
           name: distro
           default: '{distro}'
@@ -474,4 +474,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 75c8ffba57096b22739cd190031f89f1
+# checksum: 334375a6cbbe759ecbf2f2999535dab3

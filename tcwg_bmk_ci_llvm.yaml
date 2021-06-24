@@ -182,7 +182,7 @@
       - string:
           name: mail_recipients
           default: default
-          description: "Comma-separated list of email recipients; use 'default' unless testing"
+          description: "Comma-separated list of email recipients"
       - string:
           name: distro
           default: '{distro}'
@@ -605,4 +605,4 @@
           ci_project_config: 'tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 27ef32be9e3530c5cb8db29e96b61bff
+# checksum: 8c5f55de645b50df0e9ec25062620c87

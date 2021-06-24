@@ -19,8 +19,12 @@
           description: "Extra parameters to pass to the build script"
       - string:
           name: mail_recipients
+#if PURPOSE_ci
           default: default
-          description: "Comma-separated list of email recipients; use 'default' unless testing"
+#elif PURPOSE_dev
+          default: first.last@linaro.org
+#endif
+          description: "Comma-separated list of email recipients"
       - string:
           name: distro
           default: '{distro}'
