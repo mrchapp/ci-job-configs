@@ -155,7 +155,7 @@
           build_script: 'tcwg_gnu-build.sh'
           components: '#{COMPONENTS}'
           rr_project: '#{RR}'
-          ci_project_config: '{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+          job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
 #if RR_tcwg_binutils || RR_tcwg_gcc
           docker_arch: '{docker_arch}'
 #endif
@@ -203,7 +203,7 @@
       - run-bisect:
           build_script: 'tcwg_gnu-build.sh'
           rr_project: '#{RR}'
-          ci_project_config: '{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+          job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
 #if RR_tcwg_binutils || RR_tcwg_gcc
           docker_arch: '{docker_arch}'
 #endif

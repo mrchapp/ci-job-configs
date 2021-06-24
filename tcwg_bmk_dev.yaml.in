@@ -64,7 +64,7 @@
           build_script: 'tcwg_bmk-build.sh'
           components: '{components}'
           rr_project: 'tcwg_bmk_dev_#{TOOLCHAIN}'
-          ci_project_config: 'tcwg_bmk_{hw}'
+          job_suffix: '-tcwg_bmk_{hw}'
     publishers:
         - build-publishers
 
@@ -95,6 +95,6 @@
           build_script: 'tcwg_bmk-build.sh'
           components: '{components}'
           rr_project: 'tcwg_bmk_dev_#{TOOLCHAIN}'
-          ci_project_config: 'tcwg_bmk_{hw}'
+          job_suffix: '-tcwg_bmk_{hw}'
     publishers:
         - bisect-publishers

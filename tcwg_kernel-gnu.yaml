@@ -235,11 +235,11 @@
             fi
           done
       - trigger-builds:
-          - project: '{rr_project}-build-{ci_project_config}'
+          - project: '{rr_project}-build{job_suffix}'
             parameter-factories:
               - factory: filebuild
                 file-pattern: artifacts/trigger-build-*
-          - project: '{rr_project}-bisect-{ci_project_config}'
+          - project: '{rr_project}-bisect{job_suffix}'
             property-file: artifacts/trigger-bisect
 
 - builder:
@@ -318,7 +318,7 @@
           steps:
             - trigger-followup-builds:
                 rr_project: '{rr_project}'
-                ci_project_config: '{ci_project_config}'
+                job_suffix: '{job_suffix}'
             - shell: |
                 #!/bin/bash
                 if [ -f artifacts/failures ]; then
@@ -405,7 +405,7 @@
             fi
       - trigger-followup-builds:
           rr_project: '{rr_project}'
-          ci_project_config: '{ci_project_config}'
+          job_suffix: '{job_suffix}'
 
 - publisher:
     name: bisect-publishers
@@ -473,7 +473,7 @@
           build_script: 'tcwg_kernel-build.sh'
           components: '{components}'
           rr_project: 'tcwg_kernel-gnu'
-          ci_project_config: '{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
+          job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - build-publishers
 
@@ -511,7 +511,7 @@
       - run-bisect:
           build_script: 'tcwg_kernel-build.sh'
           rr_project: 'tcwg_kernel-gnu'
-          ci_project_config: '{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
+          job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: 7aa288d595bcca92e35bd18f647293b7
+# checksum: 979a7c7c370b15db0cb4711839b70c6c

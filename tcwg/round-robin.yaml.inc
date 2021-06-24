@@ -224,11 +224,11 @@
             fi
           done
       - trigger-builds:
-          - project: '{rr_project}-build-{ci_project_config}'
+          - project: '{rr_project}-build{job_suffix}'
             parameter-factories:
               - factory: filebuild
                 file-pattern: artifacts/trigger-build-*
-          - project: '{rr_project}-bisect-{ci_project_config}'
+          - project: '{rr_project}-bisect{job_suffix}'
             property-file: artifacts/trigger-bisect
 
 - builder:
@@ -340,7 +340,7 @@
           steps:
             - trigger-followup-builds:
                 rr_project: '{rr_project}'
-                ci_project_config: '{ci_project_config}'
+                job_suffix: '{job_suffix}'
             - shell: |
                 #!/bin/bash
                 if [ -f artifacts/failures ]; then
@@ -450,7 +450,7 @@
             fi
       - trigger-followup-builds:
           rr_project: '{rr_project}'
-          ci_project_config: '{ci_project_config}'
+          job_suffix: '{job_suffix}'
 
 - publisher:
     name: bisect-publishers

@@ -69,8 +69,8 @@
           description: "Extra parameters to pass to the build script"
       - string:
           name: mail_recipients
-          default: default
-          description: "Comma-separated list of email recipients; use 'default' unless testing"
+          default: first.last@linaro.org
+          description: "Comma-separated list of email recipients"
       - string:
           name: distro
           default: '{distro}'
@@ -187,11 +187,11 @@
             fi
           done
       - trigger-builds:
-          - project: '{rr_project}-build-{ci_project_config}'
+          - project: '{rr_project}-build{job_suffix}'
             parameter-factories:
               - factory: filebuild
                 file-pattern: artifacts/trigger-build-*
-          - project: '{rr_project}-bisect-{ci_project_config}'
+          - project: '{rr_project}-bisect{job_suffix}'
             property-file: artifacts/trigger-bisect
 
 - builder:
@@ -268,7 +268,7 @@
           steps:
             - trigger-followup-builds:
                 rr_project: '{rr_project}'
-                ci_project_config: '{ci_project_config}'
+                job_suffix: '{job_suffix}'
             - shell: |
                 #!/bin/bash
                 if [ -f artifacts/failures ]; then
@@ -352,7 +352,7 @@
             fi
       - trigger-followup-builds:
           rr_project: '{rr_project}'
-          ci_project_config: '{ci_project_config}'
+          job_suffix: '{job_suffix}'
 
 - publisher:
     name: bisect-publishers
@@ -432,7 +432,7 @@
           build_script: 'tcwg_bmk-build.sh'
           components: '{components}'
           rr_project: 'tcwg_bmk_dev_llvm'
-          ci_project_config: 'tcwg_bmk_{hw}'
+          job_suffix: '-tcwg_bmk_{hw}'
     publishers:
         - build-publishers
 
@@ -463,7 +463,7 @@
           build_script: 'tcwg_bmk-build.sh'
           components: '{components}'
           rr_project: 'tcwg_bmk_dev_llvm'
-          ci_project_config: 'tcwg_bmk_{hw}'
+          job_suffix: '-tcwg_bmk_{hw}'
     publishers:
         - bisect-publishers
-# checksum: 173a11c4c6a316b590f4f123e0fadd1c
+# checksum: 62ffcc503cf910cb9ca9be0898ff7150
