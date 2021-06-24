@@ -2,14 +2,9 @@
 
 - project:
     name: tcwg_bmk_dev_#{TOOLCHAIN}
-    hw:
-      - tk1
-      - tx1
     jobs:
       - 'tcwg_bmk_dev_#{TOOLCHAIN}-build'
       - 'tcwg_bmk_dev_#{TOOLCHAIN}-bisect'
-      - 'tcwg_bmk_dev_#{TOOLCHAIN}-build-tcwg_bmk_{hw}'
-      - 'tcwg_bmk_dev_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}'
 
 - view:
     name: tcwg_bmk_dev_#{TOOLCHAIN}
@@ -19,19 +14,6 @@
       - tcwg_bmk_dev_#{TOOLCHAIN}-bisect
       - tcwg-benchmark
       - tcwg-benchmark-backend
-
-- job-template:
-    name: tcwg_bmk_dev_#{TOOLCHAIN}-build-tcwg_bmk_{hw}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
-- job-template:
-    name: tcwg_bmk_dev_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
 
 - job-template:
     name: tcwg_bmk_dev_#{TOOLCHAIN}-build

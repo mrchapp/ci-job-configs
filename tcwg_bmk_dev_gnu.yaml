@@ -372,14 +372,9 @@
 
 - project:
     name: tcwg_bmk_dev_gnu
-    hw:
-      - tk1
-      - tx1
     jobs:
       - 'tcwg_bmk_dev_gnu-build'
       - 'tcwg_bmk_dev_gnu-bisect'
-      - 'tcwg_bmk_dev_gnu-build-tcwg_bmk_{hw}'
-      - 'tcwg_bmk_dev_gnu-bisect-tcwg_bmk_{hw}'
 
 - view:
     name: tcwg_bmk_dev_gnu
@@ -389,19 +384,6 @@
       - tcwg_bmk_dev_gnu-bisect
       - tcwg-benchmark
       - tcwg-benchmark-backend
-
-- job-template:
-    name: tcwg_bmk_dev_gnu-build-tcwg_bmk_{hw}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
-- job-template:
-    name: tcwg_bmk_dev_gnu-bisect-tcwg_bmk_{hw}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
 
 - job-template:
     name: tcwg_bmk_dev_gnu-build
@@ -471,4 +453,4 @@
           job_suffix: ''
     publishers:
         - bisect-publishers
-# checksum: 566ebc37165853d9e783f96d132766c7
+# checksum: 359a5b5edf38d678971a2c38ea6f3004

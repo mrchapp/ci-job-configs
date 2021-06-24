@@ -376,14 +376,9 @@
 
 - project:
     name: tcwg_bmk_dev_llvm
-    hw:
-      - tk1
-      - tx1
     jobs:
       - 'tcwg_bmk_dev_llvm-build'
       - 'tcwg_bmk_dev_llvm-bisect'
-      - 'tcwg_bmk_dev_llvm-build-tcwg_bmk_{hw}'
-      - 'tcwg_bmk_dev_llvm-bisect-tcwg_bmk_{hw}'
 
 - view:
     name: tcwg_bmk_dev_llvm
@@ -393,19 +388,6 @@
       - tcwg_bmk_dev_llvm-bisect
       - tcwg-benchmark
       - tcwg-benchmark-backend
-
-- job-template:
-    name: tcwg_bmk_dev_llvm-build-tcwg_bmk_{hw}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
-- job-template:
-    name: tcwg_bmk_dev_llvm-bisect-tcwg_bmk_{hw}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
 
 - job-template:
     name: tcwg_bmk_dev_llvm-build
@@ -476,4 +458,4 @@
           job_suffix: ''
     publishers:
         - bisect-publishers
-# checksum: d522d3ab65780b8ec280ad2d6775ddc3
+# checksum: 7ec671bfd5d165bad04a41f63191cb01
