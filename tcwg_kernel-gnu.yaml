@@ -96,11 +96,11 @@
       - string:
           name: ci_config
           default: '{ci_config}'
-          description: "CI configuration ID"
+          description: "CI configuration ID; used as name of git branches and selects build flags"
       - string:
           name: extra_build_params
           default: ""
-          description: "Extra parameters to pass to the build script"
+          description: "Extra parameters to pass to the build script; can be used to override settings extracted from ci_project/ci_config"
       - string:
           name: mail_recipients
           default: default
@@ -514,4 +514,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: 979a7c7c370b15db0cb4711839b70c6c
+# checksum: c3a70f228c9d027e153c5a4eb231a652

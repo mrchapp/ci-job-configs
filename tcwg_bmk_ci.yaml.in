@@ -183,7 +183,6 @@
       - default-properties
       - build-blocker:
           blocking-jobs:
-            - "tcwg_bmk_dev_.*-tcwg_bmk_{hw}"
             - "tcwg_bmk_ci_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}"
           queue-scanning: 'ALL'
     parameters:
@@ -254,7 +253,6 @@
           # same regression tends to appear in multiple configurations,
           # run bisections for all configurations in-order.
           blocking-jobs:
-            - "tcwg_bmk_dev_.*-tcwg_bmk_{hw}"
             - "tcwg_bmk_ci_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}-#{TOOLCHAIN}-.*"
           queue-scanning: 'BUILDABLE'
     parameters:

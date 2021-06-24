@@ -167,15 +167,15 @@
       - string:
           name: ci_project
           default: '{ci_project}'
-          description: "CI project ID; used as namespace for git branches"
+          description: "CI project ID; used as namespace for git branches and selects benchmarking hardware"
       - string:
           name: ci_config
           default: '{ci_config}'
-          description: "CI configuration ID"
+          description: "CI configuration ID; used as name of git branches and selects build flags"
       - string:
           name: extra_build_params
           default: ""
-          description: "Extra parameters to pass to the build script"
+          description: "Extra parameters to pass to the build script; can be used to override settings extracted from ci_project/ci_config"
       - string:
           name: mail_recipients
           default: default
@@ -511,7 +511,6 @@
       - default-properties
       - build-blocker:
           blocking-jobs:
-            - "tcwg_bmk_dev_.*-tcwg_bmk_{hw}"
             - "tcwg_bmk_ci_gnu-bisect-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}"
           queue-scanning: 'ALL'
     parameters:
@@ -564,7 +563,6 @@
           # same regression tends to appear in multiple configurations,
           # run bisections for all configurations in-order.
           blocking-jobs:
-            - "tcwg_bmk_dev_.*-tcwg_bmk_{hw}"
             - "tcwg_bmk_ci_gnu-bisect-tcwg_bmk_{hw}-gnu-.*"
           queue-scanning: 'BUILDABLE'
     parameters:
@@ -590,4 +588,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 38574d209b031957658a6b3ee0dd5c80
+# checksum: b1a04ba70bb59b5f6c62b94ab1521268

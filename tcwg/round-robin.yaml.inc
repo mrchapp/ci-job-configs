@@ -8,15 +8,19 @@
       - string:
           name: ci_project
           default: '{ci_project}'
+#if RR_tcwg_bmk
+          description: "CI project ID; used as namespace for git branches and selects benchmarking hardware"
+#else
           description: "CI project ID; used as namespace for git branches"
+#endif
       - string:
           name: ci_config
           default: '{ci_config}'
-          description: "CI configuration ID"
+          description: "CI configuration ID; used as name of git branches and selects build flags"
       - string:
           name: extra_build_params
           default: ""
-          description: "Extra parameters to pass to the build script"
+          description: "Extra parameters to pass to the build script; can be used to override settings extracted from ci_project/ci_config"
       - string:
           name: mail_recipients
 #if PURPOSE_ci

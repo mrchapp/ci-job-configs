@@ -79,11 +79,11 @@
       - string:
           name: ci_config
           default: '{ci_config}'
-          description: "CI configuration ID"
+          description: "CI configuration ID; used as name of git branches and selects build flags"
       - string:
           name: extra_build_params
           default: ""
-          description: "Extra parameters to pass to the build script"
+          description: "Extra parameters to pass to the build script; can be used to override settings extracted from ci_project/ci_config"
       - string:
           name: mail_recipients
           default: default
@@ -474,4 +474,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: f2c5b6335ce7aa313f0b537a2a226d43
+# checksum: 7f325db54f6a99ab801293cd99cf546c

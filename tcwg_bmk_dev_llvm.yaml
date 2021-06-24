@@ -58,15 +58,15 @@
       - string:
           name: ci_project
           default: '{ci_project}'
-          description: "CI project ID; used as namespace for git branches"
+          description: "CI project ID; used as namespace for git branches and selects benchmarking hardware"
       - string:
           name: ci_config
           default: '{ci_config}'
-          description: "CI configuration ID"
+          description: "CI configuration ID; used as name of git branches and selects build flags"
       - string:
           name: extra_build_params
           default: ""
-          description: "Extra parameters to pass to the build script"
+          description: "Extra parameters to pass to the build script; can be used to override settings extracted from ci_project/ci_config"
       - string:
           name: mail_recipients
           default: first.last@linaro.org
@@ -377,12 +377,11 @@
 - project:
     name: tcwg_bmk_dev_llvm
     hw:
-      - tk1:
-          node: tcwg-x86_64-build_bmk_tk1
-      - tx1:
-          node: tcwg-x86_64-build_bmk_tx1
-    components: binutils gcc glibc llvm
+      - tk1
+      - tx1
     jobs:
+      - 'tcwg_bmk_dev_llvm-build'
+      - 'tcwg_bmk_dev_llvm-bisect'
       - 'tcwg_bmk_dev_llvm-build-tcwg_bmk_{hw}'
       - 'tcwg_bmk_dev_llvm-bisect-tcwg_bmk_{hw}'
 
@@ -390,27 +389,38 @@
     name: tcwg_bmk_dev_llvm
     view-type: list
     job-name:
-      - tcwg_bmk_dev_llvm-build-tcwg_bmk_tk1
-      - tcwg_bmk_dev_llvm-bisect-tcwg_bmk_tk1
-      - tcwg_bmk_dev_llvm-build-tcwg_bmk_tx1
-      - tcwg_bmk_dev_llvm-bisect-tcwg_bmk_tx1
-      - tcwg-benchmark-tk1
-      - tcwg-benchmark-tx1
+      - tcwg_bmk_dev_llvm-build
+      - tcwg_bmk_dev_llvm-bisect
+      - tcwg-benchmark
+      - tcwg-benchmark-backend
 
 - job-template:
     name: tcwg_bmk_dev_llvm-build-tcwg_bmk_{hw}
+    project-type: freestyle
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
+- job-template:
+    name: tcwg_bmk_dev_llvm-bisect-tcwg_bmk_{hw}
+    project-type: freestyle
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
+
+- job-template:
+    name: tcwg_bmk_dev_llvm-build
     project-type: freestyle
     defaults: global
     properties:
       - default-properties
       - build-blocker:
           blocking-jobs:
-            - "tcwg_bmk_dev_.*-bisect-tcwg_bmk_{hw}"
+            - "tcwg_bmk_dev_llvm-bisect"
           queue-scanning: 'ALL'
     parameters:
       - build-parameters:
-          ci_project: tcwg_bmk-YOUR_ID
-          ci_config: llvm-release-aarch64-spec2k6-O2
+          ci_project: 'tcwg_bmk_NAME_llvm_HW'
+          ci_config: llvm-master-aarch64-spec2k6-O2
           binutils_url: https://git.linaro.org/toolchain/ci/binutils-gdb.git
           gcc_url: https://git.linaro.org/toolchain/ci/gcc.git
           glibc_url: https://git.linaro.org/toolchain/ci/glibc.git
@@ -418,9 +428,9 @@
           default_branch: baseline
           distro: lts_1
     disabled: false
-    node: '{node}'
+    node: tcwg-x86_64-build
     concurrent: false
-    display-name: 'TCWG Build tcwg_bmk_{hw}/llvm'
+    display-name: 'TCWG Build tcwg_bmk_dev_llvm'
     workspace: workspace/tcwg_bmk_$EXECUTOR_NUMBER
     scm:
       - build-scms
@@ -430,27 +440,27 @@
     builders:
       - run-build:
           build_script: 'tcwg_bmk-build.sh'
-          components: '{components}'
+          components: binutils gcc glibc llvm
           rr_project: 'tcwg_bmk_dev_llvm'
-          job_suffix: '-tcwg_bmk_{hw}'
+          job_suffix: ''
     publishers:
         - build-publishers
 
 - job-template:
-    name: tcwg_bmk_dev_llvm-bisect-tcwg_bmk_{hw}
+    name: tcwg_bmk_dev_llvm-bisect
     project-type: freestyle
     defaults: global
     properties:
       - default-properties
     parameters:
       - bisect-parameters:
-          ci_project: 'tcwg_bmk-YOUR_ID'
-          ci_config: llvm-release-aarch64-spec2k6-O2
+          ci_project: 'tcwg_bmk_NAME_llvm_HW'
+          ci_config: llvm-master-aarch64-spec2k6-O2
           distro: lts_1
     disabled: false
-    node: '{node}'
+    node: tcwg-x86_64-build
     concurrent: false
-    display-name: 'TCWG Bisect tcwg_bmk_{hw}/llvm'
+    display-name: 'TCWG Bisect tcwg_bmk_dev_llvm'
     workspace: workspace/tcwg_bmk_$EXECUTOR_NUMBER
     scm:
       - jenkins-scripts
@@ -461,9 +471,9 @@
     builders:
       - run-bisect:
           build_script: 'tcwg_bmk-build.sh'
-          components: '{components}'
+          components: binutils gcc glibc llvm
           rr_project: 'tcwg_bmk_dev_llvm'
-          job_suffix: '-tcwg_bmk_{hw}'
+          job_suffix: ''
     publishers:
         - bisect-publishers
-# checksum: 62ffcc503cf910cb9ca9be0898ff7150
+# checksum: d522d3ab65780b8ec280ad2d6775ddc3
