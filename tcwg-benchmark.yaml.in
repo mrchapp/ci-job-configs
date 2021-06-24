@@ -204,10 +204,11 @@
 
             # Retry benchmarking once, just in case we selected a board that
             # recently went offline.
-            retry_bmk=true
+            bmk_retry=true
 
             while true; do
               for lock in $(set +f; ls -tr $HOME/boards/$NODE_NAME-*.lock); do
+                bmk_start=$(date +%s)
                 (
                   flock -en -E 124 9
                   touch $lock
@@ -245,11 +246,17 @@
                   if [ $res = 124 ]; then
                     # Try to lock next board.
                     continue
-                  elif [ $res = 125 ] && $retry_bmk; then
-                    # Failed to prepare board for benchmarking,
-                    # retry with a different board.
-                    retry_bmk=false
-                    continue
+                  elif $bmk_retry; then
+                    bmk_retry=false
+                    if [ $res = 125 ]; then
+                      # Failed to prepare board for benchmarking,
+                      # retry with a different board.
+                      continue
+                    elif [ $(($(date +%s) - $bmk_start)) -le 300 ]; then
+                      # Benchmarking failed due to /something/ within 5 minutes
+                      # -- give it another chance.
+                      continue
+                    fi
                   fi
                 fi
                 exit $res
