@@ -282,7 +282,7 @@ if false; then
 
     # Submit sanity test run
     if [ ! -z "${SANITY_TEST_TEMPLATES}" ]; then
-      python ${BASE_PATH}/submit_for_testing.py \
+      python3 ${BASE_PATH}/submit_for_testing.py \
         --device-type ${DEVICE_TYPE} \
         --build-number ${BUILD_NUMBER} \
         --lava-server ${LAVA_SERVER} \
@@ -319,7 +319,7 @@ if false; then
   # templates rely on DEVICE_TYPE. so we have to actually set DEVICE_TYPE here.
   export ORIGINAL_DEVICE_TYPE=${DEVICE_TYPE}
   export DEVICE_TYPE=${QEMU_DEVICE_TYPE}
-  python ${BASE_PATH}/submit_for_testing.py \
+  python3 ${BASE_PATH}/submit_for_testing.py \
     --device-type ${QEMU_DEVICE_TYPE} \
     --build-number ${BUILD_NUMBER} \
     --lava-server ${LAVA_SERVER} \
@@ -334,7 +334,7 @@ fi
 
 # Submit full test run
 if [ ! -z "${FULL_TEST_TEMPLATES}" ] && [ ! -z "${FULL_TEST_TEMPLATES}" ]; then
-  python ${BASE_PATH}/submit_for_testing.py \
+  python3 ${BASE_PATH}/submit_for_testing.py \
     --device-type ${DEVICE_TYPE} \
     --build-number ${BUILD_NUMBER} \
     --lava-server ${LAVA_SERVER} \
