@@ -129,7 +129,19 @@
             choices:
               - parallel
               - serial
-            description: 'Run benchmarks in parallel or serially.'
+            description: |
+              parallel - Run benchmarks in parallel on all CPU cores.
+              serial - Run benchmarks serially on a single CPU core.
+        - choice:
+            name: board_selection
+            choices:
+              - balance
+              - 1board
+              - allboards
+            description: |
+              balance - Distribute benchmarks across all available boards.
+              1board - Run all benchmarks on a single board.
+              allboards - Run all benchmarks on all boards (e.g., to check that all boards give the same performance result).
         - choice:
             name: image_arch
             choices:
@@ -272,4 +284,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: fa50ffa3d2fba6ad5cc195adedf11053
+# checksum: c9b8a9ca9b7885a17898987e3de7f895

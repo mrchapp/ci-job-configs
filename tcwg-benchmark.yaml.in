@@ -78,7 +78,19 @@
             choices:
               - parallel
               - serial
-            description: 'Run benchmarks in parallel or serially.'
+            description: |
+              parallel - Run benchmarks in parallel on all CPU cores.
+              serial - Run benchmarks serially on a single CPU core.
+        - choice:
+            name: board_selection
+            choices:
+              - balance
+              - 1board
+              - allboards
+            description: |
+              balance - Distribute benchmarks across all available boards.
+              1board - Run all benchmarks on a single board.
+              allboards - Run all benchmarks on all boards (e.g., to check that all boards give the same performance result).
         - choice:
             name: image_arch
             choices:
@@ -183,7 +195,8 @@
                        --bench_list "$bench_list" \
                        --bmk_hw "$bmk_hw" \
                        --n_boards "$n_boards" \
-                       --run_profile "$run_profile")
+                       --run_profile "$run_profile" \
+                       --board_selection "$board_selection")
       - trigger-builds:
           - project: tcwg-benchmark_backend
             block: true
