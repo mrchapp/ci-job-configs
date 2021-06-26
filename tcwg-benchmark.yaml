@@ -260,4 +260,15 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: dd0a65ef7e167304fbbda3a39aaabcab
+      - email-ext:
+          recipients: |
+            ${FILE,path="artifacts/jenkins/mail-recipients.txt"}
+          content-type: text
+          body: |
+            ${FILE,path="artifacts/jenkins/mail-body.txt"}
+          failure: true
+          success: true
+          aborted: true
+          send-to:
+            - recipients
+# checksum: 1b366c3a7e993aba909db2a64f28dd97

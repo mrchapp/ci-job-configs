@@ -262,15 +262,21 @@
                   elif $bmk_retry; then
                     bmk_retry=false
                     if [ $res = 125 ]; then
-                      # Failed to prepare board for benchmarking,
-                      # retry with a different board.
+                      echo "Failed to prepare board $lock for benchmarking, retry with a different board." >> artifacts/jenkins/mail-body.txt
                       continue
                     elif [ $(($(date +%s) - $bmk_start)) -le 300 ]; then
-                      # Benchmarking failed due to /something/ within 5 minutes
-                      # -- give it another chance.
+                      echo "Benchmarking on board $lock failed due to /something/ within 5 minutes -- give it another chance." >> artifacts/jenkins/mail-body.txt
                       continue
                     fi
                   fi
+                  echo "Benchmarking on board $lock failed -- giving up." >> artifacts/jenkins/mail-body.txt
+                fi
+                if [ -f artifacts/jenkins/mail-body.txt ]; then
+                  if [ $res = 0 ]; then
+                    echo "Benchmarking succeeded" >> artifacts/jenkins/mail-body.txt
+                  fi
+                  echo "$BUILD_URL" >> artifacts/jenkins/mail-body.txt
+                  echo "maxim.kuvyrkov@linaro.org" > artifacts/jenkins/mail-recipients.txt
                 fi
                 exit $res
               done
@@ -286,3 +292,14 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
+      - email-ext:
+          recipients: |
+            ${FILE,path="artifacts/jenkins/mail-recipients.txt"}
+          content-type: text
+          body: |
+            ${FILE,path="artifacts/jenkins/mail-body.txt"}
+          failure: true
+          success: true
+          aborted: true
+          send-to:
+            - recipients
