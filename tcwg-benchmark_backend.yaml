@@ -136,8 +136,8 @@
             name: board_selection
             choices:
               - balance
-              - 1board
-              - allboards
+              - one_board
+              - all_boards
             description: |
               balance - Distribute benchmarks across all available boards.
               1board - Run all benchmarks on a single board.
@@ -284,4 +284,4 @@
           artifacts: 'artifacts/**'
           latest-only: false
           allow-empty: true
-# checksum: c9b8a9ca9b7885a17898987e3de7f895
+# checksum: fd45337ec00f8ccf695b708c2dfb7db3

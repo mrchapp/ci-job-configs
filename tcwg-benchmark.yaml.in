@@ -85,8 +85,8 @@
             name: board_selection
             choices:
               - balance
-              - 1board
-              - allboards
+              - one_board
+              - all_boards
             description: |
               balance - Distribute benchmarks across all available boards.
               1board - Run all benchmarks on a single board.
