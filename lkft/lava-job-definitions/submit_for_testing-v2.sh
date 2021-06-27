@@ -82,6 +82,16 @@ function update_device_template(){
         sed -i "s|${default_db845c_aosp_gpu_url}|{{DOWNLOAD_URL}}/${f_img_name}|" "${f_device_template}"
     fi
 
+    if [ -n "${TUXSUITE_DOWNLOAD_URL}" ]; then
+        # for case that TUXSUITE_DOWNLOAD_URL specified,
+        # the images will be genereated on the lava side,
+        # so no need to update the REFERENCE_BUILD_URL or DOWNLOAD_URL any more
+
+        # and for the hikey8.1 case, vendor.img will be generated with the cache.img by the linaro-lkft.sh
+
+        return
+
+    fi
     # DOWNLOAD_URL is where the generated files stored
     # replace REFERENCE_BUILD_URL with DOWNLOAD_URL
     sed -i "s|{{REFERENCE_BUILD_URL}}/${f_img_name}|{{DOWNLOAD_URL}}/${f_img_name}|" "${f_device_template}"
@@ -116,6 +126,8 @@ function download_fingerprint(){
 function submit_jobs_for_config(){
     local build_config=$1 && shift
 
+    export LKFT_BUILD_CONFIG="${build_config}"
+
     local f_qareport_urls="qareport_url.txt"
     [ -z "${DEFAULT_TEST_LAVA_JOB_PRIORITY}" ] && DEFAULT_TEST_LAVA_JOB_PRIORITY="medium"
 
@@ -139,6 +151,7 @@ function submit_jobs_for_config(){
         fi
     fi
     check_environments
+    export PUBLISH_FILES="${PUBLISH_FILES}"
     [ -z "${TEST_LAVA_JOB_GROUP}" ] && TEST_LAVA_JOB_GROUP=lkft
     [ -n "${TEST_LAVA_JOB_PRIORITY}" ] && DEFAULT_TEST_LAVA_JOB_PRIORITY="${TEST_LAVA_JOB_PRIORITY}"
     [ -z "${TEST_LAVA_JOB_PRIORITY}" ] && TEST_LAVA_JOB_PRIORITY="${DEFAULT_TEST_LAVA_JOB_PRIORITY}"
@@ -219,6 +232,14 @@ function submit_jobs_for_config(){
     else
         # unset IMAGE_SUPPORTED_VENDOR_BOOT when IMAGE_SUPPORTED_VENDOR_BOOT is not specified or specified as false explicitly
         unset IMAGE_SUPPORTED_VENDOR_BOOT
+    fi
+
+    if [ -n "${TUXSUITE_DOWNLOAD_URL}" ]; then
+        # for case from gitlab pipeline
+        # need to export BUILD_URL="${CI_PIPELINE_URL}",  BUILD_NUMBER="${CI_BUILD_ID}", JOB_NAME="${REPO_NAME}/${KERNEL_BRANCH}"
+        export TUXSUITE_DOWNLOAD_URL
+    else
+        unset TUXSUITE_DOWNLOAD_URL
     fi
 
     ## clean up the old changes for last build
