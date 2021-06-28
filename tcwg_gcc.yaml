@@ -14,10 +14,10 @@
           distro: lts_1
     target:
       - aarch64:
-          node: tcwg-armv8_64
+          node: tcwg-build && tcwg-armv8_64
           docker_arch: arm64
       - arm:
-          node: tcwg-armv8_32
+          node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
     disabled: false
     type_of_test:
@@ -28,8 +28,7 @@
       - bootstrap_profiled_lto
       - bootstrap_profiled_lto_lean
       - bootstrap_ubsan
-      - check_bootstrap:
-          disabled: true
+      - check_bootstrap
       - check_bootstrap_lto:
           disabled: true
     jobs:
@@ -441,7 +440,7 @@
           gcc_branch: '{gcc_branch}'
     triggers:
       - pollscm:
-          cron: 'H H H/2 * *'
+          cron: 'H H H/7 * *'
     wrappers:
       - build-wrappers:
           timeout: 1000
@@ -456,11 +455,6 @@
           type_of_test: '{type_of_test}'
     publishers:
       - build-publishers
-      - email-ext:
-          recipients: 'tcwg-gcc@linaro.org'
-          aborted: true
-          failure: false
-          success: false
 
 - job-template:
     name: tcwg_gcc-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}
@@ -500,4 +494,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: d4db3586ab385eef4a0207db0457f3d6
+# checksum: 06863fd09a87f82eb50895aca690e805

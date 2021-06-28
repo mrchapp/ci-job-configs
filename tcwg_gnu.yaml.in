@@ -55,10 +55,10 @@
     node: tcwg-x86_64-build
 #else
       - aarch64:
-          node: tcwg-armv8_64
+          node: tcwg-build && tcwg-armv8_64
           docker_arch: arm64
       - arm:
-          node: tcwg-armv8_32
+          node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
 #endif
     disabled: false
@@ -77,8 +77,7 @@
       - bootstrap_profiled_lto
       - bootstrap_profiled_lto_lean
       - bootstrap_ubsan
-      - check_bootstrap:
-          disabled: true
+      - check_bootstrap
       - check_bootstrap_lto:
           disabled: true
 #endif
@@ -146,7 +145,7 @@
 #endif
     triggers:
       - pollscm:
-          cron: 'H H H/2 * *'
+          cron: 'H H H/7 * *'
     wrappers:
       - build-wrappers:
           timeout: 1000
@@ -163,11 +162,6 @@
           type_of_test: '{type_of_test}'
     publishers:
       - build-publishers
-      - email-ext:
-          recipients: 'tcwg-gcc@linaro.org'
-          aborted: true
-          failure: false
-          success: false
 
 - job-template:
     name: #{RR}-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}

@@ -454,7 +454,7 @@
           qemu_branch: '{qemu_branch}'
     triggers:
       - pollscm:
-          cron: 'H H H/2 * *'
+          cron: 'H H H/7 * *'
     wrappers:
       - build-wrappers:
           timeout: 1000
@@ -468,11 +468,6 @@
           type_of_test: '{type_of_test}'
     publishers:
       - build-publishers
-      - email-ext:
-          recipients: 'tcwg-gcc@linaro.org'
-          aborted: true
-          failure: false
-          success: false
 
 - job-template:
     name: tcwg_cross-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}
@@ -511,4 +506,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 7f8bf639fe13a94183a71aefa32e19e1
+# checksum: 58dc6982e94f440fb0fa41a4cfa8a037
