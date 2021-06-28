@@ -28,8 +28,7 @@
     disabled: false
     type_of_test:
       - build_cross
-      - check_cross:
-          disabled: true
+      - check_cross
     jobs:
       - 'tcwg_cross-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
       - 'tcwg_cross-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
@@ -506,4 +505,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 58dc6982e94f440fb0fa41a4cfa8a037
+# checksum: 21bce8a7e8f98ad1356c6627d2091418

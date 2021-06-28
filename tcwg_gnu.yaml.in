@@ -67,8 +67,7 @@
       - check_binutils
 #elif RR_tcwg_cross
       - build_cross
-      - check_cross:
-          disabled: true
+      - check_cross
 #elif RR_tcwg_gcc
       - bootstrap_O1
       - bootstrap_O3
