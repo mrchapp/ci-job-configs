@@ -7,7 +7,9 @@ if [ -z "${DRY_RUN}" ]; then
   export CONFIG_PATH=$(realpath configs)
 
   # Install jinja2-cli and ruamel.yaml, required by submit_for_testing.py
-  pip install --user --force-reinstall jinja2-cli ruamel.yaml==0.16.13
+  pip install --user ruamel.yaml.clib==0.2.2
+  pip install --user ruamel.yaml==0.16.13
+  pip install --user jinja2-cli
 else
   export CONFIG_PATH=$(realpath ../)
 fi
