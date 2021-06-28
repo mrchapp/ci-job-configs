@@ -8,7 +8,6 @@
     hw:
       - stm32:
           target: arm_eabi
-          node: tcwg-x86_64-dev-02
     toolchain_name: gnu_eabi
     components: binutils gcc newlib
     toolchain_ver:
@@ -514,7 +513,7 @@
           default_branch: default
           distro: '{distro}'
     disabled: false
-    node: '{node}'
+    node: tcwg-x86_64-dev-02
     concurrent: false
     display-name: 'TCWG Build tcwg_bmk_{hw}/gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     workspace: workspace/tcwg_bmk_$EXECUTOR_NUMBER
@@ -579,4 +578,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 605713ccc00912a9dbf1ff1b7adf98fc
+# checksum: e00f0dc25f49689f504f61f0bb96e102

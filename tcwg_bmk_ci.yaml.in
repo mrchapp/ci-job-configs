@@ -15,20 +15,15 @@
 #if TOOLCHAIN_gnu_eabi
       - stm32:
           target: arm_eabi
-          node: tcwg-x86_64-dev-02
 #else
       - sq:
           target: arm
-          node: tcwg-x86_64-build_bmk_tk1
       - sq:
           target: aarch64
-          node: tcwg-x86_64-build_bmk_tx1
       - tk1:
           target: arm
-          node: tcwg-x86_64-build_bmk_tk1
       - tx1:
           target: aarch64
-          node: tcwg-x86_64-build_bmk_tx1
 #endif
     toolchain_name: #{TOOLCHAIN}
     components: #{COMPONENTS}
@@ -203,7 +198,11 @@
           default_branch: default
           distro: '{distro}'
     disabled: false
-    node: '{node}'
+#if TOOLCHAIN_gnu_eabi
+    node: tcwg-x86_64-dev-02
+#else
+    node: tcwg-x86_64-build_bmk
+#endif
     concurrent: false
     display-name: 'TCWG Build tcwg_bmk_{hw}/#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
     workspace: workspace/tcwg_bmk_$EXECUTOR_NUMBER

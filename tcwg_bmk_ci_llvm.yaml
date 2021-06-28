@@ -9,16 +9,12 @@
     hw:
       - sq:
           target: arm
-          node: tcwg-x86_64-build_bmk_tk1
       - sq:
           target: aarch64
-          node: tcwg-x86_64-build_bmk_tx1
       - tk1:
           target: arm
-          node: tcwg-x86_64-build_bmk_tk1
       - tx1:
           target: aarch64
-          node: tcwg-x86_64-build_bmk_tx1
     toolchain_name: llvm
     components: binutils gcc glibc llvm
     toolchain_ver:
@@ -536,7 +532,7 @@
           default_branch: default
           distro: '{distro}'
     disabled: false
-    node: '{node}'
+    node: tcwg-x86_64-build_bmk
     concurrent: false
     display-name: 'TCWG Build tcwg_bmk_{hw}/llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     workspace: workspace/tcwg_bmk_$EXECUTOR_NUMBER
@@ -603,4 +599,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 010005f9c9b606e44df2b60ea1d2aa62
+# checksum: edcd779d9e0a6ba509d1d487d75d041b
