@@ -49,6 +49,7 @@ protocols:
 {% block protocols %}
   lava-lxc:
     name: lxc-test
+    template: ubuntu
     distribution: ubuntu
     release: bionic
     arch: amd64

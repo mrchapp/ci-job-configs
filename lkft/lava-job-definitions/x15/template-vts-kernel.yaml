@@ -36,6 +36,7 @@ secrets:
 protocols:
   lava-lxc:
     name: lxc-x15-test
+    template: ubuntu
     distribution: ubuntu
     release: bionic
     arch: amd64

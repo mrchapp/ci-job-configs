@@ -31,6 +31,7 @@ metadata:
 protocols:
   lava-lxc:
     name: lxc-hikey-test
+    template: ubuntu
     distribution: ubuntu
     release: bionic
     arch: amd64
