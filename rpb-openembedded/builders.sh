@@ -151,8 +151,14 @@ case "${MACHINE}" in
 esac
 
 time bitbake ${IMAGES}
-
 DEPLOY_DIR_IMAGE=$(bitbake -e | grep "^DEPLOY_DIR_IMAGE="| cut -d'=' -f2 | tr -d '"')
+
+if [ "${BUILD_SDK}" ]; then
+  time bitbake ${BUILD_SDK} -c populate_sdk
+  SDK_DEPLOY=$(bitbake -e ${BUILD_SDK} -c populate_sdk | grep "^SDK_DEPLOY="| cut -d'=' -f2 | tr -d '"')
+
+  cp $SDK_DEPLOY/* $DEPLOY_DIR_IMAGE/
+fi
 
 # Prepare files to publish
 rm -f ${DEPLOY_DIR_IMAGE}/*.txt
