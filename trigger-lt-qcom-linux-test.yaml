@@ -46,6 +46,7 @@
             rm -rf configs
             git clone --depth 1 http://git.linaro.org/ci/job/configs.git
 
+
             set +ex
             ./configs/lt-qcom-linux-test/kernelci.py ${{QCOMLT_KERNELCI_TOKEN}} {kernelci} arm64 defconfig lt_qcom_parameters
             ret=$?
