@@ -41,7 +41,8 @@ if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}; th
 fi
 
 # Install ruamel.yaml (version pinned for Python-2.7 compat)
-pip install --user --force-reinstall 'ruamel.yaml<0.17'
+pip install --user 'ruamel.yaml.clib==0.2.2'
+pip install --user 'ruamel.yaml<0.17'
 
 set -ex
 
