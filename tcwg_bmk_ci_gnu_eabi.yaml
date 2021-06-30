@@ -561,7 +561,7 @@
           ci_config: 'gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
           distro: '{distro}'
     disabled: false
-    node: '{node}'
+    node: tcwg-x86_64-dev-02
     concurrent: false
     display-name: 'TCWG Bisect tcwg_bmk_{hw}/gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     workspace: workspace/tcwg_bmk_$EXECUTOR_NUMBER
@@ -578,4 +578,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: e00f0dc25f49689f504f61f0bb96e102
+# checksum: 4c31bf11906c602f3d8917d6a011187f
