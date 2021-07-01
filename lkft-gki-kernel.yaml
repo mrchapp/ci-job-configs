@@ -99,6 +99,7 @@
                         ;;
                     "Xandroid12-5.10-lts")
                         build_configs="${build_configs_12_510_lts}"
+                        ;;
                     "Xandroid13-5.10")
                         build_configs="${build_configs_13_510}"
                         ;;
