@@ -29,7 +29,7 @@ metadata:
 protocols:
   lava-lxc:
     name: lxc-x15-test
-    template: ubuntu
+    template: download
     distribution: ubuntu
     release: bionic
     arch: amd64
