@@ -39,9 +39,6 @@
         - string:
             name: BASE_URL
             default: 'https://snapshots.linaro.org/'
-        - string:
-            name: BUILD_SDK
-            default: 'rpb-console-image'
     disabled: false
     node: master
     display-name: 'Qualcomm OpenEmbedded RPB (master)'
