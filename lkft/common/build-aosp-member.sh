@@ -117,6 +117,7 @@ function build_android(){
 
 # clean workspace to save space
 function clean_workspace(){
+    # Delete sources after build to save space
     rm -fr "${ANDROID_ROOT}"
 }
 
@@ -146,8 +147,8 @@ function main(){
     build_android
 
     if ${IN_JENKINS} && [ -n "${WORKSPACE}" ]; then
-        clean_workspace
         export_parameters
+        clean_workspace
     fi
 }
 

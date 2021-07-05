@@ -73,7 +73,7 @@ function build_android(){
         bash -x ./linaro-build.sh -tp "${TARGET_PRODUCT}" ${opt_maniefst_url} ${opt_manfest_branch}
     fi
     if [ "X${TARGET_PRODUCT}X" = "Xaosp_arm64X" ]; then
-        # for cts and vts
+        # for cts vts
         DIR_PUB_SRC_PRODUCT="${ANDROID_ROOT}/out/target/product/generic_arm64"
     else
         DIR_PUB_SRC_PRODUCT="${ANDROID_ROOT}/out/target/product/${TARGET_PRODUCT}"
@@ -131,12 +131,8 @@ function build_android(){
 
 # clean workspace to save space
 function clean_workspace(){
-    cd "${ANDROID_ROOT}"
     # Delete sources after build to save space
-    rm -rf art/ dalvik/ kernel/ bionic/ developers/ libcore/ sdk/ bootable/ development/
-    rm -fr libnativehelper/ system/ build/ device/ test/ build-info/ docs/ packages/
-    rm -fr toolchain/ .ccache/ external/ pdk/ tools/ compatibility/ frameworks/
-    rm -fr platform_testing/ vendor/ cts/ hardware/ prebuilts/
+    rm -fr "${ANDROID_ROOT}"
 }
 
 # export parameters for publish/job submission steps
@@ -165,8 +161,8 @@ function main(){
     build_android
 
     if ${IN_JENKINS} && [ -n "${WORKSPACE}" ]; then
-        clean_workspace
         export_parameters
+        clean_workspace
     fi
 }
 
