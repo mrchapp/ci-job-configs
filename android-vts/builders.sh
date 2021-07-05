@@ -29,6 +29,7 @@ cp out/host/linux-x86/vts/android-vts.zip pub/
 
 # Delete sources after build to save space
 rm -rf art/ dalvik/ kernel/ bionic/ developers/ libcore/ sdk/ bootable/ development/ libnativehelper/ system/ build/ device/ test/ build-info/ docs/ packages/ toolchain/ .ccache/ external/ pdk/ tools/ compatibility/ frameworks/ platform_testing/ vendor/ cts/ hardware/ prebuilts/ linaro* out/
+rm -fr .repo
 
 # need to convert '_' to '-'
 # otherwise, aosp_arm64-userdebug will be translated to '~aosp/arm64-userdebug'
