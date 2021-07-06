@@ -145,22 +145,6 @@ case "${ORIG_MACHINE}" in
 esac
 
 build_ledgerp_docs() {
-	if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 update; then
-		echo "INFO: apt update error - try again in a moment"
-		sleep 15
-		sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 update || true
-	fi
-	# Install deps
-	pkg_list="python-pip python-sphinx texlive texlive-latex-extra libalgorithm-diff-perl \
-                  texlive-humanities texlive-generic-recommended texlive-generic-extra \
-                  latexmk"
-	if ! sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}; then
-	  echo "INFO: apt install error - try again in a moment"
-	  sleep 15
-	  sudo DEBIAN_FRONTEND=noninteractive apt-get -q=2 install -y ${pkg_list}
-	fi
-	pip install --user --upgrade Sphinx
-	export SPHINXBUILD=~/.local/bin/sphinx-build
 	# Build docs
 	cd ../layers/ledge-doc
 	make latexpdf
