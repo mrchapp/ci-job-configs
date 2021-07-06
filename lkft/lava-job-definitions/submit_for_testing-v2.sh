@@ -123,6 +123,86 @@ function download_fingerprint(){
     fi
 }
 
+function create_or_update_project(){
+    # to avoid the leaking fo the REGISTER_CALLBACK_TOKEN
+    set +x
+    if [ -z "${QA_REPORTS_TOKEN}" ]; then
+        set -x
+        return
+    fi
+
+    local qa_server="${1}"
+    local qa_team_group="${2}"
+    local qa_project_private="${3}"
+    local qa_project_slug="${4}"
+    local qa_project_name="${5}"
+
+    if [ -z "${qa_project_name}" ]; then
+        qa_project_name="${qa_project_slug}"
+    fi
+
+    qa_project_plugins="linux_log_parser,tradefed"
+
+    qa_project_public_settings='PLUGINS_TRADEFED_EXTRACT_AGGREGATED: True
+CI_LAVA_INFRA_ERROR_MESSAGES:
+- Connection closed
+- lava_test_shell connection dropped.
+- fastboot-flash-action timed out
+- lava-test-shell timed out after 1200 seconds
+- "tradefed - adb device lost"
+- "Download finished ([0-9]+ bytes) but was not expected size ([0-9]+ bytes), check your networking."
+- Unable to fetch git repository
+- "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
+- "Device NOT found!"
+- /usr/local/lab-scripts/cbrxd_hub_control
+- "lava-docker-test-shell timed out after [0-9]+ seconds"
+- "lxc-apt-install timed out after [0-9]+ seconds"
+- "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
+- "wait-device-boardid timed out after [0-9]+ seconds"
+'
+
+    if [ -n "${REGISTER_CALLBACK_TOKEN}" ]; then
+        callback_headers_for_echo="CALLBACK_HEADERS: {PRIVATE-TOKEN: ******}"
+        callback_headers="CALLBACK_HEADERS: {PRIVATE-TOKEN: ${REGISTER_CALLBACK_TOKEN}}"
+
+        qa_project_settings="${callback_headers}
+${qa_project_public_settings}"
+        qa_project_settings_for_echo="${callback_headers_for_echo}
+${qa_project_public_settings}"
+    else
+        qa_project_settings="${qa_project_public_settings}"
+        qa_project_settings_for_echo="${qa_project_public_settings}"
+    fi
+
+    qa_projcect_public_private="--is-public"
+    if [ -n "${qa_project_private}" ] && [ "${qa_project_private}" = "true" ] ; then
+        qa_projcect_public_private="--is-private"
+    fi
+
+    # enable --no-overwrite to avoid updating on the existing projects
+    # to avoid causing any problem for the existing projects
+    cmd_squad_client="squad-client --squad-host ${qa_server} --squad-token ****** create-or-update-project"
+    cmd_squad_client="${cmd_squad_client} --group ${qa_team_group} --slug ${qa_project_slug} --name ${qa_project_name} ${qa_projcect_public_private} --plugins ${qa_project_plugins}"
+    cmd_squad_client="${cmd_squad_client} --settings ${qa_project_settings_for_echo} --no-overwrite --data-retention 0"
+    echo "${cmd_squad_client}"
+
+    if [ -z "${ENV_DRY_RUN_FOR_PROJECT_CREATING}" ] || [ "${ENV_DRY_RUN_FOR_PROJECT_CREATING}" = "false" ] ; then
+        squad-client \
+            --squad-host "${qa_server}" --squad-token "${QA_REPORTS_TOKEN}" \
+            create-or-update-project \
+            --group "${qa_team_group}" \
+            --slug "${qa_project_slug}" \
+            --name "${qa_project_name}" \
+            ${qa_projcect_public_private} \
+            --plugins ${qa_project_plugins} \
+            --settings "${qa_project_settings}" \
+            --no-overwrite \
+            --data-retention 0 || true
+    fi
+    set -x
+
+}
+
 function submit_jobs_for_config(){
     local build_config=$1 && shift
 
@@ -132,7 +212,7 @@ function submit_jobs_for_config(){
     [ -z "${DEFAULT_TEST_LAVA_JOB_PRIORITY}" ] && DEFAULT_TEST_LAVA_JOB_PRIORITY="medium"
 
     # clean environments
-    unset TEST_DEVICE_TYPE TEST_LAVA_SERVER TEST_QA_SERVER TEST_QA_SERVER_TEAM TEST_QA_SERVER_PROJECT TEST_QA_SERVER_ENVIRONMENT
+    unset TEST_DEVICE_TYPE TEST_LAVA_SERVER TEST_QA_SERVER TEST_QA_SERVER_TEAM TEST_QA_SERVER_PROJECT TEST_QA_SERVER_PROJECT_NAME TEST_QA_SERVER_PROJECT_PRIVATE TEST_QA_SERVER_ENVIRONMENT
     unset ANDROID_VERSION KERNEL_BRANCH KERNEL_REPO TEST_METADATA_TOOLCHAIN TEST_VTS_URL TEST_CTS_URL REFERENCE_BUILD_URL ANDROID_VENDOR_FINGERPRINT
     unset PUBLISH_FILES TEST_OTHER_PLANS TEST_TEMPLATES_TYPE TEST_LAVA_JOB_GROUP TEST_LAVA_JOB_PRIORITY
     unset IMAGE_SUPPORTED_CACHE IMAGE_SUPPORTED_VENDOR_BOOT
@@ -269,6 +349,9 @@ function submit_jobs_for_config(){
         TEST_QA_SERVER_TEAM="android-lkft"
     fi
 
+    [ -z "${TEST_QA_SERVER_PROJECT_PRIVATE}" ] && TEST_QA_SERVER_PROJECT_PRIVATE="false"
+    [ -z "${TEST_QA_SERVER_PROJECT_NAME}" ] &&  TEST_QA_SERVER_PROJECT_NAME="${TEST_QA_SERVER_PROJECT}"
+
     # Do not submit the default lkft test jobs when TEST_PLANS_NO_DEFAULT_LKFT is set true
     if [ -z "${TEST_PLANS_NO_DEFAULT_LKFT}" ] || [ "X${TEST_PLANS_NO_DEFAULT_LKFT}" != "Xtrue" ]; then
         local default_plans="template-boot.yaml template-vts-kernel-arm64-v8a.yaml template-vts-kernel-armeabi-v7a.yaml template-cts-lkft.yaml"
@@ -281,6 +364,8 @@ function submit_jobs_for_config(){
         for f in ${PUBLISH_FILES}; do
             update_device_template "${f_device_template}" "${f}" "${build_config}" "${REFERENCE_BUILD_URL}"
         done
+
+        create_or_update_project "${TEST_QA_SERVER}" "${TEST_QA_SERVER_TEAM}"  "${TEST_QA_SERVER_PROJECT_PRIVATE}" "${TEST_QA_SERVER_PROJECT}" "${TEST_QA_SERVER_PROJECT_NAME}"
 
         python ${DIR_CONFIGS_ROOT}/openembedded-lkft/submit_for_testing.py \
             --device-type ${TEST_DEVICE_TYPE} \
@@ -335,6 +420,12 @@ function submit_jobs_for_config(){
                 qa_server_project="${TEST_QA_SERVER_PROJECT}"
             fi
 
+            qa_server_project_private=$(get_value_from_config_file "TEST_QA_SERVER_PROJECT_PRIVATE_${plan}" "${build_config}")
+            [ -z "${qa_server_project_private}" ] && qa_server_project_private="${TEST_QA_SERVER_PROJECT_PRIVATE}"
+
+            qa_server_project_name=$(get_value_from_config_file "TEST_QA_SERVER_PROJECT_NAME_${plan}" "${build_config}")
+            [ -z "${qa_server_project_name}" ] && qa_server_project_name="${TEST_QA_SERVER_PROJECT_NAME}"
+
             lava_job_priority=$(get_value_from_config_file "TEST_LAVA_JOB_PRIORITY_${plan}" "${build_config}")
             if [ -n "${lava_job_priority}" ]; then
                 TEST_LAVA_JOB_PRIORITY="${lava_job_priority}"
@@ -347,6 +438,8 @@ function submit_jobs_for_config(){
             for f in ${PUBLISH_FILES}; do
                 update_device_template "${f_device_template}" "${f}" "${build_config}" "${REFERENCE_BUILD_URL}"
             done
+
+            create_or_update_project "${qa_server}" "${qa_server_team}" "${qa_server_project_private}" "${qa_server_project}" "${qa_server_project_name}"
 
             python ${DIR_CONFIGS_ROOT}/openembedded-lkft/submit_for_testing.py \
                 --device-type ${TEST_DEVICE_TYPE} \
