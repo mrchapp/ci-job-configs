@@ -57,7 +57,7 @@ for DEVICE_TYPE in ${DTYPES}; do
          oe_urls
       fi
 
-      python configs/openembedded-lkft/submit_for_testing.py \
+      python3 configs/openembedded-lkft/submit_for_testing.py \
          --device-type ${DEVICE_TYPE} \
          --build-number ${BUILD_NUMBER} \
          --lava-server ${LAVA_SERVER} \
