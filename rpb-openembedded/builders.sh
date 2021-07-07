@@ -116,8 +116,8 @@ EOF
 # Add job BUILD_NUMBER to output files names
 cat << EOF >> conf/auto.conf
 IMAGE_NAME_append = "-${BUILD_NUMBER}"
-KERNEL_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
-MODULE_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
+KERNEL_IMAGE_NAME_append = "-${BUILD_NUMBER}"
+MODULE_TARBALL_NAME_append = "-${BUILD_NUMBER}"
 DT_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
 BOOT_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
 EOF
