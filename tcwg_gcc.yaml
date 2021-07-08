@@ -229,10 +229,9 @@
               aarch64-bootstrap_profiled|\
               aarch64-bootstrap_profiled_lto|\
               aarch64-bootstrap_profiled_lto_lean|\
-              aarch64-check_bootstrap_lto|\
               arm-bootstrap_profiled|\
-              arm-bootstrap_profiled_lto*|\
-              arm-check_bootstrap_lto)
+              arm-bootstrap_profiled_lto|\
+              arm-bootstrap_profiled_lto_lean)
                 echo "Known bad configuration, not running."
                 echo "Would have run:"
                 # So we know it wasn't an infrastructure failure
@@ -498,4 +497,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 60ff1d08cf6aad5eae91375236674847
+# checksum: 745cd43323a77343455d538f47888d7b

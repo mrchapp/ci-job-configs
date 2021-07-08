@@ -254,10 +254,9 @@
               aarch64-bootstrap_profiled|\
               aarch64-bootstrap_profiled_lto|\
               aarch64-bootstrap_profiled_lto_lean|\
-              aarch64-check_bootstrap_lto|\
               arm-bootstrap_profiled|\
-              arm-bootstrap_profiled_lto*|\
-              arm-check_bootstrap_lto)
+              arm-bootstrap_profiled_lto|\
+              arm-bootstrap_profiled_lto_lean)
                 echo "Known bad configuration, not running."
                 echo "Would have run:"
                 # So we know it wasn't an infrastructure failure
