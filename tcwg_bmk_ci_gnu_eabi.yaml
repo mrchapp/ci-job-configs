@@ -23,33 +23,24 @@
           distro: lts_1
     bmk:
       - coremark
+    cron_schedule: 'H H H * *'
     cflags:
-      - Os:
-          cron_schedule: H H H/7 * *
-      - Os_LTO:
-          cron_schedule: H H H/7 * *
-      - Oz:
-          cron_schedule: H H H/7 * *
-      - Oz_LTO:
-          cron_schedule: H H H/7 * *
-      - O2:
-          cron_schedule: H H H/7 * *
-      - O2_LTO:
-          cron_schedule: H H H/7 * *
-      - O3:
-          cron_schedule: H H H/7 * *
-      - O3_LTO:
-          cron_schedule: H H H/7 * *
+      - Os
+      - Os_LTO
+      - Oz
+      - Oz_LTO
+      - O2
+      - O2_LTO
+      - O3
+      - O3_LTO
+      - O3_VECT
+      - O3_LTO_VECT
       - Os-vs-Os_LTO:
-          cron_schedule: H H H * *
+          cron_schedule: 'H H H * *'
       - O2-vs-O2_LTO:
-          cron_schedule: H H H * *
+          cron_schedule: 'H H H * *'
       - O3-vs-O3_LTO:
-          cron_schedule: H H H * *
-      - O3_VECT:
-          cron_schedule: H H H/7 * *
-      - O3_LTO_VECT:
-          cron_schedule: H H H/7 * *
+          cron_schedule: 'H H H * *'
     jobs:
       - 'tcwg_bmk_ci_gnu_eabi-build-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
       - 'tcwg_bmk_ci_gnu_eabi-bisect-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
@@ -578,4 +569,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 4c31bf11906c602f3d8917d6a011187f
+# checksum: 412c0867301043eed65744d120939c37
