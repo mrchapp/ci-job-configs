@@ -14,6 +14,18 @@
     images:
       ptable:
         url: https://images.validation.linaro.org/snapshots.linaro.org/96boards/reference-platform/components/uefi-staging/85/hikey960/release/prm_ptable.img
+{% if TUXSUITE_DOWNLOAD_URL is defined %}
+    postprocess:
+      docker:
+        image: tuxsuite/tuxsuite:0.25.0
+        steps:
+        - apt-get update && apt-get install -y wget selinux-utils cpio rsync sudo bc curl git xz-utils
+        - rm -fr /linaro-android/lkft && mkdir -p /linaro-android/lkft
+        - wget https://android-git.linaro.org/android-build-configs.git/plain/lkft/linaro-lkft.sh?h=lkft -O /linaro-android/lkft/linaro-lkft.sh && chmod +x /linaro-android/lkft/linaro-lkft.sh
+        - cd /linaro-android/lkft && TUXSUITE_DOWNLOAD_URL={{TUXSUITE_DOWNLOAD_URL}} ./linaro-lkft.sh -c {{LKFT_BUILD_CONFIG}} && cd -
+        - for f in {{PUBLISH_FILES}}; do if echo $f|grep '\.xz$'; then [ -f /linaro-android/lkft/out/{{LKFT_BUILD_CONFIG}}/${f} ] &&  rm -f /linaro-android/lkft/out/{{LKFT_BUILD_CONFIG}}/$(echo ${f}|sed "s|.xz$||") && xz -d /linaro-android/lkft/out/{{LKFT_BUILD_CONFIG}}/${f}; fi;done
+        - for f in {{PUBLISH_FILES}}; do f_no_xz=$(echo ${f}|sed "s|.xz$||"); [ -f /linaro-android/lkft/out/{{LKFT_BUILD_CONFIG}}/${f_no_xz} ] && mv -v /linaro-android/lkft/out/{{LKFT_BUILD_CONFIG}}/${f_no_xz} /lava-downloads/${f_no_xz}; done
+{% else %}
       boot:
         url: {{DOWNLOAD_URL}}/boot.img.xz
         compression: xz
@@ -31,6 +43,7 @@
       vendor:
         url: {{REFERENCE_BUILD_URL}}/vendor.img.xz
         compression: xz
+{% endif %}
 {% endif %}
 
 - deploy:
