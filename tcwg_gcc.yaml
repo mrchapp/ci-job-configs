@@ -22,6 +22,7 @@
     disabled: false
     cron: 'H H H/7 * *'
     type_of_test:
+      - bootstrap
       - bootstrap_O1
       - bootstrap_O3
       - bootstrap_debug
@@ -496,4 +497,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 5b7a8250e47abfd4a00a294309d2b029
+# checksum: aecb2d3b3bbfc9039203dfe3e89baf84

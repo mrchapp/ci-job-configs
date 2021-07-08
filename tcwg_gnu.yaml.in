@@ -71,6 +71,7 @@
       - check_cross:
           cron: 'H * * * *'
 #elif RR_tcwg_gcc
+      - bootstrap
       - bootstrap_O1
       - bootstrap_O3
       - bootstrap_debug
