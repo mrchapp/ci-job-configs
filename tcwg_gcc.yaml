@@ -23,6 +23,7 @@
     cron: 'H H H/7 * *'
     type_of_test:
       - bootstrap
+      - bootstrap_lto
       - bootstrap_O1
       - bootstrap_O3
       - bootstrap_debug
@@ -33,7 +34,7 @@
       - check_bootstrap:
           cron: 'H * * * *'
       - check_bootstrap_lto:
-          disabled: true
+          cron: 'H * * * *'
     jobs:
       - 'tcwg_gcc-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
       - 'tcwg_gcc-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
@@ -497,4 +498,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: aecb2d3b3bbfc9039203dfe3e89baf84
+# checksum: 60ff1d08cf6aad5eae91375236674847

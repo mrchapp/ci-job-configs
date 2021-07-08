@@ -72,6 +72,7 @@
           cron: 'H * * * *'
 #elif RR_tcwg_gcc
       - bootstrap
+      - bootstrap_lto
       - bootstrap_O1
       - bootstrap_O3
       - bootstrap_debug
@@ -82,7 +83,7 @@
       - check_bootstrap:
           cron: 'H * * * *'
       - check_bootstrap_lto:
-          disabled: true
+          cron: 'H * * * *'
 #endif
     jobs:
       - '#{RR}-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
