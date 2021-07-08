@@ -20,6 +20,7 @@
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
     disabled: false
+    cron: 'H H H/7 * *'
     type_of_test:
       - bootstrap_O1
       - bootstrap_O3
@@ -28,7 +29,8 @@
       - bootstrap_profiled_lto
       - bootstrap_profiled_lto_lean
       - bootstrap_ubsan
-      - check_bootstrap
+      - check_bootstrap:
+          cron: 'H * * * *'
       - check_bootstrap_lto:
           disabled: true
     jobs:
@@ -440,7 +442,7 @@
           gcc_branch: '{gcc_branch}'
     triggers:
       - pollscm:
-          cron: 'H H H/7 * *'
+          cron: '{cron}'
     wrappers:
       - build-wrappers:
           timeout: 1000
@@ -494,4 +496,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 06863fd09a87f82eb50895aca690e805
+# checksum: 5b7a8250e47abfd4a00a294309d2b029

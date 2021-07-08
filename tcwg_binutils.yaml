@@ -20,6 +20,7 @@
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
     disabled: false
+    cron: 'H H H/7 * *'
     type_of_test:
       - check_binutils
     jobs:
@@ -415,7 +416,7 @@
           binutils_branch: '{binutils_branch}'
     triggers:
       - pollscm:
-          cron: 'H H H/7 * *'
+          cron: '{cron}'
     wrappers:
       - build-wrappers:
           timeout: 1000
@@ -469,4 +470,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: a4ad4bae40193640bdc3ed274239c0bb
+# checksum: 156eea9204866704588c3bbd75c596e8

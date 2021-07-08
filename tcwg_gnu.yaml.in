@@ -62,12 +62,14 @@
           docker_arch: armhf
 #endif
     disabled: false
+    cron: 'H H H/7 * *'
     type_of_test:
 #if RR_tcwg_binutils
       - check_binutils
 #elif RR_tcwg_cross
       - build_cross
-      - check_cross
+      - check_cross:
+          cron: 'H * * * *'
 #elif RR_tcwg_gcc
       - bootstrap_O1
       - bootstrap_O3
@@ -76,7 +78,8 @@
       - bootstrap_profiled_lto
       - bootstrap_profiled_lto_lean
       - bootstrap_ubsan
-      - check_bootstrap
+      - check_bootstrap:
+          cron: 'H * * * *'
       - check_bootstrap_lto:
           disabled: true
 #endif
@@ -144,7 +147,7 @@
 #endif
     triggers:
       - pollscm:
-          cron: 'H H H/7 * *'
+          cron: '{cron}'
     wrappers:
       - build-wrappers:
           timeout: 1000
