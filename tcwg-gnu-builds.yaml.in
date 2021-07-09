@@ -115,7 +115,7 @@
               alias: "host_armhf_target_native"
               enable-condition: "$host_armhf_target_native"
               node-label-name: "builder"
-              node-label: "tcwg-x15 && tcwg-armv7"
+              node-label: "tcwg-build && tcwg-armv7"
               property-file: build-params.txt
               predefined-parameters: "target=native"
       - shell: |
