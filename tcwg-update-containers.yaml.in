@@ -165,7 +165,7 @@
                 done
 
                 # Now stop the jenkins container so that it's not terminated
-                # midway some build by a starting benchmarking job.
+                # midway some other build by a starting benchmarking job.
                 ssh -Snone $board docker stop "$node"
               ) 9<$lock &
             done
