@@ -55,7 +55,7 @@
     parameters:
         - label:
             name: nodes
-            default: tcwg && !tcwg-bmk-hw && !tcwg-short
+            default: tcwg && !tcwg-secondary-node
             all-nodes: true
             matching-label: 'allCases'
             description: 'Machines to run on'
@@ -107,4 +107,4 @@
             --group "$group" \
             --force "$force" \
             --verbose "$verbose"
-# checksum: 00c7660ace9b35cb47b0c4cd1d0deeb6
+# checksum: 356166644aabf7902a0363f1341e6e4b

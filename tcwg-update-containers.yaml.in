@@ -22,13 +22,13 @@
         - label:
             name: nodes
 #if CONTAINER_host
-            default: tcwg && !tcwg-bmk-hw && !tcwg-short
+            default: tcwg && !tcwg-secondary-node
 #elif CONTAINER_jenkins
             # We can't restart coordinator nodes because we can't block-out
             # matrix master jobs.  Similarly, we can't restart nodes with
             # multiple executors because we risk killing builds on other
             # executors.
-            default: tcwg && !tcwg-coordinator && !tcwg-bmk && !tcwg-short && !tcwg-x86_64-build && !tcwg-x86_64-build_bmk
+            default: tcwg && !tcwg-coordinator && !tcwg-parallel-jobs
 #elif CONTAINER_llvmbot || CONTAINER_buildkite
             default: tcwg-llvmbot
 #elif CONTAINER_bmk

@@ -59,7 +59,7 @@
             # matrix master jobs.  Similarly, we can't restart nodes with
             # multiple executors because we risk killing builds on other
             # executors.
-            default: tcwg && !tcwg-coordinator && !tcwg-bmk && !tcwg-short && !tcwg-x86_64-build && !tcwg-x86_64-build_bmk
+            default: tcwg && !tcwg-coordinator && !tcwg-parallel-jobs
             all-nodes: true
             matching-label: 'allCases'
             description: 'Machines to run on'
@@ -108,4 +108,4 @@
             --force "$force" \
             --verbose "$verbose" || exit 125
           unstable-return: 125
-# checksum: 8af00c9dbbfaf980df307b59522e598c
+# checksum: 0ffff2c054f377aa3bd825cbcd10296b
