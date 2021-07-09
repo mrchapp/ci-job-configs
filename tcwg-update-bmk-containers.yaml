@@ -133,7 +133,11 @@
                     break
                   fi
                 done
+
+                # Now stop the jenkins container so that it's not terminated
+                # midway some build by a starting benchmarking job.
+                ssh -Snone $board docker stop "$node"
               ) 9<$lock &
             done
             wait
-# checksum: b89c4174615cabceadefe0a0592a0593
+# checksum: 99eeb5f1e035f470aac9cece99705b9f
