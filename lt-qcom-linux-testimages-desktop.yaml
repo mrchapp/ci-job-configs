@@ -74,8 +74,6 @@
             echo "CORE_IMAGE_EXTRA_INSTALL += \"mesa-ci\"" >> auto.conf 
             echo "PACKAGECONFIG_append_pn-mesa = \"freedreno xa\"" >> auto.conf
 
-            echo "PREFERRED_PROVIDER_virtual/kernel = \"linux-dummy\"" >> auto.conf
-
             if [ "${MACHINE}" = "qcom-armv8a" ]; then
               # install firmware
               echo "NO_RECOMMENDATIONS = \"\"" >> auto.conf
