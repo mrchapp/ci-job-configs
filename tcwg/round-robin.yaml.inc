@@ -304,7 +304,7 @@
             fi
 
             if [ $res != 0 ]; then
-              touch artifacts/failures
+              echo $res > artifacts/failed
             fi
 
             if [ -e artifacts/results ]; then
@@ -321,17 +321,19 @@
       - conditional-step:
           # Only run if above succeeded
           # Meaning we did not skip a bad config
-          # (a failed build is indicated by artifacts/failures)
+          # (a failed build is indicated by artifacts/failed)
           condition-kind: current-status
           steps:
             - trigger-followup-builds:
                 rr_project: '{rr_project}'
                 job_suffix: '{job_suffix}'
-            - shell: |
-                #!/bin/bash
-                if [ -f artifacts/failures ]; then
-                  exit 1
-                fi
+            - shell:
+                command: |
+                  #!/bin/bash
+                  if [ -f artifacts/failed ]; then
+                    exit $(cat artifacts/failed)
+                  fi
+                unstable-return: 125
 
 - publisher:
     name: build-publishers
