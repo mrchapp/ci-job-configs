@@ -62,7 +62,7 @@
           docker_arch: armhf
 #endif
     disabled: false
-    cron: 'H * * * *'
+    cron: 'H H * * *'
     type_of_test:
 #if RR_tcwg_binutils
       - check_binutils

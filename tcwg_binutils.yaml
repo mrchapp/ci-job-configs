@@ -20,7 +20,7 @@
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
     disabled: false
-    cron: 'H * * * *'
+    cron: 'H H * * *'
     type_of_test:
       - check_binutils
     jobs:
@@ -470,4 +470,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 11b25dadc420b277a076085212ec86f3
+# checksum: cf4fc505aec18bc3b124d818000f68d5

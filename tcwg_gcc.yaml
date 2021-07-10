@@ -20,7 +20,7 @@
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
     disabled: false
-    cron: 'H * * * *'
+    cron: 'H H * * *'
     type_of_test:
       - bootstrap
       - bootstrap_lto
@@ -484,4 +484,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: a6424e13966f873cb8b81c01045c8eb9
+# checksum: c45c1aa1e6b2e12b44379c72efbe30f8
