@@ -248,23 +248,6 @@
             mkdir -p artifacts/jenkins
 
             dryruncmd=""
-#if RR_tcwg_gcc
-            # Don't run these known-bad configurations.
-            case {target}-{type_of_test} in
-              aarch64-bootstrap_profiled|\
-              aarch64-bootstrap_profiled_lto|\
-              aarch64-bootstrap_profiled_lto_lean|\
-              arm-bootstrap_profiled|\
-              arm-bootstrap_profiled_lto|\
-              arm-bootstrap_profiled_lto_lean)
-                echo "Known bad configuration, not running."
-                echo "Would have run:"
-                # So we know it wasn't an infrastructure failure
-                touch artifacts/failures
-                dryruncmd="echo"
-                ;;
-            esac
-#endif
 
 #if PURPOSE_ci
             build_name="#$BUILD_NUMBER"

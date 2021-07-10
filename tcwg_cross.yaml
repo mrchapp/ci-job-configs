@@ -26,11 +26,10 @@
       - arm
     node: tcwg-x86_64-build
     disabled: false
-    cron: 'H H H/7 * *'
+    cron: 'H * * * *'
     type_of_test:
       - build_cross
-      - check_cross:
-          cron: 'H * * * *'
+      - check_cross
     jobs:
       - 'tcwg_cross-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
       - 'tcwg_cross-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
@@ -507,4 +506,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 534a22df0104041fb439d784162e72a8
+# checksum: ecf346a0970f5a9a8fdc2abef66cc2e2

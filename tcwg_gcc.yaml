@@ -20,21 +20,23 @@
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
     disabled: false
-    cron: 'H H H/7 * *'
+    cron: 'H * * * *'
     type_of_test:
       - bootstrap
       - bootstrap_lto
       - bootstrap_O1
       - bootstrap_O3
       - bootstrap_debug
-      - bootstrap_profiled
-      - bootstrap_profiled_lto
-      - bootstrap_profiled_lto_lean
+      # Profiled bootstrap is failing, so run these weekly.
+      - bootstrap_profiled:
+          cron: 'H H H/7 * *'
+      - bootstrap_profiled_lto:
+          cron: 'H H H/7 * *'
+      - bootstrap_profiled_lto_lean:
+          cron: 'H H H/7 * *'
       - bootstrap_ubsan
-      - check_bootstrap:
-          cron: 'H * * * *'
-      - check_bootstrap_lto:
-          cron: 'H * * * *'
+      - check_bootstrap
+      - check_bootstrap_lto
     jobs:
       - 'tcwg_gcc-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
       - 'tcwg_gcc-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
@@ -224,21 +226,6 @@
             mkdir -p artifacts/jenkins
 
             dryruncmd=""
-            # Don't run these known-bad configurations.
-            case {target}-{type_of_test} in
-              aarch64-bootstrap_profiled|\
-              aarch64-bootstrap_profiled_lto|\
-              aarch64-bootstrap_profiled_lto_lean|\
-              arm-bootstrap_profiled|\
-              arm-bootstrap_profiled_lto|\
-              arm-bootstrap_profiled_lto_lean)
-                echo "Known bad configuration, not running."
-                echo "Would have run:"
-                # So we know it wasn't an infrastructure failure
-                touch artifacts/failures
-                dryruncmd="echo"
-                ;;
-            esac
 
             build_name="#$BUILD_NUMBER"
             branch_opt=""
@@ -497,4 +484,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 745cd43323a77343455d538f47888d7b
+# checksum: a6424e13966f873cb8b81c01045c8eb9
