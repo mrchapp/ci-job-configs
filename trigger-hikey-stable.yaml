@@ -14,13 +14,17 @@
             days-to-keep: 30
             num-to-keep: 30
     disabled: false
-    node: triggers
+    node: docker-bionic-android-lkft
     display-name: 'TOBEDELETED: only used for test purpose'
     builders:
         - shell: |
             #!/bin/bash -x
-            git clean -fdx
-            env
+            if ! python --version|grep 3; then
+              sudo rm -fv /usr/bin/python && sudo ln -s /usr/bin/python3 /usr/bin/python
+            fi
+            pip3 install squad-client
+            which squad-client || true
+
             pip3 install --user --force-reinstall squad-client
             which squad-client || true
             pip install --user --force-reinstall squad-client
