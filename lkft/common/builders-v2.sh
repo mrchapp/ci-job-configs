@@ -41,6 +41,9 @@ fi
 # Install ruamel.yaml and Jinja2 for submit_for_testing.py
 # to submit jobs
 pip3 install --user --force-reinstall ruamel.yaml Jinja2 squad-client
+# install the squad-client with the default pip command
+# so that the squad-client could be found
+pip install --user --force-reinstall squad-client
 
 sudo apt-get update
 sudo apt-get install -y selinux-utils cpio

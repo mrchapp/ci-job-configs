@@ -130,6 +130,11 @@ function create_or_update_project(){
         set -x
         return
     fi
+    if ! which squad-client; then
+        echo "squad-client not found"
+        set -x
+        return
+    fi
 
     local qa_server="${1}"
     local qa_team_group="${2}"
