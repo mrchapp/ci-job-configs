@@ -18,15 +18,15 @@
     display-name: 'TOBEDELETED: only used for test purpose'
     builders:
         - shell: |
-            #!/bin/bash -ex
+            #!/bin/bash -x
             git clean -fdx
             env
             pip3 install --user --force-reinstall squad-client
-            which squad-client
+            which squad-client || true
             pip install --user --force-reinstall squad-client
-            which squad-client
+            which squad-client || true
             pip install squad-client
-            which squad-client
+            which squad-client || true
 
     publishers:
         - email:
