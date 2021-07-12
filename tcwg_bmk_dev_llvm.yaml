@@ -173,26 +173,38 @@
       - build-name-setter:
           name: 'artifacts/jenkins/build-name'
           file: true
-      - shell: |
-          #!/bin/bash
-          set -ex
-          for i in artifacts/trigger-build-* artifacts/trigger-bisect; do
-            if [ -f $i ]; then
-              echo "ci_project=$ci_project" >> $i
-              echo "ci_config=$ci_config" >> $i
-              echo "mail_recipients=$mail_recipients" >> $i
-              echo "distro=$distro" >> $i
-              echo "scripts_branch=$scripts_branch" >> $i
-              echo "bmk_branch=$bmk_branch" >> $i
-            fi
-          done
-      - trigger-builds:
-          - project: '{rr_project}-build{job_suffix}'
-            parameter-factories:
-              - factory: filebuild
-                file-pattern: artifacts/trigger-build-*
-          - project: '{rr_project}-bisect{job_suffix}'
-            property-file: artifacts/trigger-bisect
+      - conditional-step:
+          # Only run if above succeeded
+          # (a failed build is indicated by artifacts/failed)
+          condition-kind: current-status
+          steps:
+            - shell: |
+                #!/bin/bash
+                set -ex
+                for i in artifacts/trigger-build-* artifacts/trigger-bisect; do
+                  if [ -f $i ]; then
+                    echo "ci_project=$ci_project" >> $i
+                    echo "ci_config=$ci_config" >> $i
+                    echo "mail_recipients=$mail_recipients" >> $i
+                    echo "distro=$distro" >> $i
+                    echo "scripts_branch=$scripts_branch" >> $i
+                    echo "bmk_branch=$bmk_branch" >> $i
+                  fi
+                done
+            - trigger-builds:
+                - project: '{rr_project}-build{job_suffix}'
+                  parameter-factories:
+                    - factory: filebuild
+                      file-pattern: artifacts/trigger-build-*
+                - project: '{rr_project}-bisect{job_suffix}'
+                  property-file: artifacts/trigger-bisect
+            - shell:
+                command: |
+                  #!/bin/bash
+                  if [ -f artifacts/failed ]; then
+                    exit $(cat artifacts/failed)
+                  fi
+                unstable-return: 125
 
 - builder:
     name: run-build
@@ -260,22 +272,9 @@
             fi
             echo "$build_name" > artifacts/jenkins/build-name
           unstable-return: 125
-      - conditional-step:
-          # Only run if above succeeded
-          # Meaning we did not skip a bad config
-          # (a failed build is indicated by artifacts/failed)
-          condition-kind: current-status
-          steps:
-            - trigger-followup-builds:
-                rr_project: '{rr_project}'
-                job_suffix: '{job_suffix}'
-            - shell:
-                command: |
-                  #!/bin/bash
-                  if [ -f artifacts/failed ]; then
-                    exit $(cat artifacts/failed)
-                  fi
-                unstable-return: 125
+      - trigger-followup-builds:
+          rr_project: '{rr_project}'
+          job_suffix: '{job_suffix}'
 
 - publisher:
     name: build-publishers
@@ -347,11 +346,17 @@
               ==rr[ci_config] $ci_config \
               $extra_build_params \
               --bmk_branch "$bmk_branch" \
-              --scripts_branch "$scripts_branch"
+              --scripts_branch "$scripts_branch" &
+            res=0 && wait $! || res=$?
+
+            if [ $res != 0 ]; then
+              echo $res > artifacts/failed
+            fi
 
             if [ x"$mail_recipients" != x"default" ]; then
               echo "$mail_recipients" > artifacts/jenkins/mail-recipients.txt
             fi
+          unstable-return: 125
       - trigger-followup-builds:
           rr_project: '{rr_project}'
           job_suffix: '{job_suffix}'
@@ -460,4 +465,4 @@
           job_suffix: ''
     publishers:
         - bisect-publishers
-# checksum: f473a58395064e7f49c3f29913a01da3
+# checksum: 145f30c20f33f5d8c3d2b023d4d7a837
