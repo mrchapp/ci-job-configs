@@ -130,7 +130,12 @@ function create_or_update_project(){
         set -x
         return
     fi
-    if ! which squad-client; then
+    path_squad_client=""
+    if which squad-client; then
+        path_squad_client=$(which squad-client)
+    elif [ -f "${HOME}/.local/bin/squad-client" ]; then
+        path_squad_client="${HOME}/.local/bin/squad-client"
+    else
         echo "squad-client not found"
         set -x
         return
@@ -186,13 +191,13 @@ ${qa_project_public_settings}"
 
     # enable --no-overwrite to avoid updating on the existing projects
     # to avoid causing any problem for the existing projects
-    cmd_squad_client="squad-client --squad-host ${qa_server} --squad-token ****** create-or-update-project"
+    cmd_squad_client="${path_squad_client} --squad-host ${qa_server} --squad-token ****** create-or-update-project"
     cmd_squad_client="${cmd_squad_client} --group ${qa_team_group} --slug ${qa_project_slug} --name ${qa_project_name} ${qa_projcect_public_private} --plugins ${qa_project_plugins}"
     cmd_squad_client="${cmd_squad_client} --settings ${qa_project_settings_for_echo} --no-overwrite --data-retention 0"
     echo "${cmd_squad_client}"
 
     if [ -z "${ENV_DRY_RUN_FOR_PROJECT_CREATING}" ] || [ "${ENV_DRY_RUN_FOR_PROJECT_CREATING}" = "false" ] ; then
-        squad-client \
+        ${path_squad_client} \
             --squad-host "${qa_server}" --squad-token "${QA_REPORTS_TOKEN}" \
             create-or-update-project \
             --group "${qa_team_group}" \
