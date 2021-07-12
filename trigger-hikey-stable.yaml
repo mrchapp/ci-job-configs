@@ -32,6 +32,8 @@
             pip install squad-client
             which squad-client || true
 
+            find ${HOME} -name squad-client
+
     publishers:
         - email:
             recipients: 'yongqin.liu@linaro.org'
