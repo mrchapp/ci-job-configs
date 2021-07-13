@@ -20,20 +20,16 @@
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
     disabled: false
-    cron: 'H H * * *'
+    cron: 'H H/12 * * *'
     type_of_test:
       - bootstrap
       - bootstrap_lto
       - bootstrap_O1
       - bootstrap_O3
       - bootstrap_debug
-      # Profiled bootstrap is failing, so run these weekly.
-      - bootstrap_profiled:
-          cron: 'H H H/7 * *'
-      - bootstrap_profiled_lto:
-          cron: 'H H H/7 * *'
-      - bootstrap_profiled_lto_lean:
-          cron: 'H H H/7 * *'
+      - bootstrap_profiled
+      - bootstrap_profiled_lto
+      - bootstrap_profiled_lto_lean
       - bootstrap_ubsan
       - check_bootstrap
       - check_bootstrap_lto
@@ -491,4 +487,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: a6529b43be7c36667de6ac74af802b90
+# checksum: 41cfa68c2a7de2b88a5a3800c7f7898a

@@ -62,7 +62,7 @@
           docker_arch: armhf
 #endif
     disabled: false
-    cron: 'H H * * *'
+    cron: 'H H/12 * * *'
     type_of_test:
 #if RR_tcwg_binutils
       - check_binutils
@@ -75,13 +75,9 @@
       - bootstrap_O1
       - bootstrap_O3
       - bootstrap_debug
-      # Profiled bootstrap is failing, so run these weekly.
-      - bootstrap_profiled:
-          cron: 'H H H/7 * *'
-      - bootstrap_profiled_lto:
-          cron: 'H H H/7 * *'
-      - bootstrap_profiled_lto_lean:
-          cron: 'H H H/7 * *'
+      - bootstrap_profiled
+      - bootstrap_profiled_lto
+      - bootstrap_profiled_lto_lean
       - bootstrap_ubsan
       - check_bootstrap
       - check_bootstrap_lto

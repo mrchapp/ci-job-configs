@@ -26,7 +26,7 @@
       - arm
     node: tcwg-x86_64-build
     disabled: false
-    cron: 'H H * * *'
+    cron: 'H H/12 * * *'
     type_of_test:
       - build_cross
       - check_cross
@@ -513,4 +513,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 404420c0a0f39b6b76f7e0e286969939
+# checksum: 51ad8a7391c29890ffd0e6ea518023bf
