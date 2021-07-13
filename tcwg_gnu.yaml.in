@@ -39,7 +39,7 @@
           binutils_branch: refs/heads/binutils-2_36-branch
 #endif
 #if COMPONENTS_gcc
-          gcc_branch: refs/heads/releases/gcc-10
+          gcc_branch: refs/heads/releases/gcc-11
 #endif
 #if COMPONENTS_glibc
           glibc_branch: refs/heads/release/2.32/master

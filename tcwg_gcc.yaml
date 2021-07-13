@@ -10,7 +10,7 @@
           gcc_branch: refs/heads/master
           distro: lts
       - release:
-          gcc_branch: refs/heads/releases/gcc-10
+          gcc_branch: refs/heads/releases/gcc-11
           distro: lts_1
     target:
       - aarch64:
@@ -491,4 +491,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 1e40ae07e0a39c188dd564579db8d2d2
+# checksum: a6529b43be7c36667de6ac74af802b90

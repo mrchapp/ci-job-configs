@@ -17,7 +17,7 @@
           distro: lts
       - release:
           binutils_branch: refs/heads/binutils-2_36-branch
-          gcc_branch: refs/heads/releases/gcc-10
+          gcc_branch: refs/heads/releases/gcc-11
           glibc_branch: refs/heads/release/2.32/master
           qemu_branch: refs/tags/v5.2.0
           distro: lts_1
@@ -513,4 +513,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 7d29defb16fdc9bba5a964a9d1e06d8b
+# checksum: 404420c0a0f39b6b76f7e0e286969939
