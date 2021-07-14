@@ -13,8 +13,11 @@
         - build-discarder:
             days-to-keep: 30
             num-to-keep: 100
+    parameters:
+      - string:
+          name: param
     disabled: false
-    node: tcwg-apm_64-build
+    node: tcwg-jade-03
     concurrent: true
     display-name: 'TCWG ZZZ Cancel PollSCM Builds'
     scm:
@@ -43,4 +46,4 @@
             #!/bin/bash
             set -ex
 
-            sleep 60
+            sleep $param
