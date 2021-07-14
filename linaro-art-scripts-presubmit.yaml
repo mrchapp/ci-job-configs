@@ -71,4 +71,4 @@
               ${ART_BUILD_SCRIPTS_DIR}/presubmit.sh
     publishers:
         - email:
-            recipients: 'vishal.bhoj@linaro.org daniel.diaz@linaro.org julien.duraj@linaro.org'
+            recipients: 'vishal.bhoj@linaro.org daniel.diaz@linaro.org akos.denke@linaro.org'

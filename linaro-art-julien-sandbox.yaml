@@ -12,7 +12,7 @@
                 - job-read
                 - job-extended-read
                 - job-workspace
-            julien.duraj@linaro.org:
+            akos.denke@linaro.org:
                 - job-build
                 - job-configure
                 - job-read
