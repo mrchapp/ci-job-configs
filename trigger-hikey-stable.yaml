@@ -24,15 +24,33 @@
             fi
             pip3 install squad-client
             which squad-client || true
-
-            pip3 install --user --force-reinstall squad-client
-            which squad-client || true
-            pip install --user --force-reinstall squad-client
-            which squad-client || true
-            pip install squad-client
-            which squad-client || true
-
             find ${HOME} -name squad-client
+
+            set +x
+            /home/buildslave/.local/bin/squad-client \
+                --squad-host https://qa-reports.linaro.org --squad-token "${QA_REPORTS_TOKEN}" \
+                create-or-update-project \
+                --group android-lkft --slug 5.10-gki-android13-aosp-master-db845c-full-cts-vts --name 5.10-gki-android13-aosp-master-db845c-full-cts-vts \
+                --is-public --plugins linux_log_parser,tradefed \
+                --settings PLUGINS_TRADEFED_EXTRACT_AGGREGATED: True
+            CI_LAVA_INFRA_ERROR_MESSAGES:
+            - Connection closed
+            - lava_test_shell connection dropped.
+            - fastboot-flash-action timed out
+            - lava-test-shell timed out after 1200 seconds
+            - "tradefed - adb device lost"
+            - "Download finished ([0-9]+ bytes) but was not expected size ([0-9]+ bytes), check your networking."
+            - Unable to fetch git repository
+            - "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
+            - "Device NOT found!"
+            - /usr/local/lab-scripts/cbrxd_hub_control
+            - "lava-docker-test-shell timed out after [0-9]+ seconds"
+            - "lxc-apt-install timed out after [0-9]+ seconds"
+            - "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
+            - "wait-device-boardid timed out after [0-9]+ seconds"'
+                --no-overwrite --data-retention 0
+                set -x
+
 
     publishers:
         - email:
