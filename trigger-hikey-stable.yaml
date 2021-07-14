@@ -32,7 +32,7 @@
                 create-or-update-project \
                 --group android-lkft --slug 5.10-gki-android13-aosp-master-db845c-full-cts-vts --name 5.10-gki-android13-aosp-master-db845c-full-cts-vts \
                 --is-public --plugins linux_log_parser,tradefed \
-                --settings PLUGINS_TRADEFED_EXTRACT_AGGREGATED: True
+                --settings 'PLUGINS_TRADEFED_EXTRACT_AGGREGATED: True
             CI_LAVA_INFRA_ERROR_MESSAGES:
             - Connection closed
             - lava_test_shell connection dropped.
