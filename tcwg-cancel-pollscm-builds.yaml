@@ -1,0 +1,46 @@
+- job:
+    name: tcwg-cancel-pollscm-builds
+    project-type: freestyle
+    defaults: global
+    properties:
+        - authorization:
+            anonymous:
+                - job-read
+                - job-extended-read
+            linaro:
+                - job-build
+                - job-cancel
+        - build-discarder:
+            days-to-keep: 30
+            num-to-keep: 100
+    disabled: false
+    node: tcwg-apm_64-build
+    concurrent: true
+    display-name: 'TCWG ZZZ Cancel PollSCM Builds'
+    scm:
+      - git:
+          url: https://git.linaro.org/toolchain/jenkins-scripts.git
+          refspec: +refs/heads/*:refs/remotes/origin/*
+          branches:
+            - cancel-pollscm-builds
+          basedir: jenkins-scripts
+          skip-tag: true
+          reference-repo: /home/tcwg-buildslave/snapshots-ref/jenkins-scripts.git
+          wipe-workspace: false
+          clean:
+            before: true
+          prune: true
+    triggers:
+      - pollscm:
+          cron: '* * * * *'
+    builders:
+      - groovy:
+          command:
+            !include-raw:
+              - tcwg/cancel-pollscm-builds.groovy
+      - shell:
+          command: |
+            #!/bin/bash
+            set -ex
+
+            sleep 60

@@ -22,8 +22,7 @@
     disabled: false
     cron: 'H H/12 * * *'
     type_of_test:
-      - check_binutils:
-          cron: '*/2 * * * *'
+      - check_binutils
     jobs:
       - 'tcwg_binutils-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
       - 'tcwg_binutils-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
@@ -429,10 +428,6 @@
       - build-wrappers:
           timeout: 1000
     builders:
-      - groovy:
-          command:
-            !include-raw:
-              - tcwg/cancel-pollscm-builds.groovy
       - run-build:
           build_script: 'tcwg_gnu-build.sh'
           components: 'binutils'
@@ -482,4 +477,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: f451e8ca233dd1fedb0f21225cf0f8e5
+# checksum: 33201f1e748947379988db66bd9f3503
