@@ -65,7 +65,8 @@
     cron: 'H H/12 * * *'
     type_of_test:
 #if RR_tcwg_binutils
-      - check_binutils
+      - check_binutils:
+          cron: '*/2 * * * *'
 #elif RR_tcwg_cross
       - build_cross
       - check_cross
@@ -151,6 +152,12 @@
       - build-wrappers:
           timeout: 1000
     builders:
+#if RR_tcwg_binutils
+      - groovy:
+          command:
+            !include-raw:
+              - tcwg/cancel-pollscm-builds.groovy
+#endif
       - run-build:
           build_script: 'tcwg_gnu-build.sh'
           components: '#{COMPONENTS}'
