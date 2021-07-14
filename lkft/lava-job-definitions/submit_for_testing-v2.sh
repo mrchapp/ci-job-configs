@@ -426,15 +426,12 @@ function submit_jobs_for_config(){
                 qa_server_team="${TEST_QA_SERVER_TEAM}"
             fi
             qa_server_project=$(get_value_from_config_file "TEST_QA_SERVER_PROJECT_${plan}" "${build_config}")
-            if [ -z "${qa_server_project}" ]; then
-                qa_server_project="${TEST_QA_SERVER_PROJECT}"
-            fi
+            [ -z "${qa_server_project}" ] && qa_server_project="${TEST_QA_SERVER_PROJECT}"
+            qa_server_project_name=$(get_value_from_config_file "TEST_QA_SERVER_PROJECT_NAME_${plan}" "${build_config}")
+            [ -z "${qa_server_project_name}" ] && qa_server_project_name="${qa_server_project}"
 
             qa_server_project_private=$(get_value_from_config_file "TEST_QA_SERVER_PROJECT_PRIVATE_${plan}" "${build_config}")
             [ -z "${qa_server_project_private}" ] && qa_server_project_private="${TEST_QA_SERVER_PROJECT_PRIVATE}"
-
-            qa_server_project_name=$(get_value_from_config_file "TEST_QA_SERVER_PROJECT_NAME_${plan}" "${build_config}")
-            [ -z "${qa_server_project_name}" ] && qa_server_project_name="${TEST_QA_SERVER_PROJECT_NAME}"
 
             lava_job_priority=$(get_value_from_config_file "TEST_LAVA_JOB_PRIORITY_${plan}" "${build_config}")
             if [ -n "${lava_job_priority}" ]; then
