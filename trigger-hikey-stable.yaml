@@ -22,12 +22,13 @@
             if ! python --version|grep 3; then
               sudo rm -fv /usr/bin/python && sudo ln -s /usr/bin/python3 /usr/bin/python
             fi
-            pip3 install squad-client
+            pip3 install --user --force-reinstall ruamel.yaml Jinja2 squad-client
+            pip3 install --user --force-reinstall ruamel.yaml Jinja2 squad-client
             which squad-client || true
-            find ${HOME} -name squad-client
+            ls -l ${HOME}/.local/bin/squad-client
 
             set +x
-            /home/buildslave/.local/bin/squad-client \
+            ${HOME}/.local/bin/squad-client \
                 --squad-host https://qa-reports.linaro.org --squad-token "${QA_REPORTS_TOKEN}" \
                 create-or-update-project \
                 --group android-lkft --slug 5.10-gki-android13-aosp-master-db845c-full-cts-vts --name 5.10-gki-android13-aosp-master-db845c-full-cts-vts \
