@@ -38,10 +38,23 @@
       - pollscm:
           cron: '* * * * *'
     builders:
-      - groovy:
-          command:
-            !include-raw:
-              - tcwg/cancel-pollscm-builds.groovy
+      - shell:
+          command: |
+            #!/bin/bash
+            set -ex
+
+            env
+
+            if [ x"${BUILD_CAUSE_SCMTRIGGER-false}" = x"true" ]; then
+              inQueue=$(curl -s "${JOB_URL}api/xml?tree=inQueue" \
+                          | sed -e "s#.*<inQueue>\(.*\)</inQueue>.*#\1#")
+              if [ x"$inQueue" = x"true" ]; then
+                mkdir -p artifacts/jenkins
+                echo "#$BUILD_NUMBER-skip-scm"
+                exit 125
+              fi
+            fi
+          unstable-return: 125
       - shell:
           command: |
             #!/bin/bash
