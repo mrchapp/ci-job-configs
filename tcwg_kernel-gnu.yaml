@@ -14,8 +14,8 @@
           qemu_branch: refs/heads/master
           distro: lts
       - release:
-          binutils_branch: refs/heads/binutils-2_36-branch
-          gcc_branch: refs/heads/releases/gcc-10
+          binutils_branch: refs/heads/binutils-2_37-branch
+          gcc_branch: refs/heads/releases/gcc-11
           qemu_branch: refs/heads/master
           distro: lts_1
     target:
@@ -536,4 +536,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: ccd4669ac84839c54a92f4c6f11bf7df
+# checksum: a9861670f0d3036a72cde3f5d0301e76
