@@ -50,7 +50,7 @@
             - "lava-docker-test-shell timed out after [0-9]+ seconds"
             - "lxc-apt-install timed out after [0-9]+ seconds"
             - "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
-            - "wait-device-boardid timed out after [0-9]+ seconds"'
+            - "wait-device-boardid timed out after [0-9]+ seconds"' \
                 --no-overwrite --data-retention 0
 
     publishers:
