@@ -35,6 +35,10 @@
             which squad-client || true
             ls -l ${HOME}/.local/bin/squad-client
 
+            echo "QA_REPORTS_TOKEN=${QA_REPORTS_TOKEN}" > test.txt
+            cat test.txt
+            cp -v test.txt "${WORKSPACE}/"
+
             ${HOME}/.local/bin/squad-client \
                 --squad-host https://qa-reports.linaro.org --squad-token "${QA_REPORTS_TOKEN}" \
                 create-or-update-project \
