@@ -5,11 +5,14 @@
     properties:
         - authorization:
             anonymous:
+                - job-discover
+            android-internal:
                 - job-read
                 - job-extended-read
-            linaro:
                 - job-build
                 - job-cancel
+                - job-delete
+
         - build-discarder:
             days-to-keep: 30
             num-to-keep: 30
@@ -27,7 +30,6 @@
             which squad-client || true
             ls -l ${HOME}/.local/bin/squad-client
 
-            set +x
             ${HOME}/.local/bin/squad-client \
                 --squad-host https://qa-reports.linaro.org --squad-token "${QA_REPORTS_TOKEN}" \
                 create-or-update-project \
@@ -50,8 +52,6 @@
             - "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
             - "wait-device-boardid timed out after [0-9]+ seconds"'
                 --no-overwrite --data-retention 0
-                set -x
-
 
     publishers:
         - email:
