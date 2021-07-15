@@ -11,7 +11,7 @@
                 - job-extended-read
                 - job-build
                 - job-cancel
-                - job-delete
+                - run-delete
 
         - build-discarder:
             days-to-keep: 30
@@ -19,6 +19,11 @@
     disabled: false
     node: docker-bionic-android-lkft
     display-name: 'TOBEDELETED: only used for test purpose'
+    wrappers:
+        - credentials-binding:
+            - text:
+                credential-id: QA_REPORTS_TOKEN
+                variable: QA_REPORTS_TOKEN
     builders:
         - shell: |
             #!/bin/bash -x
