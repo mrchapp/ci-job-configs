@@ -261,6 +261,18 @@
 
             dryruncmd=""
 
+            # Skip SCM-triggered builds if there are other builds in
+            # the queue.  We need to process all pending bisection-triggered
+            # builds before fetching a new batch of upstream changes.
+            if [ x"${BUILD_CAUSE_SCMTRIGGER-false}" = x"true" ]; then
+              inQueue=$(curl -s "${JOB_URL}api/xml?tree=inQueue" \
+                          | sed -e "s#.*<inQueue>\(.*\)</inQueue>.*#\1#")
+              if [ x"$inQueue" = x"true" ]; then
+                dryruncmd="echo SKIPPING SCM BUILD:"
+                touch artifacts/jenkins/skip-scm-build
+              fi
+            fi
+
 #if PURPOSE_ci
             build_name="#$BUILD_NUMBER"
 #elif PURPOSE_dev
@@ -309,17 +321,14 @@
               --BUILD_URL "$BUILD_URL" &
             res=0 && wait $! || res=$?
 
-            # If we didn't run the docker command
-            if [ -n "$dryruncmd" ]; then
-              # Mark build unstable aka a skipped config
-              exit 125
-            fi
-
             if [ $res != 0 ]; then
               echo $res > artifacts/failed
             fi
 
-            if [ -e artifacts/results ]; then
+            if [ -f artifacts/jenkins/skip-scm-build ]; then
+              build_name="$build_name-skip-scm-build"
+            fi
+            if [ -f artifacts/results ]; then
               build_name="$build_name-R$(tail -n1 artifacts/results)"
             fi
             if [ x"$update_baseline" != x"update" ]; then
@@ -329,6 +338,12 @@
               build_name="$build_name-trigger-bisect"
             fi
             echo "$build_name" > artifacts/jenkins/build-name
+
+            # If we didn't run the docker command
+            if [ -n "$dryruncmd" ]; then
+              # Mark build unstable aka a skipped config
+              exit 125
+            fi
           unstable-return: 125
       - trigger-followup-builds:
           rr_project: '{rr_project}'
