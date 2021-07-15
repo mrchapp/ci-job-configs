@@ -342,8 +342,8 @@
             # Skip SCM-triggered builds if there are other builds in
             # the queue.  We need to process all pending bisection-triggered
             # builds before fetching a new batch of upstream changes.
-            if [ x"${BUILD_CAUSE_SCMTRIGGER-false}" = x"true" ]; then
-              inQueue=$(curl -s "${JOB_URL}api/xml?tree=inQueue" \
+            if [ x"${{BUILD_CAUSE_SCMTRIGGER-false}}" = x"true" ]; then
+              inQueue=$(curl -s "${{JOB_URL}}api/xml?tree=inQueue" \
                           | sed -e "s#.*<inQueue>\(.*\)</inQueue>.*#\1#")
               if [ x"$inQueue" = x"true" ]; then
                 dryruncmd="echo SKIPPING SCM BUILD:"
@@ -612,4 +612,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 48fec9fc6bc436c683e588796cf06dbe
+# checksum: 8af96c9977a1dc4d50406072ef11ae8d
