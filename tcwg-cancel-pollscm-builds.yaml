@@ -16,6 +16,7 @@
     parameters:
       - string:
           name: param
+          default: '60'
     disabled: false
     node: tcwg-jade-03
     concurrent: true
