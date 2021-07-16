@@ -49,6 +49,7 @@
       - bootstrap_profiled_lto
       - bootstrap_profiled_lto_lean
       - bootstrap_ubsan
+      - check_gcc
       - check_bootstrap
       - check_bootstrap_lto
 #endif

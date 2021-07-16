@@ -23,6 +23,7 @@
       - bootstrap_profiled_lto
       - bootstrap_profiled_lto_lean
       - bootstrap_ubsan
+      - check_gcc
       - check_bootstrap
       - check_bootstrap_lto
     jobs:
@@ -514,4 +515,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 80c46d0b391335d3aec12ecc3067f768
+# checksum: b825abc373fbf2d04895222a9942fb68
