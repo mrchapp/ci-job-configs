@@ -8,28 +8,40 @@
     gcc_url: https://github.com/gcc-mirror/gcc.git
     glibc_url: git://sourceware.org/git/glibc.git
     qemu_url: https://git.qemu.org/git/qemu.git
-    toolchain_ver:
-      - master:
-          binutils_branch: refs/heads/master
-          gcc_branch: refs/heads/master
-          glibc_branch: refs/heads/master
-          qemu_branch: refs/heads/master
-          distro: lts
-      - release:
-          binutils_branch: refs/heads/binutils-2_36-branch
-          gcc_branch: refs/heads/releases/gcc-11
-          glibc_branch: refs/heads/release/2.32/master
-          qemu_branch: refs/heads/master
-          distro: lts_1
     target:
       - aarch64
       - arm
     node: tcwg-x86_64-build
     disabled: false
-    cron: 'H H/12 * * *'
     type_of_test:
       - build_cross
       - check_cross
+    jobs:
+      - tcwg_cross-master
+      - tcwg_cross-release
+
+- job-group:
+    name: tcwg_cross-master
+    toolchain_ver: master
+    binutils_branch: refs/heads/master
+    gcc_branch: refs/heads/master
+    glibc_branch: refs/heads/master
+    qemu_branch: refs/heads/master
+    distro: lts
+    cron: 'H H/12 * * *'
+    jobs:
+      - 'tcwg_cross-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+      - 'tcwg_cross-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+
+- job-group:
+    name: tcwg_cross-release
+    toolchain_ver: release
+    binutils_branch: refs/heads/binutils-2_36-branch
+    gcc_branch: refs/heads/releases/gcc-11
+    glibc_branch: refs/heads/release/2.32/master
+    qemu_branch: refs/heads/master
+    distro: lts_1
+    cron: 'H H H/2 * *'
     jobs:
       - 'tcwg_cross-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
       - 'tcwg_cross-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
@@ -528,4 +540,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 231de2d0e51b1a911370bcff813f829a
+# checksum: da4d21ad1944085b92111a10ace645a5

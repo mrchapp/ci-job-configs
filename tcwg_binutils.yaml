@@ -5,13 +5,6 @@
     toolchain_name: gnu
     ci_project: tcwg_gnu
     binutils_url: git://sourceware.org/git/binutils-gdb.git
-    toolchain_ver:
-      - master:
-          binutils_branch: refs/heads/master
-          distro: lts
-      - release:
-          binutils_branch: refs/heads/binutils-2_36-branch
-          distro: lts_1
     target:
       - aarch64:
           node: tcwg-build && tcwg-armv8_64
@@ -20,9 +13,28 @@
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
     disabled: false
-    cron: 'H H/12 * * *'
     type_of_test:
       - check_binutils
+    jobs:
+      - tcwg_binutils-master
+      - tcwg_binutils-release
+
+- job-group:
+    name: tcwg_binutils-master
+    toolchain_ver: master
+    binutils_branch: refs/heads/master
+    distro: lts
+    cron: 'H H/12 * * *'
+    jobs:
+      - 'tcwg_binutils-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+      - 'tcwg_binutils-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+
+- job-group:
+    name: tcwg_binutils-release
+    toolchain_ver: release
+    binutils_branch: refs/heads/binutils-2_36-branch
+    distro: lts_1
+    cron: 'H H H/2 * *'
     jobs:
       - 'tcwg_binutils-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
       - 'tcwg_binutils-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
@@ -492,4 +504,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: ac7c8704389cddfa637b57b9a2fda19a
+# checksum: 7ab3b510d701a6bf2c3196ff7af2be40

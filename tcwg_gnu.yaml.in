@@ -19,35 +19,6 @@
 #if COMPONENTS_qemu
     qemu_url: https://git.qemu.org/git/qemu.git
 #endif
-    toolchain_ver:
-      - master:
-#if COMPONENTS_binutils
-          binutils_branch: refs/heads/master
-#endif
-#if COMPONENTS_gcc
-          gcc_branch: refs/heads/master
-#endif
-#if COMPONENTS_glibc
-          glibc_branch: refs/heads/master
-#endif
-#if COMPONENTS_qemu
-          qemu_branch: refs/heads/master
-#endif
-          distro: lts
-      - release:
-#if COMPONENTS_binutils
-          binutils_branch: refs/heads/binutils-2_36-branch
-#endif
-#if COMPONENTS_gcc
-          gcc_branch: refs/heads/releases/gcc-11
-#endif
-#if COMPONENTS_glibc
-          glibc_branch: refs/heads/release/2.32/master
-#endif
-#if COMPONENTS_qemu
-          qemu_branch: refs/heads/master
-#endif
-          distro: lts_1
     target:
 #if RR_tcwg_cross
       - aarch64
@@ -62,7 +33,6 @@
           docker_arch: armhf
 #endif
     disabled: false
-    cron: 'H H/12 * * *'
     type_of_test:
 #if RR_tcwg_binutils
       - check_binutils
@@ -82,6 +52,48 @@
       - check_bootstrap
       - check_bootstrap_lto
 #endif
+    jobs:
+      - #{RR}-master
+      - #{RR}-release
+
+- job-group:
+    name: #{RR}-master
+    toolchain_ver: master
+#if COMPONENTS_binutils
+    binutils_branch: refs/heads/master
+#endif
+#if COMPONENTS_gcc
+    gcc_branch: refs/heads/master
+#endif
+#if COMPONENTS_glibc
+    glibc_branch: refs/heads/master
+#endif
+#if COMPONENTS_qemu
+    qemu_branch: refs/heads/master
+#endif
+    distro: lts
+    cron: 'H H/12 * * *'
+    jobs:
+      - '#{RR}-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+      - '#{RR}-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+
+- job-group:
+    name: #{RR}-release
+    toolchain_ver: release
+#if COMPONENTS_binutils
+    binutils_branch: refs/heads/binutils-2_36-branch
+#endif
+#if COMPONENTS_gcc
+    gcc_branch: refs/heads/releases/gcc-11
+#endif
+#if COMPONENTS_glibc
+    glibc_branch: refs/heads/release/2.32/master
+#endif
+#if COMPONENTS_qemu
+    qemu_branch: refs/heads/master
+#endif
+    distro: lts_1
+    cron: 'H H H/2 * *'
     jobs:
       - '#{RR}-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
       - '#{RR}-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'

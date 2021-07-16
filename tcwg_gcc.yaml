@@ -5,13 +5,6 @@
     toolchain_name: gnu
     ci_project: tcwg_gnu
     gcc_url: https://github.com/gcc-mirror/gcc.git
-    toolchain_ver:
-      - master:
-          gcc_branch: refs/heads/master
-          distro: lts
-      - release:
-          gcc_branch: refs/heads/releases/gcc-11
-          distro: lts_1
     target:
       - aarch64:
           node: tcwg-build && tcwg-armv8_64
@@ -20,7 +13,6 @@
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
     disabled: false
-    cron: 'H H/12 * * *'
     type_of_test:
       - bootstrap
       - bootstrap_lto
@@ -33,6 +25,26 @@
       - bootstrap_ubsan
       - check_bootstrap
       - check_bootstrap_lto
+    jobs:
+      - tcwg_gcc-master
+      - tcwg_gcc-release
+
+- job-group:
+    name: tcwg_gcc-master
+    toolchain_ver: master
+    gcc_branch: refs/heads/master
+    distro: lts
+    cron: 'H H/12 * * *'
+    jobs:
+      - 'tcwg_gcc-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+      - 'tcwg_gcc-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+
+- job-group:
+    name: tcwg_gcc-release
+    toolchain_ver: release
+    gcc_branch: refs/heads/releases/gcc-11
+    distro: lts_1
+    cron: 'H H H/2 * *'
     jobs:
       - 'tcwg_gcc-build-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
       - 'tcwg_gcc-bisect-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
@@ -502,4 +514,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: e48b2f9aec4defcd549e21c38517398a
+# checksum: 80c46d0b391335d3aec12ecc3067f768
