@@ -3,7 +3,8 @@
 set -xe
 
 # Ansible is noarch so we can just grab it from x86-64 repo
-yum install -y http://mirror.centos.org/centos/7/configmanagement/x86_64/ansible-29/Packages/a/ansible-2.9.18-1.el7.noarch.rpm
+yum install -y centos-release-ansible-29
+yum install -y ansible
 
 cd /tmp/workspace
 
