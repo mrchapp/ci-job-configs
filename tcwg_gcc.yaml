@@ -4,6 +4,7 @@
     name: tcwg_gcc
     toolchain_name: gnu
     ci_project: tcwg_gnu
+    binutils_url: git://sourceware.org/git/binutils-gdb.git
     gcc_url: https://github.com/gcc-mirror/gcc.git
     target:
       - aarch64:
@@ -33,6 +34,7 @@
 - job-group:
     name: tcwg_gcc-master
     toolchain_ver: master
+    binutils_branch: refs/heads/master
     gcc_branch: refs/heads/master
     distro: lts
     cron: 'H H/12 * * *'
@@ -43,6 +45,7 @@
 - job-group:
     name: tcwg_gcc-release
     toolchain_ver: release
+    binutils_branch: refs/heads/binutils-2_36-branch
     gcc_branch: refs/heads/releases/gcc-11
     distro: lts_1
     cron: 'H H H/2 * *'
@@ -137,6 +140,10 @@
     name: build-parameters
     parameters:
       - component-parameters:
+          component: binutils
+          url: '{binutils_url}'
+          branch: '{default_branch}'
+      - component-parameters:
           component: gcc
           url: '{gcc_url}'
           branch: '{default_branch}'
@@ -179,6 +186,11 @@
     name: build-scms
     scm:
       - jenkins-scripts
+      - component-scm:
+          component: binutils
+          url: '{binutils_url}'
+          branch: '{binutils_branch}'
+          reference: binutils-gdb.git
       - component-scm:
           component: gcc
           url: '{gcc_url}'
@@ -447,6 +459,7 @@
       - build-parameters:
           ci_project: '{ci_project}'
           ci_config: '{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+          binutils_url: '{binutils_url}'
           gcc_url: '{gcc_url}'
           default_branch: 'default'
           distro: '{distro}'
@@ -457,6 +470,8 @@
     workspace: workspace/tcwg_gnu_$EXECUTOR_NUMBER
     scm:
       - build-scms:
+          binutils_url: '{binutils_url}'
+          binutils_branch: '{binutils_branch}'
           gcc_url: '{gcc_url}'
           gcc_branch: '{gcc_branch}'
     triggers:
@@ -468,7 +483,7 @@
     builders:
       - run-build:
           build_script: 'tcwg_gnu-build.sh'
-          components: 'gcc'
+          components: 'binutils gcc'
           rr_project: 'tcwg_gcc'
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
           docker_arch: '{docker_arch}'
@@ -515,4 +530,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: b825abc373fbf2d04895222a9942fb68
+# checksum: 066d5408e327c20379455a32a0d35158
