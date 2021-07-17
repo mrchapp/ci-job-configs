@@ -193,6 +193,11 @@ if [ "${clean_packages}" != "" ]; then
     bitbake ${bbopt} ${build_packages}
 fi
 
+# Cleanup mbedtls related repos, the gitsm fetcher gets confused easily
+rm -rf ${HOME}/srv/oe/downloads/git2/*mbedtls*
+rm -rf ${HOME}/srv/oe/downloads/git2/*optiga*
+bitbake ${bbopt} -c cleansstate mbedtls
+
 # Build all ${IMAGES}
 dipimg="prod-image"
 devimg="dev-image"
