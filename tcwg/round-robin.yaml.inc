@@ -387,8 +387,8 @@
 #if PURPOSE_ci
       - credentials-binding:
           - text:
-              credential-id: TCWG_JIRA_PASSWORD
-              variable: TCWG_JIRA_PASSWORD
+              credential-id: TCWG_JIRA_TOKEN
+              variable: TCWG_JIRA_TOKEN
 #endif
 
 - builder:
@@ -436,7 +436,7 @@
               --replay_log "$(pwd)/jenkins-scripts/replay_log" \
               --build_script "./jenkins-scripts/{build_script}" \
 #if PURPOSE_ci
-              --JIRA_PASSWORD "$TCWG_JIRA_PASSWORD" \
+              --TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
 #endif
               -- \
               ==rr[ci_project] $ci_project \

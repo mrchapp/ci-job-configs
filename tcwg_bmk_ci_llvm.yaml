@@ -451,8 +451,8 @@
           timeout: '{timeout}'
       - credentials-binding:
           - text:
-              credential-id: TCWG_JIRA_PASSWORD
-              variable: TCWG_JIRA_PASSWORD
+              credential-id: TCWG_JIRA_TOKEN
+              variable: TCWG_JIRA_TOKEN
 
 - builder:
     name: run-bisect
@@ -483,7 +483,7 @@
               --bad_branch "$bad_branch" \
               --replay_log "$(pwd)/jenkins-scripts/replay_log" \
               --build_script "./jenkins-scripts/{build_script}" \
-              --JIRA_PASSWORD "$TCWG_JIRA_PASSWORD" \
+              --TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
               -- \
               ==rr[ci_project] $ci_project \
               ==rr[ci_config] $ci_config \
@@ -612,4 +612,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 8af96c9977a1dc4d50406072ef11ae8d
+# checksum: 9a961fa88f6650453820098f6f112e5f
