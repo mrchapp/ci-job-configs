@@ -22,6 +22,9 @@ fi
 if [ "$build25" = "true" ]; then
     echo '  - "2.5"' >> configs/ldcg-python-manylinux-tensorflow/ansible/vars/vars.yml
 fi
+if [ "$build26" = "true" ]; then
+    echo '  - "2.6"' >> configs/ldcg-python-manylinux-tensorflow/ansible/vars/vars.yml
+fi
 if [ "$buildgit" = "true" ]; then
     echo '  - "git"' >> configs/ldcg-python-manylinux-tensorflow/ansible/vars/vars.yml
 fi

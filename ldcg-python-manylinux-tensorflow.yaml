@@ -21,6 +21,10 @@
             default: false
             description: 'Build git HEAD'
         - bool:
+            name: build26
+            default: false
+            description: 'Build 2.6.x version'
+        - bool:
             name: build25
             default: false
             description: 'Build 2.5.x version'

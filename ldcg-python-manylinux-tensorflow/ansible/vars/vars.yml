@@ -3,6 +3,18 @@ pip_extra_index_url: "https://snapshots.linaro.org/ldcg/python-cache/"
 build_dir: "/tmp/workspace"
 wheels_dir: "/tmp/workspace/wheels/"
 versions:
+  "2.6":
+    tensorflow_version: "2.6.0-rc1"
+    bazel_version: "3.7.2"
+    gast_version: "==0.4.0"
+    grpcio_version: "~=1.37.0"
+    h5py_version: "~=3.1.0"
+    numpy_version: "~=1.19.2"
+    python_versions:
+      - cp36-cp36m
+      - cp37-cp37m
+      - cp38-cp38
+      - cp39-cp39
   "2.5":
     tensorflow_version: "2.5.0"
     bazel_version: "3.7.2"
@@ -50,5 +62,8 @@ versions:
       - cp38-cp38
       - cp39-cp39
 to_be_built:
-#   - "2.5"
 #   - "1.15"
+#   - "2.4"
+#   - "2.5"
+#   - "2.6"
+#   - "git"
