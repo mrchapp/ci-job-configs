@@ -175,18 +175,7 @@
       - build-parameters:
           ci_project: 'tcwg_bmk_#{TOOLCHAIN}_{hw}'
           ci_config: '#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
-          binutils_url: '{binutils_url}'
-          gcc_url: '{gcc_url}'
-#if !TOOLCHAIN_gnu_eabi
-          glibc_url: '{glibc_url}'
-#endif
-#if TOOLCHAIN_llvm
-          llvm_url: '{llvm_url}'
-#endif
-#if TOOLCHAIN_gnu_eabi
-          newlib_url: '{newlib_url}'
-#endif
-          default_branch: default
+          default_git: 'jenkins-scm'
           distro: '{distro}'
     disabled: false
 #if TOOLCHAIN_gnu_eabi

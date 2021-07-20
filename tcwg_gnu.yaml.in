@@ -120,19 +120,7 @@
       - build-parameters:
           ci_project: '{ci_project}'
           ci_config: '{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
-#if COMPONENTS_binutils
-          binutils_url: '{binutils_url}'
-#endif
-#if COMPONENTS_gcc
-          gcc_url: '{gcc_url}'
-#endif
-#if COMPONENTS_glibc
-          glibc_url: '{glibc_url}'
-#endif
-#if COMPONENTS_qemu
-          qemu_url: '{qemu_url}'
-#endif
-          default_branch: 'default'
+          default_git: 'jenkins-scm'
           distro: '{distro}'
     disabled: '{disabled}'
     node: '{node} && tcwg-build'

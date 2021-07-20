@@ -187,33 +187,25 @@
     name: component-parameters
     parameters:
       - string:
-          name: '{component}_url'
-          default: '{url}'
-          description: "{component} git URL"
-      - string:
-          name: '{component}_branch'
-          default: '{branch}'
-          description: "{component} branch or sha1 to build, or 'baseline'"
+          name: '{component}_git'
+          default: '{default_git}'
+          description: "{component} git_url#branch/sha1 to build, or 'baseline' or 'jenkins-scm'"
 
 - parameter:
     name: build-parameters
     parameters:
       - component-parameters:
           component: binutils
-          url: '{binutils_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
       - component-parameters:
           component: gcc
-          url: '{gcc_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
       - component-parameters:
           component: glibc
-          url: '{glibc_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
       - component-parameters:
           component: llvm
-          url: '{llvm_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
       - choice:
           name: update_baseline
           choices:
@@ -356,15 +348,14 @@
             # 1 to skip jenkins-scripts
             i=1
             for c in {components}; do
-              eval "u=\$$$${{c}}_url"
-              eval "b=\$$$${{c}}_branch"
-              if [ x"$b" = x"default" ]; then
-                eval "b=\$GIT_COMMIT_$i"
+              eval "g=\$$$${{c}}_git"
+              if [ x"$g" = x"jenkins-scm" ]; then
+                eval "g=\$GIT_URL_$i#\$GIT_COMMIT_$i"
               fi
               i=$(($i+1))
-              if [ x"$b" != x"baseline" ]; then
+              if [ x"$g" != x"baseline" ]; then
                 build_name="$build_name-$c"
-                branch_opt="$branch_opt ==rr[${{c}}_url] $u ==rr[${{c}}_branch] $b"
+                branch_opt="$branch_opt ==rr[${{c}}_git] $g"
               fi
             done
 
@@ -429,13 +420,9 @@
           default: ""
           description: "Project to bisect"
       - string:
-          name: bad_url
+          name: bad_git
           default: ""
-          description: "Bad git URL"
-      - string:
-          name: bad_branch
-          default: ""
-          description: "Bad branch or sha1"
+          description: "Bad git_url#branch/SHA1"
       - file:
           name: jenkins-scripts/replay_log
           description: "Replay part of bisect using provided bisect log"
@@ -479,8 +466,7 @@
               %% artifacts/manifests/bisect.sh \
               --BUILD_URL "$BUILD_URL" \
               --current_project "$current_project" \
-              --bad_url "$bad_url" \
-              --bad_branch "$bad_branch" \
+              --bad_git "$bad_git" \
               --replay_log "$(pwd)/jenkins-scripts/replay_log" \
               --build_script "./jenkins-scripts/{build_script}" \
               --TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
@@ -538,11 +524,7 @@
       - build-parameters:
           ci_project: 'tcwg_bmk_llvm_{hw}'
           ci_config: 'llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
-          binutils_url: '{binutils_url}'
-          gcc_url: '{gcc_url}'
-          glibc_url: '{glibc_url}'
-          llvm_url: '{llvm_url}'
-          default_branch: default
+          default_git: 'jenkins-scm'
           distro: '{distro}'
     disabled: false
     node: tcwg-x86_64-build_bmk
@@ -612,4 +594,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 9a961fa88f6650453820098f6f112e5f
+# checksum: fadabb98c83501b554133c38b859ae9b

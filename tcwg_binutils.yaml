@@ -114,21 +114,16 @@
     name: component-parameters
     parameters:
       - string:
-          name: '{component}_url'
-          default: '{url}'
-          description: "{component} git URL"
-      - string:
-          name: '{component}_branch'
-          default: '{branch}'
-          description: "{component} branch or sha1 to build, or 'baseline'"
+          name: '{component}_git'
+          default: '{default_git}'
+          description: "{component} git_url#branch/sha1 to build, or 'baseline' or 'jenkins-scm'"
 
 - parameter:
     name: build-parameters
     parameters:
       - component-parameters:
           component: binutils
-          url: '{binutils_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
       - choice:
           name: update_baseline
           choices:
@@ -254,15 +249,14 @@
             # 1 to skip jenkins-scripts
             i=1
             for c in {components}; do
-              eval "u=\$$$${{c}}_url"
-              eval "b=\$$$${{c}}_branch"
-              if [ x"$b" = x"default" ]; then
-                eval "b=\$GIT_COMMIT_$i"
+              eval "g=\$$$${{c}}_git"
+              if [ x"$g" = x"jenkins-scm" ]; then
+                eval "g=\$GIT_URL_$i#\$GIT_COMMIT_$i"
               fi
               i=$(($i+1))
-              if [ x"$b" != x"baseline" ]; then
+              if [ x"$g" != x"baseline" ]; then
                 build_name="$build_name-$c"
-                branch_opt="$branch_opt ==rr[${{c}}_url] $u ==rr[${{c}}_branch] $b"
+                branch_opt="$branch_opt ==rr[${{c}}_git] $g"
               fi
             done
 
@@ -327,13 +321,9 @@
           default: ""
           description: "Project to bisect"
       - string:
-          name: bad_url
+          name: bad_git
           default: ""
-          description: "Bad git URL"
-      - string:
-          name: bad_branch
-          default: ""
-          description: "Bad branch or sha1"
+          description: "Bad git_url#branch/SHA1"
       - file:
           name: jenkins-scripts/replay_log
           description: "Replay part of bisect using provided bisect log"
@@ -378,8 +368,7 @@
               %% artifacts/manifests/bisect.sh \
               --BUILD_URL "$BUILD_URL" \
               --current_project "$current_project" \
-              --bad_url "$bad_url" \
-              --bad_branch "$bad_branch" \
+              --bad_git "$bad_git" \
               --replay_log "$(pwd)/jenkins-scripts/replay_log" \
               --build_script "./jenkins-scripts/{build_script}" \
               --TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
@@ -436,8 +425,7 @@
       - build-parameters:
           ci_project: '{ci_project}'
           ci_config: '{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
-          binutils_url: '{binutils_url}'
-          default_branch: 'default'
+          default_git: 'jenkins-scm'
           distro: '{distro}'
     disabled: '{disabled}'
     node: '{node} && tcwg-build'
@@ -504,4 +492,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 9b006b61c9de3ae6b826888680c090be
+# checksum: 7a98db757befde751ca12819ca40b5f4

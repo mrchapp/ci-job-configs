@@ -48,13 +48,9 @@
     name: component-parameters
     parameters:
       - string:
-          name: '{component}_url'
-          default: '{url}'
-          description: "{component} git URL"
-      - string:
-          name: '{component}_branch'
-          default: '{branch}'
-          description: "{component} branch or sha1 to build, or 'baseline'"
+          name: '{component}_git'
+          default: '{default_git}'
+          description: "{component} git_url#branch/sha1 to build, or 'baseline' or 'jenkins-scm'"
 
 - parameter:
     name: build-parameters
@@ -62,44 +58,37 @@
 #if COMPONENTS_binutils
       - component-parameters:
           component: binutils
-          url: '{binutils_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
 #endif
 #if COMPONENTS_gcc
       - component-parameters:
           component: gcc
-          url: '{gcc_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
 #endif
 #if COMPONENTS_glibc
       - component-parameters:
           component: glibc
-          url: '{glibc_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
 #endif
 #if COMPONENTS_newlib
       - component-parameters:
           component: newlib
-          url: '{newlib_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
 #endif
 #if COMPONENTS_linux
       - component-parameters:
           component: linux
-          url: '{linux_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
 #endif
 #if COMPONENTS_llvm
       - component-parameters:
           component: llvm
-          url: '{llvm_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
 #endif
 #if COMPONENTS_qemu
       - component-parameters:
           component: qemu
-          url: '{qemu_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
 #endif
       - choice:
           name: update_baseline
@@ -282,17 +271,16 @@
             # 1 to skip jenkins-scripts
             i=1
             for c in {components}; do
-              eval "u=\$$$${{c}}_url"
-              eval "b=\$$$${{c}}_branch"
+              eval "g=\$$$${{c}}_git"
 #if PURPOSE_ci
-              if [ x"$b" = x"default" ]; then
-                eval "b=\$GIT_COMMIT_$i"
+              if [ x"$g" = x"jenkins-scm" ]; then
+                eval "g=\$GIT_URL_$i#\$GIT_COMMIT_$i"
               fi
               i=$(($i+1))
 #endif
-              if [ x"$b" != x"baseline" ]; then
+              if [ x"$g" != x"baseline" ]; then
                 build_name="$build_name-$c"
-                branch_opt="$branch_opt ==rr[${{c}}_url] $u ==rr[${{c}}_branch] $b"
+                branch_opt="$branch_opt ==rr[${{c}}_git] $g"
               fi
             done
 
@@ -364,13 +352,9 @@
           default: ""
           description: "Project to bisect"
       - string:
-          name: bad_url
+          name: bad_git
           default: ""
-          description: "Bad git URL"
-      - string:
-          name: bad_branch
-          default: ""
-          description: "Bad branch or sha1"
+          description: "Bad git_url#branch/SHA1"
       - file:
           name: jenkins-scripts/replay_log
           description: "Replay part of bisect using provided bisect log"
@@ -431,8 +415,7 @@
               %% artifacts/manifests/bisect.sh \
               --BUILD_URL "$BUILD_URL" \
               --current_project "$current_project" \
-              --bad_url "$bad_url" \
-              --bad_branch "$bad_branch" \
+              --bad_git "$bad_git" \
               --replay_log "$(pwd)/jenkins-scripts/replay_log" \
               --build_script "./jenkins-scripts/{build_script}" \
 #if PURPOSE_ci

@@ -29,13 +29,7 @@
       - build-parameters:
           ci_project: 'tcwg_bmk_NAME_#{TOOLCHAIN}_HW'
           ci_config: #{TOOLCHAIN}-master-aarch64-spec2k6-O2
-          binutils_url: https://git.linaro.org/toolchain/ci/binutils-gdb.git
-          gcc_url: https://git.linaro.org/toolchain/ci/gcc.git
-          glibc_url: https://git.linaro.org/toolchain/ci/glibc.git
-#if TOOLCHAIN_llvm
-          llvm_url: https://git.linaro.org/toolchain/ci/llvm-project.git
-#endif
-          default_branch: baseline
+          default_git: baseline
           distro: lts_1
     disabled: false
     node: tcwg-x86_64-build

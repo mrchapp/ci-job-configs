@@ -88,29 +88,22 @@
     name: component-parameters
     parameters:
       - string:
-          name: '{component}_url'
-          default: '{url}'
-          description: "{component} git URL"
-      - string:
-          name: '{component}_branch'
-          default: '{branch}'
-          description: "{component} branch or sha1 to build, or 'baseline'"
+          name: '{component}_git'
+          default: '{default_git}'
+          description: "{component} git_url#branch/sha1 to build, or 'baseline' or 'jenkins-scm'"
 
 - parameter:
     name: build-parameters
     parameters:
       - component-parameters:
           component: binutils
-          url: '{binutils_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
       - component-parameters:
           component: gcc
-          url: '{gcc_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
       - component-parameters:
           component: glibc
-          url: '{glibc_url}'
-          branch: '{default_branch}'
+          default_git: '{default_git}'
       - choice:
           name: update_baseline
           choices:
@@ -233,11 +226,10 @@
             # 1 to skip jenkins-scripts
             i=1
             for c in {components}; do
-              eval "u=\$$$${{c}}_url"
-              eval "b=\$$$${{c}}_branch"
-              if [ x"$b" != x"baseline" ]; then
+              eval "g=\$$$${{c}}_git"
+              if [ x"$g" != x"baseline" ]; then
                 build_name="$build_name-$c"
-                branch_opt="$branch_opt ==rr[${{c}}_url] $u ==rr[${{c}}_branch] $b"
+                branch_opt="$branch_opt ==rr[${{c}}_git] $g"
               fi
             done
 
@@ -302,13 +294,9 @@
           default: ""
           description: "Project to bisect"
       - string:
-          name: bad_url
+          name: bad_git
           default: ""
-          description: "Bad git URL"
-      - string:
-          name: bad_branch
-          default: ""
-          description: "Bad branch or sha1"
+          description: "Bad git_url#branch/SHA1"
       - file:
           name: jenkins-scripts/replay_log
           description: "Replay part of bisect using provided bisect log"
@@ -348,8 +336,7 @@
               %% artifacts/manifests/bisect.sh \
               --BUILD_URL "$BUILD_URL" \
               --current_project "$current_project" \
-              --bad_url "$bad_url" \
-              --bad_branch "$bad_branch" \
+              --bad_git "$bad_git" \
               --replay_log "$(pwd)/jenkins-scripts/replay_log" \
               --build_script "./jenkins-scripts/{build_script}" \
               -- \
@@ -421,10 +408,7 @@
       - build-parameters:
           ci_project: 'tcwg_bmk_NAME_gnu_HW'
           ci_config: gnu-master-aarch64-spec2k6-O2
-          binutils_url: https://git.linaro.org/toolchain/ci/binutils-gdb.git
-          gcc_url: https://git.linaro.org/toolchain/ci/gcc.git
-          glibc_url: https://git.linaro.org/toolchain/ci/glibc.git
-          default_branch: baseline
+          default_git: baseline
           distro: lts_1
     disabled: false
     node: tcwg-x86_64-build
@@ -475,4 +459,4 @@
           job_suffix: ''
     publishers:
         - bisect-publishers
-# checksum: 5e6dbbbaf15a0f834402736ed4d864ff
+# checksum: ced3abe510ad78a103cb1ce8c88d90d7
