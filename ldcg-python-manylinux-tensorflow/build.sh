@@ -29,4 +29,4 @@ if [ "$buildgit" = "true" ]; then
     echo '  - "git"' >> configs/ldcg-python-manylinux-tensorflow/ansible/vars/vars.yml
 fi
 
-docker run -u root -v $PWD:/tmp/workspace quay.io/pypa/manylinux2014_aarch64 /tmp/workspace/build-manylinux2014-wheels.sh
+docker run -u root --security-opt seccomp=unconfined -v $PWD:/tmp/workspace quay.io/pypa/manylinux2014_aarch64 /tmp/workspace/build-manylinux2014-wheels.sh
