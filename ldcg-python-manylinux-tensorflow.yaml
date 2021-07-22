@@ -37,7 +37,7 @@
             default: false
             description: 'Build 1.15.x version'
     disabled: false
-    node: leg-aarch64
+    node: ldcg-aarch64-02
     concurrent: false
     display-name: 'Tensorflow Python package (manylinux2014)'
     wrappers:
