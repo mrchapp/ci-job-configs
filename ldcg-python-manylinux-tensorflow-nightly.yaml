@@ -23,7 +23,7 @@
             default: true
             description: 'Build git HEAD'
     disabled: false
-    node: leg-aarch64
+    node: ldcg-aarch64-02
     concurrent: false
     display-name: 'Tensorflow Python package (manylinux2014 nightly)'
     wrappers:
