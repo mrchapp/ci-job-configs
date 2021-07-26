@@ -17,61 +17,21 @@
           target: aarch64
     toolchain_name: llvm
     components: binutils gcc glibc llvm
-    toolchain_ver:
-      - master:
-          binutils_branch: refs/heads/master
-          gcc_branch: refs/heads/master
-          glibc_branch: refs/heads/master
-          llvm_branch: refs/heads/main
-          distro: lts
-      - release:
-          binutils_branch: refs/heads/binutils-2_36-branch
-          gcc_branch: refs/heads/releases/gcc-10
-          glibc_branch: refs/heads/release/2.32/master
-          llvm_branch: refs/heads/release/12.x
-          distro: lts_1
     bmk:
       - spec2k6
-    cron_schedule: 'H H H * *'
     cflags:
       - Os
       - Os_LTO
-      - Oz
-      - Oz_LTO
       - O2
       - O2_LTO
       - O3
       - O3_LTO
-      - O3_VECT
-      - O3_LTO_VECT
-      - Os-vs-Os_LTO:
-          cron_schedule: 'H H H * *'
-      - O2-vs-O2_LTO:
-          cron_schedule: 'H H H * *'
-      - O3-vs-O3_LTO:
-          cron_schedule: 'H H H * *'
+      - Oz
+      - Oz_LTO
     jobs:
-      - 'tcwg_bmk_ci_llvm-build-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
-      - 'tcwg_bmk_ci_llvm-bisect-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
+      - 'tcwg_bmk_ci_llvm-master'
+      - 'tcwg_bmk_ci_llvm-release'
     exclude:
-      - toolchain_name: gnu
-        cflags: Oz
-      - toolchain_name: gnu
-        cflags: Oz_LTO
-      - toolchain_name: gnu_eabi
-        cflags: Oz
-      - toolchain_name: gnu_eabi
-        cflags: Oz_LTO
-      - toolchain_name: llvm
-        cflags: Os-vs-Os_LTO
-      - toolchain_name: llvm
-        cflags: O2-vs-O2_LTO
-      - toolchain_name: llvm
-        cflags: O3-vs-O3_LTO
-      - toolchain_name: llvm
-        cflags: O3_VECT
-      - toolchain_name: llvm
-        cflags: O3_LTO_VECT
       - hw: sq
         cflags: O2
       - hw: sq
@@ -92,6 +52,32 @@
         cflags: O3_LTO_VECT
       - hw: sq
         toolchain_ver: master
+
+- job-group:
+    name: tcwg_bmk_ci_llvm-master
+    toolchain_ver: master
+    binutils_branch: refs/heads/master
+    gcc_branch: refs/heads/master
+    glibc_branch: refs/heads/master
+    llvm_branch: refs/heads/main
+    distro: lts
+    cron_schedule: 'H H H/3 * *'
+    jobs:
+      - 'tcwg_bmk_ci_llvm-build-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
+      - 'tcwg_bmk_ci_llvm-bisect-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
+
+- job-group:
+    name: tcwg_bmk_ci_llvm-release
+    toolchain_ver: release
+    binutils_branch: refs/heads/binutils-2_36-branch
+    gcc_branch: refs/heads/releases/gcc-10
+    glibc_branch: refs/heads/release/2.32/master
+    llvm_branch: refs/heads/release/12.x
+    distro: lts_1
+    cron_schedule: 'H H H/7 * *'
+    jobs:
+      - 'tcwg_bmk_ci_llvm-build-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
+      - 'tcwg_bmk_ci_llvm-bisect-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
 
 - view:
     name: tcwg_bmk_ci_llvm
@@ -594,4 +580,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: fadabb98c83501b554133c38b859ae9b
+# checksum: a1871761965def23f0d5d8b83a5d6891

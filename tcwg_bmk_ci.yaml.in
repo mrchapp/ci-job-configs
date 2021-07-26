@@ -27,33 +27,6 @@
 #endif
     toolchain_name: #{TOOLCHAIN}
     components: #{COMPONENTS}
-    toolchain_ver:
-      - master:
-          binutils_branch: refs/heads/master
-          gcc_branch: refs/heads/master
-#if !TOOLCHAIN_gnu_eabi
-          glibc_branch: refs/heads/master
-#endif
-#if TOOLCHAIN_llvm
-          llvm_branch: refs/heads/main
-#endif
-#if TOOLCHAIN_gnu_eabi
-          newlib_branch: refs/heads/master
-#endif
-          distro: lts
-      - release:
-          binutils_branch: refs/heads/binutils-2_36-branch
-          gcc_branch: refs/heads/releases/gcc-10
-#if !TOOLCHAIN_gnu_eabi
-          glibc_branch: refs/heads/release/2.32/master
-#endif
-#if TOOLCHAIN_llvm
-          llvm_branch: refs/heads/release/12.x
-#endif
-#if TOOLCHAIN_gnu_eabi
-          newlib_branch: refs/tags/newlib-3.3.0
-#endif
-          distro: lts_1
     bmk:
 #if TOOLCHAIN_gnu_eabi
       - coremark
@@ -63,16 +36,17 @@
       - spec2017
 #endif
 #endif
-    cron_schedule: 'H H H * *'
     cflags:
       - Os
       - Os_LTO
-      - Oz
-      - Oz_LTO
       - O2
       - O2_LTO
       - O3
       - O3_LTO
+#if TOOLCHAIN_llvm
+      - Oz
+      - Oz_LTO
+#else
       - O3_VECT
       - O3_LTO_VECT
       - Os-vs-Os_LTO:
@@ -81,28 +55,11 @@
           cron_schedule: 'H H H * *'
       - O3-vs-O3_LTO:
           cron_schedule: 'H H H * *'
+#endif
     jobs:
-      - 'tcwg_bmk_ci_#{TOOLCHAIN}-build-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
-      - 'tcwg_bmk_ci_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
+      - 'tcwg_bmk_ci_#{TOOLCHAIN}-master'
+      - 'tcwg_bmk_ci_#{TOOLCHAIN}-release'
     exclude:
-      - toolchain_name: gnu
-        cflags: Oz
-      - toolchain_name: gnu
-        cflags: Oz_LTO
-      - toolchain_name: gnu_eabi
-        cflags: Oz
-      - toolchain_name: gnu_eabi
-        cflags: Oz_LTO
-      - toolchain_name: llvm
-        cflags: Os-vs-Os_LTO
-      - toolchain_name: llvm
-        cflags: O2-vs-O2_LTO
-      - toolchain_name: llvm
-        cflags: O3-vs-O3_LTO
-      - toolchain_name: llvm
-        cflags: O3_VECT
-      - toolchain_name: llvm
-        cflags: O3_LTO_VECT
       - hw: sq
         cflags: O2
       - hw: sq
@@ -153,6 +110,46 @@
       - bmk: spec2017
         cflags: O3_LTO_VECT
 #endif
+
+- job-group:
+    name: tcwg_bmk_ci_#{TOOLCHAIN}-master
+    toolchain_ver: master
+    binutils_branch: refs/heads/master
+    gcc_branch: refs/heads/master
+#if !TOOLCHAIN_gnu_eabi
+    glibc_branch: refs/heads/master
+#endif
+#if TOOLCHAIN_llvm
+    llvm_branch: refs/heads/main
+#endif
+#if TOOLCHAIN_gnu_eabi
+    newlib_branch: refs/heads/master
+#endif
+    distro: lts
+    cron_schedule: 'H H H/3 * *'
+    jobs:
+      - 'tcwg_bmk_ci_#{TOOLCHAIN}-build-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
+      - 'tcwg_bmk_ci_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
+
+- job-group:
+    name: tcwg_bmk_ci_#{TOOLCHAIN}-release
+    toolchain_ver: release
+    binutils_branch: refs/heads/binutils-2_36-branch
+    gcc_branch: refs/heads/releases/gcc-10
+#if !TOOLCHAIN_gnu_eabi
+    glibc_branch: refs/heads/release/2.32/master
+#endif
+#if TOOLCHAIN_llvm
+    llvm_branch: refs/heads/release/12.x
+#endif
+#if TOOLCHAIN_gnu_eabi
+    newlib_branch: refs/tags/newlib-3.3.0
+#endif
+    distro: lts_1
+    cron_schedule: 'H H H/7 * *'
+    jobs:
+      - 'tcwg_bmk_ci_#{TOOLCHAIN}-build-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
+      - 'tcwg_bmk_ci_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
 
 - view:
     name: tcwg_bmk_ci_#{TOOLCHAIN}

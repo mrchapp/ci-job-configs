@@ -10,25 +10,11 @@
           target: arm_eabi
     toolchain_name: gnu_eabi
     components: binutils gcc newlib
-    toolchain_ver:
-      - master:
-          binutils_branch: refs/heads/master
-          gcc_branch: refs/heads/master
-          newlib_branch: refs/heads/master
-          distro: lts
-      - release:
-          binutils_branch: refs/heads/binutils-2_36-branch
-          gcc_branch: refs/heads/releases/gcc-10
-          newlib_branch: refs/tags/newlib-3.3.0
-          distro: lts_1
     bmk:
       - coremark
-    cron_schedule: 'H H H * *'
     cflags:
       - Os
       - Os_LTO
-      - Oz
-      - Oz_LTO
       - O2
       - O2_LTO
       - O3
@@ -42,27 +28,9 @@
       - O3-vs-O3_LTO:
           cron_schedule: 'H H H * *'
     jobs:
-      - 'tcwg_bmk_ci_gnu_eabi-build-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
-      - 'tcwg_bmk_ci_gnu_eabi-bisect-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
+      - 'tcwg_bmk_ci_gnu_eabi-master'
+      - 'tcwg_bmk_ci_gnu_eabi-release'
     exclude:
-      - toolchain_name: gnu
-        cflags: Oz
-      - toolchain_name: gnu
-        cflags: Oz_LTO
-      - toolchain_name: gnu_eabi
-        cflags: Oz
-      - toolchain_name: gnu_eabi
-        cflags: Oz_LTO
-      - toolchain_name: llvm
-        cflags: Os-vs-Os_LTO
-      - toolchain_name: llvm
-        cflags: O2-vs-O2_LTO
-      - toolchain_name: llvm
-        cflags: O3-vs-O3_LTO
-      - toolchain_name: llvm
-        cflags: O3_VECT
-      - toolchain_name: llvm
-        cflags: O3_LTO_VECT
       - hw: sq
         cflags: O2
       - hw: sq
@@ -83,6 +51,30 @@
         cflags: O3_LTO_VECT
       - hw: sq
         toolchain_ver: master
+
+- job-group:
+    name: tcwg_bmk_ci_gnu_eabi-master
+    toolchain_ver: master
+    binutils_branch: refs/heads/master
+    gcc_branch: refs/heads/master
+    newlib_branch: refs/heads/master
+    distro: lts
+    cron_schedule: 'H H H/3 * *'
+    jobs:
+      - 'tcwg_bmk_ci_gnu_eabi-build-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
+      - 'tcwg_bmk_ci_gnu_eabi-bisect-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
+
+- job-group:
+    name: tcwg_bmk_ci_gnu_eabi-release
+    toolchain_ver: release
+    binutils_branch: refs/heads/binutils-2_36-branch
+    gcc_branch: refs/heads/releases/gcc-10
+    newlib_branch: refs/tags/newlib-3.3.0
+    distro: lts_1
+    cron_schedule: 'H H H/7 * *'
+    jobs:
+      - 'tcwg_bmk_ci_gnu_eabi-build-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
+      - 'tcwg_bmk_ci_gnu_eabi-bisect-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
 
 - view:
     name: tcwg_bmk_ci_gnu_eabi
@@ -575,4 +567,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 682a2eeca81707b5f4c96e27e8cae032
+# checksum: 5f2c7abed56de4ded7585184e0d07948
