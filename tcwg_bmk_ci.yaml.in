@@ -3,10 +3,10 @@
     name: tcwg_bmk_ci_#{TOOLCHAIN}
     binutils_url: git://sourceware.org/git/binutils-gdb.git
     gcc_url: https://github.com/gcc-mirror/gcc.git
-#if TOOLCHAIN_gnu_eabi
-    newlib_url: git://sourceware.org/git/newlib-cygwin.git
-#else
+#if !TOOLCHAIN_gnu_eabi
     glibc_url: git://sourceware.org/git/glibc.git
+#else
+    newlib_url: git://sourceware.org/git/newlib-cygwin.git
 #endif
 #if TOOLCHAIN_llvm
     llvm_url: https://github.com/llvm/llvm-project.git
@@ -118,12 +118,11 @@
     gcc_branch: refs/heads/master
 #if !TOOLCHAIN_gnu_eabi
     glibc_branch: refs/heads/master
+#else
+    newlib_branch: refs/heads/master
 #endif
 #if TOOLCHAIN_llvm
     llvm_branch: refs/heads/main
-#endif
-#if TOOLCHAIN_gnu_eabi
-    newlib_branch: refs/heads/master
 #endif
     distro: lts
     cron_schedule: 'H H H/3 * *'
@@ -138,12 +137,11 @@
     gcc_branch: refs/heads/releases/gcc-10
 #if !TOOLCHAIN_gnu_eabi
     glibc_branch: refs/heads/release/2.32/master
+#else
+    newlib_branch: refs/tags/newlib-3.3.0
 #endif
 #if TOOLCHAIN_llvm
     llvm_branch: refs/heads/release/12.x
-#endif
-#if TOOLCHAIN_gnu_eabi
-    newlib_branch: refs/tags/newlib-3.3.0
 #endif
     distro: lts_1
     cron_schedule: 'H H H/7 * *'
@@ -192,14 +190,13 @@
 #if !TOOLCHAIN_gnu_eabi
           glibc_url: '{glibc_url}'
           glibc_branch: '{glibc_branch}'
+#else
+          newlib_url: '{newlib_url}'
+          newlib_branch: '{newlib_branch}'
 #endif
 #if TOOLCHAIN_llvm
           llvm_url: '{llvm_url}'
           llvm_branch: '{llvm_branch}'
-#endif
-#if TOOLCHAIN_gnu_eabi
-          newlib_url: '{newlib_url}'
-          newlib_branch: '{newlib_branch}'
 #endif
     triggers:
       - pollscm:
