@@ -58,7 +58,7 @@ function build_android(){
     wget -c https://android-git.linaro.org/android-build-configs.git/plain/linaro-build.sh -O linaro-build.sh
     chmod +x linaro-build.sh
     if [ -n "${ANDROID_BUILD_CONFIG}" ]; then
-        bash -x ./linaro-build.sh -c "${ANDROID_BUILD_CONFIG}"
+        bash -ex ./linaro-build.sh -c "${ANDROID_BUILD_CONFIG}"
         # ${ANDROID_BUILD_CONFIG} will be repo synced after build
         # shellcheck source=/dev/null
         source "android-build-configs/${ANDROID_BUILD_CONFIG}"
@@ -70,7 +70,7 @@ function build_android(){
         [ -n "${MANIFEST_URL}" ] && opt_maniefst_url="-m ${MANIFEST_URL}"
         [ -n "${MAKE_TARGETS}" ] && export MAKE_TARGETS
         # shellcheck disable=SC2086
-        bash -x ./linaro-build.sh -tp "${TARGET_PRODUCT}" ${opt_maniefst_url} ${opt_manfest_branch}
+        bash -ex ./linaro-build.sh -tp "${TARGET_PRODUCT}" ${opt_maniefst_url} ${opt_manfest_branch}
     fi
     if [ "X${TARGET_PRODUCT}X" = "Xaosp_arm64X" ]; then
         # for cts vts
