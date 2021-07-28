@@ -18,7 +18,11 @@
         - string:
             name: toolchain_url
             default: ''
-            description: 'Toolchain URL. Either http[s]://xxx.tar.xz, rsync://machine:/path/bin/target-triplet-, or ssh://machine/path/compiler'
+            description: |
+              Toolchain URL. Either http[s]://xxx.tar.xz,
+              rsync://machine:/path/bin/target-triplet-, or
+              ssh://machine/path/compiler.  You need to specify 'builder'
+              setting below when using non-ssh:// toolchain_urls.
         - choice:
             name: toolchain_type
             choices:
@@ -115,8 +119,11 @@
             description: 'Delete previous results older than X days (on board)'
         - string:
             name: builder
-            default: 'tcwg-x86_64-build'
-            description: 'Builder -- jenkins label or node'
+            default: 'tcwg-x86_64-build:lts'
+            description: |
+              Jenkins label or node to procure a builder from and the docker
+              image distro tag to use for the build environment.
+              This is needed only for non-ssh:// toolchain_urls.
         - string:
             name: scripts_branch
             default: master
