@@ -197,6 +197,9 @@ fi
 rm -rf ${HOME}/srv/oe/downloads/git2/*mbedtls*
 rm -rf ${HOME}/srv/oe/downloads/git2/*optiga*
 rm -rf ${HOME}/srv/oe/downloads/git2/*EdgeAgent*
+rm -rf ${HOME}/srv/oe/downloads/git2/*Azure*
+rm -rf ${HOME}/srv/oe/downloads/git2/*Microsoft*
+rm -rf ${HOME}/srv/oe/downloads/git2/*kgabis.parson*
 bitbake ${bbopt} -c cleansstate mbedtls edgeagent
 
 # Build all ${IMAGES}
