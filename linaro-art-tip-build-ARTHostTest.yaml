@@ -114,7 +114,7 @@
             . build/envsetup.sh
             lunch armv8
             perl scripts/jenkins/test_launcher.pl \
-              scripts/tests/test_art_host.sh
+              scripts/tests/test_art_host.sh --default
     publishers:
         - email-ext:
             recipients: '${CI_MAIL_RECIPIENTS}'
