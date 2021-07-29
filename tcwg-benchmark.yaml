@@ -152,7 +152,8 @@
             choices:
               - arm64
               - armhf
-            description: 'Docker image architecture -- arm64 or armhf'
+              - amd64
+            description: 'Docker image architecture'
         - bool:
             name: reboot
             default: 'false'
@@ -171,11 +172,12 @@
             description: 'Delete previous results older than X days (on board)'
         - string:
             name: builder
-            default: 'tcwg-x86_64-build:lts'
+            default: 'bmk_board'
             description: |
               Jenkins label or node to procure a builder from and the docker
               image distro tag to use for the build environment.
               This is needed only for non-ssh:// toolchain_urls.
+              Special value of bmk_board uses benchmarking board as the builder
         - string:
             name: scripts_branch
             default: master
@@ -225,7 +227,7 @@
             case "$bmk_hw:$image_arch" in
               sq:arm64) hw_tag=sq_64 ;;
               sq:armhf) hw_tag=sq_32 ;;
-              stm32:armhf) hw_tag=stm32_STM32L476RGTx ;;
+              stm32:armhf) hw_tag=stm32 ;;
               tk1:armhf) hw_tag=tk1_32 ;;
               tx1:arm64) hw_tag=tx1_64 ;;
               tx1:armhf) hw_tag=tx1_32 ;;
@@ -278,4 +280,4 @@
           aborted: true
           send-to:
             - recipients
-# checksum: 19383d9bedc1a120d6db20e1c7f4d90e
+# checksum: 7a2806244107d2928b7570c2484ba7d4

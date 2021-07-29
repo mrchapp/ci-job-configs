@@ -100,7 +100,8 @@
             choices:
               - arm64
               - armhf
-            description: 'Docker image architecture -- arm64 or armhf'
+              - amd64
+            description: 'Docker image architecture'
         - bool:
             name: reboot
             default: 'false'
@@ -119,11 +120,12 @@
             description: 'Delete previous results older than X days (on board)'
         - string:
             name: builder
-            default: 'tcwg-x86_64-build:lts'
+            default: 'bmk_board'
             description: |
               Jenkins label or node to procure a builder from and the docker
               image distro tag to use for the build environment.
               This is needed only for non-ssh:// toolchain_urls.
+              Special value of bmk_board uses benchmarking board as the builder
         - string:
             name: scripts_branch
             default: master
@@ -174,7 +176,7 @@
             case "$bmk_hw:$image_arch" in
               sq:arm64) hw_tag=sq_64 ;;
               sq:armhf) hw_tag=sq_32 ;;
-              stm32:armhf) hw_tag=stm32_STM32L476RGTx ;;
+              stm32:armhf) hw_tag=stm32 ;;
               tk1:armhf) hw_tag=tk1_32 ;;
               tx1:arm64) hw_tag=tx1_64 ;;
               tx1:armhf) hw_tag=tx1_32 ;;
@@ -235,31 +237,27 @@
                   boardname=$(cat <&9)
                   export boardname
                   echo "#$BUILD_NUMBER-$displaytag-$boardname" > artifacts/jenkins/build-name
-                  if [ x"$bmk_hw" = x"stm32" ]; then
-                    exec ./jenkins-scripts/tcwg-benchmark-bare.sh
-                  else
-                    exec ./jenkins-scripts/tcwg-benchmark.sh \
-                      --boardname "$boardname" \
-                      --toolchain_url "$toolchain_url" \
-                      --toolchain_type "$toolchain_type" \
-                      --sysroot "$sysroot" \
-                      --bench_list "$bench_list" \
-                      --cflags "$cflags" \
-                      --ldflags "$ldflags" \
-                      --extension "$extension" \
-                      --testmode "$testmode" \
-                      --iterations "$iterations" \
-                      --results_id "$results_id" \
-                      --forceinstall "$forceinstall" \
-                      --run_profile "$run_profile" \
-                      --image_arch "$image_arch" \
-                      --reboot "$reboot" \
-                      --ignore_errors "$ignore_errors" \
-                      --clean_older_than "$clean_older_than" \
-                      --builder "$builder" \
-                      --BUILD_NUMBER "$BUILD_NUMBER" \
-                      --WORKSPACE "$WORKSPACE"
-                  fi
+                  exec ./jenkins-scripts/tcwg-benchmark.sh \
+                    --boardname "$boardname" \
+                    --toolchain_url "$toolchain_url" \
+                    --toolchain_type "$toolchain_type" \
+                    --sysroot "$sysroot" \
+                    --bench_list "$bench_list" \
+                    --cflags "$cflags" \
+                    --ldflags "$ldflags" \
+                    --extension "$extension" \
+                    --testmode "$testmode" \
+                    --iterations "$iterations" \
+                    --results_id "$results_id" \
+                    --forceinstall "$forceinstall" \
+                    --run_profile "$run_profile" \
+                    --image_arch "$image_arch" \
+                    --reboot "$reboot" \
+                    --ignore_errors "$ignore_errors" \
+                    --clean_older_than "$clean_older_than" \
+                    --builder "$builder" \
+                    --BUILD_NUMBER "$BUILD_NUMBER" \
+                    --WORKSPACE "$WORKSPACE"
                 ) 9<$lock &
                 res=0 && wait $! || res=$?
                 if [ $res != 0 ]; then
