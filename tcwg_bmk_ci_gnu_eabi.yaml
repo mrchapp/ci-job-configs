@@ -59,7 +59,7 @@
     gcc_branch: refs/heads/master
     newlib_branch: refs/heads/master
     distro: lts
-    cron_schedule: 'H * * * *'
+    cron_schedule: 'H H H/3 * *'
     jobs:
       - 'tcwg_bmk_ci_gnu_eabi-build-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
       - 'tcwg_bmk_ci_gnu_eabi-bisect-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
@@ -71,7 +71,7 @@
     gcc_branch: refs/heads/releases/gcc-10
     newlib_branch: refs/tags/newlib-3.3.0
     distro: lts_1
-    cron_schedule: 'H * * * *'
+    cron_schedule: 'H H H/7 * *'
     jobs:
       - 'tcwg_bmk_ci_gnu_eabi-build-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
       - 'tcwg_bmk_ci_gnu_eabi-bisect-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
@@ -567,4 +567,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 655466676827688242f85daaed8d8083
+# checksum: 8a3661b28a4b404b5b57847e3ac8ed95

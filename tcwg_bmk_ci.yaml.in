@@ -125,11 +125,7 @@
     llvm_branch: refs/heads/main
 #endif
     distro: lts
-#if !TOOLCHAIN_gnu_eabi
     cron_schedule: 'H H H/3 * *'
-#else
-    cron_schedule: 'H * * * *'
-#endif
     jobs:
       - 'tcwg_bmk_ci_#{TOOLCHAIN}-build-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
       - 'tcwg_bmk_ci_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
@@ -148,11 +144,7 @@
     llvm_branch: refs/heads/release/12.x
 #endif
     distro: lts_1
-#if !TOOLCHAIN_gnu_eabi
     cron_schedule: 'H H H/7 * *'
-#else
-    cron_schedule: 'H * * * *'
-#endif
     jobs:
       - 'tcwg_bmk_ci_#{TOOLCHAIN}-build-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
       - 'tcwg_bmk_ci_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
