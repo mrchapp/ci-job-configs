@@ -256,7 +256,6 @@
                     --ignore_errors "$ignore_errors" \
                     --clean_older_than "$clean_older_than" \
                     --builder "$builder" \
-                    --BUILD_NUMBER "$BUILD_NUMBER" \
                     --WORKSPACE "$WORKSPACE"
                 ) 9<$lock &
                 res=0 && wait $! || res=$?

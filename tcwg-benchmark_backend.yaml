@@ -255,7 +255,6 @@
                     --ignore_errors "$ignore_errors" \
                     --clean_older_than "$clean_older_than" \
                     --builder "$builder" \
-                    --BUILD_NUMBER "$BUILD_NUMBER" \
                     --WORKSPACE "$WORKSPACE"
                 ) 9<$lock &
                 res=0 && wait $! || res=$?
@@ -306,4 +305,4 @@
           aborted: true
           send-to:
             - recipients
-# checksum: ba782c96883dd21451840b657caa3946
+# checksum: 1aab20dc4187110e894ebe8c53847b59
