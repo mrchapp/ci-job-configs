@@ -227,7 +227,7 @@
             case "$bmk_hw:$image_arch" in
               sq:arm64) hw_tag=sq_64 ;;
               sq:armhf) hw_tag=sq_32 ;;
-              stm32:armhf) hw_tag=stm32 ;;
+              stm32:amd64) hw_tag=stm32 ;;
               tk1:armhf) hw_tag=tk1_32 ;;
               tx1:arm64) hw_tag=tx1_64 ;;
               tx1:armhf) hw_tag=tx1_32 ;;
@@ -280,4 +280,4 @@
           aborted: true
           send-to:
             - recipients
-# checksum: 7a2806244107d2928b7570c2484ba7d4
+# checksum: 45a7b41846251d80231f51d47428b6f0

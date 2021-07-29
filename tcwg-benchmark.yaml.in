@@ -176,7 +176,7 @@
             case "$bmk_hw:$image_arch" in
               sq:arm64) hw_tag=sq_64 ;;
               sq:armhf) hw_tag=sq_32 ;;
-              stm32:armhf) hw_tag=stm32 ;;
+              stm32:amd64) hw_tag=stm32 ;;
               tk1:armhf) hw_tag=tk1_32 ;;
               tx1:arm64) hw_tag=tx1_64 ;;
               tx1:armhf) hw_tag=tx1_32 ;;
