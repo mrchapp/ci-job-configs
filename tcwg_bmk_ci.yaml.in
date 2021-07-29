@@ -174,7 +174,7 @@
           distro: '{distro}'
     disabled: false
 #if TOOLCHAIN_gnu_eabi
-    node: tcwg-x86_64-dev-02
+    node: tcwg-x86_64-build
 #else
     node: tcwg-x86_64-build_bmk
 #endif
