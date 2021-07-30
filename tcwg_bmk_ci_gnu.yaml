@@ -46,35 +46,6 @@
       - hw: sq
         toolchain_ver: master
 
-- project:
-    name: tcwg_bmk_ci_gnu-delete
-    action:
-      - build
-      - bisect
-    hw:
-      - tk1:
-          target: arm
-      - tx1:
-          target: aarch64
-    toolchain_ver:
-      - master
-      - release
-    bmk:
-      - spec2k6
-    cflags:
-      - Os-vs-Os_LTO
-      - O2-vs-O2_LTO
-      - O3-vs-O3_LTO
-    jobs:
-      - 'tcwg_bmk_ci_gnu-{action}-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
-
-- job-template:
-    name: tcwg_bmk_ci_gnu-{action}-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
-
 - job-group:
     name: tcwg_bmk_ci_gnu-master
     toolchain_ver: master
@@ -590,4 +561,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: a3b56f2424c0c1595ed65c48646756c4
+# checksum: 2a7380a22ea4cc0895fc7a21a9c93049

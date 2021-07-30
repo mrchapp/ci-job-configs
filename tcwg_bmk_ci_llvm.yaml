@@ -47,7 +47,6 @@
       - hw: sq
         toolchain_ver: master
 
-
 - job-group:
     name: tcwg_bmk_ci_llvm-master
     toolchain_ver: master
@@ -575,4 +574,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 5dc567e591e1a8dbdbc923723b38ad25
+# checksum: d87c968a955eb2e885627aa251cb2a00

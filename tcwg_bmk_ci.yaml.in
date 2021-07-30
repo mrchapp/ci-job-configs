@@ -93,46 +93,6 @@
         cflags: O3_LTO_VECT
 #endif
 
-#if TOOLCHAIN_gnu || TOOLCHAIN_gnu_eabi
-- project:
-    name: tcwg_bmk_ci_#{TOOLCHAIN}-delete
-    action:
-      - build
-      - bisect
-    hw:
-#if TOOLCHAIN_gnu_eabi
-      - stm32:
-          target: arm_eabi
-#else
-      - tk1:
-          target: arm
-      - tx1:
-          target: aarch64
-#endif
-    toolchain_ver:
-      - master
-      - release
-    bmk:
-#if TOOLCHAIN_gnu_eabi
-      - coremark
-#else
-      - spec2k6
-#endif
-    cflags:
-      - Os-vs-Os_LTO
-      - O2-vs-O2_LTO
-      - O3-vs-O3_LTO
-    jobs:
-      - 'tcwg_bmk_ci_#{TOOLCHAIN}-{action}-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
-
-- job-template:
-    name: tcwg_bmk_ci_#{TOOLCHAIN}-{action}-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
-#endif
-
 - job-group:
     name: tcwg_bmk_ci_#{TOOLCHAIN}-master
     toolchain_ver: master

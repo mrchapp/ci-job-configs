@@ -40,33 +40,6 @@
       - hw: sq
         toolchain_ver: master
 
-- project:
-    name: tcwg_bmk_ci_gnu_eabi-delete
-    action:
-      - build
-      - bisect
-    hw:
-      - stm32:
-          target: arm_eabi
-    toolchain_ver:
-      - master
-      - release
-    bmk:
-      - coremark
-    cflags:
-      - Os-vs-Os_LTO
-      - O2-vs-O2_LTO
-      - O3-vs-O3_LTO
-    jobs:
-      - 'tcwg_bmk_ci_gnu_eabi-{action}-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
-
-- job-template:
-    name: tcwg_bmk_ci_gnu_eabi-{action}-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
-
 - job-group:
     name: tcwg_bmk_ci_gnu_eabi-master
     toolchain_ver: master
@@ -582,4 +555,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: ec9475365000080b3c38f7901da2a028
+# checksum: 84e59f503ee936e860f9a3a746829fb1
