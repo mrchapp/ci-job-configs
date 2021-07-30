@@ -211,7 +211,7 @@ actions:
       minutes: 10
     method: u-boot
     commands:
-    - setenv linux_sd "mmc rescan; fatload mmc 0:1 ${fdt_addr_r} ${fdt_name}; fatload mmc 0:1 ${kernel_addr_r} ${kernel_name}; setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p2 rw rootwait coherent_pool=2M audit=0; bootz ${kernel_addr_r} - ${fdt_addr_r}"
+    - "setenv linux_sd 'mmc rescan; fatload mmc 0:1 ${fdt_addr_r} ${fdt_name}; fatload mmc 0:1 ${kernel_addr_r} ${kernel_name}; setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p2 rw rootwait coherent_pool=2M audit=0; bootz ${kernel_addr_r} - ${fdt_addr_r}'"
     - run linux_sd
     auto_login:
       login_prompt: "login:"
