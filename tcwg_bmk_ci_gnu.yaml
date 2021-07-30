@@ -73,7 +73,12 @@
 - view:
     name: tcwg_bmk_ci_gnu
     view-type: list
-    regex: 'tcwg_bmk_ci_gnu-.*'
+    regex: 'tcwg_bmk_ci_gnu-build-.*'
+
+- view:
+    name: tcwg_bmk_ci_bisects
+    view-type: list
+    regex: 'tcwg_bmk_ci_.*-bisect-.*'
 
 #BEGIN: tcwg/round-robin.yaml.inc
 # -*- mode: Yaml -*-
@@ -561,4 +566,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 2a7380a22ea4cc0895fc7a21a9c93049
+# checksum: 74f3ac355d5ce2afcc6b3e1979612b11

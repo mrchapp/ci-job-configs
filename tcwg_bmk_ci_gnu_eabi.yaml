@@ -67,7 +67,12 @@
 - view:
     name: tcwg_bmk_ci_gnu_eabi
     view-type: list
-    regex: 'tcwg_bmk_ci_gnu_eabi-.*'
+    regex: 'tcwg_bmk_ci_gnu_eabi-build-.*'
+
+- view:
+    name: tcwg_bmk_ci_bisects
+    view-type: list
+    regex: 'tcwg_bmk_ci_.*-bisect-.*'
 
 #BEGIN: tcwg/round-robin.yaml.inc
 # -*- mode: Yaml -*-
@@ -555,4 +560,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 84e59f503ee936e860f9a3a746829fb1
+# checksum: 89edee5318c695b09d2ac3f6621ef4a0

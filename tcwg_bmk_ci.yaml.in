@@ -134,7 +134,12 @@
 - view:
     name: tcwg_bmk_ci_#{TOOLCHAIN}
     view-type: list
-    regex: 'tcwg_bmk_ci_#{TOOLCHAIN}-.*'
+    regex: 'tcwg_bmk_ci_#{TOOLCHAIN}-build-.*'
+
+- view:
+    name: tcwg_bmk_ci_bisects
+    view-type: list
+    regex: 'tcwg_bmk_ci_.*-bisect-.*'
 
 #include tcwg/round-robin.yaml.inc
 
