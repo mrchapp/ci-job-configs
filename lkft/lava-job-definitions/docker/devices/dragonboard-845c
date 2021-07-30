@@ -62,6 +62,24 @@ tags:
 {% block boot_target %}
 - test:
     docker:
+      image: yongqinliu/linaro-android-docker:0.1
+    timeout:
+      minutes: 20
+    definitions:
+    - from: inline
+      path: format-metatdata.yaml
+      name: format-metatdata
+      repository:
+        metadata:
+          format: Lava-Test Test Definition 1.0
+          name: format-metatdata
+          description: format-metatdata
+        run:
+          steps:
+          - lava-test-case "format-metadata" --shell fastboot format:ext4 metadata
+
+- test:
+    docker:
         image: yongqinliu/linaro-android-docker:0.1
     timeout:
       minutes: 20

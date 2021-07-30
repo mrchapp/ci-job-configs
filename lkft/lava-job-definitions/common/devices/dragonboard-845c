@@ -53,6 +53,8 @@ tags:
       minutes: 15
     method: fastboot
     commands:
+    - format:ext4 metadata
+    - reboot bootloader
     - oem select-display-panel hdmi
     - reboot bootloader
     - oem select-display-panel hdmi
