@@ -49,12 +49,6 @@
 #else
       - O3_VECT
       - O3_LTO_VECT
-      - Os-vs-Os_LTO:
-          cron_schedule: 'H H H * *'
-      - O2-vs-O2_LTO:
-          cron_schedule: 'H H H * *'
-      - O3-vs-O3_LTO:
-          cron_schedule: 'H H H * *'
 #endif
     jobs:
       - 'tcwg_bmk_ci_#{TOOLCHAIN}-master'
@@ -68,12 +62,6 @@
         cflags: O3
       - hw: sq
         cflags: O3_LTO
-      - hw: sq
-        cflags: Os-vs-Os_LTO
-      - hw: sq
-        cflags: O2-vs-O2_LTO
-      - hw: sq
-        cflags: O3-vs-O3_LTO
       - hw: sq
         cflags: O3_VECT
       - hw: sq
@@ -100,15 +88,49 @@
       - bmk: spec2017
         cflags: O3_LTO
       - bmk: spec2017
-        cflags: Os-vs-Os_LTO
-      - bmk: spec2017
-        cflags: O2-vs-O2_LTO
-      - bmk: spec2017
-        cflags: O3-vs-O3_LTO
-      - bmk: spec2017
         cflags: O3_VECT
       - bmk: spec2017
         cflags: O3_LTO_VECT
+#endif
+
+#if TOOLCHAIN_gnu || TOOLCHAIN_gnu_eabi
+- project:
+    name: tcwg_bmk_ci_#{TOOLCHAIN}-delete
+    action:
+      - build
+      - bisect
+    hw:
+#if TOOLCHAIN_gnu_eabi
+      - stm32:
+          target: arm_eabi
+#else
+      - tk1:
+          target: arm
+      - tx1:
+          target: aarch64
+#endif
+    toolchain_ver:
+      - master
+      - release
+    bmk:
+#if TOOLCHAIN_gnu_eabi
+      - coremark
+#else
+      - spec2k6
+#endif
+    cflags:
+      - Os-vs-Os_LTO
+      - O2-vs-O2_LTO
+      - O3-vs-O3_LTO
+    jobs:
+      - 'tcwg_bmk_ci_#{TOOLCHAIN}-{action}-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
+
+- job-template:
+    name: tcwg_bmk_ci_#{TOOLCHAIN}-{action}-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}
+    project-type: freestyle
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
 #endif
 
 - job-group:

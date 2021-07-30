@@ -21,12 +21,6 @@
       - O3_LTO
       - O3_VECT
       - O3_LTO_VECT
-      - Os-vs-Os_LTO:
-          cron_schedule: 'H H H * *'
-      - O2-vs-O2_LTO:
-          cron_schedule: 'H H H * *'
-      - O3-vs-O3_LTO:
-          cron_schedule: 'H H H * *'
     jobs:
       - 'tcwg_bmk_ci_gnu_eabi-master'
       - 'tcwg_bmk_ci_gnu_eabi-release'
@@ -40,17 +34,38 @@
       - hw: sq
         cflags: O3_LTO
       - hw: sq
-        cflags: Os-vs-Os_LTO
-      - hw: sq
-        cflags: O2-vs-O2_LTO
-      - hw: sq
-        cflags: O3-vs-O3_LTO
-      - hw: sq
         cflags: O3_VECT
       - hw: sq
         cflags: O3_LTO_VECT
       - hw: sq
         toolchain_ver: master
+
+- project:
+    name: tcwg_bmk_ci_gnu_eabi-delete
+    action:
+      - build
+      - bisect
+    hw:
+      - stm32:
+          target: arm_eabi
+    toolchain_ver:
+      - master
+      - release
+    bmk:
+      - coremark
+    cflags:
+      - Os-vs-Os_LTO
+      - O2-vs-O2_LTO
+      - O3-vs-O3_LTO
+    jobs:
+      - 'tcwg_bmk_ci_gnu_eabi-{action}-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
+
+- job-template:
+    name: tcwg_bmk_ci_gnu_eabi-{action}-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}
+    project-type: freestyle
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
 
 - job-group:
     name: tcwg_bmk_ci_gnu_eabi-master
@@ -567,4 +582,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 8a3661b28a4b404b5b57847e3ac8ed95
+# checksum: ec9475365000080b3c38f7901da2a028

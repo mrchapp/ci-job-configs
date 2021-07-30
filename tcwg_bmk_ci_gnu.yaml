@@ -27,12 +27,6 @@
       - O3_LTO
       - O3_VECT
       - O3_LTO_VECT
-      - Os-vs-Os_LTO:
-          cron_schedule: 'H H H * *'
-      - O2-vs-O2_LTO:
-          cron_schedule: 'H H H * *'
-      - O3-vs-O3_LTO:
-          cron_schedule: 'H H H * *'
     jobs:
       - 'tcwg_bmk_ci_gnu-master'
       - 'tcwg_bmk_ci_gnu-release'
@@ -46,17 +40,40 @@
       - hw: sq
         cflags: O3_LTO
       - hw: sq
-        cflags: Os-vs-Os_LTO
-      - hw: sq
-        cflags: O2-vs-O2_LTO
-      - hw: sq
-        cflags: O3-vs-O3_LTO
-      - hw: sq
         cflags: O3_VECT
       - hw: sq
         cflags: O3_LTO_VECT
       - hw: sq
         toolchain_ver: master
+
+- project:
+    name: tcwg_bmk_ci_gnu-delete
+    action:
+      - build
+      - bisect
+    hw:
+      - tk1:
+          target: arm
+      - tx1:
+          target: aarch64
+    toolchain_ver:
+      - master
+      - release
+    bmk:
+      - spec2k6
+    cflags:
+      - Os-vs-Os_LTO
+      - O2-vs-O2_LTO
+      - O3-vs-O3_LTO
+    jobs:
+      - 'tcwg_bmk_ci_gnu-{action}-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
+
+- job-template:
+    name: tcwg_bmk_ci_gnu-{action}-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}
+    project-type: freestyle
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
 
 - job-group:
     name: tcwg_bmk_ci_gnu-master
@@ -573,4 +590,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 88eab51fd1cbe367cde505435a55a84e
+# checksum: a3b56f2424c0c1595ed65c48646756c4
