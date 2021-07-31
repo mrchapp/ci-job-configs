@@ -80,43 +80,6 @@
       - hw: tx1
         cflags: Oz_LTO
 
-#if !TOOLCHAIN_gnu_eabi
-- project:
-    name: tcwg_bmk_ci_#{TOOLCHAIN}-delete
-    action:
-      - build
-      - bisect
-    hw:
-      - sq:
-          target: arm
-      - sq:
-          target: aarch64
-      - tk1:
-          target: arm
-      - tx1:
-          target: aarch64
-    toolchain_ver:
-      - master
-      - release
-    bmk: spec2k6
-    cflags:
-      - Os
-      - Os_LTO
-#if TOOLCHAIN_llvm
-      - Oz
-      - Oz_LTO
-#endif
-    jobs:
-      - 'tcwg_bmk_ci_#{TOOLCHAIN}-{action}-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
-
-- job-template:
-    name: tcwg_bmk_ci_#{TOOLCHAIN}-{action}-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
-#endif
-
 - job-group:
     name: tcwg_bmk_ci_#{TOOLCHAIN}-master
     toolchain_ver: master

@@ -54,7 +54,6 @@
       - hw: tx1
         cflags: Oz_LTO
 
-
 - job-group:
     name: tcwg_bmk_ci_gnu_eabi-master
     toolchain_ver: master
@@ -570,4 +569,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: f375f34e14456f8926ebae1b9c6652bf
+# checksum: 12c2166685e97438684af2c979611c25

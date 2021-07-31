@@ -60,37 +60,6 @@
       - hw: tx1
         cflags: Oz_LTO
 
-- project:
-    name: tcwg_bmk_ci_gnu-delete
-    action:
-      - build
-      - bisect
-    hw:
-      - sq:
-          target: arm
-      - sq:
-          target: aarch64
-      - tk1:
-          target: arm
-      - tx1:
-          target: aarch64
-    toolchain_ver:
-      - master
-      - release
-    bmk: spec2k6
-    cflags:
-      - Os
-      - Os_LTO
-    jobs:
-      - 'tcwg_bmk_ci_gnu-{action}-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
-
-- job-template:
-    name: tcwg_bmk_ci_gnu-{action}-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}
-    project-type: freestyle
-    defaults: global
-    disabled: true
-    display-name: 'DELETE ME'
-
 - job-group:
     name: tcwg_bmk_ci_gnu-master
     toolchain_ver: master
@@ -606,4 +575,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: c1a8377f1446c9475b0043b2527da2bb
+# checksum: 92e961052a684f099fb04699e2984cd5
