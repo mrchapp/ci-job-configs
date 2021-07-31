@@ -25,20 +25,35 @@
       - 'tcwg_bmk_ci_gnu_eabi-master'
       - 'tcwg_bmk_ci_gnu_eabi-release'
     exclude:
-      - hw: sq
+      - hw: apm
         cflags: O2
-      - hw: sq
+      - hw: apm
         cflags: O2_LTO
-      - hw: sq
+      - hw: apm
         cflags: O3
-      - hw: sq
+      - hw: apm
         cflags: O3_LTO
-      - hw: sq
+      - hw: apm
         cflags: O3_VECT
-      - hw: sq
+      - hw: apm
         cflags: O3_LTO_VECT
-      - hw: sq
-        toolchain_ver: master
+      - hw: tk1
+        cflags: Os
+      - hw: tk1
+        cflags: Os_LTO
+      - hw: tk1
+        cflags: Oz
+      - hw: tk1
+        cflags: Oz_LTO
+      - hw: tx1
+        cflags: Os
+      - hw: tx1
+        cflags: Os_LTO
+      - hw: tx1
+        cflags: Oz
+      - hw: tx1
+        cflags: Oz_LTO
+
 
 - job-group:
     name: tcwg_bmk_ci_gnu_eabi-master
@@ -68,11 +83,6 @@
     name: tcwg_bmk_ci_gnu_eabi
     view-type: list
     regex: 'tcwg_bmk_ci_gnu_eabi-build-.*'
-
-- view:
-    name: tcwg_bmk_ci_bisects
-    view-type: list
-    regex: 'tcwg_bmk_ci_.*-bisect-.*'
 
 #BEGIN: tcwg/round-robin.yaml.inc
 # -*- mode: Yaml -*-
@@ -560,4 +570,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 89edee5318c695b09d2ac3f6621ef4a0
+# checksum: f375f34e14456f8926ebae1b9c6652bf

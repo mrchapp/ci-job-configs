@@ -6,9 +6,9 @@
     gcc_url: https://github.com/gcc-mirror/gcc.git
     glibc_url: git://sourceware.org/git/glibc.git
     hw:
-      - sq:
+      - apm:
           target: arm
-      - sq:
+      - apm:
           target: aarch64
       - tk1:
           target: arm
@@ -31,20 +31,65 @@
       - 'tcwg_bmk_ci_gnu-master'
       - 'tcwg_bmk_ci_gnu-release'
     exclude:
-      - hw: sq
+      - hw: apm
         cflags: O2
-      - hw: sq
+      - hw: apm
         cflags: O2_LTO
-      - hw: sq
+      - hw: apm
         cflags: O3
-      - hw: sq
+      - hw: apm
         cflags: O3_LTO
-      - hw: sq
+      - hw: apm
         cflags: O3_VECT
-      - hw: sq
+      - hw: apm
         cflags: O3_LTO_VECT
-      - hw: sq
-        toolchain_ver: master
+      - hw: tk1
+        cflags: Os
+      - hw: tk1
+        cflags: Os_LTO
+      - hw: tk1
+        cflags: Oz
+      - hw: tk1
+        cflags: Oz_LTO
+      - hw: tx1
+        cflags: Os
+      - hw: tx1
+        cflags: Os_LTO
+      - hw: tx1
+        cflags: Oz
+      - hw: tx1
+        cflags: Oz_LTO
+
+- project:
+    name: tcwg_bmk_ci_gnu-delete
+    action:
+      - build
+      - bisect
+    hw:
+      - sq:
+          target: arm
+      - sq:
+          target: aarch64
+      - tk1:
+          target: arm
+      - tx1:
+          target: aarch64
+    toolchain_ver:
+      - master
+      - release
+    bmk: spec2k6
+    cflags:
+      - Os
+      - Os_LTO
+    jobs:
+      - 'tcwg_bmk_ci_gnu-{action}-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
+
+- job-template:
+    name: tcwg_bmk_ci_gnu-{action}-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}
+    project-type: freestyle
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
 
 - job-group:
     name: tcwg_bmk_ci_gnu-master
@@ -74,11 +119,6 @@
     name: tcwg_bmk_ci_gnu
     view-type: list
     regex: 'tcwg_bmk_ci_gnu-build-.*'
-
-- view:
-    name: tcwg_bmk_ci_bisects
-    view-type: list
-    regex: 'tcwg_bmk_ci_.*-bisect-.*'
 
 #BEGIN: tcwg/round-robin.yaml.inc
 # -*- mode: Yaml -*-
@@ -566,4 +606,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 74f3ac355d5ce2afcc6b3e1979612b11
+# checksum: c1a8377f1446c9475b0043b2527da2bb

@@ -16,9 +16,9 @@
       - stm32:
           target: arm_eabi
 #else
-      - sq:
+      - apm:
           target: arm
-      - sq:
+      - apm:
           target: aarch64
       - tk1:
           target: arm
@@ -32,9 +32,6 @@
       - coremark
 #else
       - spec2k6
-#if 0
-      - spec2017
-#endif
 #endif
     cflags:
       - Os
@@ -54,43 +51,70 @@
       - 'tcwg_bmk_ci_#{TOOLCHAIN}-master'
       - 'tcwg_bmk_ci_#{TOOLCHAIN}-release'
     exclude:
-      - hw: sq
+      - hw: apm
         cflags: O2
-      - hw: sq
+      - hw: apm
         cflags: O2_LTO
-      - hw: sq
+      - hw: apm
         cflags: O3
-      - hw: sq
+      - hw: apm
         cflags: O3_LTO
-      - hw: sq
+      - hw: apm
         cflags: O3_VECT
-      - hw: sq
+      - hw: apm
         cflags: O3_LTO_VECT
-      - hw: sq
-        toolchain_ver: master
-#if 0
-      - bmk: spec2017
-        hw: tk1
-      - bmk: spec2017
-        hw: tx1
-      - bmk: spec2017
+      - hw: tk1
+        cflags: Os
+      - hw: tk1
         cflags: Os_LTO
-      - bmk: spec2017
+      - hw: tk1
         cflags: Oz
-      - bmk: spec2017
+      - hw: tk1
         cflags: Oz_LTO
-      - bmk: spec2017
-        cflags: O2
-      - bmk: spec2017
-        cflags: O2_LTO
-      - bmk: spec2017
-        cflags: O3
-      - bmk: spec2017
-        cflags: O3_LTO
-      - bmk: spec2017
-        cflags: O3_VECT
-      - bmk: spec2017
-        cflags: O3_LTO_VECT
+      - hw: tx1
+        cflags: Os
+      - hw: tx1
+        cflags: Os_LTO
+      - hw: tx1
+        cflags: Oz
+      - hw: tx1
+        cflags: Oz_LTO
+
+#if !TOOLCHAIN_gnu_eabi
+- project:
+    name: tcwg_bmk_ci_#{TOOLCHAIN}-delete
+    action:
+      - build
+      - bisect
+    hw:
+      - sq:
+          target: arm
+      - sq:
+          target: aarch64
+      - tk1:
+          target: arm
+      - tx1:
+          target: aarch64
+    toolchain_ver:
+      - master
+      - release
+    bmk: spec2k6
+    cflags:
+      - Os
+      - Os_LTO
+#if TOOLCHAIN_llvm
+      - Oz
+      - Oz_LTO
+#endif
+    jobs:
+      - 'tcwg_bmk_ci_#{TOOLCHAIN}-{action}-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
+
+- job-template:
+    name: tcwg_bmk_ci_#{TOOLCHAIN}-{action}-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}
+    project-type: freestyle
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
 #endif
 
 - job-group:
@@ -135,11 +159,6 @@
     name: tcwg_bmk_ci_#{TOOLCHAIN}
     view-type: list
     regex: 'tcwg_bmk_ci_#{TOOLCHAIN}-build-.*'
-
-- view:
-    name: tcwg_bmk_ci_bisects
-    view-type: list
-    regex: 'tcwg_bmk_ci_.*-bisect-.*'
 
 #include tcwg/round-robin.yaml.inc
 

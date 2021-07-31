@@ -7,9 +7,9 @@
     glibc_url: git://sourceware.org/git/glibc.git
     llvm_url: https://github.com/llvm/llvm-project.git
     hw:
-      - sq:
+      - apm:
           target: arm
-      - sq:
+      - apm:
           target: aarch64
       - tk1:
           target: arm
@@ -32,20 +32,67 @@
       - 'tcwg_bmk_ci_llvm-master'
       - 'tcwg_bmk_ci_llvm-release'
     exclude:
-      - hw: sq
+      - hw: apm
         cflags: O2
-      - hw: sq
+      - hw: apm
         cflags: O2_LTO
-      - hw: sq
+      - hw: apm
         cflags: O3
-      - hw: sq
+      - hw: apm
         cflags: O3_LTO
-      - hw: sq
+      - hw: apm
         cflags: O3_VECT
-      - hw: sq
+      - hw: apm
         cflags: O3_LTO_VECT
-      - hw: sq
-        toolchain_ver: master
+      - hw: tk1
+        cflags: Os
+      - hw: tk1
+        cflags: Os_LTO
+      - hw: tk1
+        cflags: Oz
+      - hw: tk1
+        cflags: Oz_LTO
+      - hw: tx1
+        cflags: Os
+      - hw: tx1
+        cflags: Os_LTO
+      - hw: tx1
+        cflags: Oz
+      - hw: tx1
+        cflags: Oz_LTO
+
+- project:
+    name: tcwg_bmk_ci_llvm-delete
+    action:
+      - build
+      - bisect
+    hw:
+      - sq:
+          target: arm
+      - sq:
+          target: aarch64
+      - tk1:
+          target: arm
+      - tx1:
+          target: aarch64
+    toolchain_ver:
+      - master
+      - release
+    bmk: spec2k6
+    cflags:
+      - Os
+      - Os_LTO
+      - Oz
+      - Oz_LTO
+    jobs:
+      - 'tcwg_bmk_ci_llvm-{action}-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
+
+- job-template:
+    name: tcwg_bmk_ci_llvm-{action}-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}
+    project-type: freestyle
+    defaults: global
+    disabled: true
+    display-name: 'DELETE ME'
 
 - job-group:
     name: tcwg_bmk_ci_llvm-master
@@ -77,11 +124,6 @@
     name: tcwg_bmk_ci_llvm
     view-type: list
     regex: 'tcwg_bmk_ci_llvm-build-.*'
-
-- view:
-    name: tcwg_bmk_ci_bisects
-    view-type: list
-    regex: 'tcwg_bmk_ci_.*-bisect-.*'
 
 #BEGIN: tcwg/round-robin.yaml.inc
 # -*- mode: Yaml -*-
@@ -579,4 +621,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: c62b32f84a6093858e9393d54fe1e659
+# checksum: b6e920474ef62bb572ec6c5fd2e3a813
