@@ -64,6 +64,7 @@
         - choice:
             name: bmk_hw
             choices:
+              - apm
               - sq
               - stm32
               - tk1
@@ -192,6 +193,7 @@
               - tcwg-bmk-bkp-01
             allowed-slaves:
               - tcwg-bmk-bkp-01
+              - tcwg-bmk-apm
               - tcwg-bmk-sq
               - tcwg-bmk-stm32
               - tcwg-bmk-tk1
@@ -225,6 +227,8 @@
             mkdir artifacts
 
             case "$bmk_hw:$image_arch" in
+              apm:arm64) hw_tag=apm_64 ;;
+              apm:armhf) hw_tag=apm_32 ;;
               sq:arm64) hw_tag=sq_64 ;;
               sq:armhf) hw_tag=sq_32 ;;
               stm32:amd64) hw_tag=stm32 ;;
@@ -280,4 +284,4 @@
           aborted: true
           send-to:
             - recipients
-# checksum: 45a7b41846251d80231f51d47428b6f0
+# checksum: 396779629172ac5f1bc1a68ec9a423b3
