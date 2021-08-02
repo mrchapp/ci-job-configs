@@ -229,7 +229,6 @@ actions:
       minutes: 20
     method: u-boot
     commands:
-      - setenv bootargs $bootargs audit=0
       - run linux_bestla
     auto_login:
       login_prompt: "login:"
@@ -300,7 +299,6 @@ actions:
       minutes: 10
     method: u-boot
     commands:
-    - setenv bootargs $bootargs audit=0
     - run linux_bestla
     auto_login:
       login_prompt: "login:"
@@ -343,7 +341,6 @@ actions:
       minutes: 10
     method: u-boot
     commands:
-    - setenv bootargs $bootargs audit=0
     - run linux_bestla
     auto_login:
       login_prompt: "login:"
