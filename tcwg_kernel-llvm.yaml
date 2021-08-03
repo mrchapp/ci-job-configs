@@ -15,7 +15,7 @@
           distro: lts
       - release:
           binutils_branch: refs/heads/binutils-2_37-branch
-          llvm_branch: refs/heads/release/12.x
+          llvm_branch: refs/heads/release/13.x
           qemu_branch: refs/heads/master
           distro: lts_1
     target:
@@ -518,4 +518,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: d13a408b55ef94206bde1cb214ba6282
+# checksum: 216583e55ef69c93614699d4008e03b9

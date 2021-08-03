@@ -25,7 +25,7 @@
 #if TOOLCHAIN_gnu
           gcc_branch: refs/heads/releases/gcc-11
 #elif TOOLCHAIN_llvm
-          llvm_branch: refs/heads/release/12.x
+          llvm_branch: refs/heads/release/13.x
 #endif
           qemu_branch: refs/heads/master
           distro: lts_1
