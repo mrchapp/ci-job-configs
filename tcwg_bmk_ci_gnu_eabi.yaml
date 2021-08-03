@@ -71,7 +71,7 @@
     toolchain_ver: release
     binutils_branch: refs/heads/binutils-2_36-branch
     gcc_branch: refs/heads/releases/gcc-10
-    newlib_branch: refs/tags/newlib-3.3.0
+    newlib_branch: refs/heads/master
     distro: lts_1
     cron_schedule: 'H H H/7 * *'
     jobs:
@@ -569,4 +569,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu_eabi-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 12c2166685e97438684af2c979611c25
+# checksum: d0fe60c5cdb5bacec51d54640f638737

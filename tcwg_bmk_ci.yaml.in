@@ -107,7 +107,7 @@
 #if !TOOLCHAIN_gnu_eabi
     glibc_branch: refs/heads/release/2.32/master
 #else
-    newlib_branch: refs/tags/newlib-3.3.0
+    newlib_branch: refs/heads/master
 #endif
 #if TOOLCHAIN_llvm
     llvm_branch: refs/heads/release/12.x
