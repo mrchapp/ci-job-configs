@@ -108,6 +108,13 @@ export EULA_dragonboard410c=1
 export EULA_stih410b2260=1
 source setup-environment build
 
+# Support both pre-honister and honister+ override syntax
+if grep -q 'CONF_VERSION.*"1"' conf/local.conf ; then
+    BB_OVERRIDE='_'
+else
+    BB_OVERRIDE=':'
+fi
+
 # Accept freescale EULA
 cat << EOF >> conf/local.conf
 ACCEPT_FSL_EULA = "1"
@@ -115,11 +122,11 @@ EOF
 
 # Add job BUILD_NUMBER to output files names
 cat << EOF >> conf/auto.conf
-IMAGE_NAME_append = "-${BUILD_NUMBER}"
-KERNEL_IMAGE_NAME_append = "-${BUILD_NUMBER}"
-MODULE_TARBALL_NAME_append = "-${BUILD_NUMBER}"
-DT_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
-BOOT_IMAGE_BASE_NAME_append = "-${BUILD_NUMBER}"
+IMAGE_NAME${BB_OVERRIDE}append = "-${BUILD_NUMBER}"
+KERNEL_IMAGE_NAME${BB_OVERRIDE}append = "-${BUILD_NUMBER}"
+MODULE_TARBALL_NAME${BB_OVERRIDE}append = "-${BUILD_NUMBER}"
+DT_IMAGE_BASE_NAME${BB_OVERRIDE}append = "-${BUILD_NUMBER}"
+BOOT_IMAGE_BASE_NAME${BB_OVERRIDE}append = "-${BUILD_NUMBER}"
 EOF
 
 # get build stats to make sure that we use sstate properly
@@ -129,7 +136,7 @@ EOF
 
 # Make sure we don't use rm_work in CI slaves since they are non persistent build nodes
 cat << EOF >> conf/auto.conf
-INHERIT_remove = "rm_work"
+INHERIT${BB_OVERRIDE}remove = "rm_work"
 EOF
 
 # allow the top level job to append to auto.conf
