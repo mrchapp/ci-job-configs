@@ -13,7 +13,6 @@
       - arm:
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
-    disabled: false
     type_of_test:
       - bootstrap
       - bootstrap_lto
@@ -516,4 +515,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 1505a986bf5f55c6e083ee5633313aed
+# checksum: f8648a0a825d330dc643d9229d1ee450

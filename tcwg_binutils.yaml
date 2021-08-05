@@ -12,7 +12,6 @@
       - arm:
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
-    disabled: false
     type_of_test:
       - check_binutils
     jobs:
@@ -492,4 +491,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 7cd07e62f4ba964a69537aeec781d65e
+# checksum: fda4c87375c45e9f69f3d9f8723e9f63

@@ -32,7 +32,6 @@
           node: tcwg-build && tcwg-armv8_32
           docker_arch: armhf
 #endif
-    disabled: false
     type_of_test:
 #if RR_tcwg_binutils
       - check_binutils
