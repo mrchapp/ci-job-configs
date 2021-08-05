@@ -182,7 +182,7 @@ for conf_filename in filelist:
                 except:
                     continue
 
-                deletelist.append(conf_name)
+                deletelist.append(filename)
 
         except (OSError, ValueError) as e:
             raise ValueError("%s" % e)
