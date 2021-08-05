@@ -41,7 +41,7 @@
       bazel build --config=noaws --config=nogcp --config=nonccl \
             //tensorflow/tools/pip_package:build_pip_package --verbose_failures
       mkdir tensorflow-pkg
-      bazel-bin/tensorflow/tools/pip_package/build_pip_package --cpu ./tensorflow-pkg
+      bazel-bin/tensorflow/tools/pip_package/build_pip_package --cpu --project_name tensorflow_aarch64 ./tensorflow-pkg
     chdir: "{{ build_dir }}/tensorflow-{{ tensorflow_version }}/"
     executable: /bin/bash
 
