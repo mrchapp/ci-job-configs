@@ -449,10 +449,10 @@
           ci_config: '{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
           default_git: 'jenkins-scm'
           distro: '{distro}'
-    disabled: '{disabled}'
+    disabled: true
     node: '{node} && tcwg-build'
     concurrent: false
-    display-name: 'TCWG Build {ci_project}/{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+    display-name: 'DELETE ME'
     workspace: workspace/tcwg_gnu_$EXECUTOR_NUMBER
     scm:
       - build-scms:
@@ -498,10 +498,10 @@
           ci_project: '{ci_project}'
           ci_config: '{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
           distro: '{distro}'
-    disabled: '{disabled}'
+    disabled: true
     node: '{node} && tcwg-bisect'
     concurrent: false
-    display-name: 'TCWG Bisect {ci_project}/{toolchain_name}-{toolchain_ver}-{target}-{type_of_test}'
+    display-name: 'DELETE ME'
     workspace: workspace/tcwg_gnu_$EXECUTOR_NUMBER
     scm:
       - jenkins-scripts
@@ -516,4 +516,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 8e678e704cd3ff905e4665828b136a13
+# checksum: 1505a986bf5f55c6e083ee5633313aed
