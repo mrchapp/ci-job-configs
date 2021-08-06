@@ -289,7 +289,7 @@
               --distro $distro \
 #if RR_tcwg_bmk
               --ssh_info true \
-#elif RR_tcwg_binutils || RR_tcwg_gcc
+#elif RR_tcwg_gnu_native || RR_tcwg_gcc
               --arch {docker_arch} \
               --node $NODE_NAME \
 #endif
@@ -393,20 +393,14 @@
 #endif
             echo "$build_name" > artifacts/jenkins/build-name
             # artifacts/jenkins/mail-*.txt will be overwritten in successful builds.
-#if RR_tcwg_bmk
             echo "maxim.kuvyrkov@linaro.org" > artifacts/jenkins/mail-recipients.txt
-#elif RR_tcwg_binutils || RR_tcwg_gcc
-            echo "prathamesh.kulkarni@linaro.org,tcwg-gcc@linaro.org" > artifacts/jenkins/mail-recipients.txt
-#elif RR_tcwg_kernel
-            echo "maxim.kuvyrkov@linaro.org" > artifacts/jenkins/mail-recipients.txt
-#endif
             echo "Build $BUILD_URL failed" > artifacts/jenkins/mail-body.txt
 
             ./jenkins-scripts/docker-run.sh \
               --distro $distro \
 #if RR_tcwg_bmk
               --ssh_info true \
-#elif RR_tcwg_binutils || RR_tcwg_gcc
+#elif RR_tcwg_gnu_native || RR_tcwg_gcc
               --arch {docker_arch} \
               --node $NODE_NAME \
 #endif

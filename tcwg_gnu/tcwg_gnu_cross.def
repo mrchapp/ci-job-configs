@@ -3,4 +3,4 @@
 -v COMPONENTS=glibc
 -v COMPONENTS=qemu
 -v PURPOSE=ci
--v RR=tcwg_cross
+-v RR=tcwg_gnu_cross

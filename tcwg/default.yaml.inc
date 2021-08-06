@@ -19,9 +19,7 @@
 #endif
       - build-discarder:
           days-to-keep: 30
-#if RR_tcwg_cross
-          num-to-keep: 10
-#elif TCWG_benchmark
+#if TCWG_benchmark
           num-to-keep: 100
 #else
           num-to-keep: 30
