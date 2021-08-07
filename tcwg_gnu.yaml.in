@@ -41,6 +41,8 @@
     ci_project:
       - tcwg_gnu_native_build
       - tcwg_gnu_native_check_binutils
+      - tcwg_gnu_native_check_gcc
+      - tcwg_gnu_native_check_gdb
 #endif
 #if COMPONENTS_binutils
     binutils_url: git://sourceware.org/git/binutils-gdb.git
@@ -50,6 +52,9 @@
 #endif
 #if COMPONENTS_glibc
     glibc_url: git://sourceware.org/git/glibc.git
+#endif
+#if COMPONENTS_gdb
+    gdb_url: git://sourceware.org/git/binutils-gdb.git
 #endif
 #if COMPONENTS_qemu
     qemu_url: https://git.qemu.org/git/qemu.git
@@ -84,6 +89,9 @@
 #if COMPONENTS_glibc
     glibc_branch: refs/heads/master
 #endif
+#if COMPONENTS_gdb
+    gdb_branch: refs/heads/master
+#endif
 #if COMPONENTS_qemu
     qemu_branch: refs/heads/master
 #endif
@@ -104,6 +112,9 @@
 #endif
 #if COMPONENTS_glibc
     glibc_branch: refs/heads/release/2.32/master
+#endif
+#if COMPONENTS_gdb
+    gdb_branch: refs/heads/gdb-11-branch
 #endif
 #if COMPONENTS_qemu
     qemu_branch: refs/heads/master
@@ -154,6 +165,10 @@
 #if COMPONENTS_glibc
           glibc_url: '{glibc_url}'
           glibc_branch: '{glibc_branch}'
+#endif
+#if COMPONENTS_gdb
+          gdb_url: '{gdb_url}'
+          gdb_branch: '{gdb_branch}'
 #endif
 #if COMPONENTS_qemu
           qemu_url: '{qemu_url}'

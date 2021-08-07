@@ -65,6 +65,11 @@
           component: gcc
           default_git: '{default_git}'
 #endif
+#if COMPONENTS_gdb
+      - component-parameters:
+          component: gdb
+          default_git: '{default_git}'
+#endif
 #if COMPONENTS_glibc
       - component-parameters:
           component: glibc
@@ -143,6 +148,13 @@
           url: '{gcc_url}'
           branch: '{gcc_branch}'
           reference: gcc.git
+#endif
+#if COMPONENTS_gdb
+      - component-scm:
+          component: gdb
+          url: '{gdb_url}'
+          branch: '{gdb_branch}'
+          reference: binutils-gdb.git
 #endif
 #if COMPONENTS_glibc
       - component-scm:

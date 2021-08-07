@@ -1,5 +1,6 @@
 -v COMPONENTS=binutils
 -v COMPONENTS=gcc
+-v COMPONENTS=gdb
 -v COMPONENTS=glibc
 -v COMPONENTS=qemu
 -v PURPOSE=ci

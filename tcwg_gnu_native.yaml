@@ -8,7 +8,12 @@
     ci_project:
       - tcwg_gnu_native_build
       - tcwg_gnu_native_check_binutils
+      - tcwg_gnu_native_check_gcc
+      - tcwg_gnu_native_check_gdb
     binutils_url: git://sourceware.org/git/binutils-gdb.git
+    gcc_url: https://github.com/gcc-mirror/gcc.git
+    glibc_url: git://sourceware.org/git/glibc.git
+    gdb_url: git://sourceware.org/git/binutils-gdb.git
     target:
       - aarch64:
           node: tcwg-build && tcwg-armv8_64
@@ -25,6 +30,9 @@
     toolchain_ver: master
     cron: '{cron_master}'
     binutils_branch: refs/heads/master
+    gcc_branch: refs/heads/master
+    glibc_branch: refs/heads/master
+    gdb_branch: refs/heads/master
     distro: lts
     jobs:
       - '{ci_project}-build-{toolchain_ver}-{target}{type_of_test}'
@@ -35,6 +43,9 @@
     toolchain_ver: release
     cron: '{cron_release}'
     binutils_branch: refs/heads/binutils-2_36-branch
+    gcc_branch: refs/heads/releases/gcc-11
+    glibc_branch: refs/heads/release/2.32/master
+    gdb_branch: refs/heads/gdb-11-branch
     distro: lts_1
     jobs:
       - '{ci_project}-build-{toolchain_ver}-{target}{type_of_test}'
@@ -125,6 +136,15 @@
       - component-parameters:
           component: binutils
           default_git: '{default_git}'
+      - component-parameters:
+          component: gcc
+          default_git: '{default_git}'
+      - component-parameters:
+          component: gdb
+          default_git: '{default_git}'
+      - component-parameters:
+          component: glibc
+          default_git: '{default_git}'
       - choice:
           name: update_baseline
           choices:
@@ -169,6 +189,21 @@
           url: '{binutils_url}'
           branch: '{binutils_branch}'
           reference: binutils-gdb.git
+      - component-scm:
+          component: gcc
+          url: '{gcc_url}'
+          branch: '{gcc_branch}'
+          reference: gcc.git
+      - component-scm:
+          component: gdb
+          url: '{gdb_url}'
+          branch: '{gdb_branch}'
+          reference: binutils-gdb.git
+      - component-scm:
+          component: glibc
+          url: '{glibc_url}'
+          branch: '{glibc_branch}'
+          reference: glibc.git
 
 - wrapper:
     name: build-wrappers
@@ -437,6 +472,12 @@
       - build-scms:
           binutils_url: '{binutils_url}'
           binutils_branch: '{binutils_branch}'
+          gcc_url: '{gcc_url}'
+          gcc_branch: '{gcc_branch}'
+          glibc_url: '{glibc_url}'
+          glibc_branch: '{glibc_branch}'
+          gdb_url: '{gdb_url}'
+          gdb_branch: '{gdb_branch}'
     triggers:
       - pollscm:
           cron: '{cron}'
@@ -446,7 +487,7 @@
     builders:
       - run-build:
           build_script: 'tcwg_gnu-build.sh'
-          components: 'binutils'
+          components: 'binutils gcc gdb glibc'
           rr_project: '{ci_project}'
           job_suffix: '-{toolchain_ver}-{target}{type_of_test}'
           docker_arch: '{docker_arch}'
@@ -491,4 +532,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 8c1d32c635d5b4fbb616fa8fc9f91e69
+# checksum: 45e7d833aa8b0522a9e1b136c82dad31
