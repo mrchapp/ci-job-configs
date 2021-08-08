@@ -4,6 +4,8 @@
     name: tcwg_bmk_ci_llvm
     binutils_url: git://sourceware.org/git/binutils-gdb.git
     gcc_url: https://github.com/gcc-mirror/gcc.git
+    linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+    linux_branch: refs/heads/linux-rolling-stable
     glibc_url: git://sourceware.org/git/glibc.git
     llvm_url: https://github.com/llvm/llvm-project.git
     hw:
@@ -16,7 +18,7 @@
       - tx1:
           target: aarch64
     toolchain_name: llvm
-    components: binutils gcc glibc llvm
+    components: binutils gcc glibc linux llvm
     bmk:
       - spec2k6
     cflags:
@@ -198,6 +200,9 @@
           component: glibc
           default_git: '{default_git}'
       - component-parameters:
+          component: linux
+          default_git: '{default_git}'
+      - component-parameters:
           component: llvm
           default_git: '{default_git}'
       - choice:
@@ -254,6 +259,11 @@
           url: '{glibc_url}'
           branch: '{glibc_branch}'
           reference: glibc.git
+      - component-scm:
+          component: linux
+          url: '{linux_url}'
+          branch: '{linux_branch}'
+          reference: linux.git
       - component-scm:
           component: llvm
           url: '{llvm_url}'
@@ -531,6 +541,8 @@
           binutils_branch: '{binutils_branch}'
           gcc_url: '{gcc_url}'
           gcc_branch: '{gcc_branch}'
+          linux_url: '{linux_url}'
+          linux_branch: '{linux_branch}'
           glibc_url: '{glibc_url}'
           glibc_branch: '{glibc_branch}'
           llvm_url: '{llvm_url}'
@@ -588,4 +600,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 8d2d37a2710f00924cc4734ebdbac186
+# checksum: c7559c90c9515eed260bab73096720f4

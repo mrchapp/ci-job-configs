@@ -4,6 +4,8 @@
     name: tcwg_bmk_ci_gnu
     binutils_url: git://sourceware.org/git/binutils-gdb.git
     gcc_url: https://github.com/gcc-mirror/gcc.git
+    linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+    linux_branch: refs/heads/linux-rolling-stable
     glibc_url: git://sourceware.org/git/glibc.git
     hw:
       - apm:
@@ -15,7 +17,7 @@
       - tx1:
           target: aarch64
     toolchain_name: gnu
-    components: binutils gcc glibc
+    components: binutils gcc glibc linux
     bmk:
       - spec2k6
     cflags:
@@ -194,6 +196,9 @@
       - component-parameters:
           component: glibc
           default_git: '{default_git}'
+      - component-parameters:
+          component: linux
+          default_git: '{default_git}'
       - choice:
           name: update_baseline
           choices:
@@ -248,6 +253,11 @@
           url: '{glibc_url}'
           branch: '{glibc_branch}'
           reference: glibc.git
+      - component-scm:
+          component: linux
+          url: '{linux_url}'
+          branch: '{linux_branch}'
+          reference: linux.git
       - bmk-scripts
 
 - wrapper:
@@ -520,6 +530,8 @@
           binutils_branch: '{binutils_branch}'
           gcc_url: '{gcc_url}'
           gcc_branch: '{gcc_branch}'
+          linux_url: '{linux_url}'
+          linux_branch: '{linux_branch}'
           glibc_url: '{glibc_url}'
           glibc_branch: '{glibc_branch}'
     triggers:
@@ -575,4 +587,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 92e961052a684f099fb04699e2984cd5
+# checksum: 5261d3cc558218849047176a7fe3e8ea

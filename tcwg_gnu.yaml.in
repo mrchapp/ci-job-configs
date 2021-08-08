@@ -86,6 +86,10 @@
 #if COMPONENTS_gcc
     gcc_branch: refs/heads/master
 #endif
+#if COMPONENTS_linux
+    linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+    linux_branch: refs/heads/master
+#endif
 #if COMPONENTS_glibc
     glibc_branch: refs/heads/master
 #endif
@@ -109,6 +113,10 @@
 #endif
 #if COMPONENTS_gcc
     gcc_branch: refs/heads/releases/gcc-11
+#endif
+#if COMPONENTS_linux
+    linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+    linux_branch: refs/heads/linux-rolling-stable
 #endif
 #if COMPONENTS_glibc
     glibc_branch: refs/heads/release/2.32/master
@@ -161,6 +169,10 @@
 #if COMPONENTS_gcc
           gcc_url: '{gcc_url}'
           gcc_branch: '{gcc_branch}'
+#endif
+#if COMPONENTS_linux
+          linux_url: '{linux_url}'
+          linux_branch: '{linux_branch}'
 #endif
 #if COMPONENTS_glibc
           glibc_url: '{glibc_url}'

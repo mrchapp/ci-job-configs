@@ -29,6 +29,8 @@
     cron: '{cron_master}'
     binutils_branch: refs/heads/master
     gcc_branch: refs/heads/master
+    linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+    linux_branch: refs/heads/master
     glibc_branch: refs/heads/master
     gdb_branch: refs/heads/master
     qemu_branch: refs/heads/master
@@ -43,6 +45,8 @@
     cron: '{cron_release}'
     binutils_branch: refs/heads/binutils-2_36-branch
     gcc_branch: refs/heads/releases/gcc-11
+    linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+    linux_branch: refs/heads/linux-rolling-stable
     glibc_branch: refs/heads/release/2.32/master
     gdb_branch: refs/heads/gdb-11-branch
     qemu_branch: refs/heads/master
@@ -146,6 +150,9 @@
           component: glibc
           default_git: '{default_git}'
       - component-parameters:
+          component: linux
+          default_git: '{default_git}'
+      - component-parameters:
           component: qemu
           default_git: '{default_git}'
       - choice:
@@ -207,6 +214,11 @@
           url: '{glibc_url}'
           branch: '{glibc_branch}'
           reference: glibc.git
+      - component-scm:
+          component: linux
+          url: '{linux_url}'
+          branch: '{linux_branch}'
+          reference: linux.git
       - component-scm:
           component: qemu
           url: '{qemu_url}'
@@ -478,6 +490,8 @@
           binutils_branch: '{binutils_branch}'
           gcc_url: '{gcc_url}'
           gcc_branch: '{gcc_branch}'
+          linux_url: '{linux_url}'
+          linux_branch: '{linux_branch}'
           glibc_url: '{glibc_url}'
           glibc_branch: '{glibc_branch}'
           gdb_url: '{gdb_url}'
@@ -493,7 +507,7 @@
     builders:
       - run-build:
           build_script: 'tcwg_gnu-build.sh'
-          components: 'binutils gcc gdb glibc qemu'
+          components: 'binutils gcc gdb glibc linux qemu'
           rr_project: '{ci_project}'
           job_suffix: '-{toolchain_ver}-{target}{type_of_test}'
     publishers:
@@ -536,4 +550,4 @@
           job_suffix: '-{toolchain_ver}-{target}{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: a71c97f5c18235fb95eb85ae21ea6b27
+# checksum: 60e40ac97233afc81ca6b16eec980784

@@ -4,6 +4,8 @@
     binutils_url: git://sourceware.org/git/binutils-gdb.git
     gcc_url: https://github.com/gcc-mirror/gcc.git
 #if !TOOLCHAIN_gnu_eabi
+    linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+    linux_branch: refs/heads/linux-rolling-stable
     glibc_url: git://sourceware.org/git/glibc.git
 #else
     newlib_url: git://sourceware.org/git/newlib-cygwin.git
@@ -157,6 +159,8 @@
           gcc_url: '{gcc_url}'
           gcc_branch: '{gcc_branch}'
 #if !TOOLCHAIN_gnu_eabi
+          linux_url: '{linux_url}'
+          linux_branch: '{linux_branch}'
           glibc_url: '{glibc_url}'
           glibc_branch: '{glibc_branch}'
 #else

@@ -31,6 +31,8 @@
     cron: '{cron_master}'
     binutils_branch: refs/heads/master
     gcc_branch: refs/heads/master
+    linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+    linux_branch: refs/heads/master
     glibc_branch: refs/heads/master
     gdb_branch: refs/heads/master
     distro: lts
@@ -44,6 +46,8 @@
     cron: '{cron_release}'
     binutils_branch: refs/heads/binutils-2_36-branch
     gcc_branch: refs/heads/releases/gcc-11
+    linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+    linux_branch: refs/heads/linux-rolling-stable
     glibc_branch: refs/heads/release/2.32/master
     gdb_branch: refs/heads/gdb-11-branch
     distro: lts_1
@@ -145,6 +149,9 @@
       - component-parameters:
           component: glibc
           default_git: '{default_git}'
+      - component-parameters:
+          component: linux
+          default_git: '{default_git}'
       - choice:
           name: update_baseline
           choices:
@@ -204,6 +211,11 @@
           url: '{glibc_url}'
           branch: '{glibc_branch}'
           reference: glibc.git
+      - component-scm:
+          component: linux
+          url: '{linux_url}'
+          branch: '{linux_branch}'
+          reference: linux.git
 
 - wrapper:
     name: build-wrappers
@@ -474,6 +486,8 @@
           binutils_branch: '{binutils_branch}'
           gcc_url: '{gcc_url}'
           gcc_branch: '{gcc_branch}'
+          linux_url: '{linux_url}'
+          linux_branch: '{linux_branch}'
           glibc_url: '{glibc_url}'
           glibc_branch: '{glibc_branch}'
           gdb_url: '{gdb_url}'
@@ -487,7 +501,7 @@
     builders:
       - run-build:
           build_script: 'tcwg_gnu-build.sh'
-          components: 'binutils gcc gdb glibc'
+          components: 'binutils gcc gdb glibc linux'
           rr_project: '{ci_project}'
           job_suffix: '-{toolchain_ver}-{target}{type_of_test}'
           docker_arch: '{docker_arch}'
@@ -532,4 +546,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 45e7d833aa8b0522a9e1b136c82dad31
+# checksum: ced81c4d8bc78af71a0b4ca17511876a

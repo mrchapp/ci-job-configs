@@ -2,6 +2,7 @@
 -v COMPONENTS=gcc
 -v COMPONENTS=gdb
 -v COMPONENTS=glibc
+-v COMPONENTS=linux
 -v COMPONENTS=qemu
 -v PURPOSE=ci
 -v RR=tcwg_gnu_cross

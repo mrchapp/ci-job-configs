@@ -163,13 +163,6 @@
           branch: '{glibc_branch}'
           reference: glibc.git
 #endif
-#if COMPONENTS_newlib
-      - component-scm:
-          component: newlib
-          url: '{newlib_url}'
-          branch: '{newlib_branch}'
-          reference: newlib.git
-#endif
 #if COMPONENTS_linux
       - component-scm:
           component: linux
@@ -183,6 +176,13 @@
           url: '{llvm_url}'
           branch: '{llvm_branch}'
           reference: llvm-project.git
+#endif
+#if COMPONENTS_newlib
+      - component-scm:
+          component: newlib
+          url: '{newlib_url}'
+          branch: '{newlib_branch}'
+          reference: newlib.git
 #endif
 #if COMPONENTS_qemu
       - component-scm:
