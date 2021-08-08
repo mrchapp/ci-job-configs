@@ -480,7 +480,7 @@
     disabled: '{disabled}'
     node: '{node} && tcwg-build'
     concurrent: false
-    display-name: 'DELETE ME'
+    display-name: 'TCWG Build {ci_project}/{toolchain_ver}-{target}{type_of_test}'
     workspace: workspace/tcwg_gnu_$EXECUTOR_NUMBER
     scm:
       - build-scms:
@@ -548,4 +548,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: d90327bea49ce75a13a6b00f5d3c7f23
+# checksum: af1a8679e5264d1069e6cba04d5987cc

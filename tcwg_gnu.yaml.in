@@ -164,11 +164,7 @@
 #endif
     node: '{node} && tcwg-build'
     concurrent: false
-#if RR_tcwg_gnu_native
-    display-name: 'DELETE ME'
-#else
     display-name: 'TCWG Build {ci_project}/{toolchain_ver}-{target}{type_of_test}'
-#endif
     workspace: workspace/tcwg_gnu_$EXECUTOR_NUMBER
     scm:
       - build-scms:
