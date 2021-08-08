@@ -5,11 +5,13 @@
     type_of_test: ""
     cron_master: 'H H * * *'
     cron_release: 'H H H/4 * *'
+    disabled: false
     ci_project:
       - tcwg_gnu_native_build
       - tcwg_gnu_native_check_binutils
       - tcwg_gnu_native_check_gcc
-      - tcwg_gnu_native_check_gdb
+      - tcwg_gnu_native_check_gdb:
+          disabled: true
     binutils_url: git://sourceware.org/git/binutils-gdb.git
     gcc_url: https://github.com/gcc-mirror/gcc.git
     glibc_url: git://sourceware.org/git/glibc.git
@@ -475,10 +477,10 @@
           ci_config: '{toolchain_ver}-{target}{type_of_test}'
           default_git: 'jenkins-scm'
           distro: '{distro}'
-    disabled: false
+    disabled: '{disabled}'
     node: '{node} && tcwg-build'
     concurrent: false
-    display-name: 'TCWG Build {ci_project}/{toolchain_ver}-{target}{type_of_test}'
+    display-name: 'DELETE ME'
     workspace: workspace/tcwg_gnu_$EXECUTOR_NUMBER
     scm:
       - build-scms:
@@ -546,4 +548,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: ced81c4d8bc78af71a0b4ca17511876a
+# checksum: d90327bea49ce75a13a6b00f5d3c7f23

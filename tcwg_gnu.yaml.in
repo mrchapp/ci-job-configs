@@ -38,11 +38,13 @@
       - tcwg_gnu_cross_check_gcc:
           cron_master: 'H H/6 * * *'
 #elif RR_tcwg_gnu_native
+    disabled: false
     ci_project:
       - tcwg_gnu_native_build
       - tcwg_gnu_native_check_binutils
       - tcwg_gnu_native_check_gcc
-      - tcwg_gnu_native_check_gdb
+      - tcwg_gnu_native_check_gdb:
+          disabled: true
 #endif
 #if COMPONENTS_binutils
     binutils_url: git://sourceware.org/git/binutils-gdb.git
@@ -155,10 +157,18 @@
           ci_config: '{toolchain_ver}-{target}{type_of_test}'
           default_git: 'jenkins-scm'
           distro: '{distro}'
+#if RR_tcwg_gnu_native
+    disabled: '{disabled}'
+#else
     disabled: false
+#endif
     node: '{node} && tcwg-build'
     concurrent: false
+#if RR_tcwg_gnu_native
+    display-name: 'DELETE ME'
+#else
     display-name: 'TCWG Build {ci_project}/{toolchain_ver}-{target}{type_of_test}'
+#endif
     workspace: workspace/tcwg_gnu_$EXECUTOR_NUMBER
     scm:
       - build-scms:
