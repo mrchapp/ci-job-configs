@@ -21,7 +21,7 @@ cd arrow/dev/tasks/linux-packages/
 
 # change ownership of resulting packages to buildslave user so we can remove
 # them without sudo use. "apt/build.sh" is called in a container as root user
-echo "chown 11517:1001 -R /host/repositories" >> apt/build.sh
+echo "chown $(id -u buildslave):$(id -g buildslave) -R /host/repositories" >> apt/build.sh
 
 rake version:update
 APT_TARGETS=debian-buster rake apt:build
