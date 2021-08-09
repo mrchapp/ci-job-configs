@@ -77,9 +77,9 @@
 - job-group:
     name: tcwg_bmk_ci_gnu-release
     toolchain_ver: release
-    binutils_branch: refs/heads/binutils-2_36-branch
-    gcc_branch: refs/heads/releases/gcc-10
-    glibc_branch: refs/heads/release/2.32/master
+    binutils_branch: refs/heads/binutils-2_37-branch
+    gcc_branch: refs/heads/releases/gcc-11
+    glibc_branch: refs/heads/release/2.34/master
     distro: lts_1
     cron_schedule: 'H H H/7 * *'
     jobs:
@@ -587,4 +587,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 5261d3cc558218849047176a7fe3e8ea
+# checksum: b2edfe812b9bebc2f351662a65caa1fa

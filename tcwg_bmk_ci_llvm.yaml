@@ -79,10 +79,10 @@
 - job-group:
     name: tcwg_bmk_ci_llvm-release
     toolchain_ver: release
-    binutils_branch: refs/heads/binutils-2_36-branch
-    gcc_branch: refs/heads/releases/gcc-10
-    glibc_branch: refs/heads/release/2.32/master
-    llvm_branch: refs/heads/release/12.x
+    binutils_branch: refs/heads/binutils-2_37-branch
+    gcc_branch: refs/heads/releases/gcc-11
+    glibc_branch: refs/heads/release/2.34/master
+    llvm_branch: refs/heads/release/13.x
     distro: lts_1
     cron_schedule: 'H H H/7 * *'
     jobs:
@@ -600,4 +600,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: c7559c90c9515eed260bab73096720f4
+# checksum: 20904afe695cca3298cb54a1b1556ccc

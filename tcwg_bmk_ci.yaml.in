@@ -104,15 +104,15 @@
 - job-group:
     name: tcwg_bmk_ci_#{TOOLCHAIN}-release
     toolchain_ver: release
-    binutils_branch: refs/heads/binutils-2_36-branch
-    gcc_branch: refs/heads/releases/gcc-10
+    binutils_branch: refs/heads/binutils-2_37-branch
+    gcc_branch: refs/heads/releases/gcc-11
 #if !TOOLCHAIN_gnu_eabi
-    glibc_branch: refs/heads/release/2.32/master
+    glibc_branch: refs/heads/release/2.34/master
 #else
     newlib_branch: refs/heads/master
 #endif
 #if TOOLCHAIN_llvm
-    llvm_branch: refs/heads/release/12.x
+    llvm_branch: refs/heads/release/13.x
 #endif
     distro: lts_1
     cron_schedule: 'H H H/7 * *'
