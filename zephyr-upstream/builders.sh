@@ -35,7 +35,7 @@ echo "GIT_COMMIT_ID=$(git rev-parse --short=8 HEAD)" > ${WORKSPACE}/env_var_para
 # docker volume under ${HOME}/srv/toolchain/.
 # Note that Zephyr SDK is needed even when building with the gnuarmemb
 # toolchain, ZEPHYR_SDK_INSTALL_DIR is needed to find things like conf.
-export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.12.4"
+export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.13.0"
 export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/srv/toolchain/gcc-arm-none-eabi-9-2019-q4-major"
 
 # Set build environment variables
