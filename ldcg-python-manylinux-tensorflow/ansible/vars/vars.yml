@@ -4,7 +4,7 @@ build_dir: "/tmp/workspace"
 wheels_dir: "/tmp/workspace/wheels/"
 versions:
   "2.6":
-    tensorflow_version: "2.6.0-rc1"
+    tensorflow_version: "2.6.0-rc2"
     bazel_version: "3.7.2"
     gast_version: "==0.4.0"
     grpcio_version: "~=1.37.0"
