@@ -15,7 +15,6 @@ GNUARMEMB_TOOLCHAIN_PATH="${HOME}/srv/toolchain/gcc-arm-none-eabi-9-2019-q4-majo
 install_zephyr_sdk()
 {
     test -d ${ZEPHYR_SDK_INSTALL_DIR} && return 0
-    rm -f ${ZEPHYR_SDK_INSTALL_DIR}.lck
     test -f ${ZEPHYR_SDK_INSTALL_DIR}.lck && exit 1
     touch ${ZEPHYR_SDK_INSTALL_DIR}.lck
     wget -q "${ZEPHYR_SDK_URL}"
