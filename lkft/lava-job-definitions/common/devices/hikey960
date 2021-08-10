@@ -54,6 +54,8 @@
     timeout:
       minutes: 15
     method: fastboot
+    - format:ext4 cache
+    - reboot
 {% endblock boot_target %}
 
 {% block test_target %}
