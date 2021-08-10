@@ -16,6 +16,10 @@
         - build-discarder:
             days-to-keep: 30
             num-to-keep: 30
+    parameters:
+        - string:
+            name: SQUAD_TOKEN
+            default: ""
     disabled: false
     node: docker-bionic-android-lkft
     display-name: 'TOBEDELETED: only used for test purpose'
@@ -31,7 +35,6 @@
               sudo rm -fv /usr/bin/python && sudo ln -s /usr/bin/python3 /usr/bin/python
             fi
             pip3 install --user --force-reinstall ruamel.yaml Jinja2 squad-client
-            pip3 install --user --force-reinstall ruamel.yaml Jinja2 squad-client
             which squad-client || true
             ls -l ${HOME}/.local/bin/squad-client
 
@@ -39,7 +42,7 @@
             cat test.txt
             cp -v test.txt "${WORKSPACE}/"
 
-            SQUAD_TOKEN=${QA_REPORTS_TOKEN} ${HOME}/.local/bin/squad-client \
+            ${HOME}/.local/bin/squad-client \
                 --squad-host https://qa-reports.linaro.org \
                 create-or-update-project \
                 --group android-lkft --slug 5.10-gki-android13-aosp-master-db845c-full-cts-vts --name 5.10-gki-android13-aosp-master-db845c-full-cts-vts \
