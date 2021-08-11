@@ -48,15 +48,21 @@
 
             squad_token = os.getenv('SQUAD_TOKEN')
             qa_reports_token = os.getenv('QA_REPORTS_TOKEN')
+            if squad_token == '****':
+                print("squad_token is not correct")
+            if qa_reports_token == '****':
+                print("qa_reports_token is not correct")
+
             print("SQUAD_TOKEN=%s, QA_REPORTS_TOKEN=%s" % (squad_token, qa_reports_token))
 
             __EOF__
+            cat ./test-token.py
             python ./test-token.py
 
             ${HOME}/.local/bin/squad-client \
                 --squad-host https://qa-reports.linaro.org \
                 create-or-update-project \
-                --group android-lkft --slug 5.10-gki-android13-aosp-master-db845c-full-cts-vts --name 5.10-gki-android13-aosp-master-db845c-full-cts-vts \
+                --group android-lkft --slug 5.10-gki-android13-aosp-master-db845c-full-cts-vts-test --name 5.10-gki-android13-aosp-master-db845c-full-cts-vts \
                 --is-public --plugins linux_log_parser,tradefed \
                 --settings 'PLUGINS_TRADEFED_EXTRACT_AGGREGATED: True
             CI_LAVA_INFRA_ERROR_MESSAGES:
@@ -74,7 +80,8 @@
             - "lxc-apt-install timed out after [0-9]+ seconds"
             - "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
             - "wait-device-boardid timed out after [0-9]+ seconds"' \
-                --no-overwrite --data-retention 0 || true
+                --data-retention 0 || true
+                #--no-overwrite --data-retention 0 || true
 
     publishers:
         - email:
