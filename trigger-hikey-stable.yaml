@@ -37,7 +37,7 @@
             if ! python --version|grep 3; then
               sudo rm -fv /usr/bin/python && sudo ln -s /usr/bin/python3 /usr/bin/python
             fi
-            pip3 install --user --force-reinstall ruamel.yaml Jinja2 squad-client
+            pip3 install --user --force-reinstall ruamel.yaml Jinja2 squad-client virtualenv
             which squad-client || true
             ls -l ${HOME}/.local/bin/squad-client
 
@@ -85,7 +85,7 @@
 
             dir_virenv=$(pwd)/virtualenv-workspace
             pip3 install --user --force-reinstall virtualenv
-            virtualenv --python=python3 ${dir_virenv}
+            ${HOME}/.local/bin/virtualenv --python=python3 ${dir_virenv}
             source ${dir_virenv}/bin/activate
 
             git clone https://github.com/liuyq/squad-client.git squad-client
