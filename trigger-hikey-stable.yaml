@@ -18,7 +18,7 @@
             num-to-keep: 30
     parameters:
         - string:
-            name: SQUAD_TOKEN
+            name: SQUAD_TOKEN_FAKE
             default: ""
     disabled: false
     node: docker-bionic-android-lkft
@@ -28,6 +28,9 @@
             - text:
                 credential-id: QA_REPORTS_TOKEN
                 variable: QA_REPORTS_TOKEN
+            - text:
+                credential-id: QA_REPORTS_TOKEN
+                variable: SQUAD_TOKEN
     builders:
         - shell: |
             #!/bin/bash -x
@@ -59,7 +62,7 @@
             - "lxc-apt-install timed out after [0-9]+ seconds"
             - "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
             - "wait-device-boardid timed out after [0-9]+ seconds"' \
-                --no-overwrite --data-retention 0
+                --no-overwrite --data-retention 0 || true
 
     publishers:
         - email:
