@@ -53,11 +53,16 @@
             if qa_reports_token == '****':
                 print("qa_reports_token is not correct")
 
+            with open("token.json", 'w') as fd:
+                fd.write("SQUAD_TOKEN=%s\nQA_REPORTS_TOKEN=%s\n" % (squad_token, qa_reports_token))
+
             print("SQUAD_TOKEN=%s, QA_REPORTS_TOKEN=%s" % (squad_token, qa_reports_token))
 
             __EOF__
             cat ./test-token.py
             python ./test-token.py
+
+            cp -vf token.json "${WORKSPACE}/"
 
             ${HOME}/.local/bin/squad-client \
                 --squad-host https://qa-reports.linaro.org \
@@ -119,5 +124,8 @@
             deactivate
 
     publishers:
+        - archive:
+            artifacts: '*.xml,*.json'
+            latest-only: true
         - email:
             recipients: 'yongqin.liu@linaro.org'
