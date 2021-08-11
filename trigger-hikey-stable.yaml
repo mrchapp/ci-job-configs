@@ -41,6 +41,18 @@
             which squad-client || true
             ls -l ${HOME}/.local/bin/squad-client
 
+            cat >>test-token.py <<__EOF__
+            #!/usr/bin/python
+
+            import os
+
+            squad_token = os.getenv('SQUAD_TOKEN')
+            qa_reports_token = os.getenv('QA_REPORTS_TOKEN')
+            print("SQUAD_TOKEN=%s, QA_REPORTS_TOKEN=%s" % (squad_token, qa_reports_token))
+
+            __EOF__
+            python ./test-token.py
+
             ${HOME}/.local/bin/squad-client \
                 --squad-host https://qa-reports.linaro.org \
                 create-or-update-project \
