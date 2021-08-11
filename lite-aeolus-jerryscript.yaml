@@ -24,7 +24,7 @@
     parameters:
         - string:
             name: GIT_URL
-            default: 'https://git.linaro.org/lite/jerryscript.git'
+            default: 'https://github.com/pfalcon/jerryscript'
         - string:
             name: BRANCH
             default: 'zephyr-wip'
