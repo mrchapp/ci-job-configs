@@ -194,13 +194,13 @@ if [ "${clean_packages}" != "" ]; then
 fi
 
 # Cleanup mbedtls/edgeagent repos, the gitsm fetcher gets confused easily
-rm -rf ${HOME}/srv/oe/downloads/git2/*mbedtls*
-rm -rf ${HOME}/srv/oe/downloads/git2/*optiga*
-rm -rf ${HOME}/srv/oe/downloads/git2/*EdgeAgent*
-rm -rf ${HOME}/srv/oe/downloads/git2/*Azure*
-rm -rf ${HOME}/srv/oe/downloads/git2/*Microsoft*
-rm -rf ${HOME}/srv/oe/downloads/git2/*kgabis.parson*
-bitbake ${bbopt} -c cleansstate mbedtls edgeagent
+#rm -rf ${HOME}/srv/oe/downloads/git2/*mbedtls*
+#rm -rf ${HOME}/srv/oe/downloads/git2/*optiga*
+#rm -rf ${HOME}/srv/oe/downloads/git2/*EdgeAgent*
+#rm -rf ${HOME}/srv/oe/downloads/git2/*Azure*
+#rm -rf ${HOME}/srv/oe/downloads/git2/*Microsoft*
+#rm -rf ${HOME}/srv/oe/downloads/git2/*kgabis.parson*
+#bitbake ${bbopt} -c cleansstate mbedtls edgeagent
 
 # Build all ${IMAGES}
 dipimg="prod-image"
