@@ -30,3 +30,6 @@ ls -l ${TOOLCHAINS}
 
 # Preclude spammy "advices"
 git config --global advice.detachedHead false
+
+git config --global user.email "dummy@dummy.com"
+git config --global user.name "Dummy"
