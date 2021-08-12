@@ -32,7 +32,7 @@ fi
 #        ../
 
 cmake -DTFM_PLATFORM=mps2/an521 \
-      -DCMAKE_TOOLCHAIN_FILE=../toolchain_GNUARM.cmake \
+      -DTFM_TOOLCHAIN_FILE=../toolchain_GNUARM.cmake \
       -DCMAKE_BUILD_TYPE=Debug \
       -DBL2=False \
       -DTEST_S=ON -DTEST_NS=ON \
