@@ -67,10 +67,10 @@
             #!/bin/bash
             echo "PUB_DEST=member-builds/qcomlt/testimages/$(echo ${MACHINE} | sed 's/qemu//')/${BUILD_NUMBER}" > pub_dest_parameters
             # ensure that we generate the right image type, by default qemu* only generates .ext4, we need .ext4.gz
-            echo "IMAGE_FSTYPES_remove = \"ext4\"" > auto.conf
-            echo "IMAGE_FSTYPES_append = \" ext4.gz\"" >> auto.conf
+            echo "IMAGE_FSTYPES:remove = \"ext4\"" > auto.conf
+            echo "IMAGE_FSTYPES:append = \" ext4.gz\"" >> auto.conf
             # enable mesa to test freedreno
-            echo "PACKAGECONFIG_append_pn-mesa = \"freedreno xa\"" >> auto.conf
+            echo "PACKAGECONFIG:append_pn-mesa = \"freedreno xa\"" >> auto.conf
 
             echo "PREFERRED_PROVIDER_virtual/kernel = \"linux-dummy\"" >> auto.conf
 
@@ -78,9 +78,9 @@
               # install firmware
               echo "NO_RECOMMENDATIONS = \"\"" >> auto.conf
               # remove kernel and modules to beign installed
-              echo "MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS_remove = \"kernel-modules\"" >> auto.conf
-              echo "RDEPENDS_packagegroup-rpb_remove = \"kernel-modules\"" >> auto.conf
-              echo "PACKAGE_EXCLUDE_append = \" kernel*\"" >> auto.conf
+              echo "MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS:remove = \"kernel-modules\"" >> auto.conf
+              echo "RDEPENDS_packagegroup-rpb:remove = \"kernel-modules\"" >> auto.conf
+              echo "PACKAGE_EXCLUDE:append = \" kernel*\"" >> auto.conf
             else
               # configure serial in rpb-console-image-test
               echo "SERIAL_CONSOLES = \"115200;ttyMSM0\"" >> auto.conf
@@ -89,7 +89,7 @@
 
               # add machine dependent qcom services to initramfs and rpb images
               echo "CORE_IMAGE_EXTRA_INSTALL += \"${QCOM_USERSPACE_TOOLS}\"" >> auto.conf
-              echo "PACKAGE_INSTALL_append = \" ${QCOM_USERSPACE_TOOLS}\"" >> auto.conf
+              echo "PACKAGE_INSTALL:append = \" ${QCOM_USERSPACE_TOOLS}\"" >> auto.conf
             fi
         - inject:
             properties-file: pub_dest_parameters
