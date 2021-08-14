@@ -65,7 +65,7 @@ fi
 
 if [ "${ghprbPullId}" ]; then
     echo "Applying Github pull-request #${ghprbPullId} from ${ghprbGhRepository}"
-    sed -i -e "s|name=\"${ghprbGhRepository}\"|name=\"${ghprbGhRepository}\" revision=\"refs/pull/${ghprbPullId}/head\"|" .repo/manifest.xml
+    sed -i -e "s|name=\"${ghprbGhRepository}\"|name=\"${ghprbGhRepository}\" revision=\"refs/pull/${ghprbPullId}/head\"|" .repo/manifests/default.xml
 fi
 
 repo sync
