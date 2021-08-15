@@ -72,7 +72,7 @@
             # enable mesa-dev to test freedreno using deqp
             echo "MESA_DEV = \"1\"" >> auto.conf
             echo "CORE_IMAGE_EXTRA_INSTALL += \"mesa-ci\"" >> auto.conf 
-            echo "PACKAGECONFIG:append_pn-mesa = \"freedreno xa\"" >> auto.conf
+            echo "PACKAGECONFIG:append:pn-mesa = \"freedreno xa\"" >> auto.conf
 
             echo "PREFERRED_PROVIDER_virtual/kernel = \"linux-dummy\"" >> auto.conf
 

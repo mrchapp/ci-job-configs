@@ -70,7 +70,7 @@
             echo "IMAGE_FSTYPES:remove = \"ext4\"" > auto.conf
             echo "IMAGE_FSTYPES:append = \" ext4.gz\"" >> auto.conf
             # enable mesa to test freedreno
-            echo "PACKAGECONFIG:append_pn-mesa = \"freedreno xa\"" >> auto.conf
+            echo "PACKAGECONFIG:append:pn-mesa = \"freedreno xa\"" >> auto.conf
 
             echo "PREFERRED_PROVIDER_virtual/kernel = \"linux-dummy\"" >> auto.conf
 
