@@ -48,7 +48,6 @@
             rm -f "prop_triggered_or_ignored"
             skip_build=false
             if [ "X${IGNORE_KERNELVERSION_CHECK}X" == "XfalseX" ]; then
-                ssh-keyscan -p 29418 android-review.linaro.org >> ~/.ssh/known_hosts
                 git config --global user.name "Linaro CI"
                 git config --global user.email "ci-bot@linaro.org"
                 rm -fr android-build-kernel-versions

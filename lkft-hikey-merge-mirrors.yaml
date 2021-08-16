@@ -56,8 +56,6 @@
             git clean -fdx
             env
 
-            ssh-keyscan -p 29418 android-review.linaro.org >> ~/.ssh/known_hosts
-
             git config --global user.name "Linaro CI"
             git config --global user.email "ci-bot@linaro.org"
 
