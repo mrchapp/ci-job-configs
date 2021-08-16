@@ -109,7 +109,7 @@
     toolchain_ver: release
     cron: '{cron_release}'
 #if COMPONENTS_binutils
-    binutils_branch: refs/heads/binutils-2_36-branch
+    binutils_branch: refs/heads/binutils-2_37-branch
 #endif
 #if COMPONENTS_gcc
     gcc_branch: refs/heads/releases/gcc-11

@@ -43,7 +43,7 @@
     name: tcwg_gnu_cross-release
     toolchain_ver: release
     cron: '{cron_release}'
-    binutils_branch: refs/heads/binutils-2_36-branch
+    binutils_branch: refs/heads/binutils-2_37-branch
     gcc_branch: refs/heads/releases/gcc-11
     linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
     linux_branch: refs/heads/linux-rolling-stable
@@ -550,4 +550,4 @@
           job_suffix: '-{toolchain_ver}-{target}{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 60e40ac97233afc81ca6b16eec980784
+# checksum: 0d43b12b1406ab6028fd1db87dee8718

@@ -44,7 +44,7 @@
     name: tcwg_gnu_native-release
     toolchain_ver: release
     cron: '{cron_release}'
-    binutils_branch: refs/heads/binutils-2_36-branch
+    binutils_branch: refs/heads/binutils-2_37-branch
     gcc_branch: refs/heads/releases/gcc-11
     linux_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
     linux_branch: refs/heads/linux-rolling-stable
@@ -546,4 +546,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: ced81c4d8bc78af71a0b4ca17511876a
+# checksum: 26ffd59aef536953f6e477bebf1b3daf

@@ -59,7 +59,7 @@
     name: tcwg_gcc-release
     toolchain_ver: release
     cron: '{cron_release}'
-    binutils_branch: refs/heads/binutils-2_36-branch
+    binutils_branch: refs/heads/binutils-2_37-branch
     gcc_branch: refs/heads/releases/gcc-11
     distro: lts_1
     jobs:
@@ -527,4 +527,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 68d68f73a7138ed12de01a457da17259
+# checksum: 837ece4f67e654dab6707ebbcb5cd06e
