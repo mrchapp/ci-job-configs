@@ -30,7 +30,7 @@
             name: IGNORE_KERNELVERSION_CHECK
             default: "false"
     disabled: false
-    node: triggers
+    node: docker-bionic-android-lkft
     display-name: 'Gateway for changes on android common kernels'
     wrappers:
         - timestamps
