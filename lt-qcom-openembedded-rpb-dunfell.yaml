@@ -103,6 +103,8 @@
             esac
 
             echo "PUB_DEST=96boards/${MACHINE}/linaro/openembedded/${MANIFEST_BRANCH}/${BUILD_NUMBER}/${DISTRO}" > pub_dest_parameters
+
+            echo "TOOLCHAIN_TARGET_TASK_append = \" kernel-devsrc\"" >> auto.conf
         - inject:
             properties-file: pub_dest_parameters
         - shell:
