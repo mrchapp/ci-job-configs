@@ -6,7 +6,7 @@
     components: binutils gcc linux qemu
     binutils_url: git://sourceware.org/git/binutils-gdb.git
     gcc_url: https://github.com/gcc-mirror/gcc.git
-    qemu_url: git://git.qemu.org/qemu.git
+    qemu_url: https://gitlab.com/qemu-project/qemu.git
     toolchain_ver:
       - master:
           binutils_branch: refs/heads/master
@@ -518,4 +518,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: f26f0de4452b9357dfb2fe1682775973
+# checksum: 5b7a28f17b1bad9e9b8947667ada11fe

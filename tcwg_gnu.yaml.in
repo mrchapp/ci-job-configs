@@ -57,7 +57,7 @@
     gdb_url: git://sourceware.org/git/binutils-gdb.git
 #endif
 #if COMPONENTS_qemu
-    qemu_url: https://git.qemu.org/git/qemu.git
+    qemu_url: https://gitlab.com/qemu-project/qemu.git
 #endif
     target:
 #if RR_tcwg_gnu_cross

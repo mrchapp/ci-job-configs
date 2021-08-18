@@ -14,7 +14,7 @@
     gcc_url: https://github.com/gcc-mirror/gcc.git
     glibc_url: git://sourceware.org/git/glibc.git
     gdb_url: git://sourceware.org/git/binutils-gdb.git
-    qemu_url: https://git.qemu.org/git/qemu.git
+    qemu_url: https://gitlab.com/qemu-project/qemu.git
     target:
       - aarch64
       - arm
@@ -550,4 +550,4 @@
           job_suffix: '-{toolchain_ver}-{target}{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 0d43b12b1406ab6028fd1db87dee8718
+# checksum: 8db6581e0c92724f9c370bbfe27271e3

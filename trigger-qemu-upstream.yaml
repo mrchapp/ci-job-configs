@@ -14,7 +14,7 @@
     display-name: 'Trigger for Qemu upstream'
     scm:
         - git:
-            url: git://git.qemu.org/qemu.git
+            url: https://gitlab.com/qemu-project/qemu.git
             refspec: +refs/heads/master:refs/remotes/origin/master
             name: origin
             branches:

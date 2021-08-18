@@ -9,7 +9,7 @@
 #elif TOOLCHAIN_llvm
     llvm_url: https://github.com/llvm/llvm-project.git
 #endif
-    qemu_url: git://git.qemu.org/qemu.git
+    qemu_url: https://gitlab.com/qemu-project/qemu.git
     toolchain_ver:
       - master:
           binutils_branch: refs/heads/master

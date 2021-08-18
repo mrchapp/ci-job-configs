@@ -6,7 +6,7 @@
     components: binutils linux llvm qemu
     binutils_url: git://sourceware.org/git/binutils-gdb.git
     llvm_url: https://github.com/llvm/llvm-project.git
-    qemu_url: git://git.qemu.org/qemu.git
+    qemu_url: https://gitlab.com/qemu-project/qemu.git
     toolchain_ver:
       - master:
           binutils_branch: refs/heads/master
@@ -518,4 +518,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: 216583e55ef69c93614699d4008e03b9
+# checksum: 99e1e27f5dc7ec51739a4db3be6302c4
