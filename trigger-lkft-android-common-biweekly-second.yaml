@@ -1,5 +1,5 @@
 - job:
-    name: trigger-lkft-android-common-weekly-android11
+    name: trigger-lkft-android-common-biweekly-second
     project-type: freestyle
     defaults: global
     properties:
@@ -13,9 +13,9 @@
         - build-discarder:
             days-to-keep: 180
             num-to-keep: 150
-    disabled: true
+    disabled: false
     node: triggers
-    display-name: 'Trigger for builds on android common kernel weekly'
+    display-name: 'Trigger for builds on android common kernel bi-weekly'
     scm:
         - git:
             remotes:
@@ -42,7 +42,7 @@
 
             KERNEL_BRANCH_REAL="${GIT_BRANCH#android-common/}"
             MAKE_KERNELVERSION="$(make kernelversion)"
-            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-weekly"
+            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-biweekly"
             KERNEL_DESCRIBE="${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}-$(date +%Y%m%d%H%M)"
 
             echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" > "properties.txt"

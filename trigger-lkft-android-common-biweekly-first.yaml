@@ -1,5 +1,5 @@
 - job:
-    name: trigger-lkft-android-common-weekly-android11
+    name: trigger-lkft-android-common-biweekly-first
     project-type: freestyle
     defaults: global
     properties:
@@ -13,23 +13,23 @@
         - build-discarder:
             days-to-keep: 180
             num-to-keep: 150
-    disabled: true
+    disabled: false
     node: triggers
-    display-name: 'Trigger for builds on android common kernel weekly'
+    display-name: 'Trigger for builds on android common kernel bi-weekly'
     scm:
         - git:
             remotes:
                 - android-common:
                     url: https://android.googlesource.com/kernel/common
             branches:
-              - android-common/android11-5.4
-              - android-common/android13-5.10
+              - android-common/android12-5.4
+              - android-common/android12-5.10
             skip-tag: true
             shallow-clone: false
             wipe-workspace: false
     triggers:
         - pollscm:
-            cron: 'H H 8,22 * *'
+            cron: 'H H 1,15 * *'
     wrappers:
         - timestamps
         - build-name:
@@ -42,7 +42,7 @@
 
             KERNEL_BRANCH_REAL="${GIT_BRANCH#android-common/}"
             MAKE_KERNELVERSION="$(make kernelversion)"
-            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-weekly"
+            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-biweekly"
             KERNEL_DESCRIBE="${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}-$(date +%Y%m%d%H%M)"
 
             echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" > "properties.txt"
@@ -66,14 +66,14 @@
             echo "TEST_OTHER_PLANS_OVERRIDE=VTS CTS BENCHMARKS" >>${f_api_callbacks}
 
             case "X${KERNEL_BRANCH_REAL}" in
+                "Xandroid12-5.10")
+                    build_configs_to_be_triggered="lkft-member-wrapper"
+                    ;;
                 "Xandroid12-5.4")
                     build_configs_to_be_triggered="lkft-db845c-aosp-master-5.4-gki lkft-hikey960-aosp-master-5.4-gki"
                     ;;
                 "Xandroid11-5.4")
                     build_configs_to_be_triggered="lkft-db845c-android11-android11-5.4-gki lkft-hikey960-android11-android11-5.4-gki"
-                    ;;
-                "Xandroid13-5.10")
-                    build_configs_to_be_triggered="lkft-db845c-aosp-master-android13-5.10-gki lkft-hikey960-aosp-master-android13-5.10-gki"
                     ;;
                 "X*")
                     build_configs=""
