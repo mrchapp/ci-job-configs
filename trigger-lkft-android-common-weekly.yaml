@@ -1,5 +1,5 @@
 - job:
-    name: trigger-lkft-android-common-presubmit
+    name: trigger-lkft-android-common-weekly
     project-type: freestyle
     defaults: global
     properties:
@@ -13,7 +13,7 @@
         - build-discarder:
             days-to-keep: 180
             num-to-keep: 150
-    disabled: true
+    disabled: false
     node: triggers
     display-name: 'Trigger for the cts presubmit test'
     scm:
@@ -26,7 +26,6 @@
               #     lkft-android-common-gateway.yaml
               #     lkft-gki-kernel.yaml
               - android-common/android11-5.4
-              - android-common/android11-5.4-lts
               - android-common/android12-5.4
               - android-common/android12-5.10
               - android-common/android13-5.10
@@ -48,7 +47,7 @@
 
             KERNEL_BRANCH_REAL="${GIT_BRANCH#android-common/}"
             MAKE_KERNELVERSION="$(make kernelversion)"
-            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-presubmit"
+            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-weekly"
             KERNEL_DESCRIBE="${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}-$(date +%Y%m%d%H%M)"
 
             echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" > "properties.txt"

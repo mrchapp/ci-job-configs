@@ -177,15 +177,15 @@
             - project: lkft-generic-build
               property-file: params_android-mainline-lkft-hikey-aosp-master-mainline-gki.txt
             - project: lkft-generic-build
-              property-file: params_android11-5.4-presubmit-lkft-db845c-android11-android11-5.4-gki.txt
+              property-file: params_android11-5.4-weekly-lkft-db845c-android11-android11-5.4-gki.txt
             - project: lkft-member-wrapper
-              property-file: params_android12-5.4-presubmit-lkft-member-wrapper.txt
+              property-file: params_android12-5.4-weekly-lkft-member-wrapper.txt
             - project: lkft-member-wrapper
-              property-file: params_android12-5.10-presubmit-lkft-member-wrapper.txt
+              property-file: params_android12-5.10-weekly-lkft-member-wrapper.txt
             - project: lkft-member-wrapper
               property-file: params_android12-5.10-biweekly-lkft-member-wrapper.txt
             - project: lkft-generic-build
-              property-file: params_android13-5.10-presubmit-lkft-db845c-aosp-master-android13-5.10-gki.txt
+              property-file: params_android13-5.10-weekly-lkft-db845c-aosp-master-android13-5.10-gki.txt
             - project: lkft-generic-build
               property-file: params_android13-5.10-biweekly-lkft-db845c-aosp-master-android13-5.10-gki.txt
             - project: lkft-generic-build

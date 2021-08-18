@@ -87,7 +87,7 @@
                         cp -fv "${params}" "lkft-${KERNEL_BRANCH}-hikey.txt"
                         echo "ANDROID_BUILD_CONFIG=lkft-hikey-aosp-master-mainline-gki" >> "lkft-${KERNEL_BRANCH}-hikey.txt"
                         ;;
-                    "Xandroid11-5.4-presubmit")
+                    "Xandroid11-5.4-weekly")
                         KERNEL_BRANCH_REAL="android11-5.4"
                         ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-android11-android11-5.4-gki lkft-hikey960-android11-android11-5.4-gki lkft-db845c-aosp-master-android11-5.4-gki lkft-hikey960-aosp-master-android11-5.4-gki lkft-member-wrapper"
                         # DEFAULT BOOTTIME are defined by all the jobs,
@@ -100,17 +100,17 @@
                         ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-android11-android11-5.4-lts-gki lkft-hikey960-android11-android11-5.4-lts-gki"
                         TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME"
                         ;;
-                    "Xandroid12-5.4-presubmit")
+                    "Xandroid12-5.4-weekly")
                         KERNEL_BRANCH_REAL="android12-5.4"
                         ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-member-wrapper"
                         TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME CTS_PRESUBMIT"
                         ;;
-                    "Xandroid12-5.10-presubmit")
+                    "Xandroid12-5.10-weekly")
                         KERNEL_BRANCH_REAL="android12-5.10"
                         ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-member-wrapper"
                         TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME CTS_PRESUBMIT"
                         ;;
-                    "Xandroid13-5.10-presubmit")
+                    "Xandroid13-5.10-weekly")
                         KERNEL_BRANCH_REAL="android13-5.10"
                         ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-aosp-master-android13-5.10-gki"
                         TEST_OTHER_PLANS_OVERRIDE="CTS_PRESUBMIT"
