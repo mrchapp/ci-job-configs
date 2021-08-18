@@ -26,6 +26,7 @@
               #     lkft-android-common-gateway.yaml
               #     lkft-gki-kernel.yaml
               - android-common/android11-5.4
+              - android-common/android11-5.4-lts
               - android-common/android12-5.4
               - android-common/android12-5.10
               - android-common/android13-5.10

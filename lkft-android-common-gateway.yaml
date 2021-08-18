@@ -89,18 +89,26 @@
                         ;;
                     "Xandroid11-5.4-presubmit")
                         KERNEL_BRANCH_REAL="android11-5.4"
-                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-android11-android11-5.4-gki"
-                        TEST_OTHER_PLANS_OVERRIDE="CTS_PRESUBMIT"
+                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-android11-android11-5.4-gki lkft-hikey960-android11-android11-5.4-gki lkft-db845c-aosp-master-android11-5.4-gki lkft-hikey960-aosp-master-android11-5.4-gki lkft-member-wrapper"
+                        # DEFAULT BOOTTIME are defined by all the jobs,
+                        # CTS_PRESUBMIT only defined by lkft-db845c-android11-android11-5.4-gki
+                        # CTS, VTS, BENCHMARKS defined by lkft-db845c-android11-android11-5.4-gki and lkft-hikey960-android11-android11-5.4-gki, but won't be run
+                        TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME CTS_PRESUBMIT"
+                        ;;
+                    "Xandroid11-5.4-lts-presubmit")
+                        KERNEL_BRANCH_REAL="android11-5.4-lts"
+                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-android11-android11-5.4-lts-gki lkft-hikey960-android11-android11-5.4-lts-gki"
+                        TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME"
                         ;;
                     "Xandroid12-5.4-presubmit")
                         KERNEL_BRANCH_REAL="android12-5.4"
                         ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-member-wrapper"
-                        TEST_OTHER_PLANS_OVERRIDE="CTS_PRESUBMIT"
+                        TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME CTS_PRESUBMIT"
                         ;;
                     "Xandroid12-5.10-presubmit")
                         KERNEL_BRANCH_REAL="android12-5.10"
                         ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-member-wrapper"
-                        TEST_OTHER_PLANS_OVERRIDE="CTS_PRESUBMIT"
+                        TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME CTS_PRESUBMIT"
                         ;;
                     "Xandroid13-5.10-presubmit")
                         KERNEL_BRANCH_REAL="android13-5.10"
