@@ -18,75 +18,49 @@
             num-to-keep: 30
     parameters:
         - string:
-            name: SQUAD_TOKEN_FAKE
+            name: BUILD_DIR
+            default: lkft
+        - string:
+            name: ANDROID_BUILD_CONFIG
+        - string:
+            name: ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED
             default: ""
+        - string:
+            name: TEST_OTHER_PLANS_OVERRIDE
+            default: ""
+        - string:
+            name: KERNEL_DESCRIBE
+        - string:
+            name: KERNEL_BRANCH
+        - string:
+            name: SRCREV_kernel
+        - string:
+            name: MAKE_KERNELVERSION
     disabled: false
     node: docker-bionic-android-lkft
     display-name: 'TOBEDELETED: only used for test purpose'
     wrappers:
+        - timestamps
+        - build-name:
+            name: '#${BUILD_NUMBER}-${ENV,var="KERNEL_DESCRIBE"}-${ENV,var="KERNEL_BRANCH"}'
+        - timeout:
+            timeout: 500
         - credentials-binding:
             - text:
-                credential-id: QA_REPORTS_TOKEN
-                variable: QA_REPORTS_TOKEN
-            - text:
-                credential-id: QA_REPORTS_TOKEN
-                variable: SQUAD_TOKEN
+                credential-id: ARTIFACTORIAL_TOKEN
+                variable: ARTIFACTORIAL_TOKEN
     builders:
+        - shell:
+            !include-raw: lkft/common/builders-v2.sh
+        - linaro-publish-token
+        - shell:
+            !include-raw: lkft/common/publisher-v2.sh
         - shell: |
-            #!/bin/bash -x
-            if ! python --version|grep 3; then
-              sudo rm -fv /usr/bin/python && sudo ln -s /usr/bin/python3 /usr/bin/python
-            fi
-            pip3 install --user --force-reinstall ruamel.yaml Jinja2 squad-client virtualenv
-            which squad-client || true
-            ls -l ${HOME}/.local/bin/squad-client
+            #!/bin/bash -ex
+            env
 
-            cat >>test-token.py <<__EOF__
-            #!/usr/bin/python
-
-            import os
-
-            squad_token = os.getenv('SQUAD_TOKEN')
-            qa_reports_token = os.getenv('QA_REPORTS_TOKEN')
-            if squad_token == '****':
-                print("squad_token is not correct")
-            if qa_reports_token == '****':
-                print("qa_reports_token is not correct")
-
-            with open("token.json", 'w') as fd:
-                fd.write("SQUAD_TOKEN=%s\nQA_REPORTS_TOKEN=%s\n" % (squad_token, qa_reports_token))
-
-            print("SQUAD_TOKEN=%s, QA_REPORTS_TOKEN=%s" % (squad_token, qa_reports_token))
-
-            __EOF__
-            cat ./test-token.py
-            python ./test-token.py
-
-            cp -vf token.json "${WORKSPACE}/"
-
-            ${HOME}/.local/bin/squad-client \
-                --squad-host https://qa-reports.linaro.org \
-                create-or-update-project \
-                --group android-lkft --slug 5.10-gki-android13-aosp-master-db845c-full-cts-vts-test --name 5.10-gki-android13-aosp-master-db845c-full-cts-vts \
-                --is-public --plugins linux_log_parser,tradefed \
-                --settings 'PLUGINS_TRADEFED_EXTRACT_AGGREGATED: True
-            CI_LAVA_INFRA_ERROR_MESSAGES:
-            - Connection closed
-            - lava_test_shell connection dropped.
-            - fastboot-flash-action timed out
-            - lava-test-shell timed out after 1200 seconds
-            - "tradefed - adb device lost"
-            - "Download finished ([0-9]+ bytes) but was not expected size ([0-9]+ bytes), check your networking."
-            - Unable to fetch git repository
-            - "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
-            - "Device NOT found!"
-            - /usr/local/lab-scripts/cbrxd_hub_control
-            - "lava-docker-test-shell timed out after [0-9]+ seconds"
-            - "lxc-apt-install timed out after [0-9]+ seconds"
-            - "/usr/local/lab-scripts/cbrxd_hub_control --usb_port"
-            - "wait-device-boardid timed out after [0-9]+ seconds"' \
-                --data-retention 0 || true
-                #--no-overwrite --data-retention 0 || true
+            # call gitlab api to notify the build is finished successfully or not
+            # or don't need to do so, let the caller on the gitlab side to check itself
 
     publishers:
         - archive:
