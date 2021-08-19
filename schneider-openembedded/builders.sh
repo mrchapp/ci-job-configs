@@ -303,10 +303,10 @@ if [ -e ${DEPLOY_DIR_IMAGE}/${dipimg}-${MACHINE}.rootfs.cve ] ; then
 	# Same thing, but against arbitrary (but fixed) baseline
 	case "${MACHINE}" in
 		*rzn1*)
-		wget -nv -O cve-${MACHINE}.base https://releases.linaro.org/members/schneider/openembedded/2020.09-dunfell/rzn1d-5.4/dip-image-rzn1-snarc.rootfs.cve
+		wget -nv -O cve-${MACHINE}.base https://releases.linaro.org/members/schneider/openembedded/2021.08.dunfell/rzn1d-5.10/prod-image-rzn1d400-bestla.rootfs.cve
 		;;
 		*soca9*)
-		wget -nv -O cve-${MACHINE}.base https://releases.linaro.org/members/schneider/openembedded/2020.09-dunfell/soca9-5.4/dip-image-snarc-soca9.rootfs.cve
+		wget -nv -O cve-${MACHINE}.base https://releases.linaro.org/members/schneider/openembedded/2021.08.dunfell/soca9-5.10/prod-image-snarc-soca9.rootfs.cve
 		;;
 	esac
 	gawk -f diff-cve cve-${MACHINE}.base cve-${MACHINE}.new > ${WORKSPACE}/base-cve-${MACHINE}.txt
