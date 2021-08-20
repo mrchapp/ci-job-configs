@@ -29,13 +29,20 @@
             name: TEST_OTHER_PLANS_OVERRIDE
             default: ""
         - string:
-            name: KERNEL_DESCRIBE
-        - string:
-            name: KERNEL_BRANCH
-        - string:
-            name: SRCREV_kernel
+            name: BUILD_REFERENCE_IMAGE_GZ_URL
+            default: ""
         - string:
             name: MAKE_KERNELVERSION
+            default: ""
+        - string:
+            name: KERNEL_DESCRIBE
+            default: ""
+        - string:
+            name: KERNEL_BRANCH
+            default: ""
+        - string:
+            name: SRCREV_kernel
+            default: ""
     disabled: false
     node: docker-bionic-android-lkft
     display-name: 'TOBEDELETED: only used for test purpose'
@@ -63,19 +70,22 @@
             DOWNLOAD_URL="http://snapshots.linaro.org/${PUB_DEST}"
 
             f_build_json="build.json"
-            echo "{" > "${f_build_json}"
-            echo "    \"BUILD_URL\": \"${BUILD_URL}\","  >> "${f_build_json}"
-            echo "    \"BUILD_NUMBER\": \"${BUILD_NUMBER}\","  >> "${f_build_json}"
-            echo "    \"JOB_URL\": \"${JOB_URL}\","  >> "${f_build_json}"
-            echo "    \"DOWNLOAD_URL\": \"${DOWNLOAD_URL}\","  >> "${f_build_json}"
-            echo "    \"ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED\": \"${ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED}\","  >> "${f_build_json}"
-            echo "    \"ANDROID_BUILD_CONFIG\": \"${ANDROID_BUILD_CONFIG}\","  >> "${f_build_json}"
-            echo "    \"KERNEL_DESCRIBE\": \"${KERNEL_DESCRIBE}\","  >> "${f_build_json}"
-            echo "    \"KERNEL_BRANCH\": \"${KERNEL_BRANCH}\","  >> "${f_build_json}"
-            echo "    \"SRCREV_kernel\": \"${SRCREV_kernel}\","  >> "${f_build_json}"
-            echo "    \"MAKE_KERNELVERSION\": \"${MAKE_KERNELVERSION}\","  >> "${f_build_json}"
-            echo "    \"TEST_OTHER_PLANS_OVERRIDE\": \"${TEST_OTHER_PLANS_OVERRIDE}\""  >> "${f_build_json}"
-            echo "}" >> "${f_build_json}"
+            cat >"${f_build_json}" <<__EOF__
+            {
+                "BUILD_URL": "${BUILD_URL}",
+                "BUILD_NUMBER": "${BUILD_NUMBER}",
+                "JOB_URL": "${JOB_URL}",
+                "DOWNLOAD_URL": "${DOWNLOAD_URL}",
+                "ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED": "${ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED}",
+                "ANDROID_BUILD_CONFIG": "${ANDROID_BUILD_CONFIG}",
+                "TEST_OTHER_PLANS_OVERRIDE": "${TEST_OTHER_PLANS_OVERRIDE}",
+                "BUILD_REFERENCE_IMAGE_GZ_URL": "${BUILD_REFERENCE_IMAGE_GZ_URL}",
+                "KERNEL_DESCRIBE": "${KERNEL_DESCRIBE}",
+                "KERNEL_BRANCH": "${KERNEL_BRANCH}",
+                "SRCREV_kernel": "${SRCREV_kernel}",
+                "MAKE_KERNELVERSION": "${MAKE_KERNELVERSION}"
+            }
+            __EOF__
 
 
             # call gitlab api to notify the build is finished successfully or not
