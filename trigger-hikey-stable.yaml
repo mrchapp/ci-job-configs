@@ -59,12 +59,31 @@
             #!/bin/bash -ex
             env
 
+            PUB_DEST="android/lkft/${JOB_NAME}/${BUILD_NUMBER}"
+            DOWNLOAD_URL="http://snapshots.linaro.org/${PUB_DEST}"
+
+            f_build_json="build.json"
+            echo "{" > "${f_build_json}"
+            echo "    \"BUILD_URL\": \"${BUILD_URL}\","  >> "${f_build_json}"
+            echo "    \"BUILD_NUMBER\": \"${BUILD_NUMBER}\","  >> "${f_build_json}"
+            echo "    \"JOB_URL\": \"${JOB_URL}\","  >> "${f_build_json}"
+            echo "    \"DOWNLOAD_URL\": \"${DOWNLOAD_URL}\","  >> "${f_build_json}"
+            echo "    \"ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED\": \"${ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED}\","  >> "${f_build_json}"
+            echo "    \"ANDROID_BUILD_CONFIG\": \"${ANDROID_BUILD_CONFIG}\","  >> "${f_build_json}"
+            echo "    \"KERNEL_DESCRIBE\": \"${KERNEL_DESCRIBE}\","  >> "${f_build_json}"
+            echo "    \"KERNEL_BRANCH\": \"${KERNEL_BRANCH}\","  >> "${f_build_json}"
+            echo "    \"SRCREV_kernel\": \"${SRCREV_kernel}\","  >> "${f_build_json}"
+            echo "    \"MAKE_KERNELVERSION\": \"${MAKE_KERNELVERSION}\","  >> "${f_build_json}"
+            echo "    \"TEST_OTHER_PLANS_OVERRIDE\": \"${TEST_OTHER_PLANS_OVERRIDE}\""  >> "${f_build_json}"
+            echo "}" >> "${f_build_json}"
+
+
             # call gitlab api to notify the build is finished successfully or not
             # or don't need to do so, let the caller on the gitlab side to check itself
 
     publishers:
         - archive:
-            artifacts: '*.xml,*.json'
+            artifacts: '*.xml,*.json,*.txt'
             latest-only: true
         - email:
             recipients: 'yongqin.liu@linaro.org'
