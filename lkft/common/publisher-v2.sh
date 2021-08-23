@@ -21,7 +21,13 @@ for build_config in ${ANDROID_BUILD_CONFIG}; do
 
     for f in ${PUBLISH_COMMON_FILES} ${PUBLISH_FILES}; do
         if [ -f out/${build_config}/${f} ]; then
-            mv -v out/${build_config}/${f} ${JOB_OUT_PUBLISH}/${build_config}-${f}
+            if [ "X${f}" = "Xmisc_info.txt" ]; then
+                # the name of misc_info.txt is used by the submit_for_testing-v2.sh
+                # so we can not move it, instead copy it to the workspace directory
+                cp -v out/${build_config}/${f} ${JOB_OUT_PUBLISH}/${build_config}-${f}
+            else
+                mv -v out/${build_config}/${f} ${JOB_OUT_PUBLISH}/${build_config}-${f}
+            fi
         fi
     done
 done
