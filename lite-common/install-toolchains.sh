@@ -37,4 +37,7 @@ install_arm_toolchain()
 install_zephyr_sdk
 install_arm_toolchain
 
+sudo pip3 install cmake==3.20.2
+
+cmake --version
 ${ZEPHYR_SDK_INSTALL_DIR}/sysroots/x86_64-pokysdk-linux/usr/bin/dtc --version
