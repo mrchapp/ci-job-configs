@@ -1,7 +1,8 @@
 Cython>=0.29
 pip>=21
 
-# those differ between 1.5/2.4/git
+# those differ between releases/git
+flatbuffers{{ flatbuffers_version }}
 gast{{ gast_version }}
 grpcio{{ grpcio_version }}
 h5py{{ h5py_version }}
@@ -12,7 +13,6 @@ numpy{{ numpy_version }}
 absl-py ~= 0.10
 astor >= 0.6.0
 astunparse ~= 1.6.3
-flatbuffers ~= 1.12.0
 google_pasta ~= 0.2
 keras_applications >= 1.0.8
 keras_preprocessing ~= 1.1.2

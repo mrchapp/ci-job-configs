@@ -6,6 +6,7 @@ versions:
   "2.6":
     tensorflow_version: "2.6.0-rc2"
     bazel_version: "3.7.2"
+    flatbuffers_version: "~=1.12.0"
     gast_version: "==0.4.0"
     grpcio_version: "~=1.37.0"
     h5py_version: "~=3.1.0"
@@ -18,6 +19,7 @@ versions:
   "2.5":
     tensorflow_version: "2.5.0"
     bazel_version: "3.7.2"
+    flatbuffers_version: "~=1.12.0"
     gast_version: "==0.4.0"
     grpcio_version: "~=1.34.0"
     h5py_version: "~=3.1.0"
@@ -30,6 +32,7 @@ versions:
   "2.4":
     tensorflow_version: "2.4.2"
     bazel_version: "3.5.0"
+    flatbuffers_version: "~=1.12.0"
     gast_version: "==0.3.3"
     grpcio_version: "~=1.32.0"
     h5py_version: "~=2.10"
@@ -42,6 +45,7 @@ versions:
   "1.15":
     tensorflow_version: "1.15.5"
     bazel_version: "0.29.1"
+    flatbuffers_version: "~=1.12.0"
     gast_version: "==0.3.3"
     grpcio_version: "~=1.32.0"
     h5py_version: "==2.10"
@@ -52,6 +56,7 @@ versions:
   "git":
     tensorflow_version: "git"
     bazel_version: "3.7.2"
+    flatbuffers_version: "~=2.0"
     gast_version: "==0.4.0"
     grpcio_version: ">= 1.37.0, < 2.0"
     h5py_version: "~=3.1.0"
