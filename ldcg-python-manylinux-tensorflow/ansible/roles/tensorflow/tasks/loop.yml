@@ -1,6 +1,7 @@
 - name: set TensorFlow version
   set_fact:
     tensorflow_version: "{{ tf_ver.value.tensorflow_version }}"
+    flatbuffers_version: "{{ tf_ver.value.flatbuffers_version }}"
     gast_version: "{{ tf_ver.value.gast_version }}"
     grpcio_version: "{{ tf_ver.value.grpcio_version }}"
     h5py_version: "{{ tf_ver.value.h5py_version }}"
