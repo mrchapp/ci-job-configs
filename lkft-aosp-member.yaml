@@ -16,6 +16,15 @@
                 - job-extended-read
     parameters:
         - string:
+            name: ANDROID_BUILD_CONFIG_REPO_URL
+            default: ssh://git@dev-private-git.linaro.org/android-internal/android-build-configs.git
+        - string:
+            name: ANDROID_BUILD_CONFIG_REPO_BRANCH
+            default: lkft
+        - string:
+            name: ANDROID_BUILD_CONFIG
+            default: ''
+        - string:
             name: MANIFEST_URL
             default: 'https://android.googlesource.com/platform/manifest'
         - string:

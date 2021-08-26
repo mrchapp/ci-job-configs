@@ -44,7 +44,16 @@ function build_android(){
     wget -c https://android-git.linaro.org/android-build-configs.git/plain/linaro-build.sh -O linaro-build.sh
     chmod +x linaro-build.sh
     if [ -n "${ANDROID_BUILD_CONFIG}" ]; then
-        bash -ex ./linaro-build.sh -c "${ANDROID_BUILD_CONFIG}"
+        opt_cu=""
+        if [ -n "${ANDROID_BUILD_CONFIG_REPO_URL}" ]; then
+            opt_branch=""
+            if [ -n "${ANDROID_BUILD_CONFIG_REPO_BRANCH}" ]; then
+                opt_branch="-b ${ANDROID_BUILD_CONFIG_REPO_BRANCH}"
+            fi
+            git clone ${opt_branch} ${ANDROID_BUILD_CONFIG_REPO_URL} android-build-configs-private
+            opt_cu=${ANDROID_ROOT}/android-build-configs-private/${ANDROID_BUILD_CONFIG}
+        fi
+        bash -ex ./linaro-build.sh -c "${ANDROID_BUILD_CONFIG}" ${opt_cu}
         # ${ANDROID_BUILD_CONFIG} will be repo synced after build
         # shellcheck source=/dev/null
         source "android-build-configs/${ANDROID_BUILD_CONFIG}"
@@ -123,9 +132,9 @@ function clean_workspace(){
 
 # export parameters for publish/job submission steps
 function export_parameters(){
-    if [ "X${f}X" = "Xandroid-cts.zipX" ]; then
+    if echo "${PUBLISH_FILES}" |grep android-cts.zip; then
         PUB_DEST_TARGET="android-cts"
-    elif [ "X${f}X" = "Xandroid-vts.zipX" ]; then
+    elif echo "${PUBLISH_FILES}" |grep android-vts.zip; then
         PUB_DEST_TARGET="android-vts"
     elif [ "X${TARGET_PRODUCT}" = "Xbeagle_x15" ]; then
         # beagle_x15 could not used as part of the url for snapshot site

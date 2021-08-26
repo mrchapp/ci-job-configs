@@ -47,7 +47,10 @@
                             md5sum_val=$(echo "${android_version}-${build_config}"|md5sum|awk '{print $1}')
                             f_params="params_${md5sum_val}.txt"
 
-                            cp -vf android-build-configs-private/${build_config} ${f_params}
+                            rm -fr ${f_params}
+                            echo "ANDROID_BUILD_CONFIG=${build_config}" >> "${f_params}"
+                            echo "ANDROID_BUILD_CONFIG_REPO_URL=${ANDROID_BUILD_CONFIG_REPO_URL}" >> "${f_params}"
+                            echo "ANDROID_BUILD_CONFIG_REPO_BRANCH=lkft" >> "${f_params}"
                         done
                     done < android-build-configs-private/lkft-member-builds
                 fi
