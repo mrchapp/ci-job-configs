@@ -51,7 +51,7 @@ function build_android(){
                 opt_branch="-b ${ANDROID_BUILD_CONFIG_REPO_BRANCH}"
             fi
             git clone ${opt_branch} ${ANDROID_BUILD_CONFIG_REPO_URL} android-build-configs-private
-            opt_cu=${ANDROID_ROOT}/android-build-configs-private/${ANDROID_BUILD_CONFIG}
+            opt_cu="-cu ${ANDROID_ROOT}/android-build-configs-private/${ANDROID_BUILD_CONFIG}"
         fi
         bash -ex ./linaro-build.sh -c "${ANDROID_BUILD_CONFIG}" ${opt_cu}
         # ${ANDROID_BUILD_CONFIG} will be repo synced after build
