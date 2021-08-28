@@ -15,6 +15,7 @@ OPT_MIRROR="${OPT_MIRROR:-}"
 CLEAN_UP=${CLEAN_UP:-true}
 
 ANDROID_ROOT="${BUILD_ROOT}/build/aosp"
+KERNEL_ROOT="${BUILD_ROOT}/build/kernel"
 DIR_PUB_SRC="${BUILD_ROOT}/dist"
 AOSP_REPO_BACKUP="${BUILD_ROOT}/aosp-repo-backup"
 ANDROID_IMAGE_FILES="boot.img dtb.img dtbo.img super.img vendor.img product.img system.img system_ext.img vbmeta.img userdata.img ramdisk.img ramdisk-debug.img recovery.img cache.img"
@@ -45,6 +46,19 @@ function prepare_environment(){
     fi
 }
 
+###############################################################
+# Build the kernel images that would be used for the userspace
+# All operations following should be done under ${KERNEL_ROOT}
+###############################################################
+function build_kernel(){
+    if [ -z "${KERNEL_BUILD_CONFIG}" ]; then
+        return
+    fi
+    rm -fr "${KERNEL_ROOT}" && mkdir -p "${KERNEL_ROOT}" && cd "${KERNEL_ROOT}"
+    wget https://android-git.linaro.org/android-build-configs.git/plain/lkft/linaro-lkft.sh?h=lkft -O linaro-lkft.sh
+    chmod +x linaro-lkft.sh
+    ./linaro-lkft.sh -c "${KERNEL_BUILD_CONFIG}" -okb
+}
 ###############################################################
 # Build Android userspace images
 # All operations following should be done under ${ANDROID_ROOT}
@@ -158,6 +172,15 @@ function export_parameters(){
 
 function main(){
     prepare_environment
+    if [ -n "${KERNEL_BUILD_CONFIG}" ]; then
+        build_kernel
+        export LOCAL_KERNEL_HOME=${KERNEL_ROOT}/out/${KERNEL_BUILD_CONFIG}/vendor-kernel/dist
+        kernel_ver=$(grep GKI_KERNEL_MAKEVERSION ${KERNEL_ROOT}/out/${KERNEL_BUILD_CONFIG}/misc_info.txt|cut -d= -f2)
+        if [ -z "${kernel_ver}" ]; then
+            kernel_ver=$(grep VENDOR_KERNEL_MAKEVERSION ${KERNEL_ROOT}/out/${KERNEL_BUILD_CONFIG}/misc_info.txt|cut -d= -f2 )
+        fi
+        export TARGET_KERNEL_USE=${kernel_ver}
+    fi
     build_android
 
     if ${IN_JENKINS} && [ -n "${WORKSPACE}" ]; then

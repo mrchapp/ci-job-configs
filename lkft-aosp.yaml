@@ -18,6 +18,9 @@
             name: ANDROID_BUILD_CONFIG
             default: ''
         - string:
+            name: KERNEL_BUILD_CONFIG
+            default: ''
+        - string:
             name: MANIFEST_BRANCH
             default: ''
         - string:
