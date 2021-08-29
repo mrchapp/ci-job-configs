@@ -15,11 +15,11 @@
             num-to-keep: 60
     parameters:
         - string:
-            name: ART_URL
-            default: https://android-qa-reports.linaro.org/api/
+            name: ANDROID_BUILD_CONFIG
+            default: 'lkft-master-x15'
         - string:
-            name: BUILD_DIR
-            default: aosp-master
+            name: KERNEL_BUILD_CONFIG
+            default: 'lkft-x15-aosp-master-mainline'
         - string:
             name: QA_SERVER
             default: 'https://qa-reports.linaro.org'
@@ -88,6 +88,56 @@
                 credential-id: ARTIFACTORIAL_TOKEN
                 variable: ARTIFACTORIAL_TOKEN
     builders:
-        !include: android-lcr/x15/builders-v2-jinja2.yaml.inc
+        - shell: |
+            #!/bin/bash -ex
+
+            #change to use python3 by default
+            if ! python --version|grep 3; then
+                sudo rm -fv /usr/bin/python && sudo ln -s /usr/bin/python3 /usr/bin/python
+            fi
+            sudo apt-get update
+            sudo apt-get install -y --allow-change-held-packages make bison git gperf libxml2-utils python-mako zip time python-requests genisoimage patch mtools python3-pip libssl-dev
+
+            wget --no-check-certificate https://mirrors.kernel.org/ubuntu/pool/universe/o/openjdk-8/openjdk-8-jre-headless_8u162-b12-1_amd64.deb \
+                    https://mirrors.kernel.org/ubuntu/pool/universe/o/openjdk-8/openjdk-8-jre_8u162-b12-1_amd64.deb \
+                    https://mirrors.kernel.org/ubuntu/pool/universe/o/openjdk-8/openjdk-8-jdk_8u162-b12-1_amd64.deb
+
+            sudo dpkg -i --force-all *.deb
+            java -version
+
+            mkdir -p ${HOME}/bin
+            curl https://storage.googleapis.com/git-repo-downloads/repo > ${HOME}/bin/repo
+            chmod a+x ${HOME}/bin/*
+
+            git config --global user.email "ci_notify@linaro.org"
+            git config --global user.name "Linaro CI"
+
+            # set value for the build name
+            if [ -n "${ANDROID_BUILD_CONFIG}" ]; then
+                WRAPPER_BUILD_NAME="-${ANDROID_BUILD_CONFIG}"
+            elif [ -n "${MANIFEST_BRANCH}" ] && [ -n "${TARGET_PRODUCT}" ]; then
+                WRAPPER_BUILD_NAME="-${MANIFEST_BRANCH}-${TARGET_PRODUCT}"
+            fi
+            echo "WRAPPER_BUILD_NAME=${WRAPPER_BUILD_NAME}" > wrappers_parameters
+
+        - shell:
+            !include-raw:
+                - lkft/common/build-aosp.sh
+        - inject:
+            properties-file: publish_parameters
+        - linaro-publish-token
+        - shell:
+            !include-raw:
+                - android/linaro-publisher.sh
     publishers:
-        !include: android-lcr/common/publishers.yaml.inc
+        - archive:
+            artifacts: '*.xml,*.json'
+            latest-only: true
+        - logparser:
+            parse-rules: '/var/jenkins_home/userContent/android.parse'
+            unstable-on-warning: false
+            fail-on-error: false
+        - fingerprint:
+            files: 'build/fingerprints/*'
+        - email:
+            recipients: 'yongqin.liu@linaro.org'
