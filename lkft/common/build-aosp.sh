@@ -57,7 +57,7 @@ function build_kernel(){
     rm -fr "${KERNEL_ROOT}" && mkdir -p "${KERNEL_ROOT}" && cd "${KERNEL_ROOT}"
     wget https://android-git.linaro.org/android-build-configs.git/plain/lkft/linaro-lkft.sh?h=lkft -O linaro-lkft.sh
     chmod +x linaro-lkft.sh
-    ./linaro-lkft.sh -c "${KERNEL_BUILD_CONFIG}" -okb
+    ./linaro-lkft.sh -c "${KERNEL_BUILD_CONFIG}" -obk
 }
 ###############################################################
 # Build Android userspace images
