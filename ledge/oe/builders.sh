@@ -66,7 +66,7 @@ echo "MANIFEST_COMMIT=${MANIFEST_COMMIT}" > ${WORKSPACE}/submit_for_testing_para
 
 # record changes since last build, if available
 BASE_URL=http://snapshots.linaro.org
-if wget -q ${BASE_URL}${PUB_DEST/\/${BUILD_NUMBER}\//\/latest\/}/pinned-manifest.xml -O pinned-manifest-latest.xml; then
+if wget -q ${BASE_URL}/${PUB_DEST/\/${BUILD_NUMBER}\//\/latest\/}/pinned-manifest.xml -O pinned-manifest-latest.xml; then
     repo diffmanifests ${PWD}/pinned-manifest-latest.xml ${PWD}/pinned-manifest.xml > manifest-changes.txt
 else
     echo "latest build published does not have pinned-manifest.xml, skipping diff report"
