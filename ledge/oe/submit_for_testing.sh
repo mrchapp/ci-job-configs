@@ -38,7 +38,7 @@ fi
 
 function oe_urls {
       if [ "${MACHINE}" = "ledge-multi-armv7" ]; then
-         if [ "${DEVICE_TYPE}" = "x15-bl_uefi"; then
+         if [ "${DEVICE_TYPE}" = "x15-bl_uefi" ]; then
              export SYSTEM_URL=`echo ${SYSTEM_URL} | sed  "s/ledge-qemuarm/ledge-ti-am572x/"`
          fi
              export FIRMWARE_URL=`echo ${SYSTEM_URL} | sed -e "s|ledge-qemuarm.*|ledge-qemuarm/firmware.uefi.uboot.bin|"`
