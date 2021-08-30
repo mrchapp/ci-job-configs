@@ -151,21 +151,29 @@ function clean_workspace(){
 
 # export parameters for publish/job submission steps
 function export_parameters(){
-    if [ "X${f}X" = "Xandroid-cts.zipX" ]; then
-        PUB_DEST_TARGET="android-cts"
-    elif [ "X${f}X" = "Xandroid-vts.zipX" ]; then
-        PUB_DEST_TARGET="android-vts"
-    elif [ "X${TARGET_PRODUCT}" = "Xbeagle_x15" ]; then
-        # beagle_x15 could not used as part of the url for snapshot site
-        PUB_DEST_TARGET=x15
-    else
-        PUB_DEST_TARGET=${TARGET_PRODUCT}
-    fi
-
     # Publish parameters
     # The pinned-manifest was copied into the publist directory as pinned-manifest.xml already
     cp -a "${DIR_PUB_SRC}/pinned-manifest.xml" "${WORKSPACE}/"
-    echo "PUB_DEST=android/lkft/${PUB_DEST_TARGET}/${BUILD_NUMBER}" > "${WORKSPACE}/publish_parameters"
+
+    if [ -n "${PUB_DEST_PATH}" ]; then
+        PUB_DEST="${PUB_DEST_PATH}/${BUILD_NUMBER}"
+    else
+        if [ -n "${ANDROID_BUILD_CONFIG}" ]; then
+            PUB_DEST_TARGET="${ANDROID_BUILD_CONFIG}"
+        elif [ "X${f}X" = "Xandroid-cts.zipX" ]; then
+            PUB_DEST_TARGET="android-cts"
+        elif [ "X${f}X" = "Xandroid-vts.zipX" ]; then
+            PUB_DEST_TARGET="android-vts"
+        elif [ "X${TARGET_PRODUCT}" = "Xbeagle_x15" ]; then
+            # beagle_x15 could not used as part of the url for snapshot site
+            PUB_DEST_TARGET=x15
+        else
+            PUB_DEST_TARGET=${TARGET_PRODUCT}
+        fi
+        PUB_DEST="android/lkft/${PUB_DEST_TARGET}/${BUILD_NUMBER}"
+    fi
+
+    echo "PUB_DEST=${PUB_DEST}" > "${WORKSPACE}/publish_parameters"
     echo "PUB_SRC=${DIR_PUB_SRC}" >> "${WORKSPACE}/publish_parameters"
     echo "PUB_EXTRA_INC=^[^/]+\.(txt|img|xz|dtb|dtbo|zip)$|MLO|vmlinux|System.map" >> "${WORKSPACE}/publish_parameters"
 }
@@ -175,9 +183,9 @@ function main(){
     if [ -n "${KERNEL_BUILD_CONFIG}" ]; then
         build_kernel
         export LOCAL_KERNEL_HOME=${KERNEL_ROOT}/out/${KERNEL_BUILD_CONFIG}/vendor-kernel/dist
-        kernel_ver=$(grep GKI_KERNEL_MAKEVERSION ${KERNEL_ROOT}/out/${KERNEL_BUILD_CONFIG}/misc_info.txt|cut -d= -f2)
+        kernel_ver=$(grep GKI_KERNEL_MAKEVERSION "${KERNEL_ROOT}/out/${KERNEL_BUILD_CONFIG}/misc_info.txt" | cut -d= -f2)
         if [ -z "${kernel_ver}" ]; then
-            kernel_ver=$(grep VENDOR_KERNEL_MAKEVERSION ${KERNEL_ROOT}/out/${KERNEL_BUILD_CONFIG}/misc_info.txt|cut -d= -f2 )
+            kernel_ver=$(grep VENDOR_KERNEL_MAKEVERSION "${KERNEL_ROOT}/out/${KERNEL_BUILD_CONFIG}/misc_info.txt" | cut -d= -f2 )
         fi
         export TARGET_KERNEL_USE=${kernel_ver}
     fi
