@@ -135,8 +135,7 @@
                 export DEVICE_TYPE=frdm-kw41z
                 ;;
               disco_l475_iot1)
-                #export DEVICE_TYPE=disco-l475-iot1
-                echo "disco_l475_iot1: LAVA testing temporarily disabled due to device instability (LSS-2160)"
+                export DEVICE_TYPE=disco-l475-iot1
                 ;;
               lpcxpresso55s69_cpu0)
                 #export DEVICE_TYPE=lpcxpresso55s69
