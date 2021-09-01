@@ -251,7 +251,7 @@
             steps:
                 - shell: "exit 1"
 # elif HOST_windows
-      - shell: |
+      - batch: |
           echo Test
 # endif
 #endif

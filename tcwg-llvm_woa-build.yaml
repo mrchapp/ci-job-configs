@@ -97,10 +97,10 @@
             name: '#$BUILD_NUMBER-$release-$candidate/$builder'
         - workspace-cleanup
     builders:
-      - shell: |
+      - batch: |
           echo Test
     publishers:
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: 3c7cc757b4dcfa0b2d6378cf3fda989b
+# checksum: 56aa0c763fa11bdea95f193b7c0b3337
