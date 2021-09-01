@@ -4,7 +4,7 @@
     name: tcwg_gnu_native
     type_of_test: ""
     cron_master: 'H H * * *'
-    cron_release: 'H H H/4 * *'
+    cron_release: 'H H H/3 * *'
     ci_project:
       - tcwg_gnu_native_build
       - tcwg_gnu_native_check_binutils
@@ -546,4 +546,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 26ffd59aef536953f6e477bebf1b3daf
+# checksum: 3cd5af78a80594148a467a5563fd1314

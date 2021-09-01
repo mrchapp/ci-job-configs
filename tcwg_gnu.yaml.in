@@ -3,7 +3,7 @@
     name: #{RR}
     type_of_test: ""
     cron_master: 'H H * * *'
-    cron_release: 'H H H/4 * *'
+    cron_release: 'H H H/3 * *'
 #if RR_tcwg_gcc
     ci_project:
       - tcwg_gcc_bootstrap:

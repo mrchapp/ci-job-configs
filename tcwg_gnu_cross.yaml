@@ -4,7 +4,7 @@
     name: tcwg_gnu_cross
     type_of_test: ""
     cron_master: 'H H * * *'
-    cron_release: 'H H H/4 * *'
+    cron_release: 'H H H/3 * *'
     ci_project:
       - tcwg_gnu_cross_build:
           cron_master: 'H H/6 * * *'
@@ -550,4 +550,4 @@
           job_suffix: '-{toolchain_ver}-{target}{type_of_test}'
     publishers:
       - bisect-publishers
-# checksum: 8db6581e0c92724f9c370bbfe27271e3
+# checksum: 42d13f468bb02a8c98e10d1cc5f9c381

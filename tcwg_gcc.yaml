@@ -4,7 +4,7 @@
     name: tcwg_gcc
     type_of_test: ""
     cron_master: 'H H * * *'
-    cron_release: 'H H H/4 * *'
+    cron_release: 'H H H/3 * *'
     ci_project:
       - tcwg_gcc_bootstrap:
           type_of_test: -bootstrap
@@ -527,4 +527,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: 837ece4f67e654dab6707ebbcb5cd06e
+# checksum: 6e8f29669730ed315a8bbeadd8a5fd37

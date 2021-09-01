@@ -115,7 +115,7 @@
     llvm_branch: refs/heads/release/13.x
 #endif
     distro: lts_1
-    cron_schedule: 'H H H/7 * *'
+    cron_schedule: 'H H H/6 * *'
     jobs:
       - 'tcwg_bmk_ci_#{TOOLCHAIN}-build-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
       - 'tcwg_bmk_ci_#{TOOLCHAIN}-bisect-tcwg_bmk_{hw}-#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'

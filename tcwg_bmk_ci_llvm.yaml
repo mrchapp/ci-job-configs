@@ -84,7 +84,7 @@
     glibc_branch: refs/heads/release/2.34/master
     llvm_branch: refs/heads/release/13.x
     distro: lts_1
-    cron_schedule: 'H H H/7 * *'
+    cron_schedule: 'H H H/6 * *'
     jobs:
       - 'tcwg_bmk_ci_llvm-build-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
       - 'tcwg_bmk_ci_llvm-bisect-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
@@ -600,4 +600,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 20904afe695cca3298cb54a1b1556ccc
+# checksum: 3dc4c0291ad6b99c8db38ecdcea6c33f
