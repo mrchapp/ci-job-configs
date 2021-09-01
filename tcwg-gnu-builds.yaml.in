@@ -83,35 +83,35 @@
       - multijob:
           name: Build
           projects:
-            - name: tcwg-dev-build
+            - name: tcwg-gnu-build
               alias: "host_x86_64_target_aarch64"
               enable-condition: "$host_x86_64_target_aarch64"
               node-label-name: "builder"
               node-label: "tcwg-build && tcwg-x86_64-build"
               property-file: build-params.txt
               predefined-parameters: "target=aarch64-linux-gnu"
-            - name: tcwg-dev-build
+            - name: tcwg-gnu-build
               alias: "host_x86_64_target_armhf"
               enable-condition: "$host_x86_64_target_armhf"
               node-label-name: "builder"
               node-label: "tcwg-build && tcwg-x86_64-build"
               property-file: build-params.txt
               predefined-parameters: "target=arm-linux-gnueabihf"
-            - name: tcwg-dev-build
+            - name: tcwg-gnu-build
               alias: "host_aarch64_target_aarch64"
               enable-condition: "$host_aarch64_target_native"
               node-label-name: "builder"
               node-label: "tcwg-build && tcwg-armv8_64"
               property-file: build-params.txt
               predefined-parameters: "target=native"
-            - name: tcwg-dev-build
+            - name: tcwg-gnu-build
               alias: "host_aarch64_target_armhf"
               enable-condition: "$host_aarch64_target_armhf"
               node-label-name: "builder"
               node-label: "tcwg-build && tcwg-armv8_64"
               property-file: build-params.txt
               predefined-parameters: "target=arm-linux-gnueabihf"
-            - name: tcwg-dev-build
+            - name: tcwg-gnu-build
               alias: "host_armhf_target_native"
               enable-condition: "$host_armhf_target_native"
               node-label-name: "builder"
@@ -133,7 +133,7 @@
           rhs: 1
           steps:
             - copyartifact:
-                project: tcwg-dev-build
+                project: tcwg-gnu-build
                 which-build: specific-build
                 # Note that $TCWG_DEV_BUILD_BUILD_NUMBER points to the last
                 # build (i.e., it's the same as $TCWG_DEV_BUILD_5_BUILD_NUMBER
@@ -143,7 +143,7 @@
                 # We need to use $TCWG_DEV_BUILD_BUILD_NUMBER here to correctly
                 # handle single-toolchain builds.
                 build-number: $TCWG_DEV_BUILD_BUILD_NUMBER
-                target: tcwg-dev-build-1
+                target: tcwg-gnu-build-1
       - conditional-step:
           condition-kind: num-comp
           lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD
@@ -151,10 +151,10 @@
           rhs: 2
           steps:
             - copyartifact:
-                project: tcwg-dev-build
+                project: tcwg-gnu-build
                 which-build: specific-build
                 build-number: $TCWG_DEV_BUILD_1_BUILD_NUMBER
-                target: tcwg-dev-build-2
+                target: tcwg-gnu-build-2
       - conditional-step:
           condition-kind: num-comp
           lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD
@@ -162,10 +162,10 @@
           rhs: 3
           steps:
             - copyartifact:
-                project: tcwg-dev-build
+                project: tcwg-gnu-build
                 which-build: specific-build
                 build-number: $TCWG_DEV_BUILD_2_BUILD_NUMBER
-                target: tcwg-dev-build-3
+                target: tcwg-gnu-build-3
       - conditional-step:
           condition-kind: num-comp
           lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD
@@ -173,10 +173,10 @@
           rhs: 4
           steps:
             - copyartifact:
-                project: tcwg-dev-build
+                project: tcwg-gnu-build
                 which-build: specific-build
                 build-number: $TCWG_DEV_BUILD_3_BUILD_NUMBER
-                target: tcwg-dev-build-4
+                target: tcwg-gnu-build-4
       - conditional-step:
           condition-kind: num-comp
           lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD
@@ -184,10 +184,10 @@
           rhs: 5
           steps:
             - copyartifact:
-                project: tcwg-dev-build
+                project: tcwg-gnu-build
                 which-build: specific-build
                 build-number: $TCWG_DEV_BUILD_4_BUILD_NUMBER
-                target: tcwg-dev-build-5
+                target: tcwg-gnu-build-5
       - linaro-publish-token
       - shell: |
           #!/bin/bash
@@ -200,7 +200,7 @@
 
           i="$TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD"
           while [ $i -gt 0 ]; do
-            rsync -a tcwg-dev-build-$i/artifacts/binaries/ out/
+            rsync -a tcwg-gnu-build-$i/artifacts/binaries/ out/
             i=$(($i-1))
           done
 

@@ -158,7 +158,7 @@
             echo "NOTE: Buildfarm cmp job parameters:"
             cat buildfarm_cmp_parameters
 
-            cat << EOF > dev_build_parameters
+            cat << EOF > gnu_build_parameters
             release_name=reg-detection-${BUILD_NUMBER}
             target=${release_target_list%% *}
             version=default
@@ -167,7 +167,7 @@
             EOF
 
             echo "NOTE: Dev build job parameters:"
-            cat dev_build_parameters
+            cat gnu_build_parameters
 
             # TODO: Change fileserver and/or location to avoid mixing "real"
             # releases and regression detection builds.
@@ -213,8 +213,8 @@
             projects:
               - name: tcwg-buildfarm-cmp
                 property-file: buildfarm_cmp_parameters
-              - name: tcwg-dev-build
-                property-file: dev_build_parameters
+              - name: tcwg-gnu-build
+                property-file: gnu_build_parameters
               - name: tcwg-make-and-test-release
                 property-file: make_test_release_parameters
                 predefined-parameters: |
