@@ -35,6 +35,7 @@
               - linux-stable-rc/linux-5.11.y
               - linux-stable-rc/linux-5.12.y
               - linux-stable-rc/linux-5.13.y
+              - linux-stable-rc/linux-5.14.y
             name: linux
             skip-tag: true
             shallow-clone: false
@@ -95,3 +96,5 @@
               property-file: lkft-linux-5.12.y.txt
             - project: openembedded-lkft-linux-stable-rc-5.13
               property-file: lkft-linux-5.13.y.txt
+            - project: openembedded-lkft-linux-stable-rc-5.14
+              property-file: lkft-linux-5.14.y.txt

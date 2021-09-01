@@ -175,6 +175,7 @@ MIGRATED=(
   linux-stable-rc-linux-5.11.y::dragonboard-410c
   linux-stable-rc-linux-5.12.y::dragonboard-410c
   linux-stable-rc-linux-5.13.y::dragonboard-410c
+  linux-stable-rc-linux-5.14.y::dragonboard-410c
   linux-mainline-master::hi6220-hikey
   linux-next-master::hi6220-hikey
   linux-stable-rc-linux-4.9.y::hi6220-hikey
@@ -190,6 +191,7 @@ MIGRATED=(
   linux-stable-rc-linux-5.11.y::hi6220-hikey
   linux-stable-rc-linux-5.12.y::hi6220-hikey
   linux-stable-rc-linux-5.13.y::hi6220-hikey
+  linux-stable-rc-linux-5.14.y::hi6220-hikey
   linux-mainline-master::juno-r2
   linux-next-master::juno-r2
   linux-stable-rc-linux-4.4.y::juno-r2
@@ -206,6 +208,7 @@ MIGRATED=(
   linux-stable-rc-linux-5.11.y::juno-r2
   linux-stable-rc-linux-5.12.y::juno-r2
   linux-stable-rc-linux-5.13.y::juno-r2
+  linux-stable-rc-linux-5.14.y::juno-r2
   linux-mainline-master::i386
   linux-next-master::i386
   linux-stable-rc-linux-4.4.y::i386
@@ -222,6 +225,7 @@ MIGRATED=(
   linux-stable-rc-linux-5.11.y::i386
   linux-stable-rc-linux-5.12.y::i386
   linux-stable-rc-linux-5.13.y::i386
+  linux-stable-rc-linux-5.14.y::i386
   linux-mainline-master::x15
   linux-next-master::x15
   linux-stable-rc-linux-4.4.y::x15
@@ -238,6 +242,7 @@ MIGRATED=(
   linux-stable-rc-linux-5.11.y::x15
   linux-stable-rc-linux-5.12.y::x15
   linux-stable-rc-linux-5.13.y::x15
+  linux-stable-rc-linux-5.14.y::x15
   linux-mainline-master::x86
   linux-next-master::x86
   linux-stable-rc-linux-4.4.y::x86
@@ -254,6 +259,7 @@ MIGRATED=(
   linux-stable-rc-linux-5.11.y::x86
   linux-stable-rc-linux-5.12.y::x86
   linux-stable-rc-linux-5.13.y::x86
+  linux-stable-rc-linux-5.14.y::x86
 )
 
 this_combo="${QA_SERVER_PROJECT}::${DEVICE_TYPE}"
