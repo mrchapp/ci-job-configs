@@ -252,7 +252,7 @@
                 - shell: "exit 1"
 # elif HOST_windows
       - batch: |
-          jenkins-scripts\tcwg-llvm-release.bat %release_name%
+          jenkins-scripts\tcwg-llvm-release.bat %release%
 # endif
 #endif
     publishers:

@@ -98,9 +98,9 @@
         - workspace-cleanup
     builders:
       - batch: |
-          jenkins-scripts\tcwg-llvm-release.bat %release_name%
+          jenkins-scripts\tcwg-llvm-release.bat %release%
     publishers:
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: b38554d8b42cd05340f0cf382800a37a
+# checksum: 8ab0c66dc4f9e50c09551fec9eadfecb
