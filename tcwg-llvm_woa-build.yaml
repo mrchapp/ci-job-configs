@@ -82,7 +82,7 @@
             description: 'Whether to be verbose'
         - string:
             name: scripts_branch
-            default: tested
+            default: master
             description: 'Scripts revision to use'
     disabled: false
     concurrent: true
@@ -98,9 +98,9 @@
         - workspace-cleanup
     builders:
       - batch: |
-          echo Test
+          jenkins-scripts\tcwg-llvm-release.bat %release_name%
     publishers:
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: 56aa0c763fa11bdea95f193b7c0b3337
+# checksum: b38554d8b42cd05340f0cf382800a37a

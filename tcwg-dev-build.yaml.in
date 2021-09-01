@@ -108,7 +108,7 @@
             description: 'Whether to be verbose'
         - string:
             name: scripts_branch
-#if TOOLCHAIN_gnu
+#if TOOLCHAIN_gnu || HOST_windows
             default: master
 #elif TOOLCHAIN_llvm
             default: tested
@@ -252,7 +252,7 @@
                 - shell: "exit 1"
 # elif HOST_windows
       - batch: |
-          echo Test
+          jenkins-scripts\tcwg-llvm-release.bat %release_name%
 # endif
 #endif
     publishers:
