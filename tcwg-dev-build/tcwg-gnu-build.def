@@ -1,1 +1,2 @@
 -v TOOLCHAIN=gnu
+-v HOST=linux

@@ -1,7 +1,11 @@
 #include tcwg/default.yaml.inc
 
 - job:
+#if TOOLCHAIN_llvm && HOST_windows
+    name: tcwg-llvm_woa-build
+#else
     name: tcwg-#{TOOLCHAIN}-build
+#endif
     project-type: freestyle
     defaults: global
     properties:
@@ -89,7 +93,11 @@
 #endif
         - label:
             name: builder
+#if HOST_windows
+            default: tcwg-surface
+#else
             default: tcwg-x86_64-build
+#endif
             description: 'Jenkins label to build on; determines host of the toolchain'
         - file:
             name: manifest.txt
@@ -114,7 +122,7 @@
 #endif
     disabled: false
     concurrent: true
-    display-name: 'TCWG AAA #{TOOLCHAIN} Build'
+    display-name: 'TCWG AAA #{TOOLCHAIN} #{HOST} Build'
     scm:
       - jenkins-scripts
     wrappers:
@@ -125,10 +133,12 @@
             timeout: 1800
 #endif
         - timestamps
+#if HOST_linux
         - ssh-agent-credentials:
             # tcwg-buildslave user id
             users:
                 - 'e0958a95-204f-4c14-a66c-5e2be6c5d50a'
+#endif
         - build-name:
 #if TOOLCHAIN_gnu
             name: '#$BUILD_NUMBER-$version-$release_name-$buildnumber/$builder-$target'
@@ -154,6 +164,7 @@
             --manifest "$(pwd)/manifest.txt" \
             --verbose "$verbose"
 #elif TOOLCHAIN_llvm
+# if HOST_linux
         - shell: |
             #!/bin/bash
 
@@ -239,6 +250,10 @@
             condition-filename: llvm.failed
             steps:
                 - shell: "exit 1"
+# elif HOST_windows
+      - shell: |
+          echo Test
+# endif
 #endif
     publishers:
         - archive:

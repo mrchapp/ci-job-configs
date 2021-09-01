@@ -105,7 +105,7 @@
             description: 'Extra options to pass to docker-run'
     disabled: false
     concurrent: true
-    display-name: 'TCWG AAA gnu Build'
+    display-name: 'TCWG AAA gnu linux Build'
     scm:
       - jenkins-scripts
     wrappers:
@@ -139,4 +139,4 @@
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: c39e71d4c2d24072b7b23ed23f5051d6
+# checksum: 2dc1461ace1ca1ff0f3f78719625be65

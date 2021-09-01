@@ -86,7 +86,7 @@
             description: 'Scripts revision to use'
     disabled: false
     concurrent: true
-    display-name: 'TCWG AAA llvm Build'
+    display-name: 'TCWG AAA llvm linux Build'
     scm:
       - jenkins-scripts
     wrappers:
@@ -190,4 +190,4 @@
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: c7bdd1fffadb3572707e939502da9471
+# checksum: 04e900abf254e947888f134b0a1eb762

@@ -1,2 +1,2 @@
 -v TOOLCHAIN=llvm
--v HOST=linux
+-v HOST=windows
