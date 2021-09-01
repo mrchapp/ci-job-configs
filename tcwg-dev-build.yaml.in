@@ -135,6 +135,7 @@
 #elif TOOLCHAIN_llvm
             name: '#$BUILD_NUMBER-$release-$candidate/$builder'
 #endif
+        - workspace-cleanup
     builders:
 #if TOOLCHAIN_gnu
         - shell: |
@@ -142,7 +143,7 @@
             set -ex
             abe_branch=tested
             eval $extra_options
-            ./docker-run.sh --distro "$distro" \
+            ./jenkins-scripts/docker-run.sh --distro "$distro" \
             -- \
             ./jenkins-scripts/tcwg-dev-build.sh \
             --abe_branch "$abe_branch" \
@@ -197,7 +198,7 @@
 
             # Setup job parameters and run (for now, just pretend to run)
             ret=0
-            ./docker-run.sh \
+            ./jenkins-scripts/docker-run.sh \
                 --arch ${builder_arch} \
                 --distro ${build_container_tag} \
                 -- \
