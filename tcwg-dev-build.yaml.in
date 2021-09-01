@@ -106,10 +106,12 @@
             default: tested
 #endif
             description: 'Scripts revision to use'
+#if TOOLCHAIN_gnu
         - text:
             name: extra_options
             default:
             description: 'Extra options to pass to docker-run'
+#endif
     disabled: false
     concurrent: true
     display-name: 'TCWG AAA #{TOOLCHAIN} Build'
@@ -199,7 +201,7 @@
                 --arch ${builder_arch} \
                 --distro ${build_container_tag} \
                 -- \
-                bash -x ./tcwg-llvm-release.sh \
+                bash -x ./jenkins-scripts/tcwg-llvm-release.sh \
                 --workspace=${WORKSPACE} \
                 --release=${release} \
                 --candidate=${candidate} \

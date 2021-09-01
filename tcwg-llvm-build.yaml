@@ -84,10 +84,6 @@
             name: scripts_branch
             default: tested
             description: 'Scripts revision to use'
-        - text:
-            name: extra_options
-            default:
-            description: 'Extra options to pass to docker-run'
     disabled: false
     concurrent: true
     display-name: 'TCWG AAA llvm Build'
@@ -152,7 +148,7 @@
                 --arch ${builder_arch} \
                 --distro ${build_container_tag} \
                 -- \
-                bash -x ./tcwg-llvm-release.sh \
+                bash -x ./jenkins-scripts/tcwg-llvm-release.sh \
                 --workspace=${WORKSPACE} \
                 --release=${release} \
                 --candidate=${candidate} \
@@ -193,4 +189,4 @@
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: ce9c16bef4dcf147810a5733194a71b0
+# checksum: 67e57da9b578f832d3b7767ceaea32ab
