@@ -87,6 +87,8 @@
     disabled: false
     concurrent: true
     display-name: 'TCWG AAA llvm windows Build'
+    # Save bytes in limited 250-byte windows PATHs
+    workspace: ws/tdb$EXECUTOR_NUMBER
     scm:
       - jenkins-scripts
     wrappers:
@@ -103,4 +105,4 @@
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: 8ab0c66dc4f9e50c09551fec9eadfecb
+# checksum: 0552ee4f753a671156d2e1c0038f7b41

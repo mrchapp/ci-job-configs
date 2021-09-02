@@ -123,6 +123,10 @@
     disabled: false
     concurrent: true
     display-name: 'TCWG AAA #{TOOLCHAIN} #{HOST} Build'
+#if HOST_windows
+    # Save bytes in limited 250-byte windows PATHs
+    workspace: ws/tdb$EXECUTOR_NUMBER
+#endif
     scm:
       - jenkins-scripts
     wrappers:
