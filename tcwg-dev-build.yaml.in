@@ -19,8 +19,13 @@
 #elif TOOLCHAIN_llvm
         - string:
             name: release
+# if !HOST_windows
             default: ''
             description: 'Release number. Ex. 4.0.1'
+# else
+            default: 'main'
+            description: 'Release build ID (13.0.0-rc1, 13.0.0) or git branch/sha1'
+# endif
 #endif
 #if TOOLCHAIN_gnu
         - string:
@@ -57,6 +62,7 @@
               - gcc4_9
             description: 'Toolchain version; should match a supported ABE config'
 #elif TOOLCHAIN_llvm
+# if !HOST_windows
         - string:
             name: candidate
             default: 'git-ref=main'
@@ -77,6 +83,13 @@
             name: testsuite
             default: true
             description: 'Whether or not to trigger a test-suite with this build.'
+# else
+        - choice:
+            name: build_type
+            choices:
+              - test
+              - release
+# endif
 #endif
 #if TOOLCHAIN_gnu
         - choice:
@@ -85,7 +98,7 @@
               - lts_1
               - lts
             description: 'Ubuntu distro to use for build environment'
-#elif TOOLCHAIN_llvm
+#elif TOOLCHAIN_llvm && !HOST_windows
         - string:
             name: build_container_tag
             default: 'lts_1'
@@ -99,6 +112,7 @@
             default: tcwg-x86_64-build
 #endif
             description: 'Jenkins label to build on; determines host of the toolchain'
+#if TOOLCHAIN_gnu
         - file:
             name: manifest.txt
             description: 'Use provided manifest file (which may override above settings)'
@@ -106,6 +120,7 @@
             name: verbose
             default: false
             description: 'Whether to be verbose'
+#endif
         - string:
             name: scripts_branch
 #if TOOLCHAIN_gnu || HOST_windows
@@ -256,7 +271,7 @@
                 - shell: "exit 1"
 # elif HOST_windows
       - batch: |
-          jenkins-scripts\tcwg-llvm-release.bat %release%
+          jenkins-scripts\tcwg-llvm-release.bat %release% %build_type%
 # endif
 #endif
     publishers:

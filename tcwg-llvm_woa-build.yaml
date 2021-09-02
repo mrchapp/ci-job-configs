@@ -43,43 +43,17 @@
     parameters:
         - string:
             name: release
-            default: ''
-            description: 'Release number. Ex. 4.0.1'
-        - string:
-            name: candidate
-            default: 'git-ref=main'
-            description: 'RC number. Ex. 1, 2, final'
-        - string:
-            name: toolchain
-            default: ''
-            description: 'URL of the toolchain to use. This needs to be a tarball with a /bin directory inside with either GCC or LLVM from make install'
-        - string:
-            name: compiler
-            default: 'clang'
-            description: 'Override the default system compiler. Only used if "toolchain" is empty.'
-        - bool:
-            name: useninja
-            default: true
-            description: 'Whether or not to use ninja for the release (works for releases > 9.0.0)'
-        - bool:
-            name: testsuite
-            default: true
-            description: 'Whether or not to trigger a test-suite with this build.'
-        - string:
-            name: build_container_tag
-            default: 'lts_1'
-            description: 'Type of image to use in the container: bionic, focal.'
+            default: 'main'
+            description: 'Release build ID (13.0.0-rc1, 13.0.0) or git branch/sha1'
+        - choice:
+            name: build_type
+            choices:
+              - test
+              - release
         - label:
             name: builder
             default: tcwg-surface
             description: 'Jenkins label to build on; determines host of the toolchain'
-        - file:
-            name: manifest.txt
-            description: 'Use provided manifest file (which may override above settings)'
-        - bool:
-            name: verbose
-            default: false
-            description: 'Whether to be verbose'
         - string:
             name: scripts_branch
             default: master
@@ -100,9 +74,9 @@
         - workspace-cleanup
     builders:
       - batch: |
-          jenkins-scripts\tcwg-llvm-release.bat %release%
+          jenkins-scripts\tcwg-llvm-release.bat %release% %build_type%
     publishers:
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: 0552ee4f753a671156d2e1c0038f7b41
+# checksum: 2d2b68a45be23add92005ddc8882dd22

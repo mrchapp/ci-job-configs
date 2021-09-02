@@ -73,13 +73,6 @@
             name: builder
             default: tcwg-x86_64-build
             description: 'Jenkins label to build on; determines host of the toolchain'
-        - file:
-            name: manifest.txt
-            description: 'Use provided manifest file (which may override above settings)'
-        - bool:
-            name: verbose
-            default: false
-            description: 'Whether to be verbose'
         - string:
             name: scripts_branch
             default: tested
@@ -190,4 +183,4 @@
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: 04e900abf254e947888f134b0a1eb762
+# checksum: 59b769065cb540a8c5e622c4f3d65fb3
