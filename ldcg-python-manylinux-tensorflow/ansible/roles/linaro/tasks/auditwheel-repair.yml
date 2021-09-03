@@ -1,19 +1,10 @@
 - name: run auditwheel repair on wheels
   shell:
-    cmd: "auditwheel repair {{ item }}"
+    cmd: "auditwheel repair -w {{ wheels_dir }} {{ item }}"
     chdir: "{{ wheels_dir }}"
   with_fileglob:
     - "{{ wheels_dir }}/tensorflow*.whl"
     - "{{ wheels_dir }}/h5py-3.2*.whl"
-
-- name: copy manylinux wheels into wheels
-  copy:
-    src: "{{ item }}"
-    dest: "{{ wheels_dir }}"
-    mode: 0666
-    remote_src: true
-  with_fileglob:
-    - "{{ wheels_dir }}/wheelhouse/*.whl"
 
 - name: drop non-manylinux wheels
   file:
@@ -22,8 +13,3 @@
   with_fileglob:
     - "{{ wheels_dir }}/tensorflow*linux_aarch64.whl"
     - "{{ wheels_dir }}/h5py-3.2*linux_aarch64.whl"
-
-- name: drop wheelhouse dir
-  file:
-    path: "{{ wheels_dir }}/wheelhouse/"
-    state: absent
