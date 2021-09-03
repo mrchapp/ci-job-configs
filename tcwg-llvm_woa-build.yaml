@@ -70,7 +70,7 @@
             timeout: 1800
         - timestamps
         - build-name:
-            name: '#$BUILD_NUMBER-$release-$candidate/$builder'
+            name: '#$BUILD_NUMBER-$release/$builder'
         - workspace-cleanup
     builders:
       - batch: |
@@ -79,4 +79,4 @@
         - archive:
             artifacts: 'artifacts/**'
             latest-only: false
-# checksum: 2d2b68a45be23add92005ddc8882dd22
+# checksum: 64228de9da48bc024544cf1c6635e714

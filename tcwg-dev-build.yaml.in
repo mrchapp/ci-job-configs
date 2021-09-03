@@ -161,8 +161,10 @@
         - build-name:
 #if TOOLCHAIN_gnu
             name: '#$BUILD_NUMBER-$version-$release_name-$buildnumber/$builder-$target'
-#elif TOOLCHAIN_llvm
+#elif TOOLCHAIN_llvm && !HOST_windows
             name: '#$BUILD_NUMBER-$release-$candidate/$builder'
+#elif TOOLCHAIN_llvm && HOST_windows
+            name: '#$BUILD_NUMBER-$release/$builder'
 #endif
         - workspace-cleanup
     builders:
