@@ -1,9 +1,7 @@
-- name: prepare wheels for publishing  # noqa no-changed-when
+- name: prepare wheels for publishing in our cache  # noqa no-changed-when
   shell:
     cmd: |
       set -xe
-      # we do not want tensorflow in wheel cache - it has own space
-      rm -rf tensorflow*
       for pkg in */*.whl
       do
         # do we have this package on server already?
