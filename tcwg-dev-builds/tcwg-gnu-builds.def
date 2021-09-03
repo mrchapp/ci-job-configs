@@ -1,0 +1,2 @@
+-v TOOLCHAIN=gnu
+-v TOOLCHAIN2=GNU

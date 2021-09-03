@@ -1,7 +1,7 @@
 #include tcwg/default.yaml.inc
 
 - job:
-    name: tcwg-gnu-builds
+    name: tcwg-#{TOOLCHAIN}-builds
     project-type: multijob
     defaults: global
     properties:
@@ -83,35 +83,35 @@
       - multijob:
           name: Build
           projects:
-            - name: tcwg-gnu-build
+            - name: tcwg-#{TOOLCHAIN}-build
               alias: "host_x86_64_target_aarch64"
               enable-condition: "$host_x86_64_target_aarch64"
               node-label-name: "builder"
               node-label: "tcwg-build && tcwg-x86_64-build"
               property-file: build-params.txt
               predefined-parameters: "target=aarch64-linux-gnu"
-            - name: tcwg-gnu-build
+            - name: tcwg-#{TOOLCHAIN}-build
               alias: "host_x86_64_target_armhf"
               enable-condition: "$host_x86_64_target_armhf"
               node-label-name: "builder"
               node-label: "tcwg-build && tcwg-x86_64-build"
               property-file: build-params.txt
               predefined-parameters: "target=arm-linux-gnueabihf"
-            - name: tcwg-gnu-build
+            - name: tcwg-#{TOOLCHAIN}-build
               alias: "host_aarch64_target_aarch64"
               enable-condition: "$host_aarch64_target_native"
               node-label-name: "builder"
               node-label: "tcwg-build && tcwg-armv8_64"
               property-file: build-params.txt
               predefined-parameters: "target=native"
-            - name: tcwg-gnu-build
+            - name: tcwg-#{TOOLCHAIN}-build
               alias: "host_aarch64_target_armhf"
               enable-condition: "$host_aarch64_target_armhf"
               node-label-name: "builder"
               node-label: "tcwg-build && tcwg-armv8_64"
               property-file: build-params.txt
               predefined-parameters: "target=arm-linux-gnueabihf"
-            - name: tcwg-gnu-build
+            - name: tcwg-#{TOOLCHAIN}-build
               alias: "host_armhf_target_native"
               enable-condition: "$host_armhf_target_native"
               node-label-name: "builder"
@@ -125,69 +125,69 @@
             set -x
           fi
           
-          env | grep "TCWG_DEV_BUILD"
+          env | grep "TCWG_#{TOOLCHAIN2}_BUILD"
       - conditional-step:
           condition-kind: num-comp
-          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD
+          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_#{TOOLCHAIN2}_BUILD
           comparator: greater-than-equal
           rhs: 1
           steps:
             - copyartifact:
-                project: tcwg-gnu-build
+                project: tcwg-#{TOOLCHAIN}-build
                 which-build: specific-build
-                # Note that $TCWG_DEV_BUILD_BUILD_NUMBER points to the last
-                # build (i.e., it's the same as $TCWG_DEV_BUILD_5_BUILD_NUMBER
+                # Note that $TCWG_#{TOOLCHAIN2}_BUILD_BUILD_NUMBER points to the last
+                # build (i.e., it's the same as $TCWG_#{TOOLCHAIN2}_BUILD_5_BUILD_NUMBER
                 # in a full 5-configuration build).  At the same time,
-                # $TCWG_DEV_BUILD_nnn_BUILD_NUMBER variables are defined only
+                # $TCWG_#{TOOLCHAIN2}_BUILD_nnn_BUILD_NUMBER variables are defined only
                 # when multiple builds were triggered.
-                # We need to use $TCWG_DEV_BUILD_BUILD_NUMBER here to correctly
+                # We need to use $TCWG_#{TOOLCHAIN2}_BUILD_BUILD_NUMBER here to correctly
                 # handle single-toolchain builds.
-                build-number: $TCWG_DEV_BUILD_BUILD_NUMBER
-                target: tcwg-gnu-build-1
+                build-number: $TCWG_#{TOOLCHAIN2}_BUILD_BUILD_NUMBER
+                target: tcwg-#{TOOLCHAIN}-build-1
       - conditional-step:
           condition-kind: num-comp
-          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD
+          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_#{TOOLCHAIN2}_BUILD
           comparator: greater-than-equal
           rhs: 2
           steps:
             - copyartifact:
-                project: tcwg-gnu-build
+                project: tcwg-#{TOOLCHAIN}-build
                 which-build: specific-build
-                build-number: $TCWG_DEV_BUILD_1_BUILD_NUMBER
-                target: tcwg-gnu-build-2
+                build-number: $TCWG_#{TOOLCHAIN2}_BUILD_1_BUILD_NUMBER
+                target: tcwg-#{TOOLCHAIN}-build-2
       - conditional-step:
           condition-kind: num-comp
-          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD
+          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_#{TOOLCHAIN2}_BUILD
           comparator: greater-than-equal
           rhs: 3
           steps:
             - copyartifact:
-                project: tcwg-gnu-build
+                project: tcwg-#{TOOLCHAIN}-build
                 which-build: specific-build
-                build-number: $TCWG_DEV_BUILD_2_BUILD_NUMBER
-                target: tcwg-gnu-build-3
+                build-number: $TCWG_#{TOOLCHAIN2}_BUILD_2_BUILD_NUMBER
+                target: tcwg-#{TOOLCHAIN}-build-3
       - conditional-step:
           condition-kind: num-comp
-          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD
+          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_#{TOOLCHAIN2}_BUILD
           comparator: greater-than-equal
           rhs: 4
           steps:
             - copyartifact:
-                project: tcwg-gnu-build
+                project: tcwg-#{TOOLCHAIN}-build
                 which-build: specific-build
-                build-number: $TCWG_DEV_BUILD_3_BUILD_NUMBER
-                target: tcwg-gnu-build-4
+                build-number: $TCWG_#{TOOLCHAIN2}_BUILD_3_BUILD_NUMBER
+                target: tcwg-#{TOOLCHAIN}-build-4
       - conditional-step:
           condition-kind: num-comp
-          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD
+          lhs: $TRIGGERED_BUILD_RUN_COUNT_TCWG_#{TOOLCHAIN2}_BUILD
           comparator: greater-than-equal
           rhs: 5
           steps:
             - copyartifact:
-                project: tcwg-gnu-build
+                project: tcwg-#{TOOLCHAIN}-build
                 which-build: specific-build
-                build-number: $TCWG_DEV_BUILD_4_BUILD_NUMBER
-                target: tcwg-gnu-build-5
+                build-number: $TCWG_#{TOOLCHAIN2}_BUILD_4_BUILD_NUMBER
+                target: tcwg-#{TOOLCHAIN}-build-5
       - linaro-publish-token
       - shell: |
           #!/bin/bash
@@ -198,9 +198,9 @@
 
           mkdir out
 
-          i="$TRIGGERED_BUILD_RUN_COUNT_TCWG_DEV_BUILD"
+          i="$TRIGGERED_BUILD_RUN_COUNT_TCWG_#{TOOLCHAIN2}_BUILD"
           while [ $i -gt 0 ]; do
-            rsync -a tcwg-gnu-build-$i/artifacts/binaries/ out/
+            rsync -a tcwg-#{TOOLCHAIN}-build-$i/artifacts/binaries/ out/
             i=$(($i-1))
           done
 
@@ -255,7 +255,7 @@
             "$out_release/" "gnu-toolchain/$(basename "$out_release")"
 
 - job:
-    name: tcwg-gnu-builds-monthly
+    name: tcwg-#{TOOLCHAIN}-builds-monthly
     project-type: freestyle
     defaults: global
     properties:
@@ -288,12 +288,12 @@
           publish=$publish
           EOF
       - trigger-builds:
-          - project: tcwg-gnu-builds
+          - project: tcwg-#{TOOLCHAIN}-builds
             property-file: build-params.txt
             predefined-parameters: |
               version=latest-rel
               distro=lts_1
-          - project: tcwg-gnu-builds
+          - project: tcwg-#{TOOLCHAIN}-builds
             property-file: build-params.txt
             predefined-parameters: |
               version=master
