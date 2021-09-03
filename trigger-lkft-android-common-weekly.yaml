@@ -15,7 +15,7 @@
             num-to-keep: 150
     disabled: false
     node: triggers
-    display-name: 'Trigger for the cts presubmit test'
+    display-name: 'Trigger for builds on android common kernel weekly'
     scm:
         - git:
             remotes:

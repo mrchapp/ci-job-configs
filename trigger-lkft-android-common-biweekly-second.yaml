@@ -15,7 +15,7 @@
             num-to-keep: 150
     disabled: false
     node: triggers
-    display-name: 'Trigger for builds on android common kernel bi-weekly'
+    display-name: 'Trigger for builds on android common kernel bi-weekly in the second week'
     scm:
         - git:
             remotes:
