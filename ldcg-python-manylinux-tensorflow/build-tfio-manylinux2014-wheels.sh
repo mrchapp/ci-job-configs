@@ -14,4 +14,4 @@ rm -rf wheel* *.whl cache*
 
 cd configs/ldcg-python-manylinux-tensorflow/ansible
 
-ansible-playbook playbooks/build-tfio.yml
+ansible-playbook playbooks/build-tf-io.yml
