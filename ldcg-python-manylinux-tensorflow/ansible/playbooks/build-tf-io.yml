@@ -18,6 +18,19 @@
         loop_var: tfio_ver
       when: tfio_ver.key in to_be_built
 
+    - name: prepare wheels for publishing  # noqa no-changed-when
+      shell:
+        cmd: |
+          set -xe
+          for pkg in *.whl
+          do
+            pkgdir=$(echo `basename $pkg`|cut -d'-' -f1 | tr '[:upper:]_' '[:lower:]-')
+            mkdir -p "{{ wheels_dir }}/$pkgdir"
+            mv $pkg  "{{ wheels_dir }}/$pkgdir"
+          done
+        chdir: "{{ wheels_dir }}"
+        executable: "/bin/bash"
+
     - name: copy wheels for cache upload
       copy:
         src: "{{ wheels_dir }}"
