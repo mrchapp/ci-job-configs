@@ -92,7 +92,15 @@
                 ;;
             esac
 
-            echo "PUB_DEST=96boards/${MACHINE}/linaro/openembedded/${MANIFEST_BRANCH}/${BUILD_NUMBER}/${DISTRO}" > pub_dest_parameters
+            # Publish artifacts in 96boards folder only for 96boards machines
+            PUB_DEST=member-builds/qcomlt/boards/${MACHINE}
+            case "${MACHINE}" in
+              dragonboard*|qrb5165-rb5)
+                PUB_DEST=96boards/${MACHINE}/linaro
+                ;;
+            esac
+
+            echo "PUB_DEST=${PUB_DEST}/openembedded/${MANIFEST_BRANCH}/${BUILD_NUMBER}/${DISTRO}" > pub_dest_parameters
         - inject:
             properties-file: pub_dest_parameters
         - shell:
