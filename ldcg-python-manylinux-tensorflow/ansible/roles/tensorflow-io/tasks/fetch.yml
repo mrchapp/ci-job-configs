@@ -1,0 +1,30 @@
+- block:
+    - name: fetch Tensorflow IO {{ tensorflow_io_version }} source
+      get_url:
+        url: "https://github.com/tensorflow/io/archive/refs/tags/v{{ tensorflow_io_version }}.tar.gz"
+        dest: "{{ build_dir }}/io-{{ tensorflow_io_version }}.tar.gz"
+        mode: 0600
+
+    - name: unpack Tensorflow IO {{ tensorflow_io_version }} source
+      unarchive:
+        src: "{{ build_dir }}/io-{{ tensorflow_io_version }}.tar.gz"
+        dest: "{{ build_dir }}/"
+        remote_src: true
+  when: tensorflow_io_version != 'git'
+
+- block:
+    - name: fetch Tensorflow IO from git
+      git:
+        repo: "https://github.com/tensorflow/io.git"  # noqa 401
+        dest: "{{ build_dir }}/io-{{ tensorflow_io_version }}/"
+        depth: 1
+        recursive: true
+        force: true
+  when: tensorflow_io_version == 'git'
+
+  # https://github.com/tensorflow/io/issues/1510
+- name: make libwebp buildable with gcc 10
+  lineinfile:
+    regexp: "^.*WEBP_EXTERN.*$"
+    state: absent
+    path: "{{ build_dir }}/io-{{ tensorflow_io_version }}/third_party/libwebp.BUILD"

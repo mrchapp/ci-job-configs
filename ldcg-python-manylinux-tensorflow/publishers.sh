@@ -22,11 +22,23 @@ echo "Python wheels: https://snapshots.linaro.org/${PUBLISH_TO}"
 
 # Now is time to upload tensorflow
 
-if [ `echo $JOB_NAME | cut -d'/' -f1` == 'ldcg-python-manylinux-tensorflow-nightly' ]; then
-  OUTPUT_PATH="ldcg/python/tensorflow-manylinux-nightly/$(date -u +%Y%m%d)-${BUILD_NUMBER}/"
-else
-  OUTPUT_PATH="ldcg/python/tensorflow-manylinux/${BUILD_NUMBER}/"
-fi
+SHORT_JOB_NAME=$(echo $JOB_NAME | cut -d'/' -f1)
+
+case $SHORT_JOB_NAME in
+
+  "ldcg-python-manylinux-tensorflow-nightly")
+    OUTPUT_PATH="ldcg/python/tensorflow-manylinux-nightly/$(date -u +%Y%m%d)-${BUILD_NUMBER}/"
+    ;;
+
+  "ldcg-python-manylinux-tensorflow")
+    OUTPUT_PATH="ldcg/python/tensorflow-manylinux/${BUILD_NUMBER}/"
+    ;;
+
+  "ldcg-python-manylinux-tensorflow-io")
+    OUTPUT_PATH="ldcg/python/tensorflow-io-manylinux/${BUILD_NUMBER}/"
+    ;;
+
+esac
 
 time python3 ${HOME}/bin/linaro-cp.py \
   --server ${PUBLISH_SERVER} \

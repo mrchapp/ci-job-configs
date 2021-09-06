@@ -1,0 +1,86 @@
+- name: copy upper constraints
+  template:
+    src: "files/upper-constraints.txt"
+    dest: "{{ wheels_dir }}/upper-constraints.txt"
+    mode: 0400
+    force: true
+
+- name: create {{ py_ver }} virtualenv
+  include_role:
+    name: python
+    tasks_from: virtualenv.yml
+
+- name: remove TensorFlow IO {{ tensorflow_io_version }} sources from previous build
+  file:
+    path: "{{ build_dir }}/io-{{ tensorflow_io_version }}/"
+    state: absent
+
+- include: fetch.yml
+
+- name: install Tensorflow 2.6.0
+  pip:
+    name: "tensorflow_aarch64>=2.6.*"
+    virtualenv: "{{ virtualenv_path }}"
+    virtualenv_python: "/opt/python/{{ py_ver }}/bin/python3"
+    extra_args: "--extra-index-url {{ pip_extra_index_url }}"
+
+- name: Change dependency to Tensorflow_aarch64
+  replace:
+    path: "{{ build_dir }}/io-{{ tensorflow_io_version }}/tensorflow_io/python/ops/version_ops.py"
+    regexp: "tensorflow>"
+    replace: "tensorflow_aarch64>"
+
+- name: build TensorFlow IO {{ tensorflow_io_version }} for {{ py_ver }}  # noqa no-changed-when
+  shell:
+    cmd: |
+      set -xe
+      source {{ virtualenv_path }}/bin/activate
+
+      python3 tools/build/configure.py
+      #      export BAZEL_OPTIMIZATION="-j $(ncpus)"
+      export BAZEL_LINKLIBS=-l%:libstdc++.a
+      bazel build   ${BAZEL_OPTIMIZATION}   -- //tensorflow_io/...  //tensorflow_io_gcs_filesystem/...
+
+      mkdir -p build
+      cp -r bazel-bin/tensorflow_io                 build/tensorflow_io
+      cp -r bazel-bin/tensorflow_io_gcs_filesystem  build/tensorflow_io_gcs_filesystem
+
+      python setup.py --data bazel-bin -q bdist_wheel
+      python setup.py --project tensorflow-io-gcs-filesystem --data bazel-bin -q bdist_wheel
+
+      for wheel in dist/*.whl
+      do
+        ./tools/build/auditwheel repair -w "{{ wheels_dir }}" "$wheel"
+      done
+
+    chdir: "{{ build_dir }}/io-{{ tensorflow_io_version }}/"
+    executable: /bin/bash
+
+- name: stop bazel server
+  include_role:
+    name: bazel
+    tasks_from: stop.yml
+
+- name: get list of wheel files
+  find:
+    path: "{{ build_dir }}/io-{{ tensorflow_io_version }}/dist/"
+    patterns: "tensorflow*.whl"
+    file_type: file
+  register: wheel_files
+
+- name: get filename of latest wheel
+  set_fact:
+    wheel_file: "{{ wheel_files.files | sort(attribute='mtime') | last }}"
+
+- name: install Python package
+  pip:
+    name: "{{ wheel_file.path }}"
+    virtualenv: "{{ virtualenv_path }}"
+    virtualenv_python: "/opt/python/{{ py_ver }}/bin/python3"
+    extra_args: "--extra-index-url {{ pip_extra_index_url }}"
+
+- name: copy resulting wheel
+  copy:
+    src: "{{ wheel_file.path }}"
+    dest: "{{ wheels_dir }}"
+    mode: 0666

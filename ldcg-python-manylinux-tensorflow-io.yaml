@@ -1,0 +1,38 @@
+- job:
+    name: ldcg-python-manylinux-tensorflow-io
+    project-type: freestyle
+    defaults: global
+    properties:
+        - authorization:
+            anonymous:
+                - job-read
+                - job-extended-read
+            linaro:
+                - job-read
+                - job-extended-read
+                - job-build
+                - job-cancel
+        - build-discarder:
+            days-to-keep: 7
+            num-to-keep: 7
+    parameters:
+        - bool:
+          # 0.20.0 (last release) is not buildable on aarch64
+            name: buildgit
+            default: true
+            description: 'Build git HEAD'
+    disabled: false
+    node: ldcg-aarch64-02
+    concurrent: false
+    display-name: 'Tensorflow IO Python package (manylinux2014)'
+    wrappers:
+        - timestamps
+    builders:
+        - shell:
+            !include-raw: ldcg-python-manylinux-tensorflow/build-tfio.sh
+        - linaro-publish-token
+        - shell:
+            !include-raw: ldcg-python-manylinux-tensorflow/publishers.sh
+    publishers:
+        - email:
+            recipients: 'marcin.juszkiewicz@linaro.org'

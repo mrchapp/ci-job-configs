@@ -1,0 +1,17 @@
+- name: set TensorFlow IO version
+  set_fact:
+    tensorflow_io_version: "{{ tfio_ver.value.tensorflow_io_version }}"
+
+- name: build Bazel
+  include_role:
+    name: bazel
+  vars:
+    bazel_version: "{{ tfio_ver.value.bazel_version }}"
+
+- name: go through each Python version
+  include_role:
+    name: tensorflow-io
+    tasks_from: manylinux-build.yml
+  loop: "{{ tfio_ver.value.python_versions }}"
+  loop_control:
+    loop_var: py_ver
