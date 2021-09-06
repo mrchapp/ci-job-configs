@@ -53,6 +53,7 @@
                 - 'qrb5165-rb5'
                 - 'qcom-armv8a'
                 - 'sdx55-mtp'
+                - 'sa8155p-adp'
         - axis:
             type: user-defined
             name: DISTRO

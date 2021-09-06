@@ -9,6 +9,7 @@
                 - 'qrb5165-rb5'
                 - 'qcom-armv8a'
                 - 'sdx55-mtp'
+                - 'sa8155p-adp'
       - lt-qcom-openembedded-meta-qcom-premerge-{branch}:
             branch: 'dunfell'
             machines: !!python/tuple
