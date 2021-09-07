@@ -80,39 +80,35 @@
             - project: lkft-member-build
               property-file: params_6f8e8c60c15aa4a76976c9b549dc18ec.txt
             - project: lkft-member-build
-              property-file: params_927501fb333e6715f573c7f085107f30.txt
-            - project: lkft-member-build
-              property-file: params_b257960da2650d3caaf4f4dd979b081f.txt
-            - project: lkft-member-build
-              property-file: params_c78cc805cbb2d7a43d80ae5be3936a46.txt
-            - project: lkft-member-build
-              property-file: params_6c2f6d66b6b0e4e4a2a2cf42b639566a.txt
-            - project: lkft-member-build
               property-file: params_574c7c67dada400d908564a1dedffa07.txt
             - project: lkft-member-build
               property-file: params_80b56a1e46f126c659cc94bfcc33d266.txt
             - project: lkft-member-build
-              property-file: params_2ad26db752fc7161505f7c46848a7f05.txt
+              property-file: params_c19d09e66dfd04fab33587503b5aca18.txt
             - project: lkft-member-build
-              property-file: params_8ffd4c85051e1337236f199329f8c7a5.txt
-            - project: lkft-member-build
-              property-file: params_b162684e117edff09035d88a812eabb6.txt
-            - project: lkft-member-build
-              property-file: params_aac20f524eb3766e861dd92a2f90b2b0.txt
-            - project: lkft-member-build
-              property-file: params_18b311065f598c54b3adb88d809106f3.txt
-            - project: lkft-member-build
-              property-file: params_bffb5c33bf6f506687580e07ccb29eb2.txt
-            - project: lkft-member-build
-              property-file: params_856f0b50dbbe8b8ee001d902a267b40f.txt
-            - project: lkft-member-build
-              property-file: params_e584aefdf81f254ecc755231065f97e3.txt
-            - project: lkft-member-build
-              property-file: params_9f41cb6dcb64a5b49cbf9e81199e06a3.txt
+              property-file: params_c23ce6ee2df1278f749258c8864c7436.txt
             - project: lkft-member-build
               property-file: params_5654d7b4ecf574ec36dc173dfdbede02.txt
             - project: lkft-member-build
               property-file: params_a3648a685034f8bc048e327935a18b71.txt
+            - project: lkft-member-build
+              property-file: params_1441868ec5fb8516d7e59e53d502ebe0.txt
+            - project: lkft-member-build
+              property-file: params_a233a6e85d13f4c2c7462f80c9b41991.txt
+            - project: lkft-member-build
+              property-file: params_e48a73e036546d589c0c0208f7d84850.txt
+            - project: lkft-member-build
+              property-file: params_d6448af14a86d83672420d861e94c622.txt
+            - project: lkft-member-build
+              property-file: params_d87db63ec25ad9504e5d0caa2ea3cf49.txt
+            - project: lkft-member-build
+              property-file: params_af620457c865870660de4554d62c3433.txt
+            - project: lkft-member-build
+              property-file: params_aa3b6334f9e793017afd9e89e9966cbc.txt
+            - project: lkft-member-build
+              property-file: params_93dca876688d11b7cdbf66d78ea2c2cc.txt
+            - project: lkft-member-build
+              property-file: params_4e0d02491ef3fb61a0e941d6bc4c1753.txt
     publishers:
         - email:
             recipients: 'yongqin.liu@linaro.org'
