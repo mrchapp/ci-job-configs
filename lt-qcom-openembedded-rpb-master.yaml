@@ -20,7 +20,7 @@
     parameters:
         - string:
             name: IMAGES
-            default: 'rpb-console-image'
+            default: 'rpb-console-image initramfs-tiny-image initramfs-test-image initramfs-test-full-image'
         - string:
             name: IMAGES_RPB
             default: 'rpb-desktop-image'
