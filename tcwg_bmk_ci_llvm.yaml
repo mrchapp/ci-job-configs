@@ -185,7 +185,7 @@
       - string:
           name: '{component}_git'
           default: '{default_git}'
-          description: "{component} git_url#branch/sha1 to build, or 'baseline' or 'jenkins-scm'"
+          description: "{component} git_url#branch/sha1 to build, or 'default', 'baseline' or 'jenkins-scm'"
 
 - parameter:
     name: build-parameters
@@ -353,6 +353,13 @@
             i=1
             for c in {components}; do
               eval "g=\$$$${{c}}_git"
+              if [ x"$g" = x"default" ]; then
+                if [ x"${{BUILD_CAUSE_SCMTRIGGER-false}}" = x"true" ]; then
+                  g="jenkins-scm"
+                else
+                  g="baseline"
+                fi
+              fi
               if [ x"$g" = x"jenkins-scm" ]; then
                 eval "g=\$GIT_URL_$i#\$GIT_COMMIT_$i"
               fi
@@ -528,7 +535,7 @@
       - build-parameters:
           ci_project: 'tcwg_bmk_llvm_{hw}'
           ci_config: 'llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
-          default_git: 'jenkins-scm'
+          default_git: 'default'
           distro: '{distro}'
     disabled: false
     node: tcwg-x86_64-build_bmk
@@ -600,4 +607,4 @@
           job_suffix: '-tcwg_bmk_{hw}-llvm-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 3dc4c0291ad6b99c8db38ecdcea6c33f
+# checksum: 520234e1132eddf5a14eca66b4a3c967

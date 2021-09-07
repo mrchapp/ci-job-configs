@@ -50,7 +50,7 @@
       - string:
           name: '{component}_git'
           default: '{default_git}'
-          description: "{component} git_url#branch/sha1 to build, or 'baseline' or 'jenkins-scm'"
+          description: "{component} git_url#branch/sha1 to build, or 'default', 'baseline' or 'jenkins-scm'"
 
 - parameter:
     name: build-parameters
@@ -285,6 +285,13 @@
             for c in {components}; do
               eval "g=\$$$${{c}}_git"
 #if PURPOSE_ci
+              if [ x"$g" = x"default" ]; then
+                if [ x"${{BUILD_CAUSE_SCMTRIGGER-false}}" = x"true" ]; then
+                  g="jenkins-scm"
+                else
+                  g="baseline"
+                fi
+              fi
               if [ x"$g" = x"jenkins-scm" ]; then
                 eval "g=\$GIT_URL_$i#\$GIT_COMMIT_$i"
               fi

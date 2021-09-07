@@ -90,7 +90,7 @@
       - string:
           name: '{component}_git'
           default: '{default_git}'
-          description: "{component} git_url#branch/sha1 to build, or 'baseline' or 'jenkins-scm'"
+          description: "{component} git_url#branch/sha1 to build, or 'default', 'baseline' or 'jenkins-scm'"
 
 - parameter:
     name: build-parameters
@@ -459,4 +459,4 @@
           job_suffix: ''
     publishers:
         - bisect-publishers
-# checksum: ced3abe510ad78a103cb1ce8c88d90d7
+# checksum: e3593b6a357b2df2b1a578f77f47e98a

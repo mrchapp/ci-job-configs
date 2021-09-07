@@ -153,7 +153,7 @@
       - build-parameters:
           ci_project: '{ci_project}'
           ci_config: '{toolchain_ver}-{target}{type_of_test}'
-          default_git: 'jenkins-scm'
+          default_git: 'default'
           distro: '{distro}'
     disabled: false
     node: '{node} && tcwg-build'

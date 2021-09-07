@@ -75,7 +75,7 @@
       - build-parameters:
           ci_project: 'tcwg_kernel'
           ci_config: '{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
-          default_git: 'jenkins-scm'
+          default_git: 'default'
           distro: '{distro}'
     disabled: false
     node: tcwg-x86_64-build

@@ -141,7 +141,7 @@
       - build-parameters:
           ci_project: 'tcwg_bmk_#{TOOLCHAIN}_{hw}'
           ci_config: '#{TOOLCHAIN}-{toolchain_ver}-{target}-{bmk}-{cflags}'
-          default_git: 'jenkins-scm'
+          default_git: 'default'
           distro: '{distro}'
     disabled: false
 #if TOOLCHAIN_gnu_eabi
