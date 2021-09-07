@@ -95,7 +95,7 @@
                         # CTS, VTS, BENCHMARKS defined by lkft-db845c-android11-android11-5.4-gki and lkft-hikey960-android11-android11-5.4-gki, but won't be run
                         TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME CTS_PRESUBMIT"
                         ;;
-                    "Xandroid11-5.4-lts-presubmit")
+                    "Xandroid11-5.4-lts-weekly")
                         KERNEL_BRANCH_REAL="android11-5.4-lts"
                         ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-android11-android11-5.4-lts-gki lkft-hikey960-android11-android11-5.4-lts-gki"
                         TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME"
