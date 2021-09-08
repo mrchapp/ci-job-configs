@@ -66,9 +66,6 @@
             echo "TEST_OTHER_PLANS_OVERRIDE=VTS CTS BENCHMARKS" >>${f_api_callbacks}
 
             case "X${KERNEL_BRANCH_REAL}" in
-                "Xandroid12-5.4")
-                    build_configs_to_be_triggered="lkft-db845c-aosp-master-5.4-gki lkft-hikey960-aosp-master-5.4-gki"
-                    ;;
                 "Xandroid11-5.4")
                     build_configs_to_be_triggered="lkft-db845c-android11-android11-5.4-gki lkft-hikey960-android11-android11-5.4-gki"
                     ;;
