@@ -8,9 +8,9 @@ yum install -y ansible
 
 cd /tmp/workspace
 
-# remove wheels and wheelhouse/ from previous jobs
+# remove wheels and venvs from previous jobs
 # we do it here as they are root:root
-rm -rf wheel* *.whl cache*
+rm -rf wheels *.whl cache* venv-*
 
 cd configs/ldcg-python-manylinux-tensorflow/ansible
 
