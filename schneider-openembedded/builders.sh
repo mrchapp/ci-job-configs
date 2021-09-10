@@ -240,7 +240,12 @@ fi
 
 if [[ "${IMAGES}" == *"${devimg}"* ]]; then
 	replace_dmverity_var ""
-	time bitbake ${bbopt} ${devimg}
+	if time bitbake ${bbopt} ${devimg} ; then
+		tar cvf ${DEPLOY_DIR_IMAGE}/edgeagent-debug.tar.gz tmp/*/*/edgeagent downloads/git2/*EdgeAgent* downloads/git2/*cmocka* downloads/git2/*Azure* downloads/git2/*Microsoft* downloads/git2/*kgabis* || true
+	else
+		tar cvf ${DEPLOY_DIR_IMAGE}/edgeagent-debug.tar.gz tmp/*/*/edgeagent downloads/git2/*EdgeAgent* downloads/git2/*cmocka* downloads/git2/*Azure* downloads/git2/*Microsoft* downloads/git2/*kgabis* || true
+		false
+	fi
 
 	# Make a copy of the CVE report using a fixed filename
 	cp ${DEPLOY_DIR_IMAGE}/${devimg}-${MACHINE}.cve ${DEPLOY_DIR_IMAGE}/${devimg}-${MACHINE}.rootfs.cve
