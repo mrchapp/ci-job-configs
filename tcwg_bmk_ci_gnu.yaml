@@ -456,7 +456,8 @@
             echo "$build_name" > artifacts/jenkins/build-name
             # artifacts/jenkins/mail-*.txt will be overwritten in successful builds.
             echo "maxim.kuvyrkov@linaro.org" > artifacts/jenkins/mail-recipients.txt
-            echo "Build $BUILD_URL failed" > artifacts/jenkins/mail-body.txt
+            echo "[TCWG CI] Bisect failed" > artifacts/jenkins/mail-subject.txt
+            echo "Bisect $BUILD_URL failed" > artifacts/jenkins/mail-body.txt
 
             ./jenkins-scripts/docker-run.sh \
               --distro $distro \
@@ -500,6 +501,8 @@
             # job-template expansion.
             recipients: |
               ${FILE,path="artifacts/jenkins/mail-recipients.txt"}
+            subject: |
+              ${FILE,path="artifacts/jenkins/mail-subject.txt"}
             content-type: text
             body: |
               ${FILE,path="artifacts/jenkins/mail-body.txt"}
@@ -594,4 +597,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: f92b49d871c2467af576cb86d90e1820
+# checksum: 9ed1aaf6647fb29164ebae9204a8f17f
