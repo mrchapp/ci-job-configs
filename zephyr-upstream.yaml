@@ -138,9 +138,8 @@
                 export DEVICE_TYPE=disco-l475-iot1
                 ;;
               lpcxpresso55s69_cpu0)
-                #export DEVICE_TYPE=lpcxpresso55s69
+                export DEVICE_TYPE=lpcxpresso55s69
                 #LAVA_SERVER="staging.validation.linaro.org/RPC2/"
-                echo "lpcxpresso55s69: LAVA testing temporarily disabled due to device instability (STG-1737)"
                 ;;
               qemu_cortex_m3)
                 export DEVICE_TYPE=qemu
