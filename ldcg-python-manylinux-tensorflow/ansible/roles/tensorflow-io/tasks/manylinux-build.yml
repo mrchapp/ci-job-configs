@@ -78,9 +78,3 @@
     virtualenv: "{{ virtualenv_path }}"
     virtualenv_python: "/opt/python/{{ py_ver }}/bin/python3"
     extra_args: "--extra-index-url {{ pip_extra_index_url }}"
-
-- name: copy resulting wheel
-  copy:
-    src: "{{ wheel_file.path }}"
-    dest: "{{ wheels_dir }}"
-    mode: 0666
