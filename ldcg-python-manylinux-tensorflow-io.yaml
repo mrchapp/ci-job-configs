@@ -20,6 +20,7 @@
             name: build0
             default: false
             description: 'Build 0.21.0'
+        - bool:
             name: buildgit
             default: false
             description: 'Build git HEAD'
