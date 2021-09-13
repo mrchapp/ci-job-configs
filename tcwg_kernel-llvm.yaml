@@ -478,7 +478,7 @@
           linux_branch: '{linux_branch}'
     triggers:
       - pollscm:
-          cron: 'H H H/6 * *'
+          cron: 'H H H/4 * *'
     wrappers:
       - build-wrappers:
           timeout: 600
@@ -528,4 +528,4 @@
           job_suffix: '-{toolchain_name}-{toolchain_ver}-{target}-{linux}-{linux_config}'
     publishers:
       - bisect-publishers
-# checksum: 931d12442a6d05a9a6c9c22f54db8f56
+# checksum: e85b1750ff2066431e3cf50a8415fb98
