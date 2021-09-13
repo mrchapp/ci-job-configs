@@ -3,15 +3,14 @@ pip_extra_index_url: "https://snapshots.linaro.org/ldcg/python-cache/"
 build_dir: "/tmp/workspace"
 wheels_dir: "/tmp/workspace/wheels/"
 tfio_versions:
-# 0.20.0 is last release but not buildable on aarch64 - use git instead
-# "0.20.0":
-#   tensorflow_io_version: "0.20.0"
-#   bazel_version: "3.7.2"
-#   python_versions:
-#     - cp36-cp36m
-#     - cp37-cp37m
-#     - cp38-cp38
-#     - cp39-cp39
+  "0.21.0":
+    tensorflow_io_version: "0.21.0"
+    bazel_version: "3.7.2"
+    python_versions:
+      - cp36-cp36m
+      - cp37-cp37m
+      - cp38-cp38
+      - cp39-cp39
   "git":
     tensorflow_io_version: "git"
     bazel_version: "3.7.2"
@@ -21,5 +20,5 @@ tfio_versions:
       - cp38-cp38
       - cp39-cp39
 to_be_built:
-#   - "0.20.0"
+#   - "0.21.0"
 #   - "git"

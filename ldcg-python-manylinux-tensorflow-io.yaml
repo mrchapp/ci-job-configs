@@ -17,9 +17,11 @@
             num-to-keep: 7
     parameters:
         - bool:
-          # 0.20.0 (last release) is not buildable on aarch64
+            name: build0
+            default: false
+            description: 'Build 0.21.0'
             name: buildgit
-            default: true
+            default: false
             description: 'Build git HEAD'
     disabled: false
     node: ldcg-aarch64-02

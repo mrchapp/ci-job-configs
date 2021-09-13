@@ -13,6 +13,9 @@ cp configs/ldcg-python-manylinux-tensorflow/build-tfio-manylinux2014-wheels.sh .
 # 00:01:17.010 /usr/local/bin/manylinux-entrypoint: line 8: /tmp/wheels/build-manylinux2014-wheels.sh: Permission denied
 chmod 755 build-tfio-manylinux2014-wheels.sh
 
+if [ "$build0" = "true" ]; then
+    echo '  - "0.21.0"' >> configs/ldcg-python-manylinux-tensorflow/ansible/vars/vars.yml
+fi
 if [ "$buildgit" = "true" ]; then
     echo '  - "git"' >> configs/ldcg-python-manylinux-tensorflow/ansible/vars/vars-tfio.yml
 fi
