@@ -167,6 +167,12 @@ if [ "${BUILD_SDK}" ]; then
   cp $SDK_DEPLOY/* $DEPLOY_DIR_IMAGE/
 fi
 
+# Get Kernel repo, branch and revision
+KERNEL_ENV=$(bitbake -e virtual/kernel)
+KERNEL_REPO=$(echo "$KERNEL_ENV" | awk 'match($0, /^SRC_URI=(.*)/, a) {print a[1]}' | cut -d';' -f 1 | tr -d '"')
+KERNEL_BRANCH=$(echo "$KERNEL_ENV" | grep "^SRC_URI=" | awk 'match($0, /branch=(.*)/, a) {print a[1]}' | tr -d '"')
+KERNEL_COMMIT=$(echo "$KERNEL_ENV" | awk 'match($0, /^SRCREV=(.*)/, a) {print a[1]}' | tr -d '"')
+
 # Prepare files to publish
 rm -f ${DEPLOY_DIR_IMAGE}/*.txt
 find ${DEPLOY_DIR_IMAGE} -type l -delete
@@ -268,4 +274,7 @@ LXC_BOOT_IMG=${BOOT_IMG}
 LXC_ROOTFS_IMG=$(basename ${ROOTFS_IMG} .gz)
 INITRD_URL="${INITRD_URL}"
 KERNEL_ARGS=""
+KERNEL_REPO=$KERNEL_REPO
+KERNEL_BRANCH=$KERNEL_BRANCH
+KERNEL_COMMIT=$KERNEL_COMMIT
 EOF
