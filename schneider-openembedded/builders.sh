@@ -240,15 +240,11 @@ fi
 
 if [[ "${IMAGES}" == *"${devimg}"* ]]; then
 	replace_dmverity_var ""
-	if time bitbake ${bbopt} ${devimg} ; then
-		tar zcf ${DEPLOY_DIR_IMAGE}/edgeagent-debug.tar.gz tmp/*/*/edgeagent downloads/git2/*EdgeAgent* downloads/git2/*cmocka* downloads/git2/*Azure* downloads/git2/*Microsoft* downloads/git2/*kgabis* || true
-	else
-		tar zcf ${DEPLOY_DIR_IMAGE}/edgeagent-debug.tar.gz tmp/*/*/edgeagent downloads/git2/*EdgeAgent* downloads/git2/*cmocka* downloads/git2/*Azure* downloads/git2/*Microsoft* downloads/git2/*kgabis* || true
-		false
-	fi
+	time bitbake ${bbopt} ${devimg} || true
+	tar zcf ${DEPLOY_DIR_IMAGE}/edgeagent-debug.tar.gz tmp/*/*/edgeagent downloads/git2/*EdgeAgent* downloads/git2/*cmocka* downloads/git2/*Azure* downloads/git2/*Microsoft* downloads/git2/*kgabis* || true
 
 	# Make a copy of the CVE report using a fixed filename
-	cp ${DEPLOY_DIR_IMAGE}/${devimg}-${MACHINE}.cve ${DEPLOY_DIR_IMAGE}/${devimg}-${MACHINE}.rootfs.cve
+	cp ${DEPLOY_DIR_IMAGE}/${devimg}-${MACHINE}.cve ${DEPLOY_DIR_IMAGE}/${devimg}-${MACHINE}.rootfs.cve || true
 
 	ls -al ${DEPLOY_DIR_IMAGE} || true
 	ls -al ${DEPLOY_DIR_IMAGE}/cm3 || true
@@ -256,13 +252,13 @@ if [[ "${IMAGES}" == *"${devimg}"* ]]; then
 	ls -al ${DEPLOY_DIR_IMAGE}/fsbl || true
 	ls -al ${DEPLOY_DIR_IMAGE}/optee || true
 
-	time bitbake ${bbopt} ${sdkimg}
+	time bitbake ${bbopt} ${sdkimg} || true
 
 	# Make a copy of the CVE report using a fixed filename
-	cp ${DEPLOY_DIR_IMAGE}/${sdkimg}-${MACHINE}.cve ${DEPLOY_DIR_IMAGE}/${sdkimg}-${MACHINE}.rootfs.cve
+	cp ${DEPLOY_DIR_IMAGE}/${sdkimg}-${MACHINE}.cve ${DEPLOY_DIR_IMAGE}/${sdkimg}-${MACHINE}.rootfs.cve || true
 
 	DEPLOY_DIR_SDK=$(bitbake -e | grep "^DEPLOY_DIR="| cut -d'=' -f2 | tr -d '"')/sdk
-	cp -aR ${DEPLOY_DIR_SDK} ${DEPLOY_DIR_IMAGE}
+	cp -aR ${DEPLOY_DIR_SDK} ${DEPLOY_DIR_IMAGE} || true
 fi
 
 # Prepare files to publish
