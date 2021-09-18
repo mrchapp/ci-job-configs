@@ -92,19 +92,9 @@
             - project: lkft-member-build
               property-file: params_a3648a685034f8bc048e327935a18b71.txt
             - project: lkft-member-build
-              property-file: params_1441868ec5fb8516d7e59e53d502ebe0.txt
-            - project: lkft-member-build
-              property-file: params_a233a6e85d13f4c2c7462f80c9b41991.txt
-            - project: lkft-member-build
               property-file: params_e48a73e036546d589c0c0208f7d84850.txt
             - project: lkft-member-build
               property-file: params_d6448af14a86d83672420d861e94c622.txt
-            - project: lkft-member-build
-              property-file: params_d87db63ec25ad9504e5d0caa2ea3cf49.txt
-            - project: lkft-member-build
-              property-file: params_af620457c865870660de4554d62c3433.txt
-            - project: lkft-member-build
-              property-file: params_aa3b6334f9e793017afd9e89e9966cbc.txt
             - project: lkft-member-build
               property-file: params_93dca876688d11b7cdbf66d78ea2c2cc.txt
             - project: lkft-member-build
