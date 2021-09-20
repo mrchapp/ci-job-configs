@@ -50,4 +50,4 @@
             !include-raw: ldcg-python-manylinux-tensorflow/publishers.sh
     publishers:
         - email:
-            recipients: 'marcin.juszkiewicz@linaro.org'
+            recipients: 'marcin.juszkiewicz@linaro.org andrew.goodbody@linaro.org'
