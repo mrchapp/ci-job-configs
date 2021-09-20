@@ -44,6 +44,19 @@
     chdir: "{{ build_dir }}/tensorflow-{{ tensorflow_version }}/"
     executable: /bin/bash
 
+- name: Run unit tests on TensorFlow {{ tensorflow_version }} for {{ py_ver }}  # noqa no-changed-when
+  shell:
+    cmd: |
+      set -xe
+      source {{ virtualenv_path }}/bin/activate
+      export BAZEL_LINKLIBS=-l%:libstdc++.a
+      bazel test --flaky_test_attempts=3 --test_output=all --cache_test_results=no --config=nonccl \
+                 --verbose_failures -- {{ tf_ver.value.unit_tests_include | join(" ") }} \
+                 -{{ tf_ver.value.unit_tests_exclude | join(" -") }}
+    chdir: "{{ build_dir }}/tensorflow-{{ tensorflow_version }}/"
+    executable: /bin/bash
+  when: tf_ver.value.run_unit_tests
+
 - name: stop bazel server
   include_role:
     name: bazel

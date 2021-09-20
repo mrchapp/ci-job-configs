@@ -13,7 +13,7 @@
   vars:
     bazel_version: "{{ tf_ver.value.bazel_version }}"
 
-- name: go through each Python version
+- name: Build TensorFlow for each Python version
   include_role:
     name: tensorflow
     tasks_from: manylinux-build.yml

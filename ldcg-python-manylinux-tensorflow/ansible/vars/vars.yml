@@ -11,6 +11,9 @@ versions:
     grpcio_version: "~=1.37.0"
     h5py_version: "~=3.1.0"
     numpy_version: "~=1.19.2"
+    run_unit_tests: false
+    unit_tests_include: ""
+    unit_tests_exclude: ""
     python_versions:
       - cp36-cp36m
       - cp37-cp37m
@@ -24,6 +27,9 @@ versions:
     grpcio_version: "~=1.34.0"
     h5py_version: "~=3.1.0"
     numpy_version: "~=1.19.2"
+    run_unit_tests: false
+    unit_tests_include: ""
+    unit_tests_exclude: ""
     python_versions:
       - cp36-cp36m
       - cp37-cp37m
@@ -37,6 +43,9 @@ versions:
     grpcio_version: "~=1.32.0"
     h5py_version: "~=2.10"
     numpy_version: "~=1.19.2"
+    run_unit_tests: false
+    unit_tests_include: ""
+    unit_tests_exclude: ""
     python_versions:
       - cp36-cp36m
       - cp37-cp37m
@@ -50,6 +59,9 @@ versions:
     grpcio_version: "~=1.32.0"
     h5py_version: "==2.10"
     numpy_version: "~=1.18.0"
+    run_unit_tests: false
+    unit_tests_include: ""
+    unit_tests_exclude: ""
     python_versions:
       - cp36-cp36m
       - cp37-cp37m
@@ -61,6 +73,70 @@ versions:
     grpcio_version: ">= 1.37.0, < 2.0"
     h5py_version: "~=3.1.0"
     numpy_version: "~=1.19.2"
+    run_unit_tests: true
+    unit_tests_include:
+       - "//tensorflow/c/..."
+       - "//tensorflow/cc/..."
+       - "//tensorflow/compiler/aot/..."
+       - "//tensorflow/compiler/jit/..."
+       - "//tensorflow/compiler/mlir/..."
+       - "//tensorflow/compiler/tests/..."
+       - "//tensorflow/compiler/tf2xla/..."
+       - "//tensorflow/compiler/xla/..."
+       - "//tensorflow/core/kernels/..."
+       - "//tensorflow/examples/..."
+       - "//tensorflow/js/..."
+       - "//tensorflow/python/..."
+       - "//tensorflow/stream_executor/..."
+       - "//tensorflow/tools/..."
+    unit_tests_exclude:
+       - "//tensorflow/compiler/mlir/tfrt/..."
+       - "//tensorflow/compiler/xla/service/..."
+       - "//tensorflow/compiler/xla/tests/..."
+       - "//tensorflow/core/kernels:quantized_bias_add_op_test"
+       - "//tensorflow/core/kernels:requantize_op_test"
+       - "//tensorflow/core/kernels:sparse_matmul_op_test"
+       - "//tensorflow/python/data/experimental/kernel_tests/service:fault_tolerance_test"
+       - "//tensorflow/python/data/kernel_tests:batch_test"
+       - "//tensorflow/python/data/kernel_tests:cache_test"
+       - "//tensorflow/python/data/kernel_tests:map_test"
+       - "//tensorflow/python/distribute:checkpointing_test_tpu"
+       - "//tensorflow/python/distribute:custom_training_loop_gradient_test_tpu"
+       - "//tensorflow/python/distribute:distributed_variable_test_tpu"
+       - "//tensorflow/python/distribute:input_lib_test_tpu"
+       - "//tensorflow/python/distribute:input_lib_type_spec_test_tpu"
+       - "//tensorflow/python/distribute/integration_test:saved_model_test_tpu"
+       - "//tensorflow/python/distribute:metrics_v1_test_tpu"
+       - "//tensorflow/python/distribute:mirrored_values_test_tpu"
+       - "//tensorflow/python/distribute:moving_averages_test_tpu"
+       - "//tensorflow/python/distribute:strategy_combinations_test_tpu"
+       - "//tensorflow/python/distribute:strategy_common_test_tpu"
+       - "//tensorflow/python/distribute:strategy_gather_test_tpu"
+       - "//tensorflow/python/distribute:tf_function_test_tpu"
+       - "//tensorflow/python/distribute:values_v2_test_tpu"
+       - "//tensorflow/python/eager:remote_cloud_tpu_pod_test"
+       - "//tensorflow/python/eager:remote_cloud_tpu_test"
+       - "//tensorflow/python/framework:convert_to_constants_test"
+       - "//tensorflow/python/keras/layers:gru_v2_test"
+       - "//tensorflow/python/keras/layers:multi_head_attention_test"
+       - "//tensorflow/python/keras/layers/preprocessing:hashing_distribution_test_tpu"
+       - "//tensorflow/python/keras:losses_test"
+       - "//tensorflow/python/keras/mixed_precision:model_test"
+       - "//tensorflow/python/keras/preprocessing:image_test"
+       - "//tensorflow/python/kernel_tests:extract_image_patches_grad_test"
+       - "//tensorflow/python/kernel_tests:init_ops_test"
+       - "//tensorflow/python/kernel_tests/linalg:linear_operator_circulant_test"
+       - "//tensorflow/python/kernel_tests:self_adjoint_eig_op_test"
+       - "//tensorflow/python/kernel_tests:sparse_matmul_op_test"
+       - "//tensorflow/python/kernel_tests:sparse_tensor_dense_matmul_op_deterministic_test"
+       - "//tensorflow/python/kernel_tests:sparse_xent_op_deterministic_test"
+       - "//tensorflow/python/ops/ragged:ragged_dispatch_test"
+       - "//tensorflow/python/tools/..."
+       - "//tensorflow/python/tpu:async_checkpoint_test"
+       - "//tensorflow/python/tpu:tpu_embedding_v2_correctness_test"
+       - "//tensorflow/python/tpu:tpu_embedding_v2_test"
+       - "//tensorflow/tools/docs:tf_doctest"
+       - "//tensorflow/tools/graph_transforms:transforms_test"
     python_versions:
       - cp36-cp36m
       - cp37-cp37m
