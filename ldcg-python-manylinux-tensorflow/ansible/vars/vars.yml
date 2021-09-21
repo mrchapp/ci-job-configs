@@ -90,7 +90,6 @@ versions:
        - "//tensorflow/stream_executor/..."
        - "//tensorflow/tools/..."
     unit_tests_exclude:
-       - "//tensorflow/compiler/mlir/tfrt/..."
        - "//tensorflow/compiler/xla/service/..."
        - "//tensorflow/compiler/xla/tests/..."
        - "//tensorflow/core/kernels:quantized_bias_add_op_test"
@@ -113,7 +112,9 @@ versions:
        - "//tensorflow/python/distribute:strategy_common_test_tpu"
        - "//tensorflow/python/distribute:strategy_gather_test_tpu"
        - "//tensorflow/python/distribute:tf_function_test_tpu"
+       - "//tensorflow/python/distribute:values_test_tpu"
        - "//tensorflow/python/distribute:values_v2_test_tpu"
+       - "//tensorflow/python/distribute:vars_test_tpu"
        - "//tensorflow/python/eager:remote_cloud_tpu_pod_test"
        - "//tensorflow/python/eager:remote_cloud_tpu_test"
        - "//tensorflow/python/framework:convert_to_constants_test"
