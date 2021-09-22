@@ -11,26 +11,23 @@ tags:
     timeout:
       minutes: 25
     to: fastboot
-    namespace: target
-    connection: lxc
+    docker:
+      image: linaro/kir
     images:
       boot:
-        url: lxc:///boot.img
+        url: downloads:///boot.img
       rootfs:
-        url: lxc:///rpb-console-image-lkft.rootfs.img
+        url: downloads:///rpb-console-image-lkft.rootfs.img
         apply-overlay: true
     os: oe
-    protocols:
-      lava-lxc:
-      - action: fastboot-deploy
-        request: pre-power-command
-        timeout:
-          minutes: 2
+- command:
+    name: pre_os_command
+- command:
+    name: pre_power_command
 {% endblock deploy_target %}
 
 {% block boot_target %}
 - boot:
-    namespace: target
     auto_login:
       login_prompt: 'login:'
       username: linaro

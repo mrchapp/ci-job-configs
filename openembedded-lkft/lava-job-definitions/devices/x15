@@ -9,18 +9,17 @@
     timeout:
       minutes: 25
     to: fastboot
-    namespace: target
-    connection: lxc
+    docker:
+      image: linaro/kir
     images:
       super:
-        url: lxc:///rpb-console-image-lkft.rootfs.img
+        url: downloads:///rpb-console-image-lkft.rootfs.img
         apply-overlay: true
     os: oe
 {% endblock deploy_target %}
 
 {% block boot_target %}
 - boot:
-    namespace: target
     auto_login:
       login_prompt: 'am57xx-evm login:'
       username: root

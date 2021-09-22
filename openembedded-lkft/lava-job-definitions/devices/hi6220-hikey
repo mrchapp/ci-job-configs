@@ -7,30 +7,27 @@
     timeout:
       minutes: 15
     to: fastboot
-    namespace: target
-    connection: lxc
+    docker:
+      image: linaro/kir
     images:
       ptable:
-        url: lxc:///ptable-linux-8g.img
+        url: downloads:///ptable-linux-8g.img
         reboot: hard-reset
       boot:
-        url: lxc:///boot.img
+        url: downloads:///boot.img
         reboot: hard-reset
       system:
-        url: lxc:///rpb-console-image-lkft.rootfs.img
+        url: downloads:///rpb-console-image-lkft.rootfs.img
         apply-overlay: true
     os: oe
-    protocols:
-      lava-lxc:
-      - action: fastboot-deploy
-        request: pre-power-command
-        timeout:
-          minutes: 2
+- command:
+    name: pre_os_command
+- command:
+    name: pre_power_command
 {% endblock deploy_target %}
 
 {% block boot_target %}
 - boot:
-    namespace: target
     auto_login:
       login_prompt: 'login:'
       username: linaro
@@ -44,14 +41,8 @@
     timeout:
       minutes: 10
     method: grub
-    commands: installed
-    protocols:
-      lava-lxc:
-      # other action could be boot-fastboot
-      - action: grub-sequence-action
-        request: pre-os-command
-        timeout:
-          minutes: 2
+- command:
+    name: pre_os_command
 {% endblock boot_target %}
 
 {% block test_target %}
