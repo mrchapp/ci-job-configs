@@ -23,6 +23,8 @@
                     url: https://android.googlesource.com/kernel/common
             branches:
               - android-common/android11-5.4
+              - android-common/android12-5.4
+              - android-common/android12-5.10
               - android-common/android13-5.10
             skip-tag: true
             shallow-clone: false
@@ -42,7 +44,7 @@
 
             KERNEL_BRANCH_REAL="${GIT_BRANCH#android-common/}"
             MAKE_KERNELVERSION="$(make kernelversion)"
-            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-biweekly"
+            KERNEL_BRANCH="${KERNEL_BRANCH_REAL}-biweekly-second"
             KERNEL_DESCRIBE="${MAKE_KERNELVERSION}-${GIT_COMMIT:0:12}-$(date +%Y%m%d%H%M)"
 
             echo "KERNEL_DESCRIBE=${KERNEL_DESCRIBE}" > "properties.txt"
@@ -63,14 +65,20 @@
             echo "CALLER_JOB_NAME=${JOB_NAME}" >> ${f_api_callbacks}
             echo "CALLER_BUILD_NUMBER=${BUILD_NUMBER}" >>${f_api_callbacks}
             echo "ANDROID_BUILD_CONFIG=lkft-gki-${KERNEL_BRANCH_REAL}" >>${f_api_callbacks}
-            echo "TEST_OTHER_PLANS_OVERRIDE=VTS CTS BENCHMARKS" >>${f_api_callbacks}
+            echo "TEST_OTHER_PLANS_OVERRIDE=CTS_PRESUBMIT" >>${f_api_callbacks}
 
             case "X${KERNEL_BRANCH_REAL}" in
                 "Xandroid11-5.4")
-                    build_configs_to_be_triggered="lkft-db845c-android11-android11-5.4-gki lkft-hikey960-android11-android11-5.4-gki"
+                    build_configs_to_be_triggered="lkft-db845c-android11-android11-5.4-gki"
+                    ;;
+                "Xandroid12-5.4")
+                    build_configs_to_be_triggered="lkft-member-wrapper"
+                    ;;
+                "Xandroid12-5.10")
+                    build_configs_to_be_triggered="lkft-member-wrapper"
                     ;;
                 "Xandroid13-5.10")
-                    build_configs_to_be_triggered="lkft-db845c-aosp-master-android13-5.10-gki lkft-hikey960-aosp-master-android13-5.10-gki"
+                    build_configs_to_be_triggered="lkft-db845c-aosp-master-android13-5.10-gki"
                     ;;
                 "X*")
                     build_configs=""
