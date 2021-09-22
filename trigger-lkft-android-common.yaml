@@ -25,7 +25,6 @@
                     url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
                     refspec: +refs/heads/linux-5.4.y:refs/remotes/linux-stable/linux-5.4.y +refs/heads/master:refs/remotes/master/master
             branches:
-              - android-common/android-mainline
               - android-common/android13-5.10
               - android-common/android12-5.10-lts
               - android-common/android12-5.4-lts
