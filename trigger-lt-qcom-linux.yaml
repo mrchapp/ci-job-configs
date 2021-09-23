@@ -13,6 +13,9 @@
         - 'trigger-lt-qcom-linux-{version}':
             branch: 'release/qcomlt-5.13'
             version: '5.13'
+        - 'trigger-lt-qcom-linux-{version}':
+            branch: 'release/qcomlt-5.15'
+            version: '5.15'
 - job-template:
     name: 'trigger-lt-qcom-linux-{version}'
     project-type: freestyle
