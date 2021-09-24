@@ -110,7 +110,6 @@
                         ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-aosp-master-android12-5.10-gki lkft-hikey960-aosp-master-android12-5.10-gki lkft-member-wrapper"
                         TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME"
                         ;;
-                        ;;
                     "X*")
                         echo "No particular build for this branch: ${KERNEL_BRANCH}"
                         ;;
