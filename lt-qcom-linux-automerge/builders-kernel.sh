@@ -16,9 +16,9 @@ function build_integration_kernel()
 
 	# build QCOM DTBS with warnings
 	if [ "$ARCH" = "arm64" ]; then
-		make W=1 arch/$ARCH/boot/dts/qcom/  2>&1 | tee -a qcom-dtbs.log
+		make W=1 $(for i in arch/arm64/boot/dts/qcom/*.dts ; do echo qcom/$(basename ${i%.dts}.dtb); done)  2>&1 | tee -a qcom-dtbs.log
 	elif [ "$ARCH" = "arm" ]; then
-		make W=1 arch/$ARCH/boot/dts/  2>&1 | tee -a qcom-dtbs.log
+		make W=1 $(for i in arch/arm/boot/dts/qcom*.dts ; do echo $(basename ${i%.dts}.dtb); done)  2>&1 | tee -a qcom-dtbs.log
 	fi
 	make -j$(nproc)
 }
