@@ -12,4 +12,3 @@
       - pkgconfig
       - Cython
       - wheel
-      - portpicker

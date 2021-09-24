@@ -8,6 +8,9 @@ grpcio{{ grpcio_version }}
 h5py{{ h5py_version }}
 numpy{{ numpy_version }}
 
+# entries needed for unit tests
+scipy == 1.5.*
+
 # entries below are taken from Tensorflow 1.15.4/2.4.1 source code.
 
 absl-py ~= 0.10

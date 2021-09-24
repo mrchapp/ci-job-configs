@@ -101,6 +101,7 @@ versions:
        - "//tensorflow/python/data/kernel_tests:cache_test"
        - "//tensorflow/python/data/kernel_tests:map_test"
        - "//tensorflow/python/distribute:checkpointing_test_tpu"
+       - "//tensorflow/python/distribute:collective_all_reduce_strategy_test_tpu"
        - "//tensorflow/python/distribute:custom_training_loop_gradient_test_tpu"
        - "//tensorflow/python/distribute:distributed_variable_test_tpu"
        - "//tensorflow/python/distribute:input_lib_test_tpu"
@@ -137,6 +138,7 @@ versions:
        - "//tensorflow/python/tpu:async_checkpoint_test"
        - "//tensorflow/python/tpu:tpu_embedding_v2_correctness_test"
        - "//tensorflow/python/tpu:tpu_embedding_v2_test"
+       - "//tensorflow/python/util:traceback_utils_test"
        - "//tensorflow/tools/docs:tf_doctest"
        - "//tensorflow/tools/graph_transforms:transforms_test"
     python_versions:

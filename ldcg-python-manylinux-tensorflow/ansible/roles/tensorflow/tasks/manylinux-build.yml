@@ -10,6 +10,17 @@
     name: python
     tasks_from: virtualenv.yml
 
+- name: populate {{ py_ver }} virtualenv
+  pip:
+    virtualenv: "{{ virtualenv_path }}"
+    virtualenv_command: "/opt/python/{{ py_ver }}/bin/python3 -mvenv"
+    extra_args: "--extra-index-url {{ pip_extra_index_url }} -c '{{ wheels_dir }}/upper-constraints.txt'"
+    name:
+      - keras
+      - portpicker
+      - tensorboard
+      - tensorflow_estimator
+
 - name: build and install wheels of binary Python packages
   include_role:
     name: python
@@ -20,6 +31,7 @@
     - "h5py{{ h5py_version }}"
     - Keras_Applications
     - Keras_Preprocessing
+    - scipy
   loop_control:
     loop_var: wheel_name
 
