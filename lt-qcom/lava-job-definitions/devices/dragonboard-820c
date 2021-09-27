@@ -1,7 +1,0 @@
-{% extends "lt-qcom-fastboot.jinja2" %}
-
-{% block device_type %}dragonboard-820c{% endblock %}
-{% block tags %}
-{% endblock %}
-
-{% set video_devices = ({"/dev/video0": "venus-encoder", "/dev/video1": "venus-decoder"}) %}
