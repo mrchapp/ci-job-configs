@@ -2,11 +2,14 @@
 
 set -ex
 
-virtualenv --python=$(which python2) .venv
+mkdir -p out
+virtualenv --python=$(which python3) .venv
 source .venv/bin/activate
-pip install Jinja2 requests urllib3 ruamel.yaml==0.16.13
 
-export BUILD_NUMBER=530
+export LAVA_TEST_PLANS_GIT_REPO=https://github.com/alimon/lava-test-plans.git
+
+export BUILD_URL=https://ci.linaro.org/job/lt-qcom-debian-images-dragonboard410c/1092/
+export BUILD_NUMBER=1092
 export OS_FLAVOUR=sid
 export VENDOR=linaro
 export PLATFORM_NAME=dragonboard-410c
@@ -21,6 +24,7 @@ export DEVICE_TYPE=dragonboard-410c
 export PUBLISH_SERVER=https://snapshots.linaro.org/
 export PUB_DEST=96boards/dragonboard410c/${VENDOR}/debian/${BUILD_NUMBER}
 bash submit_for_testing.sh
+cp -r lava-test-plans/tmp/dragonboard-410c out/
 
 # cleanup virtualenv
 deactivate
