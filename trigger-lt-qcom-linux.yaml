@@ -39,7 +39,7 @@
     display-name: 'Trigger for Qualcomm LT kernel {branch} branch'
     scm:
         - git:
-            url: https://git.linaro.org/git/landing-teams/working/qualcomm/kernel.git
+            url: https://git.linaro.org/landing-teams/working/qualcomm/kernel.git
             refspec: +refs/heads/*:refs/remotes/origin/*
             name: origin
             branches:

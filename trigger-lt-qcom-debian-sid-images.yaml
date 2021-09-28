@@ -21,7 +21,7 @@
     display-name: 'Trigger for Qualcomm Debian Sid based images'
     scm:
         - git:
-            url: https://git.linaro.org/git/ci/fai.git
+            url: https://git.linaro.org/ci/fai.git
             refspec: +refs/heads/master:refs/remotes/origin/master
             name: origin
             branches:
