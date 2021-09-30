@@ -97,7 +97,7 @@ EOF
 	export CONFIG_PATH=${AUTOMERGE_PATH}/automerge-ci.conf
 fi
 
-AUTOMERGE_CONFIG=$(sed ':a;N;$!ba;s/\n/\\n\\\n/g' ${CONFIG_PATH})
+AUTOMERGE_CONFIG=$(sed '/^#/d;/^$/d' ${CONFIG_PATH} | sed ':a;N;$!ba;s/\n/\\n\\\n/g')
 
 # * Disable exit when fail to collect automerge_result_variables for builders-kernel.sh and email
 # * TODO: Add support in ci-merge to create a log (instead of use tee)
