@@ -29,7 +29,7 @@ echo "EXTERNAL_BUILD_ID=$(git rev-parse --short=8 HEAD)-${BUILD_NUMBER}" >> ${WO
 # docker volume under ${HOME}/srv/toolchain/.
 # Note that Zephyr SDK is needed even when building with the gnuarmemb
 # toolchain, ZEPHYR_SDK_INSTALL_DIR is needed to find things like conf.
-export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.13.0"
+export ZEPHYR_SDK_INSTALL_DIR="${HOME}/srv/toolchain/zephyr-sdk-0.13.1"
 export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/srv/toolchain/gcc-arm-none-eabi-8-2019-q3-update"
 
 # Set build environment variables
