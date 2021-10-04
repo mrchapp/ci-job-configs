@@ -4,7 +4,7 @@
 
 set -ex
 
-ZEPHYR_SDK_VER="0.13.0"
+ZEPHYR_SDK_VER="0.13.1"
 
 ZEPHYR_SDK_URL="https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VER}/zephyr-sdk-${ZEPHYR_SDK_VER}-linux-x86_64-setup.run"
 GNUARMEMB_TOOLCHAIN_URL="https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2"
