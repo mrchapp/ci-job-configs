@@ -184,6 +184,10 @@
               property-file: params_android11-5.4-weekly-lkft-hikey960-aosp-master-android11-5.4-gki.txt
             - project: lkft-member-wrapper
               property-file: params_android11-5.4-weekly-lkft-member-wrapper.txt
+            - project: lkft-generic-build
+              property-file: params_android12-5.4-weekly-lkft-db845c-aosp-master-android12-5.4-gki.txt
+            - project: lkft-generic-build
+              property-file: params_android12-5.4-weekly-lkft-hikey960-aosp-master-android12-5.4-gki.txt
             - project: lkft-member-wrapper
               property-file: params_android12-5.4-weekly-lkft-member-wrapper.txt
             - project: lkft-generic-build

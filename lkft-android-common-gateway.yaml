@@ -44,7 +44,7 @@
             #!/bin/bash -ex
 
             # clean the property files for the builds that to be triggered
-            rm -f "all-kernels.txt" "api_callbacks_properties.txt" "lkft-android12-5.4-x15.txt" "lkft-android-mainline-x15.txt" "lkft-android-mainline-hikey.txt"
+            rm -f "all-kernels.txt" "api_callbacks_properties.txt" "lkft-android12-5.4-weekly-x15.txt" "lkft-android-mainline-x15.txt" "lkft-android-mainline-hikey.txt"
             rm -f "prop_triggered_or_ignored"
             skip_build=false
             if [ "X${IGNORE_KERNELVERSION_CHECK}X" == "XfalseX" ]; then
@@ -101,8 +101,14 @@
                         TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME"
                         ;;
                     "Xandroid12-5.4-weekly")
+                        f_params_x15="lkft-${KERNEL_BRANCH}-x15.txt"
+                        cp -fv "${params}"  "${f_params_x15}"
+                        echo "QA_BUILD_VERSION=${KERNEL_DESCRIBE}" >> "${f_params_x15}"
+                        echo "ANDROID_BUILD_CONFIG=lkft-x15-aosp-master-android12-5.4" >> "${f_params_x15}"
+                        echo "TEST_OTHER_PLANS_OVERRIDE=${TEST_OTHER_PLANS_OVERRIDE}" >> "${f_params_x15}"
+
                         KERNEL_BRANCH_REAL="android12-5.4"
-                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-aosp-master-android12-5.4-gki lkft-hikey960-aosp-master-android12-5.4-gki lkft-x15-aosp-master-android12-5.4 lkft-member-wrapper"
+                        ANDROID_BUILD_CONFIG_TO_BE_TRIGGERED="lkft-db845c-aosp-master-android12-5.4-gki lkft-hikey960-aosp-master-android12-5.4-gki lkft-member-wrapper"
                         TEST_OTHER_PLANS_OVERRIDE="DEFAULT BOOTTIME"
                         ;;
                     "Xandroid12-5.10-weekly")
@@ -147,6 +153,8 @@
               property-file: all-kernels.txt
             - project: lkft-generic-omap-build
               property-file: lkft-android-mainline-x15.txt
+            - project: lkft-generic-omap-build
+              property-file: lkft-android12-5.4-weekly-x15.txt
             - project: lkft-generic-build
               property-file: lkft-android-mainline-hikey.txt
     publishers:
