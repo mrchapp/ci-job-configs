@@ -158,12 +158,6 @@
               property-file: params_android11-5.4-biweekly-first-lkft-db845c-android11-android11-5.4-gki.txt
             - project: lkft-generic-build
               property-file: params_android11-5.4-biweekly-first-lkft-hikey960-android11-android11-5.4-gki.txt
-            - project: lkft-generic-build
-              property-file: params_android12-5.10-lkft-db845c-aosp-master-android12-5.10-gki.txt
-            - project: lkft-generic-build
-              property-file: params_android12-5.10-lkft-hikey960-aosp-master-android12-5.10-gki.txt
-            - project: lkft-member-wrapper
-              property-file: params_android12-5.10-lkft-member-wrapper.txt
             - project: lkft-member-wrapper
               property-file: params_android12-5.10-lts-lkft-member-wrapper.txt
             - project: lkft-generic-build
@@ -192,6 +186,10 @@
               property-file: params_android11-5.4-weekly-lkft-member-wrapper.txt
             - project: lkft-member-wrapper
               property-file: params_android12-5.4-weekly-lkft-member-wrapper.txt
+            - project: lkft-generic-build
+              property-file: params_android12-5.10-weekly-lkft-db845c-aosp-master-android12-5.10-gki.txt
+            - project: lkft-generic-build
+              property-file: params_android12-5.10-weekly-lkft-hikey960-aosp-master-android12-5.10-gki.txt
             - project: lkft-member-wrapper
               property-file: params_android12-5.10-weekly-lkft-member-wrapper.txt
             - project: lkft-member-wrapper
@@ -207,7 +205,7 @@
             - project: lkft-member-wrapper
               property-file: params_android12-5.4-biweekly-second-lkft-member-wrapper.txt
             - project: lkft-member-wrapper
-              property-file: params_android12-5.10-abiweekly-second-lkft-member-wrapper.txt
+              property-file: params_android12-5.10-biweekly-second-lkft-member-wrapper.txt
             - project: lkft-generic-build
               property-file: params_android13-5.10-biweekly-second-lkft-db845c-aosp-master-android13-5.10-gki.txt
 
