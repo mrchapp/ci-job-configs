@@ -92,7 +92,7 @@
       - build-name:
           name: '#$BUILD_NUMBER-$version-$release_name-$buildnumber'
       - timeout:
-          timeout: 300
+          timeout: 600
       - timestamps
       - workspace-cleanup
     builders:
@@ -299,7 +299,7 @@
     concurrent: false
     display-name: 'TCWG AAA GNU Builds Monthly Trigger'
     triggers:
-      - timed: '0 */5 * * *'
+      - timed: '@weekly'
     wrappers:
       - timeout:
           timeout: 300
@@ -321,17 +321,6 @@
           buildnumber=$buildnumber
           publish=$publish
           EOF
-          # DEBUG: build only armhf native
-          cat > build-params.txt <<EOF
-          release_name=$(date +%Y.%m)
-          buildnumber=$buildnumber
-          publish=false
-          host_x86_64_target_aarch64=false
-          host_x86_64_target_armhf=false
-          host_aarch64_target_native=false
-          host_aarch64_target_armhf=false
-          host_armhf_target_native=true
-          EOF
       - trigger-builds:
           - project: tcwg-gnu-builds
             property-file: build-params.txt
@@ -343,4 +332,4 @@
             predefined-parameters: |
               version=master
               distro=lts
-# checksum: 91453c5b2e18f773e0ac3ce0f8660996
+# checksum: 7baa8d6a41037d32e9222e9ead01a1aa
