@@ -470,7 +470,7 @@
               --bad_git "$bad_git" \
               --replay_log "$(pwd)/jenkins-scripts/replay_log" \
               --build_script "./jenkins-scripts/{build_script}" \
-              --TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
+              __TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
               -- \
               ==rr[ci_project] $ci_project \
               ==rr[ci_config] $ci_config \
@@ -597,4 +597,4 @@
           job_suffix: '-tcwg_bmk_{hw}-gnu-{toolchain_ver}-{target}-{bmk}-{cflags}'
     publishers:
         - bisect-publishers
-# checksum: 9ed1aaf6647fb29164ebae9204a8f17f
+# checksum: 513bbffc65812167cc0fe0f5a48a7fc1

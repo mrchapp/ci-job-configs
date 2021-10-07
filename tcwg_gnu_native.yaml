@@ -427,7 +427,7 @@
               --bad_git "$bad_git" \
               --replay_log "$(pwd)/jenkins-scripts/replay_log" \
               --build_script "./jenkins-scripts/{build_script}" \
-              --TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
+              __TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
               -- \
               ==rr[ci_project] $ci_project \
               ==rr[ci_config] $ci_config \
@@ -556,4 +556,4 @@
           docker_arch: '{docker_arch}'
     publishers:
       - bisect-publishers
-# checksum: c656b437808d110eb0dccab1c021e667
+# checksum: 307d2d9428b3dc0bc4de37cd44d006e5

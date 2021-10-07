@@ -433,7 +433,7 @@
               --replay_log "$(pwd)/jenkins-scripts/replay_log" \
               --build_script "./jenkins-scripts/{build_script}" \
 #if PURPOSE_ci
-              --TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
+              __TCWG_JIRA_TOKEN "$TCWG_JIRA_TOKEN" \
 #endif
               -- \
               ==rr[ci_project] $ci_project \
